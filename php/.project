@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Steam Condenser (PHP)</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<natures>
+		<nature>org.eclipse.php.core.PHPNature</nature>
+	</natures>
+</projectDescription>
