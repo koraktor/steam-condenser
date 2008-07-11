@@ -111,7 +111,7 @@ class SourceServer
 	public function getPlayerInfo()
 	{
 		$this->sendRequest(new A2A_PLAYER_RequestPacket($this->challengeNumber));
-		var_dump($this->getReply());
+		var_dump("getPlayerInfo", $this->getReply());
 	}
 	
 	/**

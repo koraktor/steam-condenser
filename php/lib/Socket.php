@@ -29,6 +29,11 @@ class Socket
 	private $portNumber;
 	
 	/**
+	 * @var String
+	 */
+	protected $readBuffer = "";
+	
+	/**
 	 * The socket itself
 	 * @var resource
 	 */
@@ -50,8 +55,7 @@ class Socket
 		if(extension_loaded("sockets"))
 		{
 			$this->socketsEnabled = true;
-			$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-			if(!socket_bind($this->socket, "0.0.0.0"))
+			if(!$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
 			{
 				$errorCode = socket_last_error($this->socket);
 				throw new Exception("Could not create socket: " . socket_strerror($errorCode));
@@ -59,8 +63,7 @@ class Socket
 		}
 		else
 		{
-			$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2);
-			if(!$this->socket)
+			if(!$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
 			{
 				throw new Exception("Could not create socket.");
 			}
@@ -86,25 +89,56 @@ class Socket
 	}
 	
 	/**
-	 * @var int $length
+	 * @return byte
 	 */
-	public function getReply($length = 128)
+	public function getByte()
 	{
-		if($this->socketsEnabled)
+		return ord($this->read(1));
+	}
+	
+	/**
+	 * @return float
+	 */
+	public function getFloat()
+	{
+		return floatval($this->read(4));
+	}
+	
+	/**
+	 * @return long
+	 */
+	public function getLong()
+	{
+		$reply = unpack("Vlong", $this->read(4));
+		return $reply["long"];
+	}
+	
+	/**
+	 * @return short
+	 */
+	public function getShort()
+	{
+		$reply = unpack("vshort", $this->read(2));
+		return $reply["short"];
+	}
+	
+	/**
+	 * @return String
+	 */
+	public function getString()
+	{
+		$returnString = null;
+		while(true)
 		{
-			$replyData = socket_read($this->socket, $length, PHP_BINARY_READ);
-		}
-		else
-		{
-			$replyData = fread($this->socket, $length);
+			$byte = $this->getByte();
+			if($byte == 0)
+			{
+				break;
+			}
+			$returnString .= chr($byte);
 		}
 		
-		if(!$replyData)
-		{
-			throw new Exception("Could not read data.");
-		}
-		
-		return $replyData;
+		return $returnString;
 	}
 
 	/**
@@ -121,6 +155,42 @@ class Socket
 		}
 	
 		throw new Exception($errorMessage . ": " . socket_strerror($errorCode) . " ($errorCode)");
+	}
+	
+	/**
+	 * @param int $length
+	 * @return String
+	 */
+	protected function read($length = 128)
+	{
+		if(empty($this->readBuffer))
+		{
+			throw new Exception("No data to read.");
+		}
+		
+		$replyData = substr($this->readBuffer, 0, $length);
+		$this->readBuffer = substr($this->readBuffer, $length);
+		
+		return $replyData;
+	}
+	
+	/**
+	 */
+	protected function readToBuffer($length = 128)
+	{
+		if($this->socketsEnabled)
+		{
+			if(socket_select($read = array($this->socket), $write = null, $except = null, 0, 50000))
+			{
+				$replyData .= socket_read($this->socket, $length, PHP_BINARY_READ);
+			}
+		}
+		elseif(stream_select($read = array($this->socket), $write = null, $except = null, 0, 50000))
+		{
+			$replyData .= fread($this->socket, $length);
+		}
+		
+		$this->readBuffer = $replyData;
 	}
 	
 	/**
