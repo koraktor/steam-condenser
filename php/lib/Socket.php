@@ -114,6 +114,16 @@ class Socket
 	}
 	
 	/**
+	 * @return String
+	 */
+	public function flushBuffer()
+	{
+		$reply = $this->readBuffer;
+		$this->readBuffer = "";
+		return $reply;
+	}
+	
+	/**
 	 * @return short
 	 */
 	public function getShort()
@@ -198,7 +208,7 @@ class Socket
 			throw new Exception("No data received.");
 		}
 		
-		debug("Received data: {$replyData}");
+		debug("Received data: " . bin2hex($replyData));
 		
 		$this->readBuffer .= $replyData;
 	}
@@ -208,7 +218,7 @@ class Socket
 	 */
 	public function send($data)
 	{
-		debug("Sending data: {$data}");
+		debug("Sending data: " . bin2hex($data));
 	
 		if($this->socketsEnabled)
 		{

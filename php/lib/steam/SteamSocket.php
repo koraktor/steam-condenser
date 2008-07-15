@@ -13,61 +13,6 @@
 class SteamSocket extends Socket
 {
 	/**
-	 * 
-	 */
-	private function createA2A_PING_ResponsePacket()
-	{
-		return new A2A_PING_ResponsePacket($this->getString());
-	}
-	
-	/**
-	 * 
-	 */
-	private function createA2A_INFO_ResponsePacket()
-	{
-		$serverInfo["networkVersion"] = $this->getByte();
-		$serverInfo["serverName"] = $this->getString();
-		$serverInfo["mapName"] = $this->getString();
-		$serverInfo["gameDir"] = $this->getString();
-		$serverInfo["gameDesc"] = $this->getString();
-		$serverInfo["appId"] = $this->getShort();
-		$serverInfo["playerNumber"] = $this->getByte();
-		$serverInfo["maxPlayers"] = $this->getByte();
-		$serverInfo["botNumber"] = $this->getByte();
-		$serverInfo["dedicated"] = chr($this->getByte());
-		$serverInfo["operatingSystem"] = chr($this->getByte());
-		$serverInfo["passwordProtected"] = $this->getByte();
-		$serverInfo["secureServer"] = $this->getByte();
-		$serverInfo["gameVersion"] = $this->getString();
-		$serverInfo["extraDataFlag"] = $this->getByte();
-		
-		if($serverInfo["extraDataFlag"] & 0x80)
-		{
-			$serverInfo["serverPort"] = $this->getShort();
-		}
-		
-		if($serverInfo["extraDataFlag"] & 0x40)
-		{
-			$serverInfo["tvPort"] = $this->getShort();
-			$serverInfo["tvName"] = $this->getString();
-		}
-		
-		if($serverInfo["extraDataFlag"] & 0x20)
-		{
-			$serverInfo["serverTags"] = $this->getString();
-		}
-		
-		return new A2A_INFO_ResponsePacket($serverInfo);
-	}
-	
-	/**
-	 */
-	private function createA2A_SERVERQUERY_GETCHALLENGE_ResponsePacket()
-	{
-		return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket($this->getLong());
-	}
-	
-	/**
 	 * Receives a packet from the connected socket
 	 * @return SteamPacket
 	 * @var int $length
@@ -77,72 +22,56 @@ class SteamSocket extends Socket
 	 */
 	public function getReply()
 	{
-		$this->readToBuffer(1400);
+		$replyPacket = $this->readPacket();
 		
-		$splitPacketHeader = $this->getLong();
-		
-		if($splitPacketHeader == -2)
-		{
-			$requestId = $this->getLong();
-			$packetNumber = $this->getByte();
-			$packetCount = $this->getByte();
-			$splitSize = $this->getShort();
-			$splitPackets[$packetNumber] = $this->readBuffer;
-			
-			trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
-		}
-		
-		$packetHeader = $this->getByte();
-		
-		switch($packetHeader)
-		{
-			case SteamPacket::A2A_INFO_REQUEST_HEADER:
-				$replyPacket = new A2A_INFO_RequestPacket();
-				break;
-				
-			case SteamPacket::A2A_INFO_RESPONSE_HEADER:
-				$replyPacket = $this->createA2A_INFO_ResponsePacket();
-				break;
-			
-			case SteamPacket::A2A_PING_REQUEST_HEADER:
-				$replyPacket = new A2A_PING_RequestPacket();
-				break;
-				
-			case SteamPacket::A2A_PING_RESPONSE_HEADER:
-				$replyPacket = $this->createA2A_PING_ResponsePacket();
-				break;
-				
-			case SteamPacket::A2A_PLAYER_REQUEST_HEADER:
-				$replyPacket = new A2A_PLAYER_ResponsePacket();
-				break;
-			
-			case SteamPacket::A2A_PLAYER_RESPONSE_HEADER:
-				$replyPacket = new A2A_PLAYER_ResponsePacket($packetData["packetContent"]);
-				break;
-				
-			case SteamPacket::A2A_RULES_REQUEST_HEADER:
-				$replyPacket = new A2A_RULES_RequestPacket();
-				break;
-			
-			case SteamPacket::A2A_RULES_RESPONSE_HEADER:
-				$replyPacket = new A2A_RULES_ResponsePacket($packetData["packetContent"]);
-				break;
-				
-			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER:
-				$replyPacket = new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
-				break;
-				
-			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
-				$replyPacket = $this->createA2A_SERVERQUERY_GETCHALLENGE_ResponsePacket();
-				break;
-				
-			default:
-				throw new Exception("Unknown packet with header 0x" . dechex($packetHeader) . " received.");
-		}
+		var_dump($replyPacket);
 		
 		trigger_error("Got reply of type \"" . get_class($replyPacket) . "\".");
 		
 		return $replyPacket;
+	}
+	
+	/**
+	 * @return SteamPacket
+	 */
+	public function readPacket()
+	{
+		// Read the first packet into the buffer
+		$this->readToBuffer(1400);
+		
+		var_dump($this->readBuffer);
+		
+		// Check wether it is a split packet
+		if($this->getLong() == -2)
+		{
+			do
+			{
+				$requestId = $this->getLong();
+				$packetCount = $this->getByte();
+				$packetNumber = $this->getByte() + 1;
+				$splitSize = $this->getShort();
+				// Omit additional header on the first packet 
+				if($packetNumber == 1)
+				{
+					$this->getLong();
+				}
+				$splitPackets[$packetNumber] = $this->flushBuffer();
+				
+				if($packetNumber < $packetCount)
+				{
+					$this->readToBuffer(1400);
+				}
+				
+				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
+			}
+			while($packetNumber < $packetCount && $this->getLong() == -2);
+			
+			return SteamPacket::createPacket(implode("", $splitPackets));
+		}
+		else
+		{
+			return SteamPacket::createPacket($this->flushBuffer());
+		}
 	}
 	
 	/**

@@ -7,22 +7,14 @@
 class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket extends SteamPacket
 {	
 	/**
-	 * @var int
-	 */
-	private $challengeNumber;
-	
-	/**
 	 * 
 	 */
 	public function __construct($challengeNumber)
 	{
-		/*if(is_int($challengeNumer))
-		{
-			throw new Exception("A2A_SERVERQUERY_GETCHALLENGE: Challenge number must be of type long.");
-		}*/
 		parent::__construct(SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER);
 		
-		$this->challengeNumber = $challengeNumber;
+		$data = unpack("V", $challengeNumber);
+		$this->contentData = $data[1];
 	}
 	
 	/**
@@ -30,7 +22,7 @@ class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket extends SteamPacket
 	 */
 	public function getChallengeNumber()
 	{
-		return $this->challengeNumber; 
+		return $this->contentData; 
 	}
 }
 ?>

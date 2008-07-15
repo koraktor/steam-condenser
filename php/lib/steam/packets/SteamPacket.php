@@ -36,6 +36,61 @@ abstract class SteamPacket
 	protected $headerData;
 	
 	/**
+	 * @return SteamPacket
+	 */
+	public static function createPacket($rawData)
+	{
+		$header = ord($rawData[0]);
+		$data = substr($rawData, 1);
+		
+		switch($header)
+		{
+			case SteamPacket::A2A_INFO_REQUEST_HEADER:
+				return new A2A_INFO_RequestPacket();
+				break;
+				
+			case SteamPacket::A2A_INFO_RESPONSE_HEADER:
+				return new A2A_INFO_ResponsePacket($data);
+				break;
+			
+			case SteamPacket::A2A_PING_REQUEST_HEADER:
+				return new A2A_PING_RequestPacket();
+				break;
+				
+			case SteamPacket::A2A_PING_RESPONSE_HEADER:
+				return new A2A_PING_ResponsePacket($data);
+				break;
+				
+			case SteamPacket::A2A_PLAYER_REQUEST_HEADER:
+				return new A2A_PLAYER_ResponsePacket();
+				break;
+			
+			case SteamPacket::A2A_PLAYER_RESPONSE_HEADER:
+				return new A2A_PLAYER_ResponsePacket($data);
+				break;
+				
+			case SteamPacket::A2A_RULES_REQUEST_HEADER:
+				return new A2A_RULES_RequestPacket();
+				break;
+			
+			case SteamPacket::A2A_RULES_RESPONSE_HEADER:
+				return new A2A_RULES_ResponsePacket($data);
+				break;
+				
+			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER:
+				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
+				break;
+				
+			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
+				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket($data);
+				break;
+				
+			default:
+				throw new Exception("Unknown packet with header 0x" . dechex($header) . " received.");
+		}
+	}
+	
+	/**
 	 * @param byte $headerData
 	 * @param mixed $contentData
 	 * @param bool $splitPacket
@@ -44,6 +99,22 @@ abstract class SteamPacket
 	{
 		$this->headerData = $headerData;
 		$this->contentData = $contentData;
+	}
+	
+	/**
+	 * 
+	 */
+	public function getData()
+	{
+		return $this->contentData;
+	}
+	
+	/**
+	 * @return byte
+	 */
+	public function getHeader()
+	{
+		return $this->headerData;
 	}
 	
 	/**

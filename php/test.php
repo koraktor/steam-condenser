@@ -20,5 +20,5 @@ $server->initialize();
 $server->getRulesInfo();
 $server->getPlayerInfo();
 
-debug($server)
+var_dump($server)
 ?>

@@ -25,18 +25,42 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 	/**
 	 * 
 	 */
-	public function __construct($serverInfo)
+	public function __construct($data)
 	{
-		if(!is_array($serverInfo))
-		{
-			throw new Exception("Parameter 1 should be an array.");
-		}
-		parent::__construct(SteamPacket::A2A_INFO_RESPONSE_HEADER);
+		parent::__construct(SteamPacket::A2A_INFO_RESPONSE_HEADER, $data);
 		
-		foreach($serverInfo as $infoKey => $infoValue)
+		//@todo implement functionality to parse the data
+		/*$serverInfo["networkVersion"] = $this->getByte();
+		$serverInfo["serverName"] = $this->getString();
+		$serverInfo["mapName"] = $this->getString();
+		$serverInfo["gameDir"] = $this->getString();
+		$serverInfo["gameDesc"] = $this->getString();
+		$serverInfo["appId"] = $this->getShort();
+		$serverInfo["playerNumber"] = $this->getByte();
+		$serverInfo["maxPlayers"] = $this->getByte();
+		$serverInfo["botNumber"] = $this->getByte();
+		$serverInfo["dedicated"] = chr($this->getByte());
+		$serverInfo["operatingSystem"] = chr($this->getByte());
+		$serverInfo["passwordProtected"] = $this->getByte();
+		$serverInfo["secureServer"] = $this->getByte();
+		$serverInfo["gameVersion"] = $this->getString();
+		$serverInfo["extraDataFlag"] = $this->getByte();
+		
+		if($serverInfo["extraDataFlag"] & 0x80)
 		{
-			$this->$infoKey = $infoValue;
+			$serverInfo["serverPort"] = $this->getShort();
 		}
+		
+		if($serverInfo["extraDataFlag"] & 0x40)
+		{
+			$serverInfo["tvPort"] = $this->getShort();
+			$serverInfo["tvName"] = $this->getString();
+		}
+		
+		if($serverInfo["extraDataFlag"] & 0x20)
+		{
+			$serverInfo["serverTags"] = $this->getString();
+		}*/
 	}
 	
 	/**
