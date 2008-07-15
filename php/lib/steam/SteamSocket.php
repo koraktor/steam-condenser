@@ -79,8 +79,6 @@ class SteamSocket extends Socket
 	{
 		$this->readToBuffer(1400);
 		
-		var_dump($this->readBuffer);
-		
 		$splitPacketHeader = $this->getLong();
 		
 		if($splitPacketHeader == -2)
@@ -91,7 +89,7 @@ class SteamSocket extends Socket
 			$splitSize = $this->getShort();
 			$splitPackets[$packetNumber] = $this->readBuffer;
 			
-			var_dump($requestId, $packetNumber, $packetCount, $splitSize);
+			trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 		}
 		
 		$packetHeader = $this->getByte();
@@ -99,48 +97,61 @@ class SteamSocket extends Socket
 		switch($packetHeader)
 		{
 			case SteamPacket::A2A_INFO_REQUEST_HEADER:
-				return new A2A_INFO_RequestPacket();
+				$replyPacket = new A2A_INFO_RequestPacket();
 				break;
 				
 			case SteamPacket::A2A_INFO_RESPONSE_HEADER:
-				return $this->createA2A_INFO_ResponsePacket();
+				$replyPacket = $this->createA2A_INFO_ResponsePacket();
 				break;
 			
 			case SteamPacket::A2A_PING_REQUEST_HEADER:
-				return new A2A_PING_RequestPacket();
+				$replyPacket = new A2A_PING_RequestPacket();
 				break;
 				
 			case SteamPacket::A2A_PING_RESPONSE_HEADER:
-				return $this->createA2A_PING_ResponsePacket();
+				$replyPacket = $this->createA2A_PING_ResponsePacket();
 				break;
 				
 			case SteamPacket::A2A_PLAYER_REQUEST_HEADER:
-				return new A2A_PLAYER_ResponsePacket();
+				$replyPacket = new A2A_PLAYER_ResponsePacket();
 				break;
 			
 			case SteamPacket::A2A_PLAYER_RESPONSE_HEADER:
-				return new A2A_PLAYER_ResponsePacket($packetData["packetContent"]);
+				$replyPacket = new A2A_PLAYER_ResponsePacket($packetData["packetContent"]);
 				break;
 				
 			case SteamPacket::A2A_RULES_REQUEST_HEADER:
-				return new A2A_RULES_RequestPacket();
+				$replyPacket = new A2A_RULES_RequestPacket();
 				break;
 			
 			case SteamPacket::A2A_RULES_RESPONSE_HEADER:
-				return new A2A_RULES_ResponsePacket($packetData["packetContent"]);
+				$replyPacket = new A2A_RULES_ResponsePacket($packetData["packetContent"]);
 				break;
 				
 			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER:
-				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
+				$replyPacket = new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
 				break;
 				
 			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
-				return $this->createA2A_SERVERQUERY_GETCHALLENGE_ResponsePacket();
+				$replyPacket = $this->createA2A_SERVERQUERY_GETCHALLENGE_ResponsePacket();
 				break;
 				
 			default:
 				throw new Exception("Unknown packet with header 0x" . dechex($packetHeader) . " received.");
 		}
+		
+		trigger_error("Got reply of type \"" . get_class($replyPacket) . "\".");
+		
+		return $replyPacket;
+	}
+	
+	/**
+	 *
+	 */
+	public function send(SteamPacket $dataPacket)
+	{
+		trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
+		parent::send($dataPacket);
 	}
 }
 ?>

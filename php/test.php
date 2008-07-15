@@ -5,6 +5,8 @@
  * @version $Id: test.php 28 2008-07-10 16:21:45Z koraktor $
  */
 
+$GLOBALS["debug"] = true; 
+
 include("includes/functions.php");
 
 //set_exception_handler("exceptionHandler");
@@ -18,5 +20,5 @@ $server->initialize();
 $server->getRulesInfo();
 $server->getPlayerInfo();
 
-var_dump("server", $server);
+debug($server)
 ?>

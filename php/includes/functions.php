@@ -59,4 +59,15 @@ function exceptionHandler(Exception $exception)
 		echo "#$traceNumber: {$tracePoint["file"]}({$tracePoint["line"]}): {$tracePoint["class"]}{$tracePoint["type"]}{$tracePoint["function"]}()\n";
 	}
 }
+
+/**
+ *
+ */
+function debug($debugMessage)
+{
+	if($GLOBALS["debug"])
+	{
+		echo "DEBUG: $debugMessage\n";
+	}
+}
 ?>

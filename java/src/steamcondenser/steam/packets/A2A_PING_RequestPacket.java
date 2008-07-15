@@ -2,6 +2,10 @@ package steamcondenser.steam.packets;
 
 import steamcondenser.steam.SteamPacket;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class A2A_PING_RequestPacket extends SteamPacket
 {
 	public byte[] getBytes()

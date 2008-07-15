@@ -6,6 +6,10 @@ import java.net.UnknownHostException;
 
 import sip.steam.SourceServer;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class Test
 {
 	public static void main(String[] argv)

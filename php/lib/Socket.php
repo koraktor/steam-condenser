@@ -178,19 +178,29 @@ class Socket
 	 */
 	protected function readToBuffer($length = 128)
 	{
+		$read = array($this->socket);
+		$write = null;
+		$except = null;
+		
 		if($this->socketsEnabled)
 		{
-			if(socket_select($read = array($this->socket), $write = null, $except = null, 0, 50000))
+			if(socket_select($read, $write, $except, 1))
 			{
-				$replyData .= socket_read($this->socket, $length, PHP_BINARY_READ);
+				$replyData = socket_read($this->socket, $length, PHP_BINARY_READ);
 			}
 		}
-		elseif(stream_select($read = array($this->socket), $write = null, $except = null, 0, 50000))
+		elseif(stream_select($read, $write, $except, 1))
 		{
-			$replyData .= fread($this->socket, $length);
+			$replyData = fread($this->socket, $length);
+		}
+		else
+		{
+			throw new Exception("No data received.");
 		}
 		
-		$this->readBuffer = $replyData;
+		debug("Received data: {$replyData}");
+		
+		$this->readBuffer .= $replyData;
 	}
 	
 	/**
@@ -198,6 +208,8 @@ class Socket
 	 */
 	public function send($data)
 	{
+		debug("Sending data: {$data}");
+	
 		if($this->socketsEnabled)
 		{
 			$sendResult = socket_sendto($this->socket, $data, strlen($data), 0, $this->ipAddress, $this->portNumber);
