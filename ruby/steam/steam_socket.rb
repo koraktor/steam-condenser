@@ -1,5 +1,8 @@
+# The SteamSocket class is a sub class of CondenserSocket respecting the specifications of
+# the Source query protocol.
 class SteamSocket < CondenserSocket
 
+  # Returns a packet read from the socket
   def get_reply
     reply_packet = self.read_packet
     
@@ -8,6 +11,9 @@ class SteamSocket < CondenserSocket
     return reply_packet    
   end
 
+  # Reads a packet from the socket. The Source query protocol specifies a maximum packet
+  # size of 1400 byte. Greater packets will be split over several UDP packets. This method
+  # reassembles split packets into single data objects. 
   def read_packet
     self.read_to_buffer 1400
     

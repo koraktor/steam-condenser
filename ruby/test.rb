@@ -12,7 +12,7 @@ autoload "SteamSocket", "steam/steam_socket"
 
 def debug(debug_string)
   if $-v
-    puts debug_string
+    puts "DEBUG: #{debug_string}"
   end
 end
 

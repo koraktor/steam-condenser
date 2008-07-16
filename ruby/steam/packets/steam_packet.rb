@@ -1,3 +1,4 @@
+# This class represents a packet used by the Source query protocol
 class SteamPacket
   A2A_INFO_REQUEST_HEADER = 0x54
   A2A_INFO_RESPONSE_HEADER = 0x49
@@ -9,7 +10,8 @@ class SteamPacket
   A2A_RULES_RESPONSE_HEADER = 0x45
   A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57
   A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41
-  
+
+  # Creates a new packet based on the header byte of the given raw data
   def self.create_packet(raw_data)
     header = raw_data[0].to_i;
     data = raw_data[1, raw_data.size];
@@ -40,12 +42,16 @@ class SteamPacket
     end
   end
   
+  # Creates a new SteamPacket object with given header and content data
   def initialize(header_data, content_data = nil)
     @content_data = content_data
     @header_data = header_data
     @split_packet = false
   end
   
+  # Returns a packed string representing the packet's data
+  #
+  # TODO Has to automatically split packets greater than 1400 bytes
   def to_s
     packet_data = [0xFF, 0xFF, 0xFF].pack("ccc")
     
