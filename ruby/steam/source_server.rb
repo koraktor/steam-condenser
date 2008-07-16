@@ -1,11 +1,11 @@
 class SourceServer
-  @challenge_number
-  @ip_address
-  @map_name
-  @ping
-  @port_number
-  @server_name
-  @socket
+  @challenge_number = nil
+  @ip_address = nil
+  @map_name = ""
+  @ping = nil
+  @port_number = nil
+  @server_name = nil
+  @socket = nil
   
   def initialize(ip_address, port_number = 27015)
     unless ip_address.is_a? IPAddr
@@ -46,11 +46,17 @@ class SourceServer
   end
   
   def get_server_info
-    
+    send_request A2A_INFO_RequestPacket.new
+    parse_server_info get_reply
   end
   
   def get_challenge_number
     
+  end
+  
+  def parse_server_info(info_response)
+    @map_name = info_response.get_map_name
+    @server_name = info_response.get_server_name
   end
   
   def send_request packet

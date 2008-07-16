@@ -1,33 +1,16 @@
 class A2A_INFO_ResponsePacket < SteamPacket
-	@mapName
-	
-	@serverName
+  @map_name = nil
+	@server_name = nil
   
-  def self.read_from_socket(socket)
-    server_info = Hash.new
-    server_info["network_verson"] = socket.read_from_buffer 1
-    
-    return self.new server_info
+	def initialize(data)
+    super SteamPacket::A2A_INFO_RESPONSE_HEADER, data
   end
 	
-	def initialize(server_info)
-   puts server_info.inspect
-    
-		unless server_info.is_a? Hash
-			raise Exception.new("Argument 1 should be an array.")
-		end
-		super SteamPacket::A2A_INFO_RESPONSE_HEADER
-    
-    server_info.each_pair do |info_key, info_value|
-      @info_key = info_value
-    end
+	def get_map_name
+		return @map_name
 	end
 	
-	def get_map_name()
-		return @mapName;
-	end
-	
-	def get_server_name()
-		return @serverName;
+	def get_server_name
+		return @server_name
 	end
 end

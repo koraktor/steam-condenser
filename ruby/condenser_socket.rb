@@ -1,8 +1,8 @@
 class CondenserSocket
-  @ip_address
-  @port_number
+  @ip_address = nil
+  @port_number = nil
   @read_buffer = ""
-  @socket
+  @socket = nil
   
   def initialize(ip_address, port_number)
     @ip_address = ip_address
@@ -12,6 +12,10 @@ class CondenserSocket
   
   def finalize
     @socket.close
+  end
+  
+  def flush_buffer
+    return self.read(@read_buffer.size).to_s
   end
   
   def get_byte
@@ -42,7 +46,6 @@ class CondenserSocket
   end
   
   def read_to_buffer(length = 128)
-    puts "selecting socket"
     if select([@socket], nil, nil, 1)
       data_read = @socket.recvfrom length
     end
@@ -51,7 +54,7 @@ class CondenserSocket
   end
   
   def send(data)
-    puts "Sending data packet of type \"#{data.class.to_s}\""
+    puts "Sending data packet of type \"#{data.class.to_s}\"."
     @socket.send data.to_s, 0, @ip_address.to_s, @port_number
   end
   
