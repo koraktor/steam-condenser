@@ -1,9 +1,7 @@
 class SourceServer
   @challenge_number = nil
-  @ip_address = nil
   @map_name = ""
   @ping = nil
-  @port_number = nil
   @server_name = nil
   @socket = nil
   
@@ -16,8 +14,6 @@ class SourceServer
       raise TypeError("The listening port of the server has to be a number greater than 0.")
     end
     
-    @ip_address = ip_address
-    @port_number = port_number
     @socket = SteamSocket.new ip_address, port_number
   end
   
