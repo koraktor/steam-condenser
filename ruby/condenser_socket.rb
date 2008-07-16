@@ -1,3 +1,4 @@
+
 # The CondensorSocket class is a wrapper around the UDPSocket class of the Ruby Standard library.
 # It includes a read buffer and some comfortable functions to read and write to this buffer. 
 class CondenserSocket
@@ -22,7 +23,7 @@ class CondenserSocket
   
   # Returns an 8 bit character from the read buffer
   def get_byte
-    return self.read(1).to_i
+    return self.read(1).unpack("c")[0]
   end
   
   # Returns a 32 bit floating point number from the read buffer
@@ -32,7 +33,7 @@ class CondenserSocket
   
   # Returns a 32 bit signed integer from the read buffer 
   def get_long
-    return self.read(4).to_i
+    return self.read(4).unpack("l")[0]
   end
   
   # Returns a 16 bit signed integer from the read buffer
@@ -55,11 +56,11 @@ class CondenserSocket
   # Reads the specified number of characters from the socket and saves them in the read buffer
   def read_to_buffer(length = 128)
     begin
-	    if select([@socket], nil, nil, 1)
+      if select([@socket], nil, nil, 1)
       	data_read = @socket.recv length
       end
-
-      debug("Received data: #{data_read}")
+ 
+      debug "Received data: #{data_read}"
     
       @read_buffer = data_read
     rescue Exception
@@ -70,6 +71,7 @@ class CondenserSocket
   # Sends a string representation of an object to the socket endpoint 
   def send(data)
     puts "Sending data packet of type \"#{data.class.to_s}\"."
+    debug "Send data: #{data.to_s}"
     @socket.send data.to_s, 0, @ip_address.to_s, @port_number
   end
   

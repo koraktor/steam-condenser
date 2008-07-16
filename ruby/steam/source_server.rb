@@ -26,23 +26,15 @@ class SourceServer
     get_server_info
     get_challenge_number
   end
-  
+
+  def get_player_info
+    send_request A2A_PLAYER_RequestPacket.new(@challenge_number)
+    @player_array = get_reply.get_player_array
+  end
+
   def get_rules_info
-    
-  end
-  
-  private
-  
-  def get_ping
-    send_request A2A_PING_RequestPacket.new
-    start_time = Time.now
-    get_reply
-    end_time = Time.now
-    return @ping = (end_time - start_time) * 1000
-  end
-  
-  def get_reply
-    @socket.get_reply
+    send_request A2A_RULES_RequestPacket.new(@challenge_number)
+    @rules_hash = get_reply.get_rules_hash
   end
   
   def get_server_info
@@ -50,8 +42,23 @@ class SourceServer
     parse_server_info get_reply
   end
   
+  private
+
   def get_challenge_number
-    
+    send_request A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.new
+    @challenge_number = get_reply.get_challenge_number    
+  end
+ 
+  def get_ping
+    send_request A2A_PING_RequestPacket.new
+    start_time = Time.now
+    get_reply
+    end_time = Time.now
+    return @ping = (end_time - start_time) * 1000
+  end
+
+  def get_reply
+    @socket.get_reply
   end
   
   def parse_server_info(info_response)
