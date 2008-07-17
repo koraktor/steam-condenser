@@ -25,7 +25,7 @@ class SourceServer
 
   def get_player_info
     send_request A2A_PLAYER_RequestPacket.new(@challenge_number)
-    @player_array = get_reply.get_player_array
+    @player_array = parse_player_info get_reply
   end
 
   def get_rules_info
@@ -35,7 +35,7 @@ class SourceServer
   
   def get_server_info
     send_request A2A_INFO_RequestPacket.new
-    parse_server_info get_reply
+    @info_hash = get_reply.get_info_hash
   end
   
   private
@@ -62,11 +62,6 @@ class SourceServer
     player_response.get_player_array.each do |player|
       @player_array.push SteamPlayer.new(*player)
     end
-  end
-  
-  def parse_server_info(info_response)
-    @map_name = info_response.get_map_name
-    @server_name = info_response.get_server_name
   end
   
   def send_request packet

@@ -7,7 +7,7 @@ class A2A_PLAYER_ResponsePacket < SteamPacket
     super SteamPacket::A2A_PLAYER_RESPONSE_HEADER, content_data
     
     number_of_players = @content_data[0]
-    players_data = @content_data[1, @content_data.size]
+    players_data = @content_data[1..-1]
 
     @player_array = Array.new
     

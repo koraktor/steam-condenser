@@ -1,4 +1,4 @@
-def SteamPlayer
+class SteamPlayer
   def initialize(id, name, score, connect_time)
     @connect_time = connect_time
     @id = id

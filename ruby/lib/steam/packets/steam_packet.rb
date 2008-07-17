@@ -14,7 +14,7 @@ class SteamPacket
   # Creates a new packet based on the header byte of the given raw data
   def self.create_packet(raw_data)
     header = raw_data[0].to_i;
-    data = raw_data[1, raw_data.size];
+    data = raw_data[1..-1];
     
     case header
       when SteamPacket::A2A_INFO_REQUEST_HEADER
