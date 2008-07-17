@@ -60,7 +60,7 @@ class SourceServer
   def parse_player_info(player_response)
     @player_array = Array.new
     player_response.get_player_array.each do |player|
-      @player_array.push SteamPlayer.new *player
+      @player_array.push SteamPlayer.new(*player)
     end
   end
   

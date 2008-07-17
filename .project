@@ -5,7 +5,13 @@
 	<projects>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.rubypeople.rdt.core.rubybuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.rubypeople.rdt.core.rubynature</nature>
 	</natures>
 </projectDescription>
