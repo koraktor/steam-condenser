@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 $:.push File.dirname(__FILE__)
 
 autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"

@@ -57,6 +57,13 @@ class SourceServer
     @socket.get_reply
   end
   
+  def parse_player_info(player_response)
+    @player_array = Array.new
+    player_response.get_player_array.each do |player|
+      @player_array.push SteamPlayer.new *player
+    end
+  end
+  
   def parse_server_info(info_response)
     @map_name = info_response.get_map_name
     @server_name = info_response.get_server_name
