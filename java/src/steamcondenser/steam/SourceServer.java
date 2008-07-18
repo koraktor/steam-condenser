@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import steamcondeser.steam.packets.A2A_PING_RequestPacket;
+import steamcondenser.steam.packets.A2A_PING_RequestPacket;
 
 /**
  * @author Sebastian Staudt

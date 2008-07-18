@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import steamcondenser.steam.packets.SteamPacket;
+
 /**
  * @author Sebastian Staudt
  * @version $Id$
@@ -23,17 +25,17 @@ public class SteamSocket extends DatagramSocket
 		this.connect(ipAddress, portNumber);
 	}
 	
-	public void receive()
+	public SteamPacket receive()
 		throws IOException
 	{
 		byte[] buffer = new byte[1400];
 		DatagramPacket replyPacket = new DatagramPacket(buffer, 1400);
 		super.receive(replyPacket);
-		System.out.println(replyPacket.getData());
+		return new SteamPacket(replyPacket.getData());
 	}
 	
 	/**
-	 * @param dataPacket The {@link steamcondenser.SteamPacket SteamPacket} to send to the remote end
+	 * @param dataPacket The {@link steamcondenser.steam.packets.SteamPacket SteamPacket} to send to the remote end
 	 */
 	public void send(SteamPacket dataPacket)
 		throws IOException

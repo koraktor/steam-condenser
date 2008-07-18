@@ -1,4 +1,4 @@
-package steamcondenser.steam;
+package steamcondenser.steam.packets;
 
 /**
  * @author Sebastian Staudt
@@ -6,5 +6,15 @@ package steamcondenser.steam;
  */
 public class SteamPacket
 {
-
+	private byte[] data;
+	
+	public SteamPacket(byte[] data)
+	{
+		this.data = data;
+	}
+	
+	public byte[] getBytes()
+	{
+		return this.data;
+	}
 }

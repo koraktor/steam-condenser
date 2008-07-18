@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import sip.steam.SourceServer;
+import steamcondenser.steam.SourceServer;
 
 /**
  * @author Sebastian Staudt
