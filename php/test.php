@@ -2,7 +2,7 @@
 /**
  * @author Sebastian Staudt
  * @package Steam Interface Package (PHP)
- * @version $Id: test.php 28 2008-07-10 16:21:45Z koraktor $
+ * @version $Id$
  */
 
 $GLOBALS["debug"] = true; 

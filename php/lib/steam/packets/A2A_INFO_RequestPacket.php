@@ -3,7 +3,7 @@
  * @author Sebastian Staudt
  * @package Steam Interface Package (PHP)
  * @subpackage SteamPacket
- * @version $Id: A2A_INFO_RequestPacket.php 19 2008-02-28 10:09:21Z koraktor $
+ * @version $Id$
  */
 
 /**

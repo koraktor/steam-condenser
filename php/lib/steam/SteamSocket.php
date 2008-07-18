@@ -3,7 +3,7 @@
  * @author Sebastian Staudt
  * @package Steam Interface Package (PHP)
  * @subpackage SteamSocket
- * @version $Id: SteamSocket.php 21 2008-02-29 10:39:13Z koraktor $
+ * @version $Id$
  */
 
 /**

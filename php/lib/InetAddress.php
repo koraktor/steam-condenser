@@ -3,7 +3,7 @@
  * @author Sebastian Staudt
  * @package Source Interface Package (PHP)
  * @subpackage InetAddress
- * @version $Id: InetAddress.php 21 2008-02-29 10:39:13Z koraktor $
+ * @version $Id$
  */
 
 /**
