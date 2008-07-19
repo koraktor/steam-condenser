@@ -3,7 +3,7 @@
 $:.push File.join(File.dirname(__FILE__), "lib")
 
 require "ipaddr"
-require "lib/steam/source_server"
+require "steam/source_server"
 
 def debug(debug_string)
   if $-v

@@ -16,7 +16,7 @@ svn_info = Hash[*`svn info`.split("\n").map {|line| line.split(": ")}.flatten]
 spec = Gem::Specification.new do |s|
   s.name = "steam-condenser"
   s.version = svn_info["Last Changed Rev"]
-  s.date = Time.now
+  s.date = svn_info["Last Changed Date"]
  
   s.summary = "A multi-language library for querying Source, GoldSrc servers and Steam master servers"
  
@@ -41,8 +41,9 @@ desc "Building docs"
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title = "Steam Condenser documentation"
   rdoc.rdoc_files.include source_files
+  rdoc.rdoc_files.include "../LICENSE"
   rdoc.rdoc_files.include "README"
   rdoc.main = "README"
   rdoc.rdoc_dir = "doc"
-  rdoc.options << "--all" << "--line-numbers"
+  rdoc.options << "--all" << "--inline-source" << "--line-numbers" << "--charset=utf-8" << "--webcvs=http://code.google.com/p/steam-condenser/source/browse/trunk/ruby/%s?r=#{svn_info["Last Changed Rev"]}"
 end
