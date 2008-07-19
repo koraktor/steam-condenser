@@ -1,4 +1,3 @@
-
 # The CondensorSocket class is a wrapper around the UDPSocket class of the Ruby Standard library.
 # It includes a read buffer and some comfortable functions to read and write to this buffer. 
 class CondenserSocket

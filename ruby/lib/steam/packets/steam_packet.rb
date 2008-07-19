@@ -1,3 +1,14 @@
+autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
+autoload "A2A_INFO_ResponsePacket", "steam/packets/a2a_info_response_packet"
+autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
+autoload "A2A_PING_ResponsePacket", "steam/packets/a2a_ping_response_packet"
+autoload "A2A_PLAYER_RequestPacket", "steam/packets/a2a_player_request_packet"
+autoload "A2A_PLAYER_ResponsePacket", "steam/packets/a2a_player_response_packet"
+autoload "A2A_RULES_RequestPacket", "steam/packets/a2a_rules_request_packet"
+autoload "A2A_RULES_ResponsePacket", "steam/packets/a2a_rules_response_packet"
+autoload "A2A_SERVERQUERY_GETCHALLENGE_RequestPacket", "steam/packets/a2a_serverquery_getchallenge_request_packet"
+autoload "A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket", "steam/packets/a2a_serverquery_getchallenge_response_packet"
+
 # This class represents a packet used by the Source query protocol
 class SteamPacket
   A2A_INFO_REQUEST_HEADER = 0x54
@@ -11,7 +22,7 @@ class SteamPacket
   A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57
   A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41
 
-  # Creates a new packet based on the header byte of the given raw data
+  # Creates a new packet object based on the header byte of the given raw data
   def self.create_packet(raw_data)
     header = raw_data[0].to_i;
     data = raw_data[1..-1];

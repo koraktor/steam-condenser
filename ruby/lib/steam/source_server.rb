@@ -1,3 +1,12 @@
+autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
+autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
+autoload "A2A_PLAYER_RequestPacket", "steam/packets/a2a_player_request_packet"
+autoload "A2A_RULES_RequestPacket", "steam/packets/a2a_rules_request_packet"
+autoload "A2A_SERVERQUERY_GETCHALLENGE_RequestPacket", "steam/packets/a2a_serverquery_getchallenge_request_packet"
+
+require "steam/steam_player"
+require "steam/steam_socket"
+
 class SourceServer
   @challenge_number = nil
   @map_name = ""
