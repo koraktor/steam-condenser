@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# Copyright (c) 2008, Sebastian Staudt
+# $Id$
+
 $:.push File.join(File.dirname(__FILE__), "lib")
 
 require "ipaddr"

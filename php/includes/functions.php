@@ -19,21 +19,27 @@ function __autoload($className)
  * @param String $baseDirectory
  * @return String
  */
-function autoloadLibrary($className, $baseDirectory = "lib")
+function autoloadLibrary($className, $baseDirectory = null)
 {
+	if($baseDirectory == null)
+	{
+		$baseDirectory = dirname($_SERVER["SCRIPT_NAME"]) . "/lib";
+	}
+	
 	$libraryPath = "$baseDirectory/$className.php";
 	
 	if(file_exists($libraryPath))
 	{
 		require_once($libraryPath);
 		return $libraryPath;
-	}	
+	}
 	
 	$subDirs = glob("$baseDirectory/*", GLOB_ONLYDIR);
 	
 	foreach($subDirs as $subDir)
 	{
 		$libraryPath = autoloadLibrary($className, $subDir);
+		
 		if($libraryPath != false)
 		{
 			require_once($libraryPath);

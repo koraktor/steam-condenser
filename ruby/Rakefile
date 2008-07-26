@@ -1,3 +1,6 @@
+# Copyright (c) 2008, Sebastian Staudt
+# $Id$
+
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 require "rubygems"
