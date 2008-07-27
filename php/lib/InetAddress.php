@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Sebastian Staudt
+ * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD License
  * @package Source Interface Package (PHP)
  * @subpackage InetAddress
  * @version $Id$
