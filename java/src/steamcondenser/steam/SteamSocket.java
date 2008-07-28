@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
 
 import steamcondenser.steam.packets.SteamPacket;
 
@@ -31,7 +32,13 @@ public class SteamSocket extends DatagramSocket
 		byte[] buffer = new byte[1400];
 		DatagramPacket replyPacket = new DatagramPacket(buffer, 1400);
 		super.receive(replyPacket);
-		return new SteamPacket(replyPacket.getData());
+		
+		byte[] packetData = replyPacket.getData();
+		byte headerData = packetData[0];
+		byte[] contentData = new byte[packetData.length - 1];
+		System.arraycopy(packetData, 1, contentData, 0, packetData.length - 1);
+		
+		return new SteamPacket(headerData, contentData);
 	}
 	
 	/**

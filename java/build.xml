@@ -17,6 +17,7 @@
   <property name="src" location="src" />
   <property name="build" location="build" />
   <property name="dist" location="dist" />
+	<property name="doc" location="doc" />
 
   <target name="init">
     <tstamp/>
@@ -31,6 +32,11 @@
     <mkdir dir="${dist}" />
     <jar jarfile="${dist}/steam-condenser-r${revision}.jar" basedir="${build}" />
   </target>
+	
+	<target name="doc" description="generate documentation">
+		<mkdir dir="${doc}"/>
+		<javadoc destdir="${doc}" doctitle="Steam Condenser" sourcepath="${src}" />
+	</target>
 
   <target name="clean" description="clean build and dist directories">
     <delete dir="${build}" />

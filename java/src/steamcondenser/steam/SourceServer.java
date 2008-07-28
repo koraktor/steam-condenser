@@ -12,6 +12,8 @@ import steamcondenser.steam.packets.A2A_PING_RequestPacket;
  */
 public class SourceServer
 {
+	private int challengeNumber;
+	
 	private InetAddress ipAddress;
 	
 	private int portNumber;
@@ -33,9 +35,9 @@ public class SourceServer
 	/**
 	 * @return The challenge number assigned by the server
 	 */
-	public void getChallengeNumber()
+	public int getChallengeNumber()
 	{
-		
+		return this.challengeNumber;
 	}
 	
 	public void getPing()
