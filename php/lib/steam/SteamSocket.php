@@ -25,8 +25,6 @@ class SteamSocket extends Socket
 	{
 		$replyPacket = $this->readPacket();
 		
-		var_dump($replyPacket);
-		
 		trigger_error("Got reply of type \"" . get_class($replyPacket) . "\".");
 		
 		return $replyPacket;
@@ -39,8 +37,6 @@ class SteamSocket extends Socket
 	{
 		// Read the first packet into the buffer
 		$this->readToBuffer(1400);
-		
-		var_dump($this->readBuffer);
 		
 		// Check wether it is a split packet
 		if($this->getLong() == -2)

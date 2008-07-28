@@ -20,11 +20,6 @@ class SourceServer
 	private $challengeNumber;
 	
 	/**
-	 * @var InetAddress
-	 */
-	private $ipAddress;
-	
-	/**
 	 * @var String
 	 */
 	private $mapName;
@@ -33,11 +28,6 @@ class SourceServer
 	 * @var int
 	 */
 	private $ping;
-	
-	/**
-	 * @var int
-	 */
-	private $portNumber;
 	
 	/**
 	 * @var String
@@ -112,7 +102,7 @@ class SourceServer
 	public function getPlayerInfo()
 	{
 		$this->sendRequest(new A2A_PLAYER_RequestPacket($this->challengeNumber));
-		var_dump("getPlayerInfo", $this->getReply());
+		$this->parsePlayerInfo($this->getReply());
 	}
 	
 	/**
