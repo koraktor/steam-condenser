@@ -31,7 +31,16 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 		parent::__construct(SteamPacket::A2A_INFO_RESPONSE_HEADER, $data);
 		
 		//@todo implement functionality to parse the data
-		/*$serverInfo["networkVersion"] = $this->getByte();
+		/*
+		$byteBuffer = new ByteBuffer($data);
+		var_dump($byteBuffer->getByte());
+		var_dump($byteBuffer->getString());
+		var_dump($byteBuffer->getString());
+		var_dump($byteBuffer->getString());
+		var_dump($byteBuffer->getString());
+		var_dump($byteBuffer->getShort());
+
+		$serverInfo["networkVersion"] = $this->getByte();
 		$serverInfo["serverName"] = $this->getString();
 		$serverInfo["mapName"] = $this->getString();
 		$serverInfo["gameDir"] = $this->getString();
