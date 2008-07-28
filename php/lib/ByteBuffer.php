@@ -38,7 +38,6 @@ class ByteBuffer
    */
   public function get($length)
   {
-    echo "sizeof byteArray = " . strlen($this->byteArray) . " pointer is {$this->pointer} length is $length.";
     $data = substr($this->byteArray, $this->pointer, $length);
     $this->pointer += $length;
     return $data;
@@ -51,7 +50,10 @@ class ByteBuffer
   {
     return $this->get(1);
   }
-  
+
+  /**
+   * @return short
+   */  
   public function getShort()
   {
     $data = unpack("v", $this->get(2));
