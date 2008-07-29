@@ -3,6 +3,7 @@ package steamcondenser.steam;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.GregorianCalendar;
 
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
 
@@ -13,6 +14,8 @@ import steamcondenser.steam.packets.A2A_PING_RequestPacket;
 public class SourceServer
 {
 	private int challengeNumber;
+
+	private int ping;
 	
 	private SteamSocket socket;
 	
@@ -37,9 +40,11 @@ public class SourceServer
 	public void getPing()
 		throws IOException
 	{
-		System.out.println("Sending A2A_PING request.");
 		this.socket.send(new A2A_PING_RequestPacket());
-		this.socket.receive();
+		long startTime = System.currentTimeMillis();
+		this.socket.getReply();
+		long endTime = System.currentTimeMillis();
+		this.ping = Long.valueOf(endTime - startTime).intValue();
 	}
 	
 	public void getServerInfo()

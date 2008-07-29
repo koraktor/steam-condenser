@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.logging.Logger;
 
 import steamcondenser.steam.packets.SteamPacket;
 
@@ -25,19 +26,24 @@ public class SteamSocket extends DatagramSocket
 		this.connect(ipAddress, portNumber);
 	}
 	
-	public SteamPacket receive()
-		throws IOException
+	public SteamPacket getReply()
+	  throws IOException, Exception
+	{
+		SteamPacket replyPacket = this.receive();
+
+		Logger.getLogger("global").info("Sending data packet of type \"" + replyPacket.getClass().getSimpleName() + "\"");
+
+		return replyPacket;
+	}
+	
+	private SteamPacket receive()
+		throws IOException, Exception
 	{
 		byte[] buffer = new byte[1400];
 		DatagramPacket replyPacket = new DatagramPacket(buffer, 1400);
 		super.receive(replyPacket);
 		
-		byte[] packetData = replyPacket.getData();
-		byte headerData = packetData[0];
-		byte[] contentData = new byte[packetData.length - 1];
-		System.arraycopy(packetData, 1, contentData, 0, packetData.length - 1);
-		
-		return new SteamPacket(headerData, contentData);
+		return SteamPacket.createPacket(replyPacket.getData());
 	}
 	
 	/**
@@ -46,6 +52,8 @@ public class SteamSocket extends DatagramSocket
 	public void send(SteamPacket dataPacket)
 		throws IOException
 	{
+		Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
+
 		byte[] data = dataPacket.getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(data, data.length, this.getRemoteSocketAddress());
 		super.send(sendPacket);

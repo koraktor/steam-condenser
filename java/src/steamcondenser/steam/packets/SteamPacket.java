@@ -22,6 +22,26 @@ public class SteamPacket
 	protected byte[] contentData;
 	private byte headerData;
 	
+	public static SteamPacket createPacket(byte[] rawData)
+	  throws Exception
+	{
+		byte header = rawData[0];
+		byte[] data = new byte[rawData.length - 1];
+		System.arraycopy(rawData, 1, data, 0, rawData.length - 1);
+		
+		System.err.println(SteamPacket.A2A_PING_RESPONSE_HEADER + " = " + Byte.valueOf(header).intValue());
+		
+		switch(header)
+		{
+			case SteamPacket.A2A_INFO_REQUEST_HEADER:
+				return new A2A_INFO_RequestPacket();
+      case SteamPacket.A2A_PING_RESPONSE_HEADER:
+        return new A2A_PING_ResponsePacket(data);
+			default:
+				throw new Exception("Unknown packet with header 0x" + header + " received.");
+		}
+	}
+	
 	public SteamPacket(byte headerData)
 	{
 		this(headerData, new byte[0]);
