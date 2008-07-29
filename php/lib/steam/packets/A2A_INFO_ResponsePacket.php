@@ -19,6 +19,11 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 	private $mapName;
 	
 	/**
+	 * @var int
+	 */
+	private $networkVersion;
+	
+	/**
 	 * @var String
 	 */
 	private $serverName;
@@ -30,63 +35,46 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 	{
 		parent::__construct(SteamPacket::A2A_INFO_RESPONSE_HEADER, $data);
 		
-		//@todo implement functionality to parse the data
-		/*
 		$byteBuffer = new ByteBuffer($data);
-		var_dump($byteBuffer->getByte());
-		var_dump($byteBuffer->getString());
-		var_dump($byteBuffer->getString());
-		var_dump($byteBuffer->getString());
-		var_dump($byteBuffer->getString());
-		var_dump($byteBuffer->getShort());
-
-		$serverInfo["networkVersion"] = $this->getByte();
-		$serverInfo["serverName"] = $this->getString();
-		$serverInfo["mapName"] = $this->getString();
-		$serverInfo["gameDir"] = $this->getString();
-		$serverInfo["gameDesc"] = $this->getString();
-		$serverInfo["appId"] = $this->getShort();
-		$serverInfo["playerNumber"] = $this->getByte();
-		$serverInfo["maxPlayers"] = $this->getByte();
-		$serverInfo["botNumber"] = $this->getByte();
-		$serverInfo["dedicated"] = chr($this->getByte());
-		$serverInfo["operatingSystem"] = chr($this->getByte());
-		$serverInfo["passwordProtected"] = $this->getByte();
-		$serverInfo["secureServer"] = $this->getByte();
-		$serverInfo["gameVersion"] = $this->getString();
-		$serverInfo["extraDataFlag"] = $this->getByte();
+		$this->networkVersion = $byteBuffer->getByte();
+		$this->serverName = $byteBuffer->getString();
+		$this->mapName = $byteBuffer->getString();
+		$this->gameDir = $byteBuffer->getString();
+		$this->gameDesc = $byteBuffer->getString();
+		$this->appId = $byteBuffer->getShort();
+		$this->playerNumber = $byteBuffer->getByte();
+		$this->maxPlayers = $byteBuffer->getByte();
+		$this->botNumber = $byteBuffer->getByte();
+		$this->dedicated = chr($byteBuffer->getByte());
+		$this->operatingSystem = chr($byteBuffer->getByte());
+		$this->passwordProtexted = $byteBuffer->getByte();
+		$this->secureServer = $byteBuffer->getByte();
+		$this->gameVersion = $byteBuffer->getString();
+		$extraDataFlag = $byteBuffer->getByte();
 		
-		if($serverInfo["extraDataFlag"] & 0x80)
+		if($extraDataFlag & 0x80)
 		{
-			$serverInfo["serverPort"] = $this->getShort();
+			$this->serverPort = $byteBuffer->getShort();
 		}
 		
-		if($serverInfo["extraDataFlag"] & 0x40)
+		if($extraDataFlag & 0x40)
 		{
-			$serverInfo["tvPort"] = $this->getShort();
-			$serverInfo["tvName"] = $this->getString();
+		  $this->tvPort = $byteBuffer->getShort();
+		  $this->tvName = $byteBuffer->getString();
 		}
 		
-		if($serverInfo["extraDataFlag"] & 0x20)
-		{
-			$serverInfo["serverTags"] = $this->getString();
-		}*/
+	 if($extraDataFlag & 0x20)
+    {
+      $this->serverTags = $byteBuffer->getString();
+    }
 	}
 	
 	/**
-	 * @return String
+	 * @return mixed[]
 	 */
-	public function getMapName()
+	public function getInfoHash()
 	{
-		return $this->mapName;
-	}
-	
-	/**
-	 * @return String
-	 */
-	public function getServerName()
-	{
-		return $this->serverName;
+		return array_diff_key(get_object_vars($this), array("contentData" => null, "headerData" => null));
 	}
 }
 ?>

@@ -48,7 +48,7 @@ class ByteBuffer
    */
   public function getByte()
   {
-    return $this->get(1);
+    return ord($this->get(1));
   }
 
   /**

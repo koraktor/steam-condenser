@@ -20,19 +20,14 @@ class SourceServer
 	private $challengeNumber;
 	
 	/**
-	 * @var String
+	 * @var mixed[]
 	 */
-	private $mapName;
+	private $infoHash;
 	
 	/**
 	 * @var int
 	 */
 	private $ping;
-	
-	/**
-	 * @var String
-	 */
-	private $serverName;
 	
 	/**
 	 * @var SteamSocket
@@ -93,7 +88,7 @@ class SourceServer
 	public function getServerInfo()
 	{
 		$this->sendRequest(new A2A_INFO_RequestPacket());
-		$this->parseServerInfo($this->getReply());
+		$this->infoHash = $this->getReply()->getInfoHash();
 	}
 	
 	/**
@@ -128,15 +123,6 @@ class SourceServer
 	private function parsePlayerInfo(A2A_PLAYER_ResponsePacket $playerResponse)
 	{
 		$this->playerArray = $playerResponse->getPlayers();
-	}
-	
-	/**
-	 * 
-	 */
-	private function parseServerInfo(A2A_INFO_ResponsePacket $infoResponse)
-	{
-		$this->mapName = $infoResponse->getMapName();
-		$this->serverName = $infoResponse->getServerName();
 	}
 	
 	/**
