@@ -57,7 +57,6 @@ class SteamPacket
   def initialize(header_data, content_data = nil)
     @content_data = content_data
     @header_data = header_data
-    @split_packet = false
   end
   
   # Returns a packed string representing the packet's data
