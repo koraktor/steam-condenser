@@ -10,7 +10,7 @@ class SteamSocket < CondenserSocket
     
     debug "Got reply of type \"#{reply_packet.class.to_s}\"."
     
-    return reply_packet    
+    return reply_packet
   end
 
   # Reads a packet from the socket. The Source query protocol specifies a

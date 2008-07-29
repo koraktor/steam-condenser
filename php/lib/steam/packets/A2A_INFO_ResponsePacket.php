@@ -47,8 +47,8 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 		$this->botNumber = $byteBuffer->getByte();
 		$this->dedicated = chr($byteBuffer->getByte());
 		$this->operatingSystem = chr($byteBuffer->getByte());
-		$this->passwordProtexted = $byteBuffer->getByte();
-		$this->secureServer = $byteBuffer->getByte();
+		$this->passwordProtected = $byteBuffer->getByte() == 1;
+		$this->secureServer = $byteBuffer->getByte() == 1;
 		$this->gameVersion = $byteBuffer->getString();
 		$extraDataFlag = $byteBuffer->getByte();
 		

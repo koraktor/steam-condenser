@@ -14,10 +14,6 @@ public class SourceServer
 {
 	private int challengeNumber;
 	
-	private InetAddress ipAddress;
-	
-	private int portNumber;
-	
 	private SteamSocket socket;
 	
 	/**
@@ -27,8 +23,6 @@ public class SourceServer
 	public SourceServer(InetAddress ipAddress, int portNumber)
 		throws SocketException
 	{
-		this.ipAddress = ipAddress;
-		this.portNumber = portNumber;
 		this.socket = new SteamSocket(ipAddress, portNumber);
 	}
 	
