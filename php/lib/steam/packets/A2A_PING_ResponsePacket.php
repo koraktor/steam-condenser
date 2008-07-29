@@ -7,10 +7,14 @@
  * @version $Id$
  */
 
+/**
+ * @package Steam Interface Package (PHP)
+ * @subpackage SteamPacket
+ */
 class A2A_PING_ResponsePacket extends SteamPacket
 {	
 	/**
-	 * 
+	 * @param byte[] $contentData
 	 */
 	public function __construct($contentData)
 	{

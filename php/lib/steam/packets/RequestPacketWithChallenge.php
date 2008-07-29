@@ -11,14 +11,15 @@
  * @package Steam Interface Package (PHP)
  * @subpackage SteamPacket
  */
-class A2A_PLAYER_RequestPacket extends RequestPacketWithChallenge
-{	
+abstract class RequestPacketWithChallenge extends SteamPacket
+{
 	/**
-	 * @param long $challengeNumber
+	 * Returns a packed version of the packet data
+	 * @return String
 	 */
-	public function __construct($challengeNumber = "\xFF\xFF\xFF\xFF")
+	public function __toString()
 	{
-		parent::__construct(SteamPacket::A2A_PLAYER_REQUEST_HEADER, $challengeNumber);
+	  return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData);;
 	}
 }
 ?>

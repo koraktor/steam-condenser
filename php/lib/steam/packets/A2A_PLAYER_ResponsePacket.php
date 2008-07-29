@@ -7,6 +7,10 @@
  * @version $Id$
  */
 
+/**
+ * @package Steam Interface Package (PHP)
+ * @subpackage SteamPacket
+ */
 class A2A_PLAYER_ResponsePacket extends SteamPacket
 {	
 	/**
@@ -45,7 +49,7 @@ class A2A_PLAYER_ResponsePacket extends SteamPacket
 	}
 	
 	/**
-	 * 
+	 * @return SteamPlayer[]
 	 */
 	public function getPlayers()
 	{

@@ -7,7 +7,11 @@
  * @version $Id$
  */
 
-class A2A_RULES_RequestPacket extends SteamPacket
+/**
+ * @package Steam Interface Package (PHP)
+ * @subpackage SteamPacket
+ */
+class A2A_RULES_RequestPacket extends RequestPacketWithChallenge
 {	
 	/**
 	 * @param long $challengeNumber
@@ -16,16 +20,8 @@ class A2A_RULES_RequestPacket extends SteamPacket
 	{
 		parent::__construct(SteamPacket::A2A_RULES_REQUEST_HEADER, $challengeNumber);
 	}
-	
-	/**
-	 * @return String
-	 */
-	public function __toString()
-	{
-		$packetData = pack("c4", 0xFF, 0xFF, 0xFF, 0xFF);
-		$packetData .= pack("cV", $this->headerData, $this->contentData);
-		
-		return $packetData;
-	}
 }
+
+$test = new A2A_RULES_RequestPacket();
+echo $test->__toString();
 ?>

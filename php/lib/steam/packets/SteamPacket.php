@@ -37,6 +37,7 @@ abstract class SteamPacket
 	protected $headerData;
 	
 	/**
+	 * @param byte[] $rawData
 	 * @return SteamPacket
 	 */
 	public static function createPacket($rawData)
@@ -93,7 +94,7 @@ abstract class SteamPacket
 	
 	/**
 	 * @param byte $headerData
-	 * @param mixed $contentData
+	 * @param byte[] $contentData
 	 * @param bool $splitPacket
 	 */
 	public function __construct($headerData, $contentData = null)
@@ -103,7 +104,7 @@ abstract class SteamPacket
 	}
 	
 	/**
-	 * 
+	 * @return byte[]
 	 */
 	public function getData()
 	{

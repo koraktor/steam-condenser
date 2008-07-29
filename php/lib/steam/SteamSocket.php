@@ -36,6 +36,7 @@ class SteamSocket extends Socket
 	public function readPacket()
 	{
 		// Read the first packet into the buffer
+		// @todo Use ByteBuffer functionality here
 		$this->readToBuffer(1400);
 		
 		// Check wether it is a split packet

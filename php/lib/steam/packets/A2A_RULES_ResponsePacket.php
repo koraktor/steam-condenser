@@ -7,6 +7,10 @@
  * @version $Id$
  */
 
+/**
+ * @package Steam Interface Package (PHP)
+ * @subpackage SteamPacket
+ */
 class A2A_RULES_ResponsePacket extends SteamPacket
 {	
 	/**
