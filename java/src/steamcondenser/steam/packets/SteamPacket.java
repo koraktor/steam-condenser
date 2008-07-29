@@ -19,7 +19,7 @@ public class SteamPacket
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57;
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
 	
-	private byte[] contentData;
+	protected byte[] contentData;
 	private byte headerData;
 	
 	public SteamPacket(byte headerData)
