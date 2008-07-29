@@ -13,7 +13,7 @@ import steamcondenser.steam.SourceServer;
 public class Test
 {
 	public static void main(String[] argv)
-		throws IOException
+		throws IOException, Exception
 	{
 		try
 		{

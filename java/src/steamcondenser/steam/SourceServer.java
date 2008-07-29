@@ -24,7 +24,7 @@ public class SourceServer
 	 * @param portNumber The port number of the server
 	 */
 	public SourceServer(InetAddress ipAddress, int portNumber)
-		throws SocketException
+		throws IOException
 	{
 		this.socket = new SteamSocket(ipAddress, portNumber);
 	}
@@ -38,7 +38,7 @@ public class SourceServer
 	}
 	
 	public void getPing()
-		throws IOException
+		throws IOException, Exception
 	{
 		this.socket.send(new A2A_PING_RequestPacket());
 		long startTime = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public class SourceServer
 	}
 	
 	public void initialize()
-		throws IOException
+		throws IOException, Exception
 	{
 		this.getPing();
 		this.getServerInfo();

@@ -35,8 +35,34 @@ public class SteamPacket
 		{
 			case SteamPacket.A2A_INFO_REQUEST_HEADER:
 				return new A2A_INFO_RequestPacket();
-      case SteamPacket.A2A_PING_RESPONSE_HEADER:
-        return new A2A_PING_ResponsePacket(data);
+				
+			case SteamPacket.A2A_INFO_RESPONSE_HEADER:
+				return new A2A_INFO_ResponsePacket(data);
+			
+			case SteamPacket.A2A_PING_REQUEST_HEADER:
+				return new A2A_PING_RequestPacket();
+				
+			case SteamPacket.A2A_PING_RESPONSE_HEADER:
+				return new A2A_PING_ResponsePacket(data);
+				
+			case SteamPacket.A2A_PLAYER_REQUEST_HEADER:
+				return new A2A_PLAYER_RequestPacket(Long.valueOf(data.toString()));
+			
+			case SteamPacket.A2A_PLAYER_RESPONSE_HEADER:
+				return new A2A_PLAYER_ResponsePacket(data);
+				
+			case SteamPacket.A2A_RULES_REQUEST_HEADER:
+				return new A2A_RULES_RequestPacket(Long.valueOf(data.toString()));
+			
+			case SteamPacket.A2A_RULES_RESPONSE_HEADER:
+				return new A2A_RULES_ResponsePacket(data);
+				
+			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER:
+				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
+				
+			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
+				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(Long.valueOf(data.toString()));
+				
 			default:
 				throw new Exception("Unknown packet with header 0x" + header + " received.");
 		}
