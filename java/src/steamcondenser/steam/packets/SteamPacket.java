@@ -85,7 +85,7 @@ public class SteamPacket
 	    bytes[2] = (byte) 0xFF;
 	    bytes[3] = (byte) 0xFF;
 	    bytes[4] = this.headerData;
-	    System.arraycopy(bytes, 5, this.contentData.array(), 0, bytes.length - 5);
+	    System.arraycopy(this.contentData.array(), 0, bytes, 5, bytes.length - 5);
 	    return bytes;
 	}
 	

@@ -35,18 +35,16 @@ public class SteamSocket
 		this.buffer = ByteBuffer.allocate(1400);
 		this.buffer.order(ByteOrder.LITTLE_ENDIAN);
 		
-		this.selector = Selector.open();
-		
 		this.channel = DatagramChannel.open();
 		this.channel.connect(new InetSocketAddress(ipAddress, portNumber));
 		this.channel.configureBlocking(false);
-		
-		this.channel.register(this.selector, SelectionKey.OP_READ);
 	}
 	
 	public SteamPacket getReply()
 		throws IOException, Exception
 	{
+		Selector selector = Selector.open();
+		this.channel.register(selector, SelectionKey.OP_READ);
 		if(this.selector.select(1000) == 0)
 		{
 			throw new TimeoutException();
@@ -102,7 +100,7 @@ public class SteamSocket
 			this.buffer.get(packetData);
 			packet = SteamPacket.createPacket(packetData);
 		}
-		
+
 		this.buffer.flip();
 		
 		Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");

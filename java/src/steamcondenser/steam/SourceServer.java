@@ -2,7 +2,10 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
 
+import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
+import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
 
 /**
@@ -14,6 +17,8 @@ public class SourceServer
 	private int challengeNumber;
 
 	private int ping;
+	
+	private HashMap<String, Object> serverInfo;
 	
 	private SteamSocket socket;
 	
@@ -46,8 +51,10 @@ public class SourceServer
 	}
 	
 	public void getServerInfo()
+		throws IOException, Exception
 	{
-		
+		this.socket.send(new A2A_INFO_RequestPacket());
+		this.serverInfo = ((A2A_INFO_ResponsePacket) this.socket.getReply()).getInfoHash();
 	}
 	
 	public void initialize()
