@@ -2,8 +2,6 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.util.GregorianCalendar;
 
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
 
