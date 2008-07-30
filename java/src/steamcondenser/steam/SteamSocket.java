@@ -118,8 +118,7 @@ public class SteamSocket
 	{
 		Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
-		byte[] data = dataPacket.getBytes();
-		this.buffer = ByteBuffer.wrap(data);
+		this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
 		this.channel.write(this.buffer);
 		this.buffer.flip();
 	}

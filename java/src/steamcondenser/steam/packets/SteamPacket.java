@@ -77,6 +77,11 @@ public class SteamPacket
 		this.headerData = headerData;
 	}
 	
+	public byte[] getBytes()
+	{
+		return this.contentData.array();
+	}
+	
 	public byte getHeader()
 	{
 		return this.headerData;

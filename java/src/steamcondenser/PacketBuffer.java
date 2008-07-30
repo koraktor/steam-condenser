@@ -11,6 +11,11 @@ public class PacketBuffer
 		this.byteBuffer = ByteBuffer.wrap(data);
 	}
 	
+	public byte[] array()
+	{
+		return this.byteBuffer.array();
+	}
+	
 	public byte getByte()
 	{
 		return this.byteBuffer.get();
