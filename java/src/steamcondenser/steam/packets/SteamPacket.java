@@ -1,5 +1,6 @@
 package steamcondenser.steam.packets;
 
+import steamcondenser.Helper;
 import steamcondenser.PacketBuffer;
 
 /**
@@ -44,13 +45,13 @@ public class SteamPacket
 				return new A2A_PING_ResponsePacket(data);
 				
 			case SteamPacket.A2A_PLAYER_REQUEST_HEADER:
-				return new A2A_PLAYER_RequestPacket(Integer.valueOf(new String(data)));
+				return new A2A_PLAYER_RequestPacket(Helper.integerFromByteArray(data));
 			
 			case SteamPacket.A2A_PLAYER_RESPONSE_HEADER:
 				return new A2A_PLAYER_ResponsePacket(data);
 				
 			case SteamPacket.A2A_RULES_REQUEST_HEADER:
-				return new A2A_RULES_RequestPacket(Integer.valueOf(new String(data)));
+				return new A2A_RULES_RequestPacket(Helper.integerFromByteArray(data));
 			
 			case SteamPacket.A2A_RULES_RESPONSE_HEADER:
 				return new A2A_RULES_ResponsePacket(data);
