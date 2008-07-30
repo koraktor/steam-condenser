@@ -1,12 +1,10 @@
 package steamcondenser.steam;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.channels.Channels;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -35,6 +33,7 @@ public class SteamSocket
 		throws IOException
 	{
 		this.buffer = ByteBuffer.allocate(1400);
+		this.buffer.order(ByteOrder.LITTLE_ENDIAN);
 		
 		this.selector = Selector.open();
 		
@@ -58,7 +57,7 @@ public class SteamSocket
 		
 		SteamPacket packet;
 
-		this.buffer.clear();
+		this.buffer = ByteBuffer.allocate(1400);
 		bytesRead = this.channel.read(this.buffer);
 		this.buffer.rewind();
 		
@@ -84,7 +83,7 @@ public class SteamSocket
 				splitData = new byte[this.buffer.remaining()];
 				this.buffer.get(splitData);
 				tmpData = packetData;
-				packetData = new byte[tmpData.length + splitData.length];				
+				packetData = new byte[tmpData.length + splitData.length];
 				System.arraycopy(splitData, 0, packetData, packetData.length, splitData.length);
 				
 				this.buffer.clear();
@@ -104,7 +103,7 @@ public class SteamSocket
 		
 		this.buffer.flip();
 		
-		Logger.getLogger("global").info("Sending data packet of type \"" + packet.getClass().getSimpleName() + "\"");
+		Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 		
 		return packet;
 	}
