@@ -6,13 +6,13 @@ package steamcondenser.steam.packets;
  */
 public class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket extends SteamPacket
 {
-	public A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(long challengeNumber)
+	public A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(int challengeNumber)
 	{
-		super(SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, Long.toString(challengeNumber).getBytes());
+		super(SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, String.valueOf(challengeNumber).getBytes());
 	}
 	
-	public long getChallengeNumber()
+	public int getChallengeNumber()
 	{
-		return Long.valueOf(this.contentData.toString());
+		return this.contentData.getInt();
 	}
 }

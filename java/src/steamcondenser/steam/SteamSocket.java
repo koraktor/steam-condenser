@@ -60,6 +60,7 @@ public class SteamSocket
 		this.buffer = ByteBuffer.allocate(1400);
 		bytesRead = this.channel.read(this.buffer);
 		this.buffer.rewind();
+		this.buffer.limit(bytesRead);
 		
 		if(this.buffer.getInt() == -2L)
 		{
@@ -89,6 +90,7 @@ public class SteamSocket
 				this.buffer.clear();
 				this.channel.read(this.buffer);
 				this.buffer.rewind();
+				this.buffer.limit(bytesRead);
 			}
 			while(packetNumber < packetCount && this.buffer.getInt() == -2L);
 			

@@ -6,12 +6,12 @@ package steamcondenser.steam.packets;
  */
 public class A2A_PING_ResponsePacket extends SteamPacket
 {
-	public A2A_PING_ResponsePacket(byte[] contentData)
+	public A2A_PING_ResponsePacket(byte[] dataBytes)
 		throws Exception
 	{
-		super(SteamPacket.A2A_PING_RESPONSE_HEADER, contentData);
+		super(SteamPacket.A2A_PING_RESPONSE_HEADER, dataBytes);
 		
-		if(contentData.toString() != "00000000000000\0")
+		if(this.contentData.getString() != "00000000000000")
 		{
 			throw new Exception("Wrong formatted A2A_PING Response Packet.");
 		}

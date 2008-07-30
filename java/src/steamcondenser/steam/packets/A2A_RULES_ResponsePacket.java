@@ -12,22 +12,20 @@ public class A2A_RULES_ResponsePacket extends SteamPacket
 {
 	private HashMap<String, String>rulesHash;
 	
-	public A2A_RULES_ResponsePacket(byte[] contentData)
+	public A2A_RULES_ResponsePacket(byte[] dataBytes)
 		throws Exception
 	{
-		super(SteamPacket.A2A_RULES_RESPONSE_HEADER, contentData);
+		super(SteamPacket.A2A_RULES_RESPONSE_HEADER, dataBytes);
 		
-		if(contentData.length == 0)
+		if(this.contentData.getLength() == 0)
 		{
 			throw new Exception("Wrong formatted A2A_RULES response packet.");
 		}
 		
-		PacketBuffer contentBuffer = new PacketBuffer(contentData);
-		
-		int numberOfRules = contentBuffer.getByte();
-		while(contentBuffer.hasRemaining())
+		int numberOfRules = this.contentData.getByte();
+		while(this.contentData.hasRemaining())
 		{
-			this.rulesHash.put(contentBuffer.getString(), contentBuffer.getString());
+			this.rulesHash.put(this.contentData.getString(), this.contentData.getString());
 		}
 	}
 }

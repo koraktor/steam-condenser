@@ -1,6 +1,6 @@
 package steamcondenser.steam.packets;
 
-import java.nio.ByteBuffer;
+import steamcondenser.PacketBuffer;
 
 /**
  * @author Sebastian Staudt
@@ -19,7 +19,7 @@ public class SteamPacket
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57;
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
 	
-	protected byte[] contentData;
+	protected PacketBuffer contentData;
 	private byte headerData;
 	
 	public static SteamPacket createPacket(byte[] rawData)
@@ -44,13 +44,13 @@ public class SteamPacket
 				return new A2A_PING_ResponsePacket(data);
 				
 			case SteamPacket.A2A_PLAYER_REQUEST_HEADER:
-				return new A2A_PLAYER_RequestPacket(Long.valueOf(data.toString()));
+				return new A2A_PLAYER_RequestPacket(Integer.valueOf(new String(data)));
 			
 			case SteamPacket.A2A_PLAYER_RESPONSE_HEADER:
 				return new A2A_PLAYER_ResponsePacket(data);
 				
 			case SteamPacket.A2A_RULES_REQUEST_HEADER:
-				return new A2A_RULES_RequestPacket(Long.valueOf(data.toString()));
+				return new A2A_RULES_RequestPacket(Integer.valueOf(new String(data)));
 			
 			case SteamPacket.A2A_RULES_RESPONSE_HEADER:
 				return new A2A_RULES_ResponsePacket(data);
@@ -59,7 +59,7 @@ public class SteamPacket
 				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
 				
 			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
-				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(Long.valueOf(data.toString()));
+				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(Integer.valueOf(new String(data)));
 				
 			default:
 				throw new Exception("Unknown packet with header 0x" + header + " received.");
@@ -71,31 +71,10 @@ public class SteamPacket
 		this(headerData, new byte[0]);
 	}
 	
-	public SteamPacket(byte headerData, byte[] contentData)
+	public SteamPacket(byte headerData, byte[] contentBytes)
 	{
-		this.contentData = contentData;
+		this.contentData = new PacketBuffer(contentBytes);
 		this.headerData = headerData;
-	}
-	
-	public byte[] getBytes()
-	{
-		ByteBuffer packetData = ByteBuffer.allocate(this.contentData.length + 5);
-		if(this.contentData.length < 1395)
-		{
-			packetData.putInt(-1);
-		}
-		else
-		{
-			packetData.putInt(-2);
-		}
-		packetData.put(this.headerData);
-		packetData.put(this.contentData);
-		return packetData.array();
-	}
-	
-	public byte[] getData()
-	{
-		return this.contentData;
 	}
 	
 	public byte getHeader()

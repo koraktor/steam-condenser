@@ -13,7 +13,17 @@ public class PacketBuffer
 	
 	public byte getByte()
 	{
-		return (byte) this.byteBuffer.getChar();
+		return this.byteBuffer.get();
+	}
+	
+	public int getInt()
+	{
+		return this.byteBuffer.getInt();
+	}
+	
+	public int getLength()
+	{
+		return this.byteBuffer.capacity();
 	}
 	
 	public short getShort()
