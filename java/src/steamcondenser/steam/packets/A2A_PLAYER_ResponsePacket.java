@@ -1,5 +1,7 @@
 package steamcondenser.steam.packets;
 
+import java.util.ArrayList;
+
 import steamcondenser.steam.SteamPlayer;
 
 /**
@@ -8,7 +10,7 @@ import steamcondenser.steam.SteamPlayer;
  */
 public class A2A_PLAYER_ResponsePacket extends SteamPacket
 {
-	private SteamPlayer[] playerArray;
+	private ArrayList<SteamPlayer> playerArray;
 
 	public A2A_PLAYER_ResponsePacket(byte[] dataBytes)
 		throws Exception
@@ -22,10 +24,15 @@ public class A2A_PLAYER_ResponsePacket extends SteamPacket
 		
 		int number_of_players = this.contentData.getByte();
 		
-		// TODO
+		this.playerArray = new ArrayList<SteamPlayer>(number_of_players);
+		
+		while(this.contentData.hasRemaining())
+		{
+			this.playerArray.add(new SteamPlayer(this.contentData.getInt(), this.contentData.getString(), this.contentData.getInt(), this.contentData.getFloat()));
+		}
 	}
 	
-	public SteamPlayer[] getPlayerArray()
+	public ArrayList<SteamPlayer> getPlayerArray()
 	{
 		return this.playerArray;
 	}

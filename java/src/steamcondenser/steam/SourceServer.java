@@ -2,11 +2,18 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
 import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
+import steamcondenser.steam.packets.A2A_PLAYER_RequestPacket;
+import steamcondenser.steam.packets.A2A_PLAYER_ResponsePacket;
+import steamcondenser.steam.packets.A2A_RULES_RequestPacket;
+import steamcondenser.steam.packets.A2A_RULES_ResponsePacket;
+import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_RequestPacket;
+import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket;
 
 /**
  * @author Sebastian Staudt
@@ -14,9 +21,13 @@ import steamcondenser.steam.packets.A2A_PING_RequestPacket;
  */
 public class SourceServer
 {
-	private int challengeNumber;
+	private int challengeNumber = 0xFFFFFFFF;
 
 	private int ping;
+	
+	private ArrayList<SteamPlayer> playerArray;
+	
+	private HashMap<String, String> rulesHash;
 	
 	private HashMap<String, Object> serverInfo;
 	
@@ -35,9 +46,11 @@ public class SourceServer
 	/**
 	 * @return The challenge number assigned by the server
 	 */
-	public int getChallengeNumber()
+	public void getChallengeNumber()
+		throws IOException, Exception
 	{
-		return this.challengeNumber;
+		this.socket.send(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
+		this.challengeNumber = ((A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket) this.socket.getReply()).getChallengeNumber();
 	}
 	
 	public void getPing()
@@ -48,6 +61,20 @@ public class SourceServer
 		this.socket.getReply();
 		long endTime = System.currentTimeMillis();
 		this.ping = Long.valueOf(endTime - startTime).intValue();
+	}
+	
+	public void getPlayerInfo()
+		throws IOException, Exception
+	{
+		this.socket.send(new A2A_PLAYER_RequestPacket(this.challengeNumber));
+		this.playerArray = ((A2A_PLAYER_ResponsePacket) this.socket.getReply()).getPlayerArray();
+	}
+	
+	public void getRulesInfo()
+		throws IOException, Exception
+	{
+		this.socket.send(new A2A_RULES_RequestPacket(this.challengeNumber));
+		this.rulesHash = ((A2A_RULES_ResponsePacket) this.socket.getReply()).getRulesHash();
 	}
 	
 	public void getServerInfo()

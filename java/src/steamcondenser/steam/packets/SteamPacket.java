@@ -59,7 +59,7 @@ public class SteamPacket
 				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
 				
 			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
-				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(Integer.valueOf(new String(data)));
+				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(data);
 				
 			default:
 				throw new Exception("Unknown packet with header 0x" + header + " received.");
@@ -87,10 +87,5 @@ public class SteamPacket
 	    bytes[4] = this.headerData;
 	    System.arraycopy(this.contentData.array(), 0, bytes, 5, bytes.length - 5);
 	    return bytes;
-	}
-	
-	public byte getHeader()
-	{
-		return this.headerData;
 	}
 }

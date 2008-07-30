@@ -2,8 +2,6 @@ package steamcondenser.steam.packets;
 
 import java.util.HashMap;
 
-import steamcondenser.PacketBuffer;
-
 /**
  * @author Sebastian Staudt
  * @version $Id$
@@ -23,9 +21,17 @@ public class A2A_RULES_ResponsePacket extends SteamPacket
 		}
 		
 		int numberOfRules = this.contentData.getByte();
+		
+		this.rulesHash = new HashMap<String, String>(numberOfRules);
+		
 		while(this.contentData.hasRemaining())
 		{
 			this.rulesHash.put(this.contentData.getString(), this.contentData.getString());
 		}
+	}
+	
+	public HashMap<String, String> getRulesHash()
+	{
+		return this.rulesHash;
 	}
 }

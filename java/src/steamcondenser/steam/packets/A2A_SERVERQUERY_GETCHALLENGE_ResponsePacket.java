@@ -6,9 +6,9 @@ package steamcondenser.steam.packets;
  */
 public class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket extends SteamPacket
 {
-	public A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(int challengeNumber)
+	public A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(byte[] challengeNumberBytes)
 	{
-		super(SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, String.valueOf(challengeNumber).getBytes());
+		super(SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, challengeNumberBytes);
 	}
 	
 	public int getChallengeNumber()

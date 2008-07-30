@@ -21,6 +21,11 @@ public class PacketBuffer
 		return this.byteBuffer.get();
 	}
 	
+	public float getFloat()
+	{
+		return this.byteBuffer.getFloat();
+	}
+	
 	public int getInt()
 	{
 		return this.byteBuffer.getInt();
