@@ -1,10 +1,16 @@
 package steamcondenser.steam;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.Channels;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import steamcondenser.steam.packets.SteamPacket;
@@ -19,6 +25,8 @@ public class SteamSocket
 	
 	private DatagramChannel channel;
 	
+	private Selector selector;
+	
 	/**
 	 * @param ipAddress The IP of the server to connect to
 	 * @param portNumber The port number of the server
@@ -26,23 +34,35 @@ public class SteamSocket
 	public SteamSocket(InetAddress ipAddress, int portNumber)
 		throws IOException
 	{
+		this.buffer = ByteBuffer.allocate(1400);
+		
+		this.selector = Selector.open();
+		
 		this.channel = DatagramChannel.open();
 		this.channel.connect(new InetSocketAddress(ipAddress, portNumber));
-		this.buffer = ByteBuffer.allocate(1400);
+		this.channel.configureBlocking(false);
+		
+		this.channel.register(this.selector, SelectionKey.OP_READ);
 	}
 	
 	public SteamPacket getReply()
 		throws IOException, Exception
 	{
+		if(this.selector.select(1000) == 0)
+		{
+			throw new TimeoutException();
+		}
+		
+		int bytesRead;
 		byte[] packetData = new byte[0];
+		
 		SteamPacket packet;
 
 		this.buffer.clear();
-		this.channel.read(this.buffer);
-		String s = new String(this.buffer.array());
-		System.out.println("received:" + s);
+		bytesRead = this.channel.read(this.buffer);
+		this.buffer.rewind();
 		
-		if(this.buffer.getLong() == -2L)
+		if(this.buffer.getInt() == -2L)
 		{
 			byte[] splitData, tmpData;
 			int packetCount, packetNumber;
@@ -51,14 +71,14 @@ public class SteamSocket
 			
 			do
 			{
-				requestId = this.buffer.getLong();
+				requestId = this.buffer.getInt();
 				packetCount = this.buffer.get();
 				packetNumber = this.buffer.get() + 1;
 				splitSize = this.buffer.getShort();
 				// Omit additional header on the first packet 
 				if(packetNumber == 1)
 				{
-					this.buffer.getLong();
+					this.buffer.getInt();
 				}
 				
 				splitData = new byte[this.buffer.remaining()];
@@ -69,8 +89,9 @@ public class SteamSocket
 				
 				this.buffer.clear();
 				this.channel.read(this.buffer);
+				this.buffer.rewind();
 			}
-			while(packetNumber < packetCount && this.buffer.getLong() == -2L);
+			while(packetNumber < packetCount && this.buffer.getInt() == -2L);
 			
 			packet = SteamPacket.createPacket(packetData);
 		}

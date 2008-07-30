@@ -29,8 +29,6 @@ public class SteamPacket
 		byte[] data = new byte[rawData.length - 1];
 		System.arraycopy(rawData, 1, data, 0, rawData.length - 1);
 		
-		System.err.println(SteamPacket.A2A_PING_RESPONSE_HEADER + " = " + Byte.valueOf(header).intValue());
-		
 		switch(header)
 		{
 			case SteamPacket.A2A_INFO_REQUEST_HEADER:
