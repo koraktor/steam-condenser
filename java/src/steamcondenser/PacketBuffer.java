@@ -38,11 +38,11 @@ public class PacketBuffer
 	
 	public String getString()
 	{
-		byte[] remainingBytes = new byte[byteBuffer.capacity() - byteBuffer.arrayOffset()];
+		byte[] remainingBytes = new byte[byteBuffer.remaining()];
 		this.byteBuffer.get(remainingBytes);
-		int stringEnd = remainingBytes.toString().indexOf("\0");
+		String dataString = new String(remainingBytes);
 		
-		return remainingBytes.toString().substring(0, stringEnd);
+		return dataString.substring(0, dataString.indexOf("\0"));
 	}
 	
 	public boolean hasRemaining()

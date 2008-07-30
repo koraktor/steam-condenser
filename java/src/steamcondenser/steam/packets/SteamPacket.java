@@ -79,7 +79,14 @@ public class SteamPacket
 	
 	public byte[] getBytes()
 	{
-		return this.contentData.array();
+		byte[] bytes = new byte[this.contentData.getLength() + 5];
+	    bytes[0] = (byte) 0xFF;
+	    bytes[1] = (byte) 0xFF;
+	    bytes[2] = (byte) 0xFF;
+	    bytes[3] = (byte) 0xFF;
+	    bytes[4] = this.headerData;
+	    System.arraycopy(bytes, 5, this.contentData.array(), 0, bytes.length - 5);
+	    return bytes;
 	}
 	
 	public byte getHeader()

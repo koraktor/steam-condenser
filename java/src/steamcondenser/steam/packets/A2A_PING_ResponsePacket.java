@@ -11,7 +11,7 @@ public class A2A_PING_ResponsePacket extends SteamPacket
 	{
 		super(SteamPacket.A2A_PING_RESPONSE_HEADER, dataBytes);
 		
-		if(this.contentData.getString() != "00000000000000")
+		if(this.contentData.getString().equals("00000000000000"))
 		{
 			throw new Exception("Wrong formatted A2A_PING Response Packet.");
 		}
