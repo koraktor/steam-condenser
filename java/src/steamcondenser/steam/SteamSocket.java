@@ -23,8 +23,6 @@ public class SteamSocket
 	
 	private DatagramChannel channel;
 	
-	private Selector selector;
-	
 	/**
 	 * @param ipAddress The IP of the server to connect to
 	 * @param portNumber The port number of the server
@@ -45,7 +43,7 @@ public class SteamSocket
 	{
 		Selector selector = Selector.open();
 		this.channel.register(selector, SelectionKey.OP_READ);
-		if(this.selector.select(1000) == 0)
+		if(selector.select(1000) == 0)
 		{
 			throw new TimeoutException();
 		}
