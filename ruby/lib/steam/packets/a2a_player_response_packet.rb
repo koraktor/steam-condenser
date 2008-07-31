@@ -15,12 +15,12 @@ class A2A_PLAYER_ResponsePacket < SteamPacket
     number_of_players = @content_data[0]
     players_data = @content_data[1..-1]
 
-    @player_array = Array.new
+    @player_array = Array.new(number_of_players)
     
     while players_data.size > 0
       player_data = players_data.unpack("cZ*Vea*")
+      @player_array = SteamPlayer.new player_data[0..3]
       players_data = player_data[4]
-      @player_array.push player_data[0..3]
     end
   end
   

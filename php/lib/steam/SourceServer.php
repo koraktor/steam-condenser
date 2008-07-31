@@ -30,6 +30,16 @@ class SourceServer
 	private $ping;
 	
 	/**
+	 * @var SteamPlayer[]
+	 */
+	private $playerArray
+	
+	/**
+	 * @var mixed[]
+	 */
+	private $rulesHash;
+	
+	/**
 	 * @var SteamSocket
 	 */
 	private $socket;
@@ -46,23 +56,52 @@ class SourceServer
 			throw new Exception("The listening port of the server has to be a number greater than 0.");
 		}
 		
-		$this->ipAddress = $ipAddress;
-		$this->portNumber = $portNumber;
 		$this->socket = new SteamSocket($this->ipAddress, $this->portNumber);
+	}
+	
+	/**
+   * @return The response time of this server in milliseconds
+   */
+	public function getPing()
+	{
+		return $this->ping;
+	}
+	
+	/**
+   * @return An array of SteamPlayers representing all players on this server
+   */
+	public function getPlayers()
+	{
+		return $this->playerArray;
+	}
+	
+	/**
+   * @return A associative array containing the rules of this server
+   */
+	public function getRules()
+	{
+		return $this->rulesHash;
+	}
+	
+	/**
+   * @return A associative array containing basic information about the server
+   */
+	public function getServerInfo()
+	{
+		return $this->infoHash;
 	}
 	
 	public function initialize()
 	{
-		$this->getPing();
-		$this->getServerInfo();
-		$this->getChallengeNumber();
+		$this->updatePing();
+		$this->updateServerInfo();
+		$this->updateChallengeNumber();
 	}
-	
 	
 	/**
 	 * 
 	 */
-	public function getPing() 
+	public function updatePing() 
 	{
 		$this->sendRequest(new A2A_PING_RequestPacket());
 		$startTime = microtime(true);
@@ -76,37 +115,37 @@ class SourceServer
 	/**
 	 * 
 	 */
-	public function getChallengeNumber()
+	public function updateChallengeNumber()
 	{
 		$this->sendRequest(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
 		$this->challengeNumber = $this->getReply()->getChallengeNumber();
 	}
 	
+ /**
+   * 
+   */
+  public function updatePlayerInfo()
+  {
+    $this->sendRequest(new A2A_PLAYER_RequestPacket($this->challengeNumber));
+    $this->playerArray = $this->getReply();
+  }
+  
+  /**
+   * 
+   */
+  public function updateRulesInfo()
+  {
+    $this->sendRequest(new A2A_RULES_RequestPacket($this->challengeNumber));
+    $this->rulesHash = $this->getReply()->getRulesArray();
+  }
+	
 	/**
 	 * 
 	 */
-	public function getServerInfo()
+	public function updateServerInfo()
 	{
 		$this->sendRequest(new A2A_INFO_RequestPacket());
 		$this->infoHash = $this->getReply()->getInfoHash();
-	}
-	
-	/**
-	 * 
-	 */
-	public function getPlayerInfo()
-	{
-		$this->sendRequest(new A2A_PLAYER_RequestPacket($this->challengeNumber));
-		$this->parsePlayerInfo($this->getReply());
-	}
-	
-	/**
-	 * 
-	 */
-	public function getRulesInfo()
-	{
-		$this->sendRequest(new A2A_RULES_RequestPacket($this->challengeNumber));
-		$this->rulesArray = $this->getReply()->getRulesArray();
 	}
 	
 	/**
@@ -115,14 +154,6 @@ class SourceServer
 	private function getReply()
 	{
 		return $this->socket->getReply();
-	}
-	
-	/**
-	 * @param A2A_PLAYER_ResponsePacket $playerResponse
-	 */
-	private function parsePlayerInfo(A2A_PLAYER_ResponsePacket $playerResponse)
-	{
-		$this->playerArray = $playerResponse->getPlayers();
 	}
 	
 	/**

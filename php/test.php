@@ -19,8 +19,8 @@ if(extension_loaded("spl"))
 
 $server = new SourceServer(new InetAddress("84.45.77.22"), 27045);
 $server->initialize();
-$server->getRulesInfo();
-$server->getPlayerInfo();
+$server->updateRulesInfo();
+$server->updatePlayerInfo();
 
 var_dump($server)
 ?>

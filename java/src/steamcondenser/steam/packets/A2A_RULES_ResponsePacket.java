@@ -20,9 +20,7 @@ public class A2A_RULES_ResponsePacket extends SteamPacket
 			throw new Exception("Wrong formatted A2A_RULES response packet.");
 		}
 		
-		int numberOfRules = this.contentData.getByte();
-		
-		this.rulesHash = new HashMap<String, String>(numberOfRules);
+		this.rulesHash = new HashMap<String, String>(this.contentData.getByte());
 		
 		while(this.contentData.hasRemaining())
 		{

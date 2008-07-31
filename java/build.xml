@@ -30,7 +30,10 @@
 
   <target name="dist" depends="compile, svninfo" description="generate jar file">
     <mkdir dir="${dist}" />
-    <jar jarfile="${dist}/steam-condenser-r${revision}.jar" basedir="${build}" />
+    <jar jarfile="${dist}/steam-condenser-r${revision}.jar" update="yes">
+    	<fileset dir="${build}" />
+    	<fileset file="../LICENSE" />
+  	</jar>
   </target>
 	
 	<target name="doc" description="generate documentation">

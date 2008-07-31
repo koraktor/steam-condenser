@@ -14,6 +14,7 @@ import steamcondenser.steam.packets.A2A_RULES_RequestPacket;
 import steamcondenser.steam.packets.A2A_RULES_ResponsePacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_RequestPacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket;
+import steamcondenser.steam.packets.SteamPacket;
 
 /**
  * @author Sebastian Staudt
@@ -38,57 +39,103 @@ public class SourceServer
 	 * @param portNumber The port number of the server
 	 */
 	public SourceServer(InetAddress ipAddress, int portNumber)
-		throws IOException
+		throws IOException, Exception
 	{
+		if(portNumber < 0)
+		{
+			throw new Exception("The listening port of the server has to be a number greater than 0.");
+		}
+		
 		this.socket = new SteamSocket(ipAddress, portNumber);
 	}
 	
 	/**
-	 * @return The challenge number assigned by the server
+	 * @return The response time of this server in milliseconds
 	 */
-	public void getChallengeNumber()
-		throws IOException, Exception
+	public int getPing()
 	{
-		this.socket.send(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
-		this.challengeNumber = ((A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket) this.socket.getReply()).getChallengeNumber();
+		return this.ping;
 	}
 	
-	public void getPing()
+	/**
+	 * @return An ArrayList of SteamPlayers representing all players on this server
+	 */
+	public ArrayList<SteamPlayer> getPlayers()
+	{
+		return this.playerArray;
+	}
+	
+	/**
+	 * @return A HashMap containing the rules of this server
+	 */
+	public HashMap<String, String> getRules()
+	{
+		return this.rulesHash;
+	}
+	
+	/**
+	 * @return A HashMap containing basic information about the server
+	 */
+	public HashMap<String, Object> getServerInfo()
+	{
+		return this.serverInfo;
+	}
+	
+	public void initialize()
+	throws IOException, Exception
+	{
+		this.updatePing();
+		this.updateServerInfo();
+		this.updateChallengeNumber();
+	}
+	
+	public void updateChallengeNumber()
 		throws IOException, Exception
 	{
-		this.socket.send(new A2A_PING_RequestPacket());
+		this.sendRequest(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
+		this.challengeNumber = ((A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket) this.getReply()).getChallengeNumber();
+	}
+	
+	public void updatePing()
+		throws IOException, Exception
+	{
+		this.sendRequest(new A2A_PING_RequestPacket());
 		long startTime = System.currentTimeMillis();
-		this.socket.getReply();
+		this.getReply();
 		long endTime = System.currentTimeMillis();
 		this.ping = Long.valueOf(endTime - startTime).intValue();
 	}
 	
-	public void getPlayerInfo()
+	public void updatePlayerInfo()
 		throws IOException, Exception
 	{
-		this.socket.send(new A2A_PLAYER_RequestPacket(this.challengeNumber));
-		this.playerArray = ((A2A_PLAYER_ResponsePacket) this.socket.getReply()).getPlayerArray();
+		this.sendRequest(new A2A_PLAYER_RequestPacket(this.challengeNumber));
+		this.playerArray = ((A2A_PLAYER_ResponsePacket) this.getReply()).getPlayerArray();
 	}
 	
-	public void getRulesInfo()
+	public void updateRulesInfo()
 		throws IOException, Exception
 	{
-		this.socket.send(new A2A_RULES_RequestPacket(this.challengeNumber));
-		this.rulesHash = ((A2A_RULES_ResponsePacket) this.socket.getReply()).getRulesHash();
+		this.sendRequest(new A2A_RULES_RequestPacket(this.challengeNumber));
+		this.rulesHash = ((A2A_RULES_ResponsePacket) this.getReply()).getRulesHash();
 	}
 	
-	public void getServerInfo()
+	public void updateServerInfo()
 		throws IOException, Exception
 	{
-		this.socket.send(new A2A_INFO_RequestPacket());
-		this.serverInfo = ((A2A_INFO_ResponsePacket) this.socket.getReply()).getInfoHash();
+		this.sendRequest(new A2A_INFO_RequestPacket());
+		this.serverInfo = ((A2A_INFO_ResponsePacket) this.getReply()).getInfoHash();
 	}
 	
-	public void initialize()
-		throws IOException, Exception
+	private SteamPacket getReply()
+		throws Exception
 	{
-		this.getPing();
-		this.getServerInfo();
-		this.getChallengeNumber();
+		return this.socket.getReply();
+	}
+	
+	private void sendRequest(SteamPacket requestData)
+		throws IOException
+	{
+		this.socket.send(requestData);
 	}
 }

@@ -22,9 +22,7 @@ public class A2A_PLAYER_ResponsePacket extends SteamPacket
 			throw new Exception("Wrong formatted A2A_PLAYER response packet.");
 		}
 		
-		int numberOfPlayers = this.contentData.getByte();
-		
-		this.playerArray = new ArrayList<SteamPlayer>(numberOfPlayers);
+		this.playerArray = new ArrayList<SteamPlayer>(this.contentData.getByte());
 		
 		while(this.contentData.hasRemaining())
 		{
