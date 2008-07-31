@@ -19,7 +19,7 @@ class A2A_PLAYER_ResponsePacket < SteamPacket
     
     while players_data.size > 0
       player_data = players_data.unpack("cZ*Vea*")
-      @player_array = SteamPlayer.new player_data[0..3]
+      @player_array << SteamPlayer.new(*player_data[0..3])
       players_data = player_data[4]
     end
   end

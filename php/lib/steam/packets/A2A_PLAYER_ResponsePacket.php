@@ -51,7 +51,7 @@ class A2A_PLAYER_ResponsePacket extends SteamPacket
 	/**
 	 * @return SteamPlayer[]
 	 */
-	public function getPlayers()
+	public function getPlayerArray()
 	{
 		return $this->playerArray;
 	}

@@ -32,7 +32,7 @@ class SourceServer
 	/**
 	 * @var SteamPlayer[]
 	 */
-	private $playerArray
+	private $playerArray;
 	
 	/**
 	 * @var mixed[]
@@ -56,7 +56,7 @@ class SourceServer
 			throw new Exception("The listening port of the server has to be a number greater than 0.");
 		}
 		
-		$this->socket = new SteamSocket($this->ipAddress, $this->portNumber);
+		$this->socket = new SteamSocket($ipAddress, $portNumber);
 	}
 	
 	/**
@@ -127,7 +127,7 @@ class SourceServer
   public function updatePlayerInfo()
   {
     $this->sendRequest(new A2A_PLAYER_RequestPacket($this->challengeNumber));
-    $this->playerArray = $this->getReply();
+    $this->playerArray = $this->getReply()->getPlayerArray();
   }
   
   /**

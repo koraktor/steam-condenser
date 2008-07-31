@@ -1,3 +1,4 @@
+
 autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
 autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
 autoload "A2A_PLAYER_RequestPacket", "steam/packets/a2a_player_request_packet"
@@ -44,7 +45,7 @@ class SourceServer
 
   def update_player_info
     send_request A2A_PLAYER_RequestPacket.new(@challenge_number)
-    @player_array = parse_player_info get_reply
+    @player_array = get_reply.get_player_array
   end
 
   def update_rules_info
@@ -74,13 +75,6 @@ class SourceServer
 
   def get_reply
     @socket.get_reply
-  end
-  
-  def parse_player_info(player_response)
-    @player_array = Array.new
-    player_response.get_player_array.each do |player|
-      @player_array.push SteamPlayer.new(*player)
-    end
   end
   
   def send_request packet
