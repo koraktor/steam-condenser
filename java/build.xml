@@ -22,7 +22,7 @@
 
   <target name="init">
     <tstamp/>
-    <mkdir dir="${build}" />
+    <mkdir dir="${build.path}" />
   </target>
 
   <target name="compile" depends="init" description="compile source">
