@@ -14,10 +14,11 @@
     </classpath>
   </typedef>
 
-  <property name="src" location="src" />
-  <property name="build" location="build" />
-  <property name="dist" location="dist" />
-	<property name="doc" location="doc" />
+  <property name="src.path" location="src" />
+  <property name="build.path" location="build" />
+  <property name="dist.path" location="dist" />
+	<property name="doc.dir" value="doc" />
+	<property name="doc.path" location="${doc.dir}" />
 
   <target name="init">
     <tstamp/>
@@ -25,25 +26,29 @@
   </target>
 
   <target name="compile" depends="init" description="compile source">
-    <javac srcdir="${src}" destdir="${build}" />
+    <javac srcdir="${src.path}" destdir="${build.path}" />
   </target>
 
-  <target name="dist" depends="compile, svninfo" description="generate jar file">
-    <mkdir dir="${dist}" />
-    <jar jarfile="${dist}/steam-condenser-r${revision}.jar" update="yes">
-    	<fileset dir="${build}" />
+  <target name="dist" depends="compile, doc, svninfo" description="generate jar file">
+    <mkdir dir="${dist.path}" />
+  	<copy todir="${build.path}/${doc.dir}">
+  		<fileset dir="${doc.path}" />
+  	</copy>
+    <jar jarfile="${dist.path}/steam-condenser-r${revision}.jar">
+    	<fileset dir="${build.path}" />
     	<fileset file="../LICENSE" />
   	</jar>
+  	<delete dir="${build.path}/${doc.dir}" />
   </target>
 	
 	<target name="doc" description="generate documentation">
-		<mkdir dir="${doc}"/>
-		<javadoc destdir="${doc}" doctitle="Steam Condenser" sourcepath="${src}" />
+		<mkdir dir="${doc.path}"/>
+		<javadoc destdir="${doc.path}" doctitle="Steam Condenser" sourcepath="${src.path}" />
 	</target>
 
   <target name="clean" description="clean build and dist directories">
-    <delete dir="${build}" />
-    <delete dir="${dist}" />
+    <delete dir="${build.path}" />
+    <delete dir="${dist.path}" />
   </target>
 
   <target name="svninfo">
