@@ -1,8 +1,6 @@
 class ByteBuffer
   def self.allocate(length)
-    bb = ByteBuffer.new 0.chr * length
-    p bb
-    return bb
+    return ByteBuffer.new 0.chr * length
   end
   
   def self.wrap(byte_buffer)
@@ -62,6 +60,7 @@ class ByteBuffer
     end
     
     @byte_array[@position, new_position] = source_byte_array
+    @position = new_position
   end
   
 end

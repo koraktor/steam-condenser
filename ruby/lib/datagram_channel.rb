@@ -12,6 +12,8 @@ class DatagramChannel
   
   def connect(ipAddress, portNumber)
     @socket.connect ipAddress, portNumber
+    
+    return self
   end
   
   def configure_blocking(do_block)
@@ -24,7 +26,7 @@ class DatagramChannel
     
     length = destination_buffer.remaining
     
-    destination_buffer.put @socket.recvfrom(length)
+    destination_buffer.put @socket.recv(length)
     
     return length
   end
