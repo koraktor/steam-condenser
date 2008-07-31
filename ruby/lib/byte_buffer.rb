@@ -1,12 +1,40 @@
 class ByteBuffer
-  def initialize(byte_array)
-    @byte_array = byte_array
-    @pointer = 0
+  def self.allocate(length)
+    bb = ByteBuffer.new 0.chr * length
+    p bb
+    return bb
   end
   
-  def get(length)
-    data = @byte_array[@pointer, length]
-    @pointer += length
+  def self.wrap(byte_buffer)
+    byte_buffer = ByteBuffer.new byte_buffer
+  end
+  
+  def initialize(byte_array)
+    @byte_array = byte_array
+    @capacity = byte_array.length
+    @position = 0
+    @mark = -1
+  end
+  
+  def clear
+    @limit = @capacity
+    @position = 0
+    @mark = -1
+  end
+  
+  def flip
+    @limit = @position
+    @position = 0
+    @mark = -1
+  end
+  
+  def get(length = nil)
+    if length == nil
+      length = @byte_array.length
+    end
+    
+    data = @byte_array[@position, length]
+    @position += length
     return data
   end
   
@@ -19,6 +47,21 @@ class ByteBuffer
   end
   
   def get_string
-    return self.get(@byte_array.index("\0", @pointer) - @pointer + 1)
+    return self.get(@byte_array.index("\0", @position) - @position + 1)
   end
+  
+  def remaining
+    return @capacity - @position
+  end
+  
+  def put(source_byte_array)
+    if source_byte_array.length > self.remaining
+      new_position = self.remaining
+    else
+      new_position = source_byte_array.length
+    end
+    
+    @byte_array[@position, new_position] = source_byte_array
+  end
+  
 end
