@@ -65,4 +65,8 @@ class SteamSocket
     @channel.write @buffer
   end
   
+  def finalize
+    @channel.close
+  end
+  
 end

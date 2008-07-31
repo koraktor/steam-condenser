@@ -12,6 +12,10 @@ class DatagramChannel
     self.configure_blocking true
   end
   
+  def close
+    @socket.close
+  end
+  
   def connect(ipAddress, portNumber)
     @socket.connect ipAddress, portNumber
     
