@@ -1,6 +1,8 @@
 autoload "ByteBuffer", "byte_buffer"
 
 class DatagramChannel
+  attr_reader :socket
+  
   def self.open
     return DatagramChannel.new
   end
@@ -25,10 +27,10 @@ class DatagramChannel
     end
     
     length = destination_buffer.remaining
+    data = @socket.recv length
+    destination_buffer.put data
     
-    destination_buffer.put @socket.recv(length)
-    
-    return length
+    return data.length
   end
   
   def write(source_buffer)

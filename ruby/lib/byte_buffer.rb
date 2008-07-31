@@ -10,6 +10,7 @@ class ByteBuffer
   def initialize(byte_array)
     @byte_array = byte_array
     @capacity = byte_array.length
+    @limit = @capacity
     @position = 0
     @mark = -1
   end
@@ -18,26 +19,35 @@ class ByteBuffer
     @limit = @capacity
     @position = 0
     @mark = -1
+    
+    return self
   end
   
   def flip
     @limit = @position
     @position = 0
     @mark = -1
+    
+    return self
   end
   
   def get(length = nil)
     if length == nil
-      length = @byte_array.length
+      length = @limit - @position
     end
     
     data = @byte_array[@position, length]
     @position += length
+    
     return data
   end
   
   def get_byte
     return self.get(1)[0]
+  end
+  
+  def get_long
+    return self.get(4).unpack("l")[0]
   end
 
   def get_short
@@ -48,8 +58,25 @@ class ByteBuffer
     return self.get(@byte_array.index("\0", @position) - @position + 1)
   end
   
+  def limit(new_limit = nil)
+    if new_limit == nil
+      return @limit
+    else
+      @limit = new_limit
+      
+      return self
+    end
+  end
+  
   def remaining
-    return @capacity - @position
+    return @limit - @position
+  end
+  
+  def rewind
+    @position = 0
+    @mark = -1
+    
+    return self
   end
   
   def put(source_byte_array)
@@ -61,6 +88,8 @@ class ByteBuffer
     
     @byte_array[@position, new_position] = source_byte_array
     @position = new_position
+    
+    return self
   end
   
 end

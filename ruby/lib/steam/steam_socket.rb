@@ -1,47 +1,68 @@
-autoload "CondenserSocket", "condenser_socket"
+autoload "DatagramChannel", "datagram_channel"
 
 # The SteamSocket class is a sub class of CondenserSocket respecting the
 # specifications of the Source query protocol.
-class SteamSocket < CondenserSocket
+class SteamSocket
 
-  # Returns a packet read from the socket
-  def get_reply
-    reply_packet = self.read_packet
-    
-    debug "Got reply of type \"#{reply_packet.class.to_s}\"."
-    
-    return reply_packet
+  def initialize(ip_address, port_number)
+    @channel = DatagramChannel.open
+    @channel.connect ip_address.to_s, port_number
+    @channel.configure_blocking false
   end
 
-  # Reads a packet from the socket. The Source query protocol specifies a
+  # Reads a packet from the channel. The Source query protocol specifies a
   # maximum packet size of 1400 byte. Greater packets will be split over several
-  # UDP packets. This method reassembles split packets into single data objects. 
-  def read_packet
-    self.read_to_buffer 1400
+  # UDP packets. This method reassembles split packets into single packet
+  # objects.
+  def get_reply
+    if select([@channel.socket], nil, nil, 1) == nil
+      raise IOError.new
+    end
     
-    if self.get_long == -2
+    @buffer = ByteBuffer.allocate 1400
+    bytes_read = @channel.read @buffer
+    @buffer.rewind
+    @buffer.limit bytes_read
+    if @buffer.get_long == -2
       split_packets = Array.new
       begin
-        request_id = self.get_long
-        packet_count = self.get_byte.to_i
-        packet_number = self.get_byte.to_i + 1
-        split_size = self.get_short
+        request_id = @buffer.get_long
+        packet_count = @buffer.get_byte.to_i
+        packet_number = @buffer.get_byte.to_i + 1
+        split_size = @buffer.get_short
         if packet_number == 1
-          self.get_long
+          @buffer.get_long
         end
-        split_packets[packet_number] = self.flush_buffer
-        
-        if packet_number < packet_count
-          self.read_to_buffer 1400
-        end
+        split_packets[packet_number] = @buffer.get
         
         debug("Received packet #{packet_number} of #{packet_count} for request ##{request_id}")
-      end while packet_number < packet_count && self.get_long == -2
-
-      return SteamPacket.create_packet(split_packets.join(""))
+        
+        if packet_number < packet_count
+          @buffer.clear
+          bytes_read = @channel.read @buffer
+          @buffer.rewind
+          @buffer.limit bytes_read
+        end
+      end while packet_number < packet_count && @buffer.get_long == -2
+      
+      packet = SteamPacket.create_packet(split_packets.join(""))
+        
     else
-      return SteamPacket.create_packet(self.flush_buffer)
+       
+      packet = SteamPacket.create_packet(@buffer.get)
+      
     end
+    
+    debug "Got reply of type \"#{packet.class.to_s}\"."
+    
+    return packet
+  end
+  
+  def send(data_packet)
+    debug "Sending dataü packet of type \"#{data_packet.class.to_s}\"."
+    
+    @buffer = ByteBuffer.wrap data_packet.to_s
+    @channel.write @buffer
   end
   
 end
