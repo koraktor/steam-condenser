@@ -16,7 +16,7 @@ public class Test
 		SourceServer server = new SourceServer(InetAddress.getByName("84.45.77.22"), 27045);
 		server.initialize();
 		server.updatePlayerInfo();
-		//server.updateRulesInfo();
+		server.updateRulesInfo();
 		
 		System.out.println(server);
 	}
