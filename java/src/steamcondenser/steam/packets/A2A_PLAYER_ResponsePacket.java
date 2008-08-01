@@ -26,7 +26,12 @@ public class A2A_PLAYER_ResponsePacket extends SteamPacket
 		
 		while(this.contentData.hasRemaining())
 		{
-			this.playerArray.add(new SteamPlayer(this.contentData.getByte(), this.contentData.getString(), Integer.reverseBytes(this.contentData.getInt()), this.contentData.getFloat()));
+			this.playerArray.add(new SteamPlayer(
+					this.contentData.getByte(),
+					this.contentData.getString(),
+					Integer.reverseBytes(this.contentData.getInt()),
+					Float.intBitsToFloat(Integer.reverseBytes(this.contentData.getInt()))
+			));
 		}
 	}
 	

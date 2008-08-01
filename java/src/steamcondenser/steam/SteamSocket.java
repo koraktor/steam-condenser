@@ -8,7 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
@@ -62,13 +62,14 @@ public class SteamSocket
 		{
 			byte[] splitData, tmpData;
 			int packetCount, packetNumber;
-			long requestId;
+			int requestId;
 			short splitSize;
-			ArrayList<byte[]> splitPackets = new ArrayList<byte[]>(5);
+			Vector<byte[]> splitPackets = new Vector<byte[]>();
 			packetData = new byte[0];
 			
 			do
 			{
+				// Parsing of split packet headers
 				requestId = Integer.reverseBytes(this.buffer.getInt());
 				packetCount = this.buffer.get();
 				packetNumber = this.buffer.get() + 1;
@@ -79,18 +80,21 @@ public class SteamSocket
 					this.buffer.getInt();
 				}
 				
+				// Caching of split packet Data
 				splitData = new byte[this.buffer.remaining()];
 				this.buffer.get(splitData);
-				splitPackets.add(packetNumber - 1, splitData);
+				splitPackets.setSize(packetCount);
+				splitPackets.set(packetNumber - 1, splitData);
 				
+				// Receiving the next packet
 				this.buffer.clear();
-				this.channel.read(this.buffer);
+				bytesRead = this.channel.read(this.buffer);
 				this.buffer.rewind();
 				this.buffer.limit(bytesRead);
 				
 				Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 			}
-			while(packetNumber < packetCount && Integer.reverseBytes(this.buffer.getInt()) == -2);
+			while(bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
 
 			for(byte[] splitPacket : splitPackets)
 			{

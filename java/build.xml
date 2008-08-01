@@ -53,7 +53,7 @@
 
   <target name="svninfo">
     <svn>
-      <info path="." revisionProperty="revision" />
+      <info path="${basedir}" revisionProperty="revision" />
     </svn>
   </target>
 </project>

@@ -46,18 +46,18 @@ public class PacketBuffer
 		byte[] remainingBytes = new byte[this.byteBuffer.remaining()];
 		this.byteBuffer.slice().get(remainingBytes);
 		String dataString = new String(remainingBytes);
-		int stringEnd = dataString.indexOf("\0");
-		if(stringEnd == -1)
-		{
-			stringEnd = this.byteBuffer.remaining() - 1;
-			this.byteBuffer.position(this.byteBuffer.limit());
-		}
-		else
-		{
-			this.byteBuffer.position(this.byteBuffer.position() + stringEnd + 1);
-		}
-
-		return dataString.substring(0, stringEnd);
+		int stringEnd = dataString.indexOf(0);
+		dataString = dataString.substring(0, stringEnd);
+		
+		// Setting new position by byte length of the string for compatibility with multi-byte characters
+		this.byteBuffer.position(this.byteBuffer.position() + dataString.getBytes().length + 1);
+		
+		return dataString;
+	}
+	
+	public int remaining()
+	{
+		return this.byteBuffer.remaining();
 	}
 	
 	public boolean hasRemaining()

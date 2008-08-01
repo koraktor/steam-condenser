@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
 import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
@@ -137,5 +138,42 @@ public class SourceServer
 		throws IOException
 	{
 		this.socket.send(requestData);
+	}
+	
+	public String toString()
+	{
+		String returnString = "";
+		
+		returnString += "Ping: " + this.ping;
+		returnString += "Challenge number: " + this.challengeNumber + "\n";
+		
+		if(this.serverInfo != null)
+		{
+			returnString += "Info:" + "\n";
+			for(Entry<String, Object> info : this.serverInfo.entrySet())
+			{
+				returnString += "  " + info.getKey() + ": " + info.getValue() + "\n";
+			}
+		}
+		
+		if(this.playerArray != null)
+		{
+			returnString += "Players:" + "\n";
+			for(SteamPlayer player : this.playerArray)
+			{
+				returnString += "  " + player + "\n";
+			}
+		}
+		
+		if(this.rulesHash != null)
+		{
+			returnString += "Rules:" + "\n";
+			for(Entry<String, String> rule : this.rulesHash.entrySet())
+			{
+				returnString += "  " + rule.getKey() + ": " + rule.getValue() + "\n";
+			}
+		}
+		
+		return returnString;
 	}
 }
