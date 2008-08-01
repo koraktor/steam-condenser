@@ -10,7 +10,8 @@ import steamcondenser.PacketBuffer;
 public class SteamPacket
 {
 	public static final byte A2A_INFO_REQUEST_HEADER = 0x54;
-	public static final byte A2A_INFO_RESPONSE_HEADER = 0x49;
+	public static final byte A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49;
+	public static final byte A2A_INFO_GOLDSRC_RESPONSE_HEADER = 0x6D;
 	public static final byte A2A_PING_REQUEST_HEADER = 0x69;
 	public static final byte A2A_PING_RESPONSE_HEADER = 0x6A;
 	public static final byte A2A_PLAYER_REQUEST_HEADER = 0x55;
@@ -35,8 +36,11 @@ public class SteamPacket
 			case SteamPacket.A2A_INFO_REQUEST_HEADER:
 				return new A2A_INFO_RequestPacket();
 				
-			case SteamPacket.A2A_INFO_RESPONSE_HEADER:
-				return new A2A_INFO_ResponsePacket(data);
+			case SteamPacket.A2A_INFO_GOLDSRC_RESPONSE_HEADER:
+				return new A2A_INFO_GoldSrcResponsePacket(data);
+				
+			case SteamPacket.A2A_INFO_SOURCE_RESPONSE_HEADER:
+				return new A2A_INFO_SourceResponsePacket(data);
 			
 			case SteamPacket.A2A_PING_REQUEST_HEADER:
 				return new A2A_PING_RequestPacket();

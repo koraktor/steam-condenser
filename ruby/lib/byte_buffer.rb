@@ -1,6 +1,6 @@
 class ByteBuffer
   def self.allocate(length)
-    return ByteBuffer.new 0.chr * length
+    return ByteBuffer.new(0.chr * length)
   end
   
   def self.wrap(byte_buffer)
@@ -55,7 +55,9 @@ class ByteBuffer
   end
   
   def get_string
-    return self.get(@byte_array.index("\0", @position) - @position + 1)
+    data_string = self.get(@byte_array.index("\0", @position) - @position)
+    @position += 1    
+    return data_string
   end
   
   def limit(new_limit = nil)

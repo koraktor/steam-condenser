@@ -144,7 +144,7 @@ public class SourceServer
 	{
 		String returnString = "";
 		
-		returnString += "Ping: " + this.ping;
+		returnString += "Ping: " + this.ping + "\n";
 		returnString += "Challenge number: " + this.challengeNumber + "\n";
 		
 		if(this.serverInfo != null)

@@ -1,5 +1,6 @@
+autoload "A2A_INFO_GoldSrcResponsePacket", "steam/packets/a2a_info_goldsrc_response_packet"
 autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
-autoload "A2A_INFO_ResponsePacket", "steam/packets/a2a_info_response_packet"
+autoload "A2A_INFO_SourceResponsePacket", "steam/packets/a2a_info_source_response_packet"
 autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
 autoload "A2A_PING_ResponsePacket", "steam/packets/a2a_ping_response_packet"
 autoload "A2A_PLAYER_RequestPacket", "steam/packets/a2a_player_request_packet"
@@ -11,8 +12,9 @@ autoload "A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket", "steam/packets/a2a_serve
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket
+  A2A_INFO_GOLDSRC_RESPONSE_HEADER = 0x6D
   A2A_INFO_REQUEST_HEADER = 0x54
-  A2A_INFO_RESPONSE_HEADER = 0x49
+  A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49
   A2A_PING_REQUEST_HEADER = 0x69
   A2A_PING_RESPONSE_HEADER = 0x6A
   A2A_PLAYER_REQUEST_HEADER = 0x55
@@ -28,10 +30,12 @@ class SteamPacket
     data = raw_data[1..-1];
     
     case header
+      when SteamPacket::A2A_INFO_GOLDSRC_RESPONSE_HEADER
+        return A2A_INFO_GoldSrcResponsePacket.new(data)
       when SteamPacket::A2A_INFO_REQUEST_HEADER
         return A2A_INFO_RequestPacket.new;
-      when SteamPacket::A2A_INFO_RESPONSE_HEADER
-        return A2A_INFO_ResponsePacket.new(data)
+      when SteamPacket::A2A_INFO_SOURCE_RESPONSE_HEADER
+        return A2A_INFO_SourceResponsePacket.new(data)
       when SteamPacket::A2A_PING_REQUEST_HEADER
         return A2A_PING_RequestPacket.new
       when SteamPacket::A2A_PING_RESPONSE_HEADER
