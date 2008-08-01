@@ -47,7 +47,15 @@ public class PacketBuffer
 		this.byteBuffer.slice().get(remainingBytes);
 		String dataString = new String(remainingBytes);
 		int stringEnd = dataString.indexOf("\0");
-		this.byteBuffer.position(this.byteBuffer.position() + stringEnd + 1);
+		if(stringEnd == -1)
+		{
+			stringEnd = this.byteBuffer.remaining() - 1;
+			this.byteBuffer.position(this.byteBuffer.limit());
+		}
+		else
+		{
+			this.byteBuffer.position(this.byteBuffer.position() + stringEnd + 1);
+		}
 
 		return dataString.substring(0, stringEnd);
 	}

@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
@@ -49,8 +50,7 @@ public class SteamSocket
 		}
 		
 		int bytesRead;
-		byte[] packetData = new byte[0];
-		
+		byte[] packetData;
 		SteamPacket packet;
 
 		this.buffer = ByteBuffer.allocate(1400);
@@ -58,19 +58,21 @@ public class SteamSocket
 		this.buffer.rewind();
 		this.buffer.limit(bytesRead);
 		
-		if(this.buffer.getInt() == -2L)
+		if(Integer.reverseBytes(this.buffer.getInt()) == -2)
 		{
 			byte[] splitData, tmpData;
 			int packetCount, packetNumber;
 			long requestId;
 			short splitSize;
+			ArrayList<byte[]> splitPackets = new ArrayList<byte[]>(5);
+			packetData = new byte[0];
 			
 			do
 			{
-				requestId = this.buffer.getInt();
+				requestId = Integer.reverseBytes(this.buffer.getInt());
 				packetCount = this.buffer.get();
 				packetNumber = this.buffer.get() + 1;
-				splitSize = this.buffer.getShort();
+				splitSize = Short.reverseBytes(this.buffer.getShort());
 				// Omit additional header on the first packet 
 				if(packetNumber == 1)
 				{
@@ -79,16 +81,24 @@ public class SteamSocket
 				
 				splitData = new byte[this.buffer.remaining()];
 				this.buffer.get(splitData);
-				tmpData = packetData;
-				packetData = new byte[tmpData.length + splitData.length];
-				System.arraycopy(splitData, 0, packetData, packetData.length, splitData.length);
+				splitPackets.add(packetNumber - 1, splitData);
 				
 				this.buffer.clear();
 				this.channel.read(this.buffer);
 				this.buffer.rewind();
 				this.buffer.limit(bytesRead);
+				
+				Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 			}
-			while(packetNumber < packetCount && this.buffer.getInt() == -2L);
+			while(packetNumber < packetCount && Integer.reverseBytes(this.buffer.getInt()) == -2);
+
+			for(byte[] splitPacket : splitPackets)
+			{
+				tmpData = packetData;
+				packetData = new byte[tmpData.length + splitPacket.length];
+				System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);
+				System.arraycopy(splitPacket, 0, packetData, tmpData.length, splitPacket.length);
+			}
 			
 			packet = SteamPacket.createPacket(packetData);
 		}
