@@ -28,20 +28,22 @@ public abstract class A2A_INFO_ResponsePacket extends SteamPacket
 	}
 	
 	public HashMap<String, Object> getInfoHash()
-		throws IllegalAccessException
 	{
 		HashMap<String, Object> infoHash = new HashMap<String, Object>();
 
+		try
+		{
 			for(Field field : this.getClass().getSuperclass().getDeclaredFields())
 			{
 				infoHash.put(field.getName(), field.get(this));
 			}
 			
-			Field[] fields = this.getClass().getDeclaredFields();
-			for(int i = 0; i < fields.length; i++)
+			for(Field field : this.getClass().getDeclaredFields())
 			{
-				infoHash.put(fields[i].getName(), fields[i].get(this));
+				infoHash.put(field.getName(), field.get(this));
 			}
+		}
+		catch(IllegalAccessException e){}
 		
 		return infoHash;
 	}
