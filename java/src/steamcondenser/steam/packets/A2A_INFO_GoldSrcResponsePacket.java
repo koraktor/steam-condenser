@@ -35,8 +35,8 @@ public class A2A_INFO_GoldSrcResponsePacket extends A2A_INFO_ResponsePacket
 			this.modInfo.put("urlInfo", this.contentData.getString());
 			this.modInfo.put("urlDl", this.contentData.getString());
 			this.contentData.getByte();
-			this.modInfo.put("modVersion", this.contentData.getInt());
-			this.modInfo.put("modSize", this.contentData.getInt());
+			this.modInfo.put("modVersion", Integer.reverseBytes(this.contentData.getInt()));
+			this.modInfo.put("modSize", Integer.reverseBytes(this.contentData.getInt()));
 			this.modInfo.put("svOnly", this.contentData.getByte() == 1);
 			this.modInfo.put("clDll", this.contentData.getByte() == 1);
 		}

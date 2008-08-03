@@ -18,9 +18,9 @@ import steamcondenser.steam.packets.SteamPacket;
 
 /**
  * @author Sebastian Staudt
- * @version $Id: SourceServer.java 76 2008-08-01 12:20:16Z koraktor $
+ * @version $Id$
  */
-public class GameServer
+abstract public class GameServer
 {
 	protected int challengeNumber = 0xFFFFFFFF;
 

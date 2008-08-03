@@ -9,7 +9,7 @@ import steamcondenser.PacketBuffer;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class SteamPacket
+abstract public class SteamPacket
 {
 	public static final byte A2A_INFO_REQUEST_HEADER = 0x54;
 	public static final byte A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49;
@@ -90,12 +90,12 @@ public class SteamPacket
 		return SteamPacket.createPacket(packetData);
 	}
 	
-	public SteamPacket(byte headerData)
+	protected SteamPacket(byte headerData)
 	{
 		this(headerData, new byte[0]);
 	}
 	
-	public SteamPacket(byte headerData, byte[] contentBytes)
+	protected SteamPacket(byte headerData, byte[] contentBytes)
 	{
 		this.contentData = new PacketBuffer(contentBytes);
 		this.headerData = headerData;

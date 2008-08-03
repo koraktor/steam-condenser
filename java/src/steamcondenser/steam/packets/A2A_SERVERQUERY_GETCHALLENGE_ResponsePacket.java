@@ -13,6 +13,6 @@ public class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket extends SteamPacket
 	
 	public int getChallengeNumber()
 	{
-		return this.contentData.getInt();
+		return Integer.reverseBytes(this.contentData.getInt());
 	}
 }
