@@ -24,6 +24,8 @@ public class SteamSocket
 	
 	private DatagramChannel channel;
 	
+	private InetSocketAddress remoteSocket;
+	
 	/**
 	 * @param ipAddress The IP of the server to connect to
 	 * @param portNumber The port number of the server
@@ -35,8 +37,9 @@ public class SteamSocket
 		this.buffer.order(ByteOrder.LITTLE_ENDIAN);
 		
 		this.channel = DatagramChannel.open();
-		this.channel.connect(new InetSocketAddress(ipAddress, portNumber));
 		this.channel.configureBlocking(false);
+		
+		this.remoteSocket = new InetSocketAddress(ipAddress, portNumber);
 	}
 	
 	public SteamPacket getReply()
@@ -54,7 +57,8 @@ public class SteamSocket
 		SteamPacket packet;
 
 		this.buffer = ByteBuffer.allocate(1400);
-		bytesRead = this.channel.read(this.buffer);
+		this.channel.receive(this.buffer);
+		bytesRead = this.buffer.position();
 		this.buffer.rewind();
 		this.buffer.limit(bytesRead);
 		
@@ -88,7 +92,8 @@ public class SteamSocket
 				
 				// Receiving the next packet
 				this.buffer.clear();
-				bytesRead = this.channel.read(this.buffer);
+				this.channel.receive(this.buffer);
+				bytesRead = this.buffer.position();
 				this.buffer.rewind();
 				this.buffer.limit(bytesRead);
 				
@@ -129,7 +134,7 @@ public class SteamSocket
 		Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
 		this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
-		this.channel.write(this.buffer);
+		this.channel.send(this.buffer, this.remoteSocket);
 		this.buffer.flip();
 	}
 	
