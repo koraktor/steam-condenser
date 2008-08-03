@@ -2,6 +2,8 @@ package steamcondenser;
 
 import java.net.InetAddress;
 
+import steamcondenser.steam.GameServer;
+import steamcondenser.steam.GoldSrcServer;
 import steamcondenser.steam.SourceServer;
 
 /**
@@ -13,7 +15,16 @@ public class Test
 	public static void main(String[] argv)
 		throws Exception
 	{
-		SourceServer server = new SourceServer(InetAddress.getByName("84.45.77.22"), 27045);
+		GameServer server;
+		
+		server = new SourceServer(InetAddress.getByName("84.45.77.22"), 27045);
+		server.initialize();
+		server.updatePlayerInfo();
+		server.updateRulesInfo();
+		
+		System.out.println(server);
+		
+		server = new GoldSrcServer(InetAddress.getByName("84.254.65.216"), 27040);
 		server.initialize();
 		server.updatePlayerInfo();
 		server.updateRulesInfo();
