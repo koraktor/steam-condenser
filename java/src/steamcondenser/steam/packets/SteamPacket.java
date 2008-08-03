@@ -1,5 +1,7 @@
 package steamcondenser.steam.packets;
 
+import java.util.Vector;
+
 import steamcondenser.Helper;
 import steamcondenser.PacketBuffer;
 
@@ -69,6 +71,23 @@ public class SteamPacket
 			default:
 				throw new Exception("Unknown packet with header 0x" + header + " received.");
 		}
+	}
+	
+	public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets)
+		throws Exception
+	{
+		byte[] packetData, tmpData;
+		packetData = new byte[0];
+		
+		for(byte[] splitPacket : splitPackets)
+		{
+			tmpData = packetData;
+			packetData = new byte[tmpData.length + splitPacket.length];
+			System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);
+			System.arraycopy(splitPacket, 0, packetData, tmpData.length, splitPacket.length);
+		}
+		
+		return SteamPacket.createPacket(packetData);
 	}
 	
 	public SteamPacket(byte headerData)

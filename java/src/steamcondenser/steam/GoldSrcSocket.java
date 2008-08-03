@@ -2,7 +2,6 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.Vector;
@@ -33,15 +32,11 @@ public class GoldSrcSocket extends SteamSocket
 		byte[] packetData;
 		SteamPacket packet;
 	
-		this.buffer = ByteBuffer.allocate(1400);
-		this.channel.receive(this.buffer);
-		bytesRead = this.buffer.position();
-		this.buffer.rewind();
-		this.buffer.limit(bytesRead);
+		bytesRead = this.receivePacket(1400);
 		
 		if(Integer.reverseBytes(this.buffer.getInt()) == -2)
 		{
-			byte[] splitData, tmpData;
+			byte[] splitData;
 			int packetCount, packetNumber;
 			int requestId;
 			byte packetNumberAndCount;
@@ -69,25 +64,13 @@ public class GoldSrcSocket extends SteamSocket
 				splitPackets.set(packetNumber - 1, splitData);
 				
 				// Receiving the next packet
-				this.buffer.clear();
-				this.channel.receive(this.buffer);
-				bytesRead = this.buffer.position();
-				this.buffer.rewind();
-				this.buffer.limit(bytesRead);
+				bytesRead = this.receivePacket();
 				
 				Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 			}
 			while(bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
 	
-			for(byte[] splitPacket : splitPackets)
-			{
-				tmpData = packetData;
-				packetData = new byte[tmpData.length + splitPacket.length];
-				System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);
-				System.arraycopy(splitPacket, 0, packetData, tmpData.length, splitPacket.length);
-			}
-			
-			packet = SteamPacket.createPacket(packetData);
+			packet = SteamPacket.reassemblePacket(splitPackets);
 		}
 		else
 		{

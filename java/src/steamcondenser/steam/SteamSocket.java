@@ -41,6 +41,33 @@ abstract class SteamSocket
 	abstract SteamPacket getReply()
 		throws IOException, Exception;
 	
+	protected int receivePacket()
+		throws IOException
+	{
+		return this.receivePacket(0);
+	}
+	
+	protected int receivePacket(int bufferLength)
+		throws IOException
+	{
+		int bytesRead;
+		
+		if(bufferLength == 0)
+		{
+			this.buffer.clear();
+		}
+		else
+		{
+			this.buffer = ByteBuffer.allocate(1400);
+		}
+		this.channel.receive(this.buffer);
+		bytesRead = this.buffer.position();
+		this.buffer.rewind();
+		this.buffer.limit(bytesRead);
+		
+		return bytesRead;
+	}
+	
 	/**
 	 * @param dataPacket The {@link steamcondenser.steam.packets.SteamPacket SteamPacket} to send to the remote end
 	 */
