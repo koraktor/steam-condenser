@@ -1,4 +1,4 @@
-package steamcondenser.steam;
+package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -19,7 +19,7 @@ import steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-abstract class SteamSocket
+abstract public class SteamSocket
 {
 	protected ByteBuffer buffer;
 	
@@ -65,7 +65,7 @@ abstract class SteamSocket
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	abstract SteamPacket getReply()
+	abstract public SteamPacket getReply()
 		throws IOException, TimeoutException, SteamCondenserException;
 	
 	/**
@@ -112,7 +112,7 @@ abstract class SteamSocket
 		}
 		else
 		{
-			this.buffer = ByteBuffer.allocate(1400);
+			this.buffer = ByteBuffer.allocate(bufferLength);
 			if(selector.select(1000) == 0)
 			{
 				throw new TimeoutException();

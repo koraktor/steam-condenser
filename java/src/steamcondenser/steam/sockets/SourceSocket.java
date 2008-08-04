@@ -1,4 +1,4 @@
-package steamcondenser.steam;
+package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -25,9 +25,11 @@ abstract public class SteamPacket
 	public static final byte A2A_RULES_RESPONSE_HEADER = 0x45;
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57;
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
+	public static final byte MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31;
+	public static final byte MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66;
 	
 	protected PacketBuffer contentData;
-	private byte headerData;
+	protected byte headerData;
 	
 	public static SteamPacket createPacket(byte[] rawData)
 	  throws PacketFormatException
@@ -71,8 +73,11 @@ abstract public class SteamPacket
 			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
 				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(data);
 				
+			case SteamPacket.MASTER_SERVER_QUERY_RESPONSE_HEADER:
+				return new MasterServerQueryResponsePacket(data);
+				
 			default:
-				throw new PacketFormatException("Unknown packet with header 0x" + header + " received.");
+				throw new PacketFormatException("Unknown packet with header 0x" + Integer.toHexString(header) + " received.");
 		}
 	}
 	

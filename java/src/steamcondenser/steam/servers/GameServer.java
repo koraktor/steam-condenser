@@ -1,4 +1,4 @@
-package steamcondenser.steam;
+package steamcondenser.steam.servers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
 
 import steamcondenser.SteamCondenserException;
+import steamcondenser.steam.SteamPlayer;
 import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
 import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
@@ -17,6 +18,7 @@ import steamcondenser.steam.packets.A2A_RULES_ResponsePacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_RequestPacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket;
 import steamcondenser.steam.packets.SteamPacket;
+import steamcondenser.steam.sockets.SteamSocket;
 
 /**
  * @author Sebastian Staudt

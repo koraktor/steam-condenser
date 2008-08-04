@@ -1,10 +1,14 @@
 package steamcondenser;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.Random;
+import java.util.Vector;
 
-import steamcondenser.steam.GameServer;
-import steamcondenser.steam.GoldSrcServer;
-import steamcondenser.steam.SourceServer;
+import steamcondenser.steam.servers.GameServer;
+import steamcondenser.steam.servers.GoldSrcServer;
+import steamcondenser.steam.servers.MasterServer;
+import steamcondenser.steam.servers.SourceServer;
 
 /**
  * @author Sebastian Staudt
@@ -16,15 +20,27 @@ public class Test
 		throws Exception
 	{
 		GameServer server;
+		MasterServer masterServer;
+		Random randomizer = new Random();
+		Vector<InetSocketAddress> servers;
+		InetSocketAddress randomServer;
 		
-		server = new SourceServer(InetAddress.getByName("84.45.77.22"), 27045);
+		masterServer = new MasterServer(MasterServer.SOURCE_MASTER_SERVER);
+		servers = masterServer.getServers();
+		randomServer = servers.elementAt(randomizer.nextInt(servers.size()));
+		
+		server = new SourceServer(randomServer.getAddress(), randomServer.getPort());
 		server.initialize();
 		server.updatePlayerInfo();
 		server.updateRulesInfo();
 		
 		System.out.println(server);
 		
-		server = new GoldSrcServer(InetAddress.getByName("84.254.65.216"), 27040);
+		masterServer = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
+		servers = masterServer.getServers();
+		randomServer = servers.elementAt(randomizer.nextInt(servers.size()));
+		
+		server = new GoldSrcServer(randomServer.getAddress(), randomServer.getPort());
 		server.initialize();
 		server.updatePlayerInfo();
 		server.updateRulesInfo();
