@@ -14,15 +14,15 @@ import steamcondenser.steam.sockets.MasterServerSocket;
 
 public class MasterServer
 {
-	public static final String GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com";
-	public static final String SOURCE_MASTER_SERVER = "hl2master.steampowered.com";
+	public static final InetSocketAddress GOLDSRC_MASTER_SERVER = new InetSocketAddress("hl1master.steampowered.com", 27010);
+	public static final InetSocketAddress SOURCE_MASTER_SERVER = new InetSocketAddress("hl2master.steampowered.com", 27011);
 	
 	private MasterServerSocket socket;
 	
-	public MasterServer(String hostName)
+	public MasterServer(InetSocketAddress masterServer)
 		throws IOException, UnknownHostException
 	{
-		this.socket = new MasterServerSocket(InetAddress.getByName(hostName), 27011);
+		this.socket = new MasterServerSocket(masterServer.getAddress(), masterServer.getPort());
 	}
 	
 	public Vector<InetSocketAddress> getServers()
