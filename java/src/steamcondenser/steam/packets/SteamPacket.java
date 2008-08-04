@@ -4,6 +4,9 @@ import java.util.Vector;
 
 import steamcondenser.Helper;
 import steamcondenser.PacketBuffer;
+import steamcondenser.PacketFormatException;
+import steamcondenser.SteamCondenserException;
+import steamcondenser.UncompletePacketException;
 
 /**
  * @author Sebastian Staudt
@@ -27,7 +30,7 @@ abstract public class SteamPacket
 	private byte headerData;
 	
 	public static SteamPacket createPacket(byte[] rawData)
-	  throws Exception
+	  throws PacketFormatException
 	{
 		byte header = rawData[0];
 		byte[] data = new byte[rawData.length - 1];
@@ -69,18 +72,22 @@ abstract public class SteamPacket
 				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(data);
 				
 			default:
-				throw new Exception("Unknown packet with header 0x" + header + " received.");
+				throw new PacketFormatException("Unknown packet with header 0x" + header + " received.");
 		}
 	}
 	
 	public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets)
-		throws Exception
+		throws SteamCondenserException
 	{
 		byte[] packetData, tmpData;
 		packetData = new byte[0];
 		
 		for(byte[] splitPacket : splitPackets)
 		{
+			if(splitPacket == null)
+			{
+				throw new UncompletePacketException();
+			}
 			tmpData = packetData;
 			packetData = new byte[tmpData.length + splitPacket.length];
 			System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);

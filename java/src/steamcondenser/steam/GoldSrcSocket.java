@@ -2,14 +2,17 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class GoldSrcSocket extends SteamSocket
 {
 	public GoldSrcSocket(InetAddress ipAddress, int portNumber)
@@ -19,29 +22,20 @@ public class GoldSrcSocket extends SteamSocket
 	}
 	
 	public SteamPacket getReply()
-		throws IOException, Exception
+		throws IOException, SteamCondenserException, TimeoutException
 	{
-		Selector selector = Selector.open();
-		this.channel.register(selector, SelectionKey.OP_READ);
-		if(selector.select(1000) == 0)
-		{
-			throw new TimeoutException();
-		}
-		
 		int bytesRead;
-		byte[] packetData;
 		SteamPacket packet;
 	
 		bytesRead = this.receivePacket(1400);
 		
-		if(Integer.reverseBytes(this.buffer.getInt()) == -2)
+		if(this.packetIsSplit())
 		{
 			byte[] splitData;
 			int packetCount, packetNumber;
 			int requestId;
 			byte packetNumberAndCount;
 			Vector<byte[]> splitPackets = new Vector<byte[]>();
-			packetData = new byte[0];
 			
 			do
 			{
@@ -74,9 +68,7 @@ public class GoldSrcSocket extends SteamSocket
 		}
 		else
 		{
-			packetData = new byte[this.buffer.remaining()];
-			this.buffer.get(packetData);
-			packet = SteamPacket.createPacket(packetData);
+			packet = this.createPacket();
 		}
 	
 		this.buffer.flip();

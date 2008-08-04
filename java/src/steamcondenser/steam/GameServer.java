@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeoutException;
 
+import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
 import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
 import steamcondenser.steam.packets.A2A_PING_RequestPacket;
@@ -35,15 +37,15 @@ abstract public class GameServer
 	protected SteamSocket socket;
 	
 	/**
-	 * @param ipAddress The IP of the server to connect to
+	 * Checks if the port number is valid
 	 * @param portNumber The port number of the server
 	 */
 	protected GameServer(int portNumber)
-		throws Exception
+		throws IllegalArgumentException
 	{
-		if(portNumber < 0)
+		if(portNumber < 0 || portNumber > 49151)
 		{
-			throw new Exception("The listening port of the server has to be a number greater than 0.");
+			throw new IllegalArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
 		}
 	}
 	
@@ -79,23 +81,42 @@ abstract public class GameServer
 		return this.serverInfo;
 	}
 	
+	/**
+	 * Initializes the server object with basic data (ping, server info and
+	 * challenge number)
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	public void initialize()
-	throws IOException, Exception
+	throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.updatePing();
 		this.updateServerInfo();
 		this.updateChallengeNumber();
 	}
 	
+	/**
+	 * Get the challenge number from the server 
+	 * @throws IOException
+	 * @throws SteamCondenserException 
+	 * @throws TimeoutException 
+	 */
 	public void updateChallengeNumber()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.sendRequest(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
 		this.challengeNumber = ((A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket) this.getReply()).getChallengeNumber();
 	}
 	
+	/**
+	 * Pings the server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	public void updatePing()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.sendRequest(new A2A_PING_RequestPacket());
 		long startTime = System.currentTimeMillis();
@@ -104,29 +125,47 @@ abstract public class GameServer
 		this.ping = Long.valueOf(endTime - startTime).intValue();
 	}
 	
+	/**
+	 * Gets information about the players on the server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	public void updatePlayerInfo()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.sendRequest(new A2A_PLAYER_RequestPacket(this.challengeNumber));
 		this.playerArray = ((A2A_PLAYER_ResponsePacket) this.getReply()).getPlayerArray();
 	}
 	
+	/**
+	 * Gets information about the setting of the server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	public void updateRulesInfo()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.sendRequest(new A2A_RULES_RequestPacket(this.challengeNumber));
 		this.rulesHash = ((A2A_RULES_ResponsePacket) this.getReply()).getRulesHash();
 	}
 	
+	/**
+	 * Gets basic server information
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	public void updateServerInfo()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		this.sendRequest(new A2A_INFO_RequestPacket());
 		this.serverInfo = ((A2A_INFO_ResponsePacket) this.getReply()).getInfoHash();
 	}
 	
 	private SteamPacket getReply()
-		throws Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
 		return this.socket.getReply();
 	}
@@ -137,6 +176,9 @@ abstract public class GameServer
 		this.socket.send(requestData);
 	}
 	
+	/**
+	 * Returns a String representation of this server
+	 */
 	public String toString()
 	{
 		String returnString = "";

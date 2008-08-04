@@ -2,14 +2,17 @@ package steamcondenser.steam;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class SourceSocket extends SteamSocket
 {
 	public SourceSocket(InetAddress ipAddress, int portNumber)
@@ -19,29 +22,20 @@ public class SourceSocket extends SteamSocket
 	}
 	
 	public SteamPacket getReply()
-		throws IOException, Exception
+		throws IOException, TimeoutException, SteamCondenserException
 	{
-		Selector selector = Selector.open();
-		this.channel.register(selector, SelectionKey.OP_READ);
-		if(selector.select(1000) == 0)
-		{
-			throw new TimeoutException();
-		}
-		
 		int bytesRead;
-		byte[] packetData;
 		SteamPacket packet;
 	
 		bytesRead = this.receivePacket(1400);
 		
-		if(Integer.reverseBytes(this.buffer.getInt()) == -2)
+		if(this.packetIsSplit())
 		{
 			byte[] splitData;
 			int packetCount, packetNumber;
 			int requestId;
 			short splitSize;
 			Vector<byte[]> splitPackets = new Vector<byte[]>();
-			packetData = new byte[0];
 			
 			do
 			{
@@ -50,6 +44,7 @@ public class SourceSocket extends SteamSocket
 				packetCount = this.buffer.get();
 				packetNumber = this.buffer.get() + 1;
 				splitSize = Short.reverseBytes(this.buffer.getShort());
+				
 				// Omit additional header on the first packet 
 				if(packetNumber == 1)
 				{
@@ -73,9 +68,7 @@ public class SourceSocket extends SteamSocket
 		}
 		else
 		{
-			packetData = new byte[this.buffer.remaining()];
-			this.buffer.get(packetData);
-			packet = SteamPacket.createPacket(packetData);
+			packet = this.createPacket();
 		}
 	
 		this.buffer.flip();

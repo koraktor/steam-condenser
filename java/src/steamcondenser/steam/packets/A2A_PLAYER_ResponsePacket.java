@@ -2,6 +2,7 @@ package steamcondenser.steam.packets;
 
 import java.util.ArrayList;
 
+import steamcondenser.PacketFormatException;
 import steamcondenser.steam.SteamPlayer;
 
 /**
@@ -13,13 +14,13 @@ public class A2A_PLAYER_ResponsePacket extends SteamPacket
 	private ArrayList<SteamPlayer> playerArray;
 
 	public A2A_PLAYER_ResponsePacket(byte[] dataBytes)
-		throws Exception
+		throws PacketFormatException
 	{
 		super(SteamPacket.A2A_PLAYER_RESPONSE_HEADER, dataBytes);
 		
 		if(this.contentData.getLength() == 0)
 		{
-			throw new Exception("Wrong formatted A2A_PLAYER response packet.");
+			throw new PacketFormatException("Wrong formatted A2A_PLAYER response packet.");
 		}
 		
 		this.playerArray = new ArrayList<SteamPlayer>(this.contentData.getByte());

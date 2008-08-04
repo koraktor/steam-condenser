@@ -3,6 +3,10 @@ package steamcondenser.steam;
 import java.io.IOException;
 import java.net.InetAddress;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class GoldSrcServer extends GameServer
 {
 	/**
