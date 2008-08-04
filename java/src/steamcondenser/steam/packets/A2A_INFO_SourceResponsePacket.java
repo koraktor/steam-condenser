@@ -31,22 +31,26 @@ public class A2A_INFO_SourceResponsePacket extends A2A_INFO_ResponsePacket
 		this.passwordProtected = this.contentData.getByte() == 1;
 		this.secure = this.contentData.getByte() == 1;
 		this.gameVersion = this.contentData.getString();
-		byte extraDataFlag = this.contentData.getByte();
 		
-		if((extraDataFlag & 0x80) == 1)
+		if(this.contentData.remaining() > 0)
 		{
-			this.serverPort = Short.reverseBytes(this.contentData.getShort());
-		}
-		
-		if((extraDataFlag & 0x40) == 1)
-		{
-			this.tvPort = Short.reverseBytes(this.contentData.getShort());
-			this.tvName = this.contentData.getString();
-		}
-		
-		if((extraDataFlag & 0x20) == 1)
-		{
-			this.serverTags = this.contentData.getString();
+			byte extraDataFlag = this.contentData.getByte();
+			
+			if((extraDataFlag & 0x80) == 1)
+			{
+				this.serverPort = Short.reverseBytes(this.contentData.getShort());
+			}
+			
+			if((extraDataFlag & 0x40) == 1)
+			{
+				this.tvPort = Short.reverseBytes(this.contentData.getShort());
+				this.tvName = this.contentData.getString();
+			}
+			
+			if((extraDataFlag & 0x20) == 1)
+			{
+				this.serverTags = this.contentData.getString();
+			}
 		}
 	}
 }

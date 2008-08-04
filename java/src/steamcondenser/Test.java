@@ -1,6 +1,5 @@
 package steamcondenser;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Random;
 import java.util.Vector;

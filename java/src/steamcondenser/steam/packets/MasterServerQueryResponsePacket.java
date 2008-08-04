@@ -18,16 +18,15 @@ public class MasterServerQueryResponsePacket extends SteamPacket
 			throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
 		}
 		
-		byte firstOctet, secondOctet, thirdOctet, fourthOctet;
-		int portNumber;
+		int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
 		this.serverArray = new Vector<String>();
 		
 		do
 		{
-			firstOctet = (byte) (this.contentData.getByte() & 0x7F);
-			secondOctet = (byte) (this.contentData.getByte() & 0x7F);
-			thirdOctet = (byte) (this.contentData.getByte() & 0x7F);
-			fourthOctet = (byte) (this.contentData.getByte() & 0x7F);
+			firstOctet = this.contentData.getByte() & 0xFF;
+			secondOctet = this.contentData.getByte() & 0xFF;
+			thirdOctet = this.contentData.getByte() & 0xFF;
+			fourthOctet = this.contentData.getByte() & 0xFF;
 			portNumber = this.contentData.getShort() & 0xFFFF;
 			
 			this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
