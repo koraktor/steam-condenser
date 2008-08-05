@@ -1,3 +1,8 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.servers;
 
 import java.io.IOException;
@@ -6,6 +11,7 @@ import java.net.InetAddress;
 import steamcondenser.steam.sockets.SourceSocket;
 
 /**
+ * A Source game server.
  * @author Sebastian Staudt
  * @version $Id$
  */

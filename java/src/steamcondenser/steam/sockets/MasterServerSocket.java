@@ -1,3 +1,8 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
@@ -8,6 +13,11 @@ import steamcondenser.PacketFormatException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
 
+/**
+ * A socket used for connections to Steam master servers.
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class MasterServerSocket extends SteamSocket
 {
 	public MasterServerSocket(InetAddress ipAddress, int portNumber)

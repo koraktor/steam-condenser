@@ -1,5 +1,14 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser;
 
+/**
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class Helper
 {
 	public static byte[] byteArrayFromInteger(int integer)

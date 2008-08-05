@@ -1,3 +1,8 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
@@ -10,6 +15,7 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
 
 /**
+ * A socket used for connections to Source game servers.
  * @author Sebastian Staudt
  * @version $Id$
  */

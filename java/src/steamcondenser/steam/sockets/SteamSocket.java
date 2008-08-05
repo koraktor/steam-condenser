@@ -1,3 +1,8 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
@@ -16,6 +21,8 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
 
 /**
+ * Defines common methods for sockets used to connect to game and master
+ * servers.
  * @author Sebastian Staudt
  * @version $Id$
  */
@@ -28,6 +35,8 @@ abstract public class SteamSocket
 	protected InetSocketAddress remoteSocket;
 	
 	/**
+	 * Creates a new SteamSocket used to connect to the given IP address and
+	 * port number
 	 * @param ipAddress The IP of the server to connect to
 	 * @param portNumber The port number of the server
 	 */

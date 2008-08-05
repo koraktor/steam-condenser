@@ -1,7 +1,11 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.servers;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Vector;
@@ -12,6 +16,11 @@ import steamcondenser.steam.packets.MasterServerQueryRequestPacket;
 import steamcondenser.steam.packets.MasterServerQueryResponsePacket;
 import steamcondenser.steam.sockets.MasterServerSocket;
 
+/**
+ * A Steam master server
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class MasterServer
 {
 	public static final InetSocketAddress GOLDSRC_MASTER_SERVER = new InetSocketAddress("hl1master.steampowered.com", 27010);

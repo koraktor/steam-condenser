@@ -1,9 +1,19 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.packets;
 
 import java.util.Vector;
 
 import steamcondenser.PacketFormatException;
 
+/**
+ * Represents a response of a master server.
+ * @author Sebastian Staudt
+ * @version $Id$
+ */
 public class MasterServerQueryResponsePacket extends SteamPacket
 {
 	private Vector<String> serverArray;
