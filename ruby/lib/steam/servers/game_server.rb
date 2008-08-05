@@ -6,21 +6,8 @@ autoload "A2A_RULES_RequestPacket", "steam/packets/a2a_rules_request_packet"
 autoload "A2A_SERVERQUERY_GETCHALLENGE_RequestPacket", "steam/packets/a2a_serverquery_getchallenge_request_packet"
 
 require "steam/steam_player"
-require "steam/steam_socket"
 
-class SourceServer
-  def initialize(ip_address, port_number = 27015)
-    unless ip_address.is_a? IPAddr
-      raise TypeError("The IP address has to be of type IPAddr")
-    end
-    
-    unless port_number.is_a? Numeric and port_number > 0
-      raise TypeError("The listening port of the server has to be a number greater than 0.")
-    end
-    
-    @socket = SteamSocket.new ip_address, port_number
-  end
-  
+class GameServer
   def get_ping
     return @ping
   end
@@ -69,6 +56,18 @@ class SourceServer
     get_reply
     end_time = Time.now
     return @ping = (end_time - start_time) * 1000
+  end
+  
+  protected
+  
+  def initialize(ip_address, port_number = 27015)
+    unless ip_address.is_a? IPAddr
+      raise TypeError("The IP address has to be of type IPAddr")
+    end
+    
+    unless port_number.is_a? Numeric and port_number > 0 and port_number < 65536
+      raise TypeError("The listening port of the server has to be a number greater than 0.")
+    end
   end
 
   private

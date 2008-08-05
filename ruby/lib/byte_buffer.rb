@@ -1,4 +1,8 @@
 class ByteBuffer
+
+  attr_accessor :limit
+  attr_reader :position
+  
   def self.allocate(length)
     return ByteBuffer.new(0.chr * length)
   end
@@ -58,16 +62,6 @@ class ByteBuffer
     data_string = self.get(@byte_array.index("\0", @position) - @position)
     @position += 1    
     return data_string
-  end
-  
-  def limit(new_limit = nil)
-    if new_limit == nil
-      return @limit
-    else
-      @limit = new_limit
-      
-      return self
-    end
   end
   
   def remaining
