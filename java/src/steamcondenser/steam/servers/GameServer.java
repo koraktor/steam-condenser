@@ -50,7 +50,7 @@ abstract public class GameServer
 	protected GameServer(int portNumber)
 		throws IllegalArgumentException
 	{
-		if(portNumber < 0 || portNumber > 49151)
+		if(portNumber < 0 || portNumber > 65535)
 		{
 			throw new IllegalArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
 		}

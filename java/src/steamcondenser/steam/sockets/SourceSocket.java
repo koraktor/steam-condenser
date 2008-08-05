@@ -37,19 +37,30 @@ public class SourceSocket extends SteamSocket
 		
 		if(this.packetIsSplit())
 		{
+			boolean isCompressed = false;
 			byte[] splitData;
-			int packetCount, packetNumber;
-			int requestId;
+			int packetCount, packetNumber, requestId;
+			int packetChecksum = 0;
 			short splitSize;
+			short uncompressedSize = 0;
 			Vector<byte[]> splitPackets = new Vector<byte[]>();
 			
 			do
 			{
 				// Parsing of split packet headers
 				requestId = Integer.reverseBytes(this.buffer.getInt());
+				
+				isCompressed = this.packetIsCompressed(requestId);
+				
 				packetCount = this.buffer.get();
 				packetNumber = this.buffer.get() + 1;
 				splitSize = Short.reverseBytes(this.buffer.getShort());
+				
+				if(isCompressed)
+				{
+					uncompressedSize = Short.reverseBytes(this.buffer.getShort());
+					packetChecksum = Integer.reverseBytes(this.buffer.getInt());
+				}
 				
 				// Omit additional header on the first packet 
 				if(packetNumber == 1)
@@ -70,7 +81,14 @@ public class SourceSocket extends SteamSocket
 			}
 			while(bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
 	
-			packet = SteamPacket.reassemblePacket(splitPackets);
+			if(isCompressed)
+			{
+				packet = SteamPacket.reassemblePacket(splitPackets, true, uncompressedSize, packetChecksum);
+			}
+			else
+			{
+				packet = SteamPacket.reassemblePacket(splitPackets);
+			}
 		}
 		else
 		{
@@ -82,5 +100,15 @@ public class SourceSocket extends SteamSocket
 		Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 		
 		return packet;
+	}
+	
+	/**
+	 * Checks whether a packet is split or not by it's request ID
+	 * @param packetHeader The request ID of the packet to check
+	 * @return true if the packet is compressed, otherwise false
+	 */
+	private boolean packetIsCompressed(int requestId)
+	{
+		return (requestId & 0x8000) != 0;
 	}
 }

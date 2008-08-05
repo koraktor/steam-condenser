@@ -5,7 +5,12 @@
 
 package steamcondenser.steam.packets;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.zip.CRC32;
+
+import org.apache.tools.bzip2.CBZip2InputStream;
 
 import steamcondenser.Helper;
 import steamcondenser.PacketBuffer;
@@ -87,7 +92,13 @@ abstract public class SteamPacket
 	}
 	
 	public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets)
-		throws SteamCondenserException
+		throws IOException, SteamCondenserException
+	{
+		return SteamPacket.reassemblePacket(splitPackets, false, (short) 0, 0);
+	}
+	
+	public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets, boolean isCompressed, short uncompressedSize, int packetChecksum)
+		throws IOException, SteamCondenserException
 	{
 		byte[] packetData, tmpData;
 		packetData = new byte[0];
@@ -102,6 +113,20 @@ abstract public class SteamPacket
 			packetData = new byte[tmpData.length + splitPacket.length];
 			System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);
 			System.arraycopy(splitPacket, 0, packetData, tmpData.length, splitPacket.length);
+		}
+		
+		if(isCompressed)
+		{
+			CBZip2InputStream bzip2 = new CBZip2InputStream(new ByteArrayInputStream(packetData));
+			bzip2.read(packetData, 0, uncompressedSize);
+			
+			CRC32 crc32 = new CRC32();
+			crc32.update(packetData);
+			
+			if(crc32.getValue() != packetChecksum)
+			{
+				throw new PacketFormatException("CRC32 checksum mismatch of uncompressed packet data.");
+			}
 		}
 		
 		return SteamPacket.createPacket(packetData);
