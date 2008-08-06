@@ -1,3 +1,6 @@
+# This code is free software; you can redistribute it and/or modify it under the
+# terms of the new BSD License.
+
 require "byte_buffer"
 require "datagram_channel"
 require "ipaddr"

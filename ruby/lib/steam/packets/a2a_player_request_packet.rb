@@ -1,3 +1,6 @@
+# This code is free software; you can redistribute it and/or modify it under the
+# terms of the new BSD License.
+
 autoload "RequestWithChallenge", "steam/packets/request_with_challenge"
 autoload "SteamPacket", "steam/packets/steam_packet"
 

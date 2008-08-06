@@ -1,3 +1,5 @@
+# This code is free software; you can redistribute it and/or modify it under the
+# terms of the new BSD License.
 
 autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
 autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
