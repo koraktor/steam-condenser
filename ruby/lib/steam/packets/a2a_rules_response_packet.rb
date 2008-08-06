@@ -13,12 +13,10 @@ class A2A_RULES_ResponsePacket < SteamPacket
     
     super SteamPacket::A2A_RULES_RESPONSE_HEADER, content_data
     
-    number_of_rules, rules_data = content_data.unpack("sa*")
-    rules_data = rules_data.split("\0")
-    @rules_hash = Hash.new
+    @rules_hash = Hash.new @content_data.get_short
 
-    rules_data.each_slice 2 do |key, value|
-      @rules_hash[key] = value
+    while @content_data.remaining > 0
+      @rules_hash[@content_data.get_string] = @content_data.get_string
     end
   end
 

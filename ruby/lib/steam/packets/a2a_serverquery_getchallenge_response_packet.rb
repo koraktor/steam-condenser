@@ -11,6 +11,6 @@ class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket < SteamPacket
   
   # Returns the challenge number received from the server
   def get_challenge_number
-    return @content_data.array.unpack("V")
+    return @content_data.rewind.get_long
   end
 end
