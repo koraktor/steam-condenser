@@ -2,6 +2,7 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
+#
 # $Id$
 
 require "rake/rdoctask"
@@ -12,12 +13,14 @@ require "rubygems"
 desc "Default: build gem"
 task :default => :gem
 
-multitask :all => [:gem, :rdoc]
+multitask :all => [:rdoc, :gem]
 
-source_files = Dir.glob(File.join("**", "lib", "**", "*.rb"))
+src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 
 # Parsing info from svn
 svn_info = Hash[*`svn info`.split("\n").map {|line| line.split(": ")}.flatten]
+
+rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://code.google.com/p/steam-condenser/source/browse/trunk/ruby/%s?r=#{svn_info["Last Changed Rev"]}"]
 
 # Gem specification
 spec = Gem::Specification.new do |s|
@@ -32,42 +35,32 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://code.google.com/p/steam-condenser/"
   
   s.has_rdoc = true
-  s.rdoc_options = ["--main", "README"]
-  s.rdoc_options << "--inline-source" << "--charset=UTF-8"
+  s.rdoc_options = rdoc_options
+  s.extra_rdoc_files = %w(README Rakefile LICENSE)
   
-  s.files = %w(README Rakefile) + source_files
+  s.files = %w(README Rakefile LICENSE) + src_files
 end
 
-# Create a rake task to build the gem using the specification
+# Create a rake task +:gem+ to build the gem using the specification
 desc "Building gem"
-Rake::GemPackageTask.new(spec) do |pkg| 
-  pkg.need_tar = true 
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_tar = true
 end
 
-
-task :rdoc => [:copy_license, :do_rdoc, :remove_license]
-
-# Create a rake task to build the documentation
+# Create a rake task +:rdoc+ to build the documentation
 desc "Building docs"
-Rake::RDocTask.new(:do_rdoc) do |rdoc|
+Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title = "Steam Condenser documentation"
   rdoc.rdoc_files.include "lib/**/*.rb"
-  rdoc.rdoc_files.include "LICENSE"
-  rdoc.rdoc_files.include "README"
+  rdoc.rdoc_files.include ["LICENSE", "README", "tests.rb"]
   rdoc.main = "README"
   rdoc.rdoc_dir = "doc"
-  rdoc.options << "--all" << "--inline-source" << "--line-numbers" << "--charset=utf-8" << "--webcvs=http://code.google.com/p/steam-condenser/source/browse/trunk/ruby/%s?r=#{svn_info["Last Changed Rev"]}"
+  rdoc.options = rdoc_options
 end
 
-task :copy_license do
-  FileUtils.cp "../LICENSE", "LICENSE"
-end
-
-task :remove_license do
-  FileUtils.rm "LICENSE"
-end
-
+# Task for cleaning documentation and package directories
 desc "Clean documentation and package directories"
 task :clean do
-  FileUtils.rm_r "doc", "pkg"
+  FileUtils.rm_rf "doc"
+  FileUtils.rm_rf "pkg"
 end

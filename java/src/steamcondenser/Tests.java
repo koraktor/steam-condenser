@@ -31,7 +31,7 @@ public class Tests
 	public void invalidGoldSrcServer()
 		throws Exception
 	{
-		GoldSrcServer invalidServer = new GoldSrcServer(InetAddress.getByName("0.0.0.0"), 27015);
+		GoldSrcServer invalidServer = new GoldSrcServer(InetAddress.getByName("1.0.0.0"), 27015);
 		invalidServer.initialize();
 	}
 	
@@ -43,7 +43,7 @@ public class Tests
 	public void invalidSourceServer()
 		throws Exception
 	{
-		SourceServer invalidServer = new SourceServer(InetAddress.getByName("0.0.0.0"), 27015);
+		SourceServer invalidServer = new SourceServer(InetAddress.getByName("1.0.0.0"), 27015);
 		invalidServer.initialize();
 	}
 	

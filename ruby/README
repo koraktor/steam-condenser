@@ -2,6 +2,11 @@
 
 The Steam Condenser is a multi-language library for querying Source and GoldSrc game servers as well as the Steam master servers. Currently it is implemented in Java, PHP and Ruby.
 
+== Requirements
+
+* Linux, MacOS X or Windows
+* Ruby 1.8.7 or newer
+
 == License
 
 This code is free software; you can redistribute it and/or modify it under the terms of the new BSD License.
