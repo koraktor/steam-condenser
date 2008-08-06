@@ -26,9 +26,7 @@ class SourceSocket < SteamSocket
         
         debug("Received packet #{packet_number} of #{packet_count} for request ##{request_id}")
         
-        if packet_number < packet_count
-          bytes_read = self.receive_packet
-        end
+        bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
       packet = SteamPacket.create_packet(split_packets.join(""))

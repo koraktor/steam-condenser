@@ -58,15 +58,9 @@ class GameServer
     return @ping = (end_time - start_time) * 1000
   end
   
-  protected
-  
-  def initialize(ip_address, port_number = 27015)
-    unless ip_address.is_a? IPAddr
-      raise TypeError("The IP address has to be of type IPAddr")
-    end
-    
-    unless port_number.is_a? Numeric and port_number > 0 and port_number < 65536
-      raise TypeError("The listening port of the server has to be a number greater than 0.")
+  def initialize(port_number = 27015)
+    unless port_number.to_i > 0 and port_number.to_i < 65536
+      raise ArgumentError.new("The listening port of the server has to be a number greater than 0 and less than 65536.")
     end
   end
 

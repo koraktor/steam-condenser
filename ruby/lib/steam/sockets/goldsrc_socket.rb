@@ -18,8 +18,8 @@ class GoldSrcSocket < SteamSocket
         # Parsing of split packet headers
         request_id = @buffer.get_long
         packet_number_and_count = @buffer.get_byte.to_i
-        packet_number = packet_number_and_count & 15
-        packet_count = (packet_number_and_count >> 4) + 1
+        packet_count = packet_number_and_count & 15
+        packet_number = (packet_number_and_count >> 4) + 1
 
         # Omit additional header on the first packet
         if packet_number == 1
@@ -32,9 +32,7 @@ class GoldSrcSocket < SteamSocket
         debug("Received packet #{packet_number} of #{packet_count} for request ##{request_id}")
         
         # Receiving the next packet
-        if packet_number < packet_count
-          bytes_read = self.receive_packet
-        end
+        bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
       packet = SteamPacket.create_packet(split_packets.join(""))

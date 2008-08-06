@@ -12,15 +12,11 @@ class A2A_PLAYER_ResponsePacket < SteamPacket
     
     super SteamPacket::A2A_PLAYER_RESPONSE_HEADER, content_data
     
-    number_of_players = @content_data[0]
-    players_data = @content_data[1..-1]
-
-    @player_array = Array.new(number_of_players)
+    @player_array = Array.new @content_data.get_byte
     
-    while players_data.size > 0
-      player_data = players_data.unpack("cZ*Vea*")
-      @player_array[player_data[0]] = SteamPlayer.new(*player_data[0..3])
-      players_data = player_data[4]
+    while @content_data.remaining > 0
+      player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_long, @content_data.get_float
+      @player_array[player_data[0]] = SteamPlayer.new *player_data[0..3]
     end
   end
   

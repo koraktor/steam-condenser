@@ -8,15 +8,23 @@ class ByteBuffer
   end
   
   def self.wrap(byte_buffer)
-    byte_buffer = ByteBuffer.new byte_buffer
+    return ByteBuffer.new byte_buffer
   end
   
   def initialize(byte_array)
-    @byte_array = byte_array
-    @capacity = byte_array.length
+    if byte_array.is_a? ByteBuffer
+      raise Exception.new
+    end
+    
+    @byte_array = byte_array.to_s
+    @capacity = @byte_array.length
     @limit = @capacity
     @position = 0
     @mark = -1
+  end
+  
+  def array
+    return @byte_array
   end
   
   def clear
@@ -50,6 +58,10 @@ class ByteBuffer
     return self.get(1)[0]
   end
   
+  def get_float
+    return self.get_long.to_f
+  end
+  
   def get_long
     return self.get(4).unpack("l")[0]
   end
@@ -59,9 +71,14 @@ class ByteBuffer
   end
   
   def get_string
-    data_string = self.get(@byte_array.index("\0", @position) - @position)
-    @position += 1    
-    return data_string
+    zero_byte_index = @byte_array.index("\0", @position)
+    if zero_byte_index == nil
+      return ""
+    else
+      data_string = self.get(zero_byte_index - @position)
+      @position += 1    
+      return data_string
+    end
   end
   
   def remaining
@@ -81,7 +98,7 @@ class ByteBuffer
     else
       new_position = source_byte_array.length
     end
-    
+
     @byte_array[@position, new_position] = source_byte_array
     @position = new_position
     

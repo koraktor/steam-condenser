@@ -9,6 +9,8 @@ autoload "A2A_RULES_RequestPacket", "steam/packets/a2a_rules_request_packet"
 autoload "A2A_RULES_ResponsePacket", "steam/packets/a2a_rules_response_packet"
 autoload "A2A_SERVERQUERY_GETCHALLENGE_RequestPacket", "steam/packets/a2a_serverquery_getchallenge_request_packet"
 autoload "A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket", "steam/packets/a2a_serverquery_getchallenge_response_packet"
+autoload "MasterServerQueryRequestPacket", "steam/packets/master_server_query_request_packet"
+autoload "MasterServerQueryResponsePacket", "steam/packets/master_server_query_response_packet"
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket
@@ -23,6 +25,8 @@ class SteamPacket
   A2A_RULES_RESPONSE_HEADER = 0x45
   A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57
   A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41
+  MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31
+  MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66
 
   # Creates a new packet object based on the header byte of the given raw data
   def self.create_packet(raw_data)
@@ -52,14 +56,18 @@ class SteamPacket
         return A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.new
       when SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER
         return A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket.new(data)
+      when SteamPacket::MASTER_SERVER_QUERY_REQUEST_HEADER
+        return MasterServerQueryRequestPacket.new(data)
+      when SteamPacket::MASTER_SERVER_QUERY_RESPONSE_HEADER
+        return MasterServerQueryResponsePacket.new(data)
       else
         raise Exception.new("Unknown packet with header 0x#{header.to_s 16} received.")
     end
   end
   
   # Creates a new SteamPacket object with given header and content data
-  def initialize(header_data, content_data = nil)
-    @content_data = content_data
+  def initialize(header_data, content_data = "")
+    @content_data = ByteBuffer.new content_data
     @header_data = header_data
   end
   
@@ -75,6 +83,6 @@ class SteamPacket
       packet_data << [0xFE].pack("c")
     end
     
-    return packet_data << [@header_data, @content_data].pack("ca*")
+    return packet_data << [@header_data, @content_data.array].pack("ca*")
   end    
 end

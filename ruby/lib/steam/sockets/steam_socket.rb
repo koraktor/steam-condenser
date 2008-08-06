@@ -1,13 +1,15 @@
 require "byte_buffer"
 require "datagram_channel"
+require "ipaddr"
+require "exceptions/timeout_exception"
 
 # The SteamSocket class is a sub class of CondenserSocket respecting the
 # specifications of the Source query protocol.
 class SteamSocket
   
-  def initialize(ip_address, port_number)
+  def initialize(*args)
     @channel = DatagramChannel.open
-    @channel.connect ip_address.to_s, port_number
+    @channel.connect *args
     @channel.configure_blocking false
   end
 
@@ -18,11 +20,15 @@ class SteamSocket
   
   def receive_packet(buffer_length = 0)
     if buffer_length == 0
+      if select([@channel.socket], nil, nil, 0) == nil
+        return 0
+      end
       @buffer.clear
-      select([@channel.socket], nil, nil, 1)
     else
+      if select([@channel.socket], nil, nil, 1) == nil
+        raise TimeoutException.new
+      end
       @buffer = ByteBuffer.allocate buffer_length
-      select([@channel.socket], nil, nil, 1)
     end
     
     @channel.read @buffer
@@ -42,6 +48,14 @@ class SteamSocket
   
   def finalize
     @channel.close
+  end
+  
+  protected
+  
+  def create_packet
+    packet_data = @buffer.get 
+    
+    return SteamPacket.create_packet packet_data
   end
   
 end

@@ -6,11 +6,11 @@ class A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket < SteamPacket
   
   # Creates a A2A_SERVERQUERY_GETCHALLENGE response object based on the data received.
   def initialize(challenge_number)
-    super A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, challenge_number.unpack("V")[0]
+    super A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER, challenge_number
   end
   
   # Returns the challenge number received from the server
   def get_challenge_number
-    return @content_data
+    return @content_data.array.unpack("V")
   end
 end
