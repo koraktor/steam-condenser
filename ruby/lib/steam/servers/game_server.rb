@@ -119,6 +119,38 @@ class GameServer
       raise ArgumentError.new("The listening port of the server has to be a number greater than 0 and less than 65536.")
     end
   end
+  
+  def to_s
+    p @info_hash["mod_info"]
+    
+    return_string = ""
+    
+    return_string << "Ping: #{@ping}\n"
+    return_string << "Challenge number: #{@challenge_number}\n"
+    
+    if @info_hash != nil
+      return_string << "Info:\n"
+      @info_hash.each do |key, value|
+        return_string << "  #{key}: #{value.inspect}\n"
+      end
+    end
+    
+    if @player_array != nil
+      return_string << "Players:\n"
+      @player_array.each do |player|
+        return_string << "  #{player}\n"
+      end
+    end
+    
+    if @rules_hash != nil
+      return_string << "Rules:\n"
+      @rules_hash.each do |key, value|
+        return_string << "  #{key}: #{value}\n"
+      end
+    end
+    
+    return return_string
+  end
 
   private
 

@@ -44,7 +44,7 @@ class Tests < Test::Unit::TestCase
       server.update_player_info
       server.update_rules_info
       
-      p server
+      print server.to_s
     end
   end
   
@@ -56,7 +56,7 @@ class Tests < Test::Unit::TestCase
       server.update_player_info
       server.update_rules_info
       
-      p server
+      print server.to_s
     end
   end
   
