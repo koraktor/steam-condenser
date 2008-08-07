@@ -1,19 +1,28 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
+# The ByteBuffer class derived from Java's java.nio.ByteBuffer
 class ByteBuffer
 
   attr_accessor :limit
   attr_reader :position
+  protected :initialize
   
+  # Creates a new buffer with the given size in bytes
   def self.allocate(length)
     return ByteBuffer.new(0.chr * length)
   end
   
-  def self.wrap(byte_buffer)
-    return ByteBuffer.new byte_buffer
+  # Creates a new buffer from an existing String  
+  def self.wrap(byte_array)
+    return ByteBuffer.new byte_array.to_s
   end
   
+  # 
   def initialize(byte_array)
     if byte_array.is_a? ByteBuffer
       raise Exception.new
@@ -107,5 +116,5 @@ class ByteBuffer
     
     return self
   end
-  
+
 end

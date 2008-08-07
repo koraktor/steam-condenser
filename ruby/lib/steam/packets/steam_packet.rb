@@ -1,19 +1,26 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
-autoload "A2A_INFO_GoldSrcResponsePacket", "steam/packets/a2a_info_goldsrc_response_packet"
-autoload "A2A_INFO_RequestPacket", "steam/packets/a2a_info_request_packet"
-autoload "A2A_INFO_SourceResponsePacket", "steam/packets/a2a_info_source_response_packet"
-autoload "A2A_PING_RequestPacket", "steam/packets/a2a_ping_request_packet"
-autoload "A2A_PING_ResponsePacket", "steam/packets/a2a_ping_response_packet"
-autoload "A2A_PLAYER_RequestPacket", "steam/packets/a2a_player_request_packet"
-autoload "A2A_PLAYER_ResponsePacket", "steam/packets/a2a_player_response_packet"
-autoload "A2A_RULES_RequestPacket", "steam/packets/a2a_rules_request_packet"
-autoload "A2A_RULES_ResponsePacket", "steam/packets/a2a_rules_response_packet"
-autoload "A2A_SERVERQUERY_GETCHALLENGE_RequestPacket", "steam/packets/a2a_serverquery_getchallenge_request_packet"
-autoload "A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket", "steam/packets/a2a_serverquery_getchallenge_response_packet"
-autoload "MasterServerQueryRequestPacket", "steam/packets/master_server_query_request_packet"
-autoload "MasterServerQueryResponsePacket", "steam/packets/master_server_query_response_packet"
+class SteamPacket
+end
+
+require "steam/packets/a2a_info_goldsrc_response_packet"
+require "steam/packets/a2a_info_request_packet"
+require "steam/packets/a2a_info_source_response_packet"
+require "steam/packets/a2a_ping_request_packet"
+require "steam/packets/a2a_ping_response_packet"
+require "steam/packets/a2a_player_request_packet"
+require "steam/packets/a2a_player_response_packet"
+require "steam/packets/a2a_rules_request_packet"
+require "steam/packets/a2a_rules_response_packet"
+require "steam/packets/a2a_serverquery_getchallenge_request_packet"
+require "steam/packets/a2a_serverquery_getchallenge_response_packet"
+require "steam/packets/master_server_query_request_packet"
+require "steam/packets/master_server_query_response_packet"
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket

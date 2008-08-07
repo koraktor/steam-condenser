@@ -2,6 +2,7 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
+#
 # $Id$
 
 $:.push File.join(File.dirname(__FILE__), "lib")
@@ -24,14 +25,14 @@ class Tests < Test::Unit::TestCase
   def test_invalid_goldsrc_server
     assert_raise TimeoutException do
       invalidServer = GoldSrcServer.new IPAddr.new("1.0.0.0")
-      invalidServer.init
+      invalidServer.get_ping
     end
   end
   
   def test_invalid_source_server
     assert_raise TimeoutException do
       invalidServer = SourceServer.new IPAddr.new("1.0.0.0")
-      invalidServer.init
+      invalidServer.get_ping
     end
   end
   

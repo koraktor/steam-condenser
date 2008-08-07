@@ -1,6 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
+require "abstract_class"
 require "byte_buffer"
 require "datagram_channel"
 require "ipaddr"
@@ -9,6 +14,8 @@ require "exceptions/timeout_exception"
 # The SteamSocket class is a sub class of CondenserSocket respecting the
 # specifications of the Source query protocol.
 class SteamSocket
+  
+  include AbstractClass
   
   def initialize(*args)
     @channel = DatagramChannel.open

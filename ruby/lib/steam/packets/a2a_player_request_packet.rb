@@ -1,8 +1,12 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
-autoload "RequestWithChallenge", "steam/packets/request_with_challenge"
-autoload "SteamPacket", "steam/packets/steam_packet"
+require "steam/packets/request_with_challenge"
+require "steam/packets/steam_packet"
 
 # The A2A_PING_RequestPacket class represents a A2A_PING request send to the
 # server.

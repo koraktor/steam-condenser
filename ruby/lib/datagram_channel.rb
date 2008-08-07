@@ -1,7 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
-autoload "ByteBuffer", "byte_buffer"
+require "byte_buffer"
 
 class DatagramChannel
   attr_reader :socket

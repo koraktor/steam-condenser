@@ -1,8 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
-autoload "SteamPacket", "steam/packets/steam_packet"
-require "enumerator"
+require "steam/packets/steam_packet"
 
 # The A2A_RULES_ResponsePacket class represents the response to a A2A_RULES
 # request send to the server.

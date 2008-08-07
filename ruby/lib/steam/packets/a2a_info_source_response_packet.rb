@@ -1,7 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
+#
+# Copyright (c) 2008, Sebastian Staudt
+#
+# $Id$
 
-autoload "A2A_INFO_ResponsePacket", "steam/packets/a2a_info_response_packet"
+require "steam/packets/a2a_info_response_packet"
 
 # The A2A_INFO_SourceResponsePacket class represents the response to a A2A_INFO
 # request send to a Source server.
