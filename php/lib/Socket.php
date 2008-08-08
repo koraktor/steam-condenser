@@ -1,8 +1,8 @@
 <?php
 /**
  * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD License
- * @package Steam Interface Package (PHP)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package Steam Condenser (PHP)
  * @subpackage Socket
  * @version $Id$
  */
@@ -12,7 +12,7 @@
  * 
  * It can connect to a remote host, send and receive packets
  * 
- * @package Steam Interface Package (PHP)
+ * @package Steam Condenser (PHP)
  * @subpackage Socket
  */
 class Socket
@@ -51,27 +51,9 @@ class Socket
 	 * @param InetAddress $ipAddress
 	 * @param int $portNumber
 	 */
-	public function __construct(InetAddress $ipAddress, $portNumber)
+	public function __construct()
 	{
-		if(extension_loaded("sockets"))
-		{
-			$this->socketsEnabled = true;
-			if(!$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
-			{
-				$errorCode = socket_last_error($this->socket);
-				throw new Exception("Could not create socket: " . socket_strerror($errorCode));
-			}
-		}
-		else
-		{
-			if(!$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
-			{
-				throw new Exception("Could not create socket.");
-			}
-		}
-		
-		$this->ipAddress = $ipAddress;
-		$this->portNumber = $portNumber;
+		$this->socketsEnabled = extension_loaded("sockets");
 	}
 	
 	/**
@@ -87,6 +69,28 @@ class Socket
 		{
 			fclose($this->socket);
 		}
+	}
+	
+	public function connect(InetAddress $ipAddress, $portNumber)
+	{
+		$this->ipAddress = $ipAddress;
+		$this->portNumber = $portNumber;
+		
+	  if($this->socketsEnabled)
+    {
+      if(!$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
+      {
+        $errorCode = socket_last_error($this->socket);
+        throw new Exception("Could not create socket: " . socket_strerror($errorCode));
+      }
+    }
+    else
+    {
+      if(!$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
+      {
+        throw new Exception("Could not create socket.");
+      }
+    }
 	}
 	
 	/**
@@ -172,46 +176,35 @@ class Socket
 	 * @param int $length
 	 * @return String
 	 */
-	protected function read($length = 128)
+	public function recv($length = 128)
 	{
-		if(empty($this->readBuffer))
-		{
-			throw new Exception("No data to read.");
-		}
-		
-		$replyData = substr($this->readBuffer, 0, $length);
-		$this->readBuffer = substr($this->readBuffer, $length);
-		
-		return $replyData;
+	 if($this->socketsEnabled)
+    {
+      return socket_read($this->socket, $length, PHP_BINARY_READ);
+    }
+    else
+    {
+      return fread($this->socket, $length);
+    }
 	}
 	
 	/**
+	 * @return boolean
 	 */
-	protected function readToBuffer($length = 128)
+	public function select($timeout = 0)
 	{
 		$read = array($this->socket);
-		$write = null;
-		$except = null;
-		
-		if($this->socketsEnabled)
-		{
-			if(socket_select($read, $write, $except, 1))
-			{
-				$replyData = socket_read($this->socket, $length, PHP_BINARY_READ);
-			}
-		}
-		elseif(stream_select($read, $write, $except, 1))
-		{
-			$replyData = fread($this->socket, $length);
-		}
-		else
-		{
-			throw new Exception("No data received.");
-		}
-		
-		debug("Received data: " . bin2hex($replyData));
-		
-		$this->readBuffer .= $replyData;
+    $write = null;
+    $except = null;
+    
+    if($this->socketsEnabled)
+    {
+    	return socket_select($read, $write, $except, $timeout);
+    }
+    else
+    {
+    	return stream_select($read, $write, $except, $timeout);
+    }
 	}
 	
 	/**

@@ -1,14 +1,14 @@
 <?php
 /**
  * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD License
- * @package Steam Interface Package (PHP)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package Steam Condenser (PHP)
  * @subpackage SteamPacket
  * @version $Id$
  */
 
 /**
- * @package Steam Interface Package (PHP)
+ * @package Steam Condenser (PHP)
  * @subpackage SteamPacket
  */
 class A2A_INFO_ResponsePacket extends SteamPacket
@@ -35,37 +35,36 @@ class A2A_INFO_ResponsePacket extends SteamPacket
 	{
 		parent::__construct(SteamPacket::A2A_INFO_RESPONSE_HEADER, $data);
 		
-		$byteBuffer = new ByteBuffer($data);
-		$this->networkVersion = $byteBuffer->getByte();
-		$this->serverName = $byteBuffer->getString();
-		$this->mapName = $byteBuffer->getString();
-		$this->gameDir = $byteBuffer->getString();
-		$this->gameDesc = $byteBuffer->getString();
-		$this->appId = $byteBuffer->getShort();
-		$this->playerNumber = $byteBuffer->getByte();
-		$this->maxPlayers = $byteBuffer->getByte();
-		$this->botNumber = $byteBuffer->getByte();
-		$this->dedicated = chr($byteBuffer->getByte());
-		$this->operatingSystem = chr($byteBuffer->getByte());
-		$this->passwordProtected = $byteBuffer->getByte() == 1;
-		$this->secureServer = $byteBuffer->getByte() == 1;
-		$this->gameVersion = $byteBuffer->getString();
-		$extraDataFlag = $byteBuffer->getByte();
+		$this->networkVersion = $this->contentData->getByte();
+		$this->serverName = $this->contentData->getString();
+		$this->mapName = $this->contentData->getString();
+		$this->gameDir = $this->contentData->getString();
+		$this->gameDesc = $this->contentData->getString();
+		$this->appId = $this->contentData->getShort();
+		$this->playerNumber = $this->contentData->getByte();
+		$this->maxPlayers = $this->contentData->getByte();
+		$this->botNumber = $this->contentData->getByte();
+		$this->dedicated = chr($this->contentData->getByte());
+		$this->operatingSystem = chr($this->contentData->getByte());
+		$this->passwordProtected = $this->contentData->getByte() == 1;
+		$this->secureServer = $this->contentData->getByte() == 1;
+		$this->gameVersion = $this->contentData->getString();
+		$extraDataFlag = $this->contentData->getByte();
 		
 		if($extraDataFlag & 0x80)
 		{
-			$this->serverPort = $byteBuffer->getShort();
+			$this->serverPort = $this->contentData->getShort();
 		}
 		
 		if($extraDataFlag & 0x40)
 		{
-		  $this->tvPort = $byteBuffer->getShort();
-		  $this->tvName = $byteBuffer->getString();
+		  $this->tvPort = $this->contentData->getShort();
+		  $this->tvName = $this->contentData->getString();
 		}
 		
 	 if($extraDataFlag & 0x20)
     {
-      $this->serverTags = $byteBuffer->getString();
+      $this->serverTags = $this->contentData->getString();
     }
 	}
 	

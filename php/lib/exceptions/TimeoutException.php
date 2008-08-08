@@ -3,22 +3,16 @@
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * @subpackage TimeoutException
  * @version $Id$
  */
 
 /**
  * @package Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * @subpackage TimeoutException
  */
-class A2A_PING_RequestPacket extends SteamPacket
-{	
-	/**
-	 * 
-	 */
-	public function __construct()
-	{
-		parent::__construct(SteamPacket::A2A_PING_REQUEST_HEADER);
-	}
+class TimeoutException extends Exception
+{
+	
 }
 ?>

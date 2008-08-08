@@ -1,14 +1,14 @@
 <?php
 /**
  * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD Lic$
- * @package Steam Interface Package (PHP)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD Lic$
+ * @package Steam Condenser (PHP)
  * @subpackage ByteBuffer
  * @version $Id$
  */
 
 /**
- * @package Steam Interface Package (PHP)
+ * @package Steam Condenser (PHP)
  * @subpackage ByteBuffer
  */
 class ByteBuffer
@@ -21,25 +21,69 @@ class ByteBuffer
   /**
    * @var int
    */
-  private $pointer;
+  private $limit;
+  
+  /**
+   * @var int
+   */
+  private $mark;
+  
+  /**
+   * @var int
+   */
+  private $position;
+  
+  public static function allocate($length)
+  {
+  	return new ByteBuffer(str_repeat("\0", 1400));
+  }
+  
+  public static function wrap($byteArray)
+  {
+  	return new ByteBuffer($byteArray);
+  }
 
   /**
    * @param byte[] $byteArray
    */
-  public function __construct($byteArray)
+  protected function __construct($byteArray)
   {
     $this->byteArray = $byteArray;
-    $this->pointer = 0;
+    $this->capacity = strlen($byteArray);
+    $this->limit = $this->capacity;
+    $this->position = 0;
+    $this->mark = -1;
+  }
+  
+  public function _array()
+  {
+  	return $this->byteArray;
+  }
+  
+  public function clear()
+  {
+  	$this->limit = $this->capacity;
+  	$this->position = 0;
+  	$this->mark = -1;
   }
   
   /**
    * @param int $length
    * @return mixed
    */
-  public function get($length)
+  public function get($length = null)
   {
-    $data = substr($this->byteArray, $this->pointer, $length);
-    $this->pointer += $length;
+  	if($length == null)
+  	{
+  		$length = $this->limit - $this->position;
+  	}
+  	elseif($length > $this->remaining())
+  	{
+  		throw new Exception();
+  	}
+  	
+    $data = substr($this->byteArray, $this->position, $length);
+    $this->position += $length;
     return $data;
   }
   
@@ -51,6 +95,15 @@ class ByteBuffer
     return ord($this->get(1));
   }
 
+  /**
+   * @return long
+   */
+  public function getLong()
+  {
+  	$data = unpack("V", $this->get(4));
+  	return $data[1];
+  }
+  
   /**
    * @return short
    */  
@@ -65,7 +118,57 @@ class ByteBuffer
    */
   public function getString()
   {
+  	$zeroByteIndex = strpos($this->byteArray, "\0");
+  	if($zeroByteIndex === false)
+  	{
+  		return "";
+  	}
+  	else
+  	{
+  		$dataString = $this->get($zeroByteIndex - $this->position());
+  		$this->position ++;
+  		return $dataString;
+  	}
     return $this->get(strpos($this->byteArray, "\0", $this->pointer) - $this->pointer + 1);
+  }
+  
+  public function limit($newLimit = null)
+  {
+  	if($newLimit == null)
+  	{
+  		return $this->limit();
+  	}
+  	else
+  	{
+  	 $this->limit = $newLimit;
+  	}
+  }
+  
+  public function position()
+  {
+  	return $this->position;
+  }
+  
+  public function put($sourceByteArray)
+  {
+  	$newPosition = min($this->remaining(), strlen($sourceByteArray));
+  	$this->byteArray = substr_replace($this->byteArray, $sourceByteArray, $this->position, $newPosition);
+  	$this->position = $newPosition;
+  	
+  	return $this;
+  }
+  
+  public function remaining()
+  {
+  	return $this->limit - $this->position;
+  }
+  
+  public function rewind()
+  {
+  	$this->mark = -1;
+  	$this->position = 0;
+  	
+  	return $this;
   }
 }
 ?>

@@ -1,14 +1,14 @@
 <?php
 /**
  * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD License
- * @package Source Interface Package (PHP)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package Source Condenser (PHP)
  * @subpackage InetAddress
  * @version $Id$
  */
 
 /**
- * @package Source Interface Package (PHP)
+ * @package Source Condenser (PHP)
  * @since v0.1
  * @subpackage InetAddress
  */

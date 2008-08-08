@@ -1,18 +1,18 @@
 <?php
 /**
  * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php Modified BSD License
- * @package Steam Interface Package (PHP)
- * @subpackage SourceServer
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package Steam Condenser (PHP)
+ * @subpackage GameServer
  * @version $Id$
  */
 
 /**
- * @package Steam Interface Package (PHP)
- * @subpackage SourceServer
+ * @package Steam Condenser (PHP)
+ * @subpackage GameServer
  * @todo Server has to recognize incoming packets
  */
-class SourceServer
+class GameServer
 {
 	/**
 	 * @var int
@@ -42,21 +42,19 @@ class SourceServer
 	/**
 	 * @var SteamSocket
 	 */
-	private $socket;
+	protected $socket;
 	
 	/**
 	 * @param InetAddress $serverIP
 	 * @param int $portNumber The listening port of the server, defaults to 27015
 	 * @since v0.1
 	 */
-	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
+	public function __construct($portNumber = 27015)
 	{
-		if(!is_numeric($portNumber) || $portNumber <= 0)
+		if(!is_numeric($portNumber) || $portNumber <= 0 || $portNumber > 65535)
 		{
-			throw new Exception("The listening port of the server has to be a number greater than 0.");
+			throw new Exception("The listening port of the server has to be a number greater than 0 and less than 65536.");
 		}
-		
-		$this->socket = new SteamSocket($ipAddress, $portNumber);
 	}
 	
 	/**
