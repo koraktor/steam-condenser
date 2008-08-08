@@ -3,13 +3,13 @@
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * @subpackage A2A_INFO_RequestPacket
  * @version $Id$
  */
 
 /**
  * @package Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * @subpackage A2A_INFO_RequestPacket
  */
 class A2A_INFO_RequestPacket extends SteamPacket
 {	

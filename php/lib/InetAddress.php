@@ -9,7 +9,6 @@
 
 /**
  * @package Source Condenser (PHP)
- * @since v0.1
  * @subpackage InetAddress
  */
 class InetAddress
@@ -18,7 +17,7 @@ class InetAddress
 	 * This array saves the octets of the IP address
 	 * @var int[4]
 	 */
-	private $octets = array(127, 0, 0, 1);
+	private $inetAddress = "127.0.0.1";
 	
 	/**
 	 * @param String $inetAddress
@@ -31,21 +30,7 @@ class InetAddress
 			throw new Exception("Parameter has to be a String.");
 		}
 		
-		$octets = explode(".", $inetAddress);
-		if(sizeof($octets) != 4)
-		{
-			throw new Exception("Wrong formatted IP address.");
-		}
-		
-		foreach($octets as $octet)
-		{
-			if(!is_numeric($octet) | $octet < 0 || $octet > 255)
-			{
-				throw new Exception("Wrong formatted IP address.");
-			}
-		}
-		
-		$this->octets = $octets;
+		$this->inetAddress = gethostbyname($inetAddress);
 	}
 	
 	/**
@@ -53,7 +38,7 @@ class InetAddress
 	 */
 	public function __toString()
 	{
-		return implode(".", $this->octets);
+		return $this->inetAddress;
 	}
 }
 ?>

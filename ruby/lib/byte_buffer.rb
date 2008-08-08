@@ -58,6 +58,8 @@ class ByteBuffer
   def get(length = nil)
     if length == nil
       length = @limit - @position
+    elsif length > self.remaining
+      BufferUnderflowException.new
     end
     
     data = @byte_array[@position, length]
@@ -105,11 +107,7 @@ class ByteBuffer
   end
   
   def put(source_byte_array)
-    if source_byte_array.length > self.remaining
-      new_position = self.remaining
-    else
-      new_position = source_byte_array.length
-    end
+    new_position = %w{source_byte_array.length self.remaining}.min
 
     @byte_array[@position, new_position] = source_byte_array
     @position = new_position

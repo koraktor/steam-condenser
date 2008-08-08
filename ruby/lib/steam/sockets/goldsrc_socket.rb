@@ -25,7 +25,7 @@ class GoldSrcSocket < SteamSocket
         # Parsing of split packet headers
         request_id = @buffer.get_long
         packet_number_and_count = @buffer.get_byte.to_i
-        packet_count = packet_number_and_count & 15
+        packet_count = packet_number_and_count & 0xF
         packet_number = (packet_number_and_count >> 4) + 1
 
         # Omit additional header on the first packet

@@ -27,24 +27,14 @@ class A2A_PLAYER_ResponsePacket extends SteamPacket
 		{
 			throw new Exception("Wrong formatted A2A_PLAYER response packet.");
 		}
-		parent::__construct(SteamPacket::A2A_PLAYER_RESPONSE_HEADER);
+		parent::__construct(SteamPacket::A2A_PLAYER_RESPONSE_HEADER, $contentData);
 		
-		$numberOfPlayers = hexdec(bin2hex($contentData[0]));
-		$contentData = substr($contentData, 1);
+		$this->contentData->getByte();
 		
-		while(strlen($contentData) > 0)
+		while($this->contentData->remaining() > 0)
 		{
-			$zeroByte = strpos($contentData, 0x00);
-			$endByte = $zeroByte + 8;
-			$playerData = unpack("cplayerId/a{$zeroByte}playerName/VplayerPoints/fplayerConnectTime", $contentData);
-			$contentData = substr($contentData, $endByte + 1);
-			
-			$this->playerArray[] = new SteamPlayer(
-				intval($playerData["playerId"]),
-				$playerData["playerName"],
-				intval($playerData["playerPoints"]),
-				floatval($playerData["playerConnectTime"])
-			);
+			$playerData = array($this->contentData->getByte(), $this->contentData->getString(), $this->contentData->getLong(), $this->contentData->getFloat());
+      $this->playerArray[$playerData[0]] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);			
 		}
 	}
 	

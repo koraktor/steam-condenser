@@ -18,6 +18,11 @@
 class Socket
 {
 	/**
+	 * @var boolean
+	 */
+	private $isBlocking = true;
+	
+	/**
 	 * The IP address the socket is connected to
 	 * @var InetAddress
 	 */
@@ -56,10 +61,15 @@ class Socket
 		$this->socketsEnabled = extension_loaded("sockets");
 	}
 	
+  public function __desctruct()
+  {
+  	$this->close();
+  }
+	
 	/**
 	 * Closes the socket
 	 */
-	public function __destruct()
+	public function close()
 	{
 		if($this->socketsEnabled)
 		{
@@ -83,6 +93,16 @@ class Socket
         $errorCode = socket_last_error($this->socket);
         throw new Exception("Could not create socket: " . socket_strerror($errorCode));
       }
+      socket_connect($this->socket, $ipAddress, $portNumber);
+      
+      if($this->isBlocking)
+      {
+        socket_set_block($this->socket);
+      }
+      else
+      {
+        socket_set_nonblock($this->socket);
+      }
     }
     else
     {
@@ -90,6 +110,7 @@ class Socket
       {
         throw new Exception("Could not create socket.");
       }
+      stream_set_blocking($this->socket, $doBlock);
     }
 	}
 	
@@ -180,12 +201,14 @@ class Socket
 	{
 	 if($this->socketsEnabled)
     {
-      return socket_read($this->socket, $length, PHP_BINARY_READ);
+      $data = socket_read($this->socket, $length, PHP_BINARY_READ);
     }
     else
     {
-      return fread($this->socket, $length);
+      $data = fread($this->socket, $length);
     }
+    
+    return $data;
 	}
 	
 	/**
@@ -199,12 +222,14 @@ class Socket
     
     if($this->socketsEnabled)
     {
-    	return socket_select($read, $write, $except, $timeout);
+    	$select = socket_select($read, $write, $except, $timeout);
     }
     else
     {
-    	return stream_select($read, $write, $except, $timeout);
+    	$select = stream_select($read, $write, $except, $timeout);
     }
+    
+    return $select > 0;
 	}
 	
 	/**
@@ -212,8 +237,6 @@ class Socket
 	 */
 	public function send($data)
 	{
-		debug("Sending data: " . bin2hex($data));
-	
 		if($this->socketsEnabled)
 		{
 			$sendResult = socket_sendto($this->socket, $data, strlen($data), 0, $this->ipAddress, $this->portNumber);
@@ -227,6 +250,22 @@ class Socket
 		{
 			throw new Exception("Could not send data.");
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public function setBlock($doBlock)
+	{
+		$this->isBlocking = $doBlock;
+	}
+	
+	/**
+	 * 
+	 */
+	public function socket()
+	{
+		return $this->socket;
 	}
 }
 ?>

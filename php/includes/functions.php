@@ -24,7 +24,7 @@ function autoloadLibrary($className, $baseDirectory = null)
 {
 	if($baseDirectory == null)
 	{
-		$baseDirectory = dirname($_SERVER["SCRIPT_NAME"]) . "/lib";
+		$baseDirectory = dirname(dirname(__FILE__)) . "/lib";
 	}
 	
 	$libraryPath = "$baseDirectory/$className.php";

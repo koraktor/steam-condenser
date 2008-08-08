@@ -41,6 +41,7 @@ class DatagramChannel
 	
 	public function configureBlocking($doBlock)
 	{
+    $this->socket->setBlock($doBlock);
 	}
 	
 	public function read(ByteBuffer $destinationBuffer)

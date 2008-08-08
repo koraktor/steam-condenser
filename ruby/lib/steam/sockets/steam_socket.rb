@@ -50,7 +50,7 @@ class SteamSocket
   end
   
   def send(data_packet)
-    debug "Sending dataü packet of type \"#{data_packet.class.to_s}\"."
+    debug "Sending data packet of type \"#{data_packet.class.to_s}\"."
     
     @buffer = ByteBuffer.wrap data_packet.to_s
     @channel.write @buffer

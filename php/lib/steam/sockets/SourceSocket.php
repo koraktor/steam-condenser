@@ -32,22 +32,26 @@ class SourceSocket extends SteamSocket
 				// Omit additional header on the first packet 
 				if($packetNumber == 1)
 				{
-					$this->getLong();
+					$this->buffer->getLong();
 				}
 				$splitPackets[$packetNumber] = $this->buffer->get();
 				
-				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
+				debug("Received packet $packetNumber of $packetCount for request #$requestId");
 				
 				$bytesRead = $this->receivePacket();
 			}
-			while($bytesRead > 0 && $this->getLong() == -2);
+			while($bytesRead > 0 && $this->buffer->getLong() == -2);
 			
-			return SteamPacket::createPacket(implode("", $splitPackets));
+			$packet = SteamPacket::createPacket(implode("", $splitPackets));
 		}
 		else
 		{
-			return SteamPacket::createPacket($this->buffer->get());
+			$packet = SteamPacket::createPacket($this->buffer->get());
 		}
+		
+		debug("Received packet of type \"" . get_class($packet) . "\"");
+		
+		return $packet;
 	}
 }
 ?>

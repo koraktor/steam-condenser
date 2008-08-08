@@ -121,8 +121,6 @@ class GameServer
   end
   
   def to_s
-    p @info_hash["mod_info"]
-    
     return_string = ""
     
     return_string << "Ping: #{@ping}\n"

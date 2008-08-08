@@ -18,41 +18,40 @@ class GoldSrcSocket extends SteamSocket
 	 */
 	public function getReply()
 	{
-		// Read the first packet into the buffer
-		// @todo Use ByteBuffer functionality here
-		$this->readToBuffer(1400);
-		
-		// Check wether it is a split packet
-		if($this->getLong() == -2)
-		{
-			do
-			{
-				$requestId = $this->getLong();
-				$packetCount = $this->getByte();
-				$packetNumber = $this->getByte() + 1;
-				$splitSize = $this->getShort();
-				// Omit additional header on the first packet 
-				if($packetNumber == 1)
-				{
-					$this->getLong();
-				}
-				$splitPackets[$packetNumber] = $this->flushBuffer();
-				
-				if($packetNumber < $packetCount)
-				{
-					$this->readToBuffer(1400);
-				}
-				
-				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
-			}
-			while($packetNumber < $packetCount && $this->getLong() == -2);
-			
-			return SteamPacket::createPacket(implode("", $splitPackets));
-		}
-		else
-		{
-			return SteamPacket::createPacket($this->flushBuffer());
-		}
+    $bytesRead = $this->receivePacket(1400);
+    
+    // Check wether it is a split packet
+    if($this->buffer->getLong() == -2)
+    {
+      do
+      {
+        $requestId = $this->buffer->getLong();
+        $packetCountAndNumber = $this->buffer->getByte();
+        $packetCount = $packetCountAndNumber & 0xF;
+        $packetNumber = ($packetCountAndNumber >> 4) + 1;
+        // Omit additional header on the first packet 
+        if($packetNumber == 1)
+        {
+          $this->buffer->getLong();
+        }
+        $splitPackets[$packetNumber] = $this->buffer->get();
+        
+        debug("Received packet $packetNumber of $packetCount for request #$requestId");
+        
+        $bytesRead = $this->receivePacket();
+      }
+      while($bytesRead > 0 && $this->buffer->getLong() == -2);
+      
+      $packet = SteamPacket::createPacket(implode("", $splitPackets));
+    }
+    else
+    {
+      $packet = SteamPacket::createPacket($this->buffer->get());
+    }
+    
+    debug("Received packet of type \"" . get_class($packet) . "\"");
+    
+    return $packet;
 	}
 }
 ?>

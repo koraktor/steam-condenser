@@ -17,27 +17,27 @@ class GameServer
 	/**
 	 * @var int
 	 */
-	private $challengeNumber;
+	protected $challengeNumber;
 	
 	/**
 	 * @var mixed[]
 	 */
-	private $infoHash;
+	protected $infoHash;
 	
 	/**
 	 * @var int
 	 */
-	private $ping;
+	protected $ping;
 	
 	/**
 	 * @var SteamPlayer[]
 	 */
-	private $playerArray;
+	protected $playerArray;
 	
 	/**
 	 * @var mixed[]
 	 */
-	private $rulesHash;
+	protected $rulesHash;
 	
 	/**
 	 * @var SteamSocket
@@ -62,6 +62,10 @@ class GameServer
    */
 	public function getPing()
 	{
+		if($this->ping == null)
+		{
+			$this->updatePing();
+		}
 		return $this->ping;
 	}
 	
@@ -160,6 +164,57 @@ class GameServer
 	private function sendRequest(SteamPacket $requestData)
 	{
 		$this->socket->send($requestData);
+	}
+	
+	/**
+	 * @return String
+	 */
+	public function __toString()
+	{
+    $returnString = "";
+    
+    $returnString .= "Ping: {$this->ping}\n";
+    $returnString .= "Challenge number: {$this->challengeNumber}\n";
+    
+    if($this->infoHash != null)
+    {
+      $returnString .= "Info:\n";
+      foreach($this->infoHash as $key => $value)
+      {
+      	if(is_array($value))
+      	{
+      		$returnString .= "  {$key}:";
+      		foreach($value as $subKey => $subValue)
+      		{
+      		  $returnString .= " {$subKey} = {$subValue}";
+      		}
+      	}
+      	else
+      	{
+          $returnString .= "  {$key}: {$value}\n";
+      	}
+      }
+    }
+    
+    if($this->playerArray != null)
+    {
+    	$returnString .= "Players:\n";
+      foreach($this->playerArray as $player)
+      {
+        $returnString .= "  {$player}\n";
+      }
+    }
+    
+    if($this->rulesHash != null)
+    {
+      $returnString .= "Rules:\n";
+      foreach($this->rulesHash as $key => $value)
+      {
+        $returnString .= "  {$key}: {$value}\n";
+      }
+    }
+    
+    return $returnString;
 	}
 }
 ?>

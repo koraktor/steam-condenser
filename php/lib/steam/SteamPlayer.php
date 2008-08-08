@@ -16,22 +16,22 @@ class SteamPlayer
 	/**
 	 * @var float
 	 */
-	private $playerConnectTime;
+	private $connectTime;
 	
 	/**
 	 * @var int
 	 */
-	private $playerId;
+	private $id;
 	
 	/**
 	 * @var String
 	 */
-	private $playerName;
+	private $name;
 	
 	/**
 	 * @var int
 	 */
-	private $playerPoints;
+	private $score;
 	
 	/**
 	 * @param int $playerId
@@ -39,32 +39,40 @@ class SteamPlayer
 	 * @param int $playerPoints
 	 * @param float $playerConnectTime 
 	 */
-	public function __construct($playerId, $playerName, $playerPoints, $playerConnectTime)
+	public function __construct($id, $name, $score, $connectTime)
 	{
-		if(!is_int($playerId) || $playerId < 0)
+		if(!is_int($id) || $id < 0)
 		{
 			throw new Exception("Player ID has to be a number greater than or equal 0.");
 		}
 		
-		if(!is_string($playerName))
+		if(!is_string($name))
 		{
 			throw new Exception("Player name has to be a string.");
 		}
 		
-		if(!is_int($playerPoints) || $playerPoints < 0)
+		if(!is_int($score) || $score < 0)
 		{
 			throw new Exception("Player points have to be a number greater than or equal 0.");
 		}
 		
-		if(!is_float($playerConnectTime) || $playerConnectTime < 0)
+		if(!is_float($connectTime))
 		{
-			throw new Exception("Player connection time has to be a number greater than or equal 0.");
+			throw new Exception("Player connection time has to be a floating-point integer.");
 		}
 		
-		$this->playerConnectTime = $playerConnectTime;
-		$this->playerId = $playerId;
-		$this->playerName = $playerName;
-		$this->playerPoints = $playerPoints;
+		$this->connectTime = $connectTime;
+		$this->id = $id;
+		$this->name = $name;
+		$this->score = $score;
+	}
+	
+	/**
+	 * @return String
+	 */
+	public function __toString()
+	{
+		return "#{$this->id} \"{$this->name}\" {$this->score} {$this->connectTime}";
 	}
 }
 ?>

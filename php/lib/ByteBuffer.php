@@ -21,6 +21,11 @@ class ByteBuffer
   /**
    * @var int
    */
+  private $capacity;
+  
+  /**
+   * @var int
+   */
   private $limit;
   
   /**
@@ -73,17 +78,24 @@ class ByteBuffer
    */
   public function get($length = null)
   {
-  	if($length == null)
+  	if($length === null)
   	{
   		$length = $this->limit - $this->position;
   	}
   	elseif($length > $this->remaining())
   	{
-  		throw new Exception();
+  		throw new BufferUnderFlowException();
   	}
   	
     $data = substr($this->byteArray, $this->position, $length);
     $this->position += $length;
+    
+    if($length < 0)
+    {
+    	debug_print_backtrace();
+    	die();
+    }
+    
     return $data;
   }
   
@@ -93,6 +105,15 @@ class ByteBuffer
   public function getByte()
   {
     return ord($this->get(1));
+  }
+  
+  /**
+   * @return float
+   */
+  public function getFloat()
+  {
+  	$data = unpack("f", $this->get(4));
+  	return $data[1];
   }
 
   /**
@@ -118,18 +139,17 @@ class ByteBuffer
    */
   public function getString()
   {
-  	$zeroByteIndex = strpos($this->byteArray, "\0");
+  	$zeroByteIndex = strpos($this->byteArray, "\0", $this->position);
   	if($zeroByteIndex === false)
   	{
   		return "";
   	}
   	else
   	{
-  		$dataString = $this->get($zeroByteIndex - $this->position());
+  		$dataString = $this->get($zeroByteIndex - $this->position);
   		$this->position ++;
   		return $dataString;
   	}
-    return $this->get(strpos($this->byteArray, "\0", $this->pointer) - $this->pointer + 1);
   }
   
   public function limit($newLimit = null)

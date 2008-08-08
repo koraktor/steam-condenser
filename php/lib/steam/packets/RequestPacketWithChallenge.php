@@ -19,7 +19,7 @@ abstract class RequestPacketWithChallenge extends SteamPacket
 	 */
 	public function __toString()
 	{
-	  return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData);;
+	  return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData->_array());
 	}
 }
 ?>

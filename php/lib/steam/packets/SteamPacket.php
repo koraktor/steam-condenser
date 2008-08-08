@@ -13,8 +13,9 @@
  */
 abstract class SteamPacket
 {
+	const A2A_INFO_GOLDSRC_RESPONSE_HEADER = 0x6D;
 	const A2A_INFO_REQUEST_HEADER = 0x54;
-	const A2A_INFO_RESPONSE_HEADER = 0x49;
+	const A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49;
 	const A2A_PING_REQUEST_HEADER = 0x69;
 	const A2A_PING_RESPONSE_HEADER = 0x6A;
 	const A2A_PLAYER_REQUEST_HEADER = 0x55;
@@ -23,6 +24,8 @@ abstract class SteamPacket
 	const A2A_RULES_RESPONSE_HEADER = 0x45;
 	const A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57;
 	const A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
+	const MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31;
+	const MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66;
 	
 	/**
 	 * This variable stores the content of the package
@@ -47,11 +50,14 @@ abstract class SteamPacket
 		
 		switch($header)
 		{
+			case SteamPacket::A2A_INFO_GOLDSRC_RESPONSE_HEADER:
+        return new A2A_INFO_GoldSrcResponsePacket($data);
+			
 			case SteamPacket::A2A_INFO_REQUEST_HEADER:
 				return new A2A_INFO_RequestPacket();
 				
-			case SteamPacket::A2A_INFO_RESPONSE_HEADER:
-				return new A2A_INFO_ResponsePacket($data);
+			case SteamPacket::A2A_INFO_SOURCE_RESPONSE_HEADER:
+				return new A2A_INFO_SourceResponsePacket($data);
 			
 			case SteamPacket::A2A_PING_REQUEST_HEADER:
 				return new A2A_PING_RequestPacket();
@@ -77,8 +83,14 @@ abstract class SteamPacket
 			case SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
 				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket($data);
 				
+			case SteamPacket::MASTER_SERVER_QUERY_REQUEST_HEADER:
+				return new MasterServerQueryRequestPacket($data);
+				
+			case SteamPacket::MASTER_SERVER_QUERY_RESPONSE_HEADER:
+				return new MasterServerQueryResponsePacket($data);
+				
 			default:
-				throw new Exception("Unknown packet with header 0x" . dechex($header) . " received.");
+				throw new PacketFormatException("Unknown packet with header 0x" . dechex($header) . " received.");
 		}
 	}
 	

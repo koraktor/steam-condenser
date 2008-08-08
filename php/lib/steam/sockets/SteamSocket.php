@@ -25,15 +25,20 @@ abstract class SteamSocket
 	
 	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
 	{
-	 $this->channel = DatagramChannel::open();
-	 $this->channel->connect($ipAddress, $portNumber);
-	 $this->channel->configureBlocking(false);	
+    $this->channel = DatagramChannel::open();
+    $this->channel->connect($ipAddress, $portNumber);
+    $this->channel->configureBlocking(false);	
 	}
 	
 	public function __destruct()
 	{
-		$this->channel->close();
+		//$this->channel->close();
 	}
+	
+	protected function createPacket()
+	{
+    return SteamPacket::createPacket($this->buffer->get());
+  }
 	
   /**
    * Abstract getReply() method
@@ -56,7 +61,7 @@ abstract class SteamSocket
   	}
   	else
   	{
-  		if(!$this->channel->socket()->select(1))
+  		if(!$this->channel->socket()->select(5))
   		{
   			throw new TimeoutException();
   		}
@@ -76,7 +81,7 @@ abstract class SteamSocket
 	 */
 	public function send(SteamPacket $dataPacket)
 	{
-		trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
+		debug("Sending packet of type \"" . get_class($dataPacket) . "\"...");
 		
 		$this->buffer = ByteBuffer::wrap($dataPacket->__toString());
 		$this->channel->write($this->buffer);
