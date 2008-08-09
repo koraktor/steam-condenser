@@ -7,6 +7,10 @@
  * @version $Id$
  */
 
+require_once "InetAddress.php";
+require_once "steam/servers/GameServer.php";
+require_once "steam/sockets/SourceSocket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage SourceServer

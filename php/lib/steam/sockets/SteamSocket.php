@@ -7,6 +7,12 @@
  * @version $Id$
  */
 
+require_once "ByteBuffer.php";
+require_once "DatagramChannel.php";
+require_once "InetAddress.php";
+require_once "exceptions/TimeoutException.php";
+require_once "steam/packets/SteamPacket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage SteamSocket

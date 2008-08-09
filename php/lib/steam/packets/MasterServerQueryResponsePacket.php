@@ -10,6 +10,8 @@
  * @version $Id$
  */
 
+require_once "steam/packets/SteamPacket.php";
+
 /**
  * Represents a response of a master server.
  * @package Source Condenser (PHP)

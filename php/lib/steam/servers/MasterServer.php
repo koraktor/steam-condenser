@@ -10,6 +10,10 @@
  * @version $Id$
  */
 
+require_once "InetAddress.php";
+require_once "steam/packets/MasterServerQueryRequestPacket.php";
+require_once "steam/sockets/MasterServerSocket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage MasterServer

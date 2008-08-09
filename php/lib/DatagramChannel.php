@@ -7,6 +7,10 @@
  * @version $Id$
  */
 
+require_once "ByteBuffer.php";
+require_once "InetAddress.php";
+require_once "Socket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage DatagramChannel

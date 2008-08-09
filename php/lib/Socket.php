@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+require_once "InetAddress.php";
+
 /**
  * This class represents a UDP-Socket
  * 

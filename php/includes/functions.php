@@ -8,50 +8,6 @@
  */
 
 /**
- * @param String $className
- */
-function __autoload($className)
-{
-	autoloadLibrary($className);
-}
-
-/**
- * @param String $className
- * @param String $baseDirectory
- * @return String
- */
-function autoloadLibrary($className, $baseDirectory = null)
-{
-	if($baseDirectory == null)
-	{
-		$baseDirectory = dirname(dirname(__FILE__)) . "/lib";
-	}
-	
-	$libraryPath = "$baseDirectory/$className.php";
-	
-	if(file_exists($libraryPath))
-	{
-		require_once($libraryPath);
-		return $libraryPath;
-	}
-	
-	$subDirs = glob("$baseDirectory/*", GLOB_ONLYDIR);
-	
-	foreach($subDirs as $subDir)
-	{
-		$libraryPath = autoloadLibrary($className, $subDir);
-		
-		if($libraryPath != false)
-		{
-			require_once($libraryPath);
-			return $libraryPath;
-		}
-	}
-	
-	return false;
-}
-
-/**
  * @param Exception $exception
  */
 function exceptionHandler(Exception $exception)

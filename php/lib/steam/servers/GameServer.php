@@ -7,6 +7,12 @@
  * @version $Id$
  */
 
+require_once "steam/packets/A2A_INFO_RequestPacket.php";
+require_once "steam/packets/A2A_PING_RequestPacket.php";
+require_once "steam/packets/A2A_PLAYER_RequestPacket.php";
+require_once "steam/packets/A2A_RULES_RequestPacket.php";
+require_once "steam/packets/A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage GameServer

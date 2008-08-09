@@ -7,6 +7,22 @@
  * @version $Id$
  */
 
+require_once "ByteBuffer.php";
+require_once "exceptions/PacketFormatException.php";
+require_once "steam/packets/A2A_INFO_GoldSrcResponsePacket.php";
+require_once "steam/packets/A2A_INFO_RequestPacket.php";
+require_once "steam/packets/A2A_INFO_SourceResponsePacket.php";
+require_once "steam/packets/A2A_PING_RequestPacket.php";
+require_once "steam/packets/A2A_PING_ResponsePacket.php";
+require_once "steam/packets/A2A_PLAYER_RequestPacket.php";
+require_once "steam/packets/A2A_PLAYER_ResponsePacket.php";
+require_once "steam/packets/A2A_RULES_RequestPacket.php";
+require_once "steam/packets/A2A_RULES_ResponsePacket.php";
+require_once "steam/packets/A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.php";
+require_once "steam/packets/A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket.php";
+require_once "steam/packets/MasterServerQueryRequestPacket.php";
+require_once "steam/packets/MasterServerQueryResponsePacket.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage SteamPacket

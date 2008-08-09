@@ -6,17 +6,24 @@
  * @version $Id$
  */
 
-require_once("PHPUnit/Framework.php");
+ini_set("include_path", ini_get("include_path") . ";lib");
+
+require_once "InetAddress.php";
+require_once "steam/servers/GoldSrcServer.php";
+require_once "steam/servers/MasterServer.php";
+require_once "steam/servers/SourceServer.php";
+
+require_once "PHPUnit/Framework.php";
 
 $GLOBALS["debug"] = true;
 
 include("includes/functions.php");
 
 //set_exception_handler("exceptionHandler");
-if(extension_loaded("spl"))
+/*if(extension_loaded("spl"))
 {
 	spl_autoload_register("autoloadLibrary");
-}
+}*/
 
 class Tests extends PHPUnit_Framework_TestCase
 {

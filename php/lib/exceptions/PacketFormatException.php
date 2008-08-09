@@ -10,6 +10,8 @@
  * @version $Id$
  */
 
+require_once "exceptions/SteamCondenserException.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage PacketFormatException

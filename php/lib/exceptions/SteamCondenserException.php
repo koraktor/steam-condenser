@@ -14,7 +14,7 @@
  * @package Steam Condenser (PHP)
  * @subpackage SteamCondenserException
  */
-class SteamCondenserException
+class SteamCondenserException extends Exception
 {
 }
 ?>

@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+require_once "exceptions/BufferUnderFlowException.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage ByteBuffer

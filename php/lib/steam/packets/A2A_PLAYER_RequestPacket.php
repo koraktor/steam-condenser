@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+require_once "steam/packets/RequestPacketWithChallenge.php";
+
 /**
  * @package Steam Condenser (PHP)
  * @subpackage SteamPacket

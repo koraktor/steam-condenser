@@ -10,6 +10,8 @@
  * @version $Id$
  */
 
+require_once "steam/packets/SteamPacket.php";
+
 /**
  * Represents a request sent to a master server.
  * <br /><br />
