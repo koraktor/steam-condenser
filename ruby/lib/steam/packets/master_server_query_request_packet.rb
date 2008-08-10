@@ -29,6 +29,6 @@ class MasterServerQueryRequestPacket < SteamPacket
   end
   
   def to_s
-    return [@header_data, @region_code, @start_ip, @filter].pack "c2Z*Z*"
+    return [@header_data, @region_code, @start_ip, @filter].pack("c2Z*Z*")
   end
 end

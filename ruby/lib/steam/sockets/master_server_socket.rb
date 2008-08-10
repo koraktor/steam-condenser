@@ -13,7 +13,7 @@ class MasterServerSocket < SteamSocket
     self.receive_packet 1500
     
     if @buffer.get_long != -1
-      raise Exception.new "Master query response has wrong packet header."
+      raise Exception.new("Master query response has wrong packet header.")
     end
     
     self.create_packet

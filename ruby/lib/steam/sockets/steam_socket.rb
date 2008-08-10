@@ -65,7 +65,7 @@ class SteamSocket
   def create_packet
     packet_data = @buffer.get 
     
-    return SteamPacket.create_packet packet_data
+    return SteamPacket.create_packet(packet_data)
   end
   
 end

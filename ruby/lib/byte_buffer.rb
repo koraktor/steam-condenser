@@ -19,7 +19,7 @@ class ByteBuffer
   
   # Creates a new buffer from an existing String  
   def self.wrap(byte_array)
-    return ByteBuffer.new byte_array.to_s
+    return ByteBuffer.new(byte_array.to_s)
   end
   
   # 
@@ -107,7 +107,7 @@ class ByteBuffer
   end
   
   def put(source_byte_array)
-    new_position = %w{source_byte_array.length self.remaining}.min
+    new_position = [source_byte_array.length, self.remaining].min
 
     @byte_array[@position, new_position] = source_byte_array
     @position = new_position
