@@ -29,9 +29,18 @@ class SourceSocket extends SteamSocket
 			do
 			{
 				$requestId = $this->buffer->getLong();
+				$isCompressed = $this->packetIsCompressed($requestId);
+				
 				$packetCount = $this->buffer->getByte();
 				$packetNumber = $this->buffer->getByte() + 1;
 				$splitSize = $this->buffer->getShort();
+				
+			  if($isCompressed)
+        {
+          $uncompressedSize = $this->buffer->getShort();
+          $packetChecksum = $this->buffer->getLong();
+        }
+				
 				// Omit additional header on the first packet 
 				if($packetNumber == 1)
 				{
@@ -45,7 +54,14 @@ class SourceSocket extends SteamSocket
 			}
 			while($bytesRead > 0 && $this->buffer->getLong() == -2);
 			
-			$packet = SteamPacket::createPacket(implode("", $splitPackets));
+		  if($isCompressed)
+      {
+        $packet = SteamPacket::reassemblePacket($splitPackets, true, $uncompressedSize, $packetChecksum);
+      }
+      else
+      {
+        $packet = SteamPacket::reassemblePacket($splitPackets);
+      }
 		}
 		else
 		{
@@ -55,6 +71,14 @@ class SourceSocket extends SteamSocket
 		debug("Received packet of type \"" . get_class($packet) . "\"");
 		
 		return $packet;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	private function packetIsCompressed($requestId)
+	{
+		return ($requestId & 0x8000) != 0;
 	}
 }
 ?>

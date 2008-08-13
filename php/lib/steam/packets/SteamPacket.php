@@ -110,6 +110,33 @@ abstract class SteamPacket
 		}
 	}
 	
+  public static function reassemblePacket($splitPackets, $isCompressed = false, $uncompressedSize = 0, $packetChecksum = 0)
+  {
+  	$packetData = "";
+  	
+    foreach($splitPackets as $splitPacket) 
+    {
+      if($splitPacket == null)
+      {
+        throw new UncompletePacketException();
+      }
+      
+      $packetData += $splitPacket;
+    }
+    
+    if($isCompressed)
+    {
+      $packetData = bzdecompress($packetData);
+      
+      if(crc32($packetData) != $packetChecksum)
+      {
+        throw new PacketFormatException("CRC32 checksum mismatch of uncompressed packet data.");
+      }
+    }
+    
+    return self::createPacket($packetData);
+  }
+	
 	/**
 	 * @param byte $headerData
 	 * @param byte[] $contentData
