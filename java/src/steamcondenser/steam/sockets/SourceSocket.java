@@ -69,7 +69,7 @@ public class SourceSocket extends SteamSocket
 				}
 				
 				// Caching of split packet Data
-				splitData = new byte[this.buffer.remaining()];
+				splitData = new byte[splitSize];
 				this.buffer.get(splitData);
 				splitPackets.setSize(packetCount);
 				splitPackets.set(packetNumber - 1, splitData);

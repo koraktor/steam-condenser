@@ -36,7 +36,8 @@
   	</copy>
     <jar jarfile="${dist.path}/steam-condenser-r${revision}.jar">
     	<fileset dir="${build.path}" />
-    	<fileset file="../LICENSE" />
+    	<fileset file="LICENSE" />
+    	<fileset file="README" />
   	</jar>
   	<delete dir="${build.path}/${doc.dir}" />
   </target>
