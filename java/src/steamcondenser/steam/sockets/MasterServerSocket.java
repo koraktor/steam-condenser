@@ -18,7 +18,7 @@ import steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class MasterServerSocket extends SteamSocket
+public class MasterServerSocket extends QuerySocket
 {
 	public MasterServerSocket(InetAddress ipAddress, int portNumber)
 		throws IOException

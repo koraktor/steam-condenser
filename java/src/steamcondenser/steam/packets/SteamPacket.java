@@ -145,7 +145,7 @@ abstract public class SteamPacket
 	
 	public byte[] getBytes()
 	{
-		byte[] bytes = new byte[this.contentData.getLength() + 5];
+	    byte[] bytes = new byte[this.contentData.getLength() + 5];
 	    bytes[0] = (byte) 0xFF;
 	    bytes[1] = (byte) 0xFF;
 	    bytes[2] = (byte) 0xFF;

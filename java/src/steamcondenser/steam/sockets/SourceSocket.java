@@ -19,7 +19,7 @@ import steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class SourceSocket extends SteamSocket
+public class SourceSocket extends QuerySocket
 {
 	public SourceSocket(InetAddress ipAddress, int portNumber)
 		throws IOException

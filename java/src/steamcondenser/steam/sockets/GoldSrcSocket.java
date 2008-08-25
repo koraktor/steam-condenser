@@ -18,7 +18,7 @@ import steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class GoldSrcSocket extends SteamSocket
+public class GoldSrcSocket extends QuerySocket
 {
 	public GoldSrcSocket(InetAddress ipAddress, int portNumber)
 		throws IOException

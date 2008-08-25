@@ -5,6 +5,7 @@
 
 package steamcondenser;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Random;
@@ -89,5 +90,39 @@ public class Tests
 		server.updateRulesInfo();
 		
 		System.out.println(server);
+	}
+	
+	/**
+	 * This test tries to run the "status" command over RCON on a GoldSrc server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
+	@Test
+	public void rconGoldSrcServer()
+		throws IOException, TimeoutException, SteamCondenserException
+	{
+		GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("carcharoth"), 27015);
+		server.rconAuth("test");
+		String rconReply = server.rconExec("status");
+		
+		System.out.println(rconReply);
+	}
+	
+	/**
+	 * This test tries to run the "status" command over RCON on a Source server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
+	@Test
+	public void rconSourceServer()
+		throws IOException, TimeoutException, SteamCondenserException
+	{
+		SourceServer server = new SourceServer(InetAddress.getByName("carcharoth"), 27015);
+		server.rconAuth("test");
+		String rconReply = server.rconExec("status");
+		
+		System.out.println(rconReply);
 	}
 }

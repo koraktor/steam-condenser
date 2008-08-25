@@ -23,7 +23,7 @@ import steamcondenser.steam.packets.A2A_RULES_ResponsePacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_RequestPacket;
 import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket;
 import steamcondenser.steam.packets.SteamPacket;
-import steamcondenser.steam.sockets.SteamSocket;
+import steamcondenser.steam.sockets.QuerySocket;
 
 /**
  * @author Sebastian Staudt
@@ -37,15 +37,18 @@ abstract public class GameServer
 	
 	protected ArrayList<SteamPlayer> playerArray;
 	
+	protected int rconRequestId;
+	
 	protected HashMap<String, String> rulesHash;
 	
 	protected HashMap<String, Object> serverInfo;
 	
-	protected SteamSocket socket;
+	protected QuerySocket socket;
 	
 	/**
 	 * Checks if the port number is valid
 	 * @param portNumber The port number of the server
+	 * @throws IllegalArgumentException 
 	 */
 	protected GameServer(int portNumber)
 		throws IllegalArgumentException
@@ -102,6 +105,12 @@ abstract public class GameServer
 		this.updateServerInfo();
 		this.updateChallengeNumber();
 	}
+	
+	abstract public boolean rconAuth(String password)
+		throws IOException, TimeoutException, SteamCondenserException;
+	
+	abstract public String rconExec(String command)
+		throws IOException, TimeoutException, SteamCondenserException;
 	
 	/**
 	 * Get the challenge number from the server 
@@ -171,12 +180,24 @@ abstract public class GameServer
 		this.serverInfo = ((A2A_INFO_ResponsePacket) this.getReply()).getInfoHash();
 	}
 	
+	/**
+	 * Returns a packet sent by the server in response to a query
+	 * @return Packet recieved from the server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException
+	 */
 	private SteamPacket getReply()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
 		return this.socket.getReply();
 	}
 	
+	/**
+	 * Sends a query packet to the server
+	 * @param requestData The query packet to send to the server
+	 * @throws IOException
+	 */
 	private void sendRequest(SteamPacket requestData)
 		throws IOException
 	{
@@ -185,6 +206,7 @@ abstract public class GameServer
 	
 	/**
 	 * Returns a String representation of this server
+	 * @return A human readable version of this server's information
 	 */
 	public String toString()
 	{

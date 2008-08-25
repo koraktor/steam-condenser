@@ -21,9 +21,21 @@ public class GoldSrcServer extends GameServer
 	 * @param portNumber The port number of the server
 	 */
 	public GoldSrcServer(InetAddress ipAddress, int portNumber)
-		throws IOException, Exception
+		throws IOException
 	{
 		super(portNumber);
 		this.socket = new GoldSrcSocket(ipAddress, portNumber);
+	}
+
+	public boolean rconAuth(String password)
+	{
+	    // TODO
+	    return false;
+	}
+
+	public String rconExec(String command)
+	{
+	    // TODO
+	    return "";
 	}
 }

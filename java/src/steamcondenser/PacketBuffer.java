@@ -6,6 +6,7 @@
 package steamcondenser;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * A convenience class wrapping around ByteBuffer, for easily retrieving
@@ -89,6 +90,12 @@ public class PacketBuffer
 		this.byteBuffer.position(this.byteBuffer.position() + dataString.getBytes().length + 1);
 		
 		return dataString;
+	}
+	
+	public PacketBuffer order(ByteOrder byteOrder)
+	{
+	    this.byteBuffer.order(byteOrder);
+	    return this;
 	}
 	
 	/**
