@@ -23,7 +23,7 @@ public class RCONSocket extends SteamSocket
 	public RCONPacket createPacket()
 		throws PacketFormatException
 	{
-	    	PacketBuffer packetBuffer = new PacketBuffer(this.buffer.array());
+	    PacketBuffer packetBuffer = new PacketBuffer(this.buffer.array());
 	    
 		int packetSize = Integer.reverseBytes(packetBuffer.getInt());
 		int requestId = Integer.reverseBytes(packetBuffer.getInt());
