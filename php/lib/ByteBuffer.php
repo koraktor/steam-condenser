@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-require_once "exceptions/BufferUnderFlowException.php";
+require_once "exceptions/BufferUnderflowException.php";
 
 /**
  * @package Steam Condenser (PHP)
