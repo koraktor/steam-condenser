@@ -11,8 +11,12 @@ import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import steamcondenser.NothingReceivedException;
 import steamcondenser.SteamCondenserException;
+import steamcondenser.UncompletePacketException;
 import steamcondenser.steam.packets.SteamPacket;
+import steamcondenser.steam.packets.rcon.RCONGoldSrcRequestPacket;
+import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
  * @author Sebastian Staudt
@@ -20,12 +24,26 @@ import steamcondenser.steam.packets.SteamPacket;
  */
 public class GoldSrcSocket extends QuerySocket
 {
+	private int rconChallenge = 0;
+	
+	/**
+	 * 
+	 * @param ipAddress
+	 * @param portNumber
+	 * @throws IOException
+	 */
 	public GoldSrcSocket(InetAddress ipAddress, int portNumber)
 		throws IOException
 	{
 		super(ipAddress, portNumber);
 	}
 	
+	/**
+	 * @return The SteamPacket received from the server
+	 * @throws IOException
+	 * @throws SteamCondenserException
+	 * @throws TimeoutException
+	 */
 	public SteamPacket getReply()
 		throws IOException, SteamCondenserException, TimeoutException
 	{
@@ -81,5 +99,53 @@ public class GoldSrcSocket extends QuerySocket
 		Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 		
 		return packet;
+	}
+	
+	/**
+	 * Sends a RCON command with the specified password to a GoldSrc server
+	 * @param password RCON password to use
+	 * @param command RCON command to send to the server
+	 * @return The response send by the server
+	 * @throws IOException
+	 * @throws TimeoutException
+	 * @throws SteamCondenserException 
+	 * @throws UncompletePacketException 
+	 */
+	public String rconExec(String password, String command)
+		throws IOException, TimeoutException, SteamCondenserException
+	{
+		if(this.rconChallenge == 0)
+		{
+			this.rconGetChallenge();
+		}
+		
+		this.rconSend("rcon " + this.rconChallenge + " " + password + " "+ command);
+		
+		return ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+	}
+	
+	/**
+	 * @throws SteamCondenserException 
+	 * @throws NumberFormatException 
+	 * 
+	 */
+	public void rconGetChallenge()
+		throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
+	{
+		this.rconSend("challenge rcon");
+		int bytesRead = this.receivePacket(1400);
+		
+		if(bytesRead == 0)
+		{
+			throw new NothingReceivedException();
+		}
+		
+		this.rconChallenge = Integer.parseInt(new String(this.buffer.array()).substring(19, 29));
+	}
+	
+	private void rconSend(String command)
+		throws IOException
+	{
+		this.send(new RCONGoldSrcRequestPacket(command));
 	}
 }

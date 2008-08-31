@@ -17,6 +17,7 @@ import steamcondenser.PacketBuffer;
 import steamcondenser.PacketFormatException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.UncompletePacketException;
+import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
  * @author Sebastian Staudt
@@ -37,6 +38,7 @@ abstract public class SteamPacket
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
 	public static final byte MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31;
 	public static final byte MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66;
+	public static final byte RCON_GOLDSRC_RESPONSE_HEADER = 0x6c;
 	
 	protected PacketBuffer contentData;
 	protected byte headerData;
@@ -85,6 +87,9 @@ abstract public class SteamPacket
 				
 			case SteamPacket.MASTER_SERVER_QUERY_RESPONSE_HEADER:
 				return new MasterServerQueryResponsePacket(data);
+				
+			case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
+				return new RCONGoldSrcResponsePacket(data);
 				
 			default:
 				throw new PacketFormatException("Unknown packet with header 0x" + Integer.toHexString(header) + " received.");
