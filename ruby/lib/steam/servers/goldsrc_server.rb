@@ -16,4 +16,13 @@ class GoldSrcServer < GameServer
     @socket = GoldSrcSocket.new ip_address, port_number
   end
   
+  def rcon_auth(password)
+    @rcon_password = password
+    return true
+  end
+  
+  def rcon_exec(command)
+    return @socket.rcon_exec(@rcon_password, command)
+  end
+  
 end

@@ -21,6 +21,7 @@ require "steam/packets/a2a_serverquery_getchallenge_request_packet"
 require "steam/packets/a2a_serverquery_getchallenge_response_packet"
 require "steam/packets/master_server_query_request_packet"
 require "steam/packets/master_server_query_response_packet"
+require "steam/packets/rcon/rcon_goldsrc_response"
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket
@@ -37,6 +38,8 @@ class SteamPacket
   A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41
   MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31
   MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66
+  RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39
+  RCON_GOLDSRC_RESPONSE_HEADER = 0x6c
 
   # Creates a new packet object based on the header byte of the given raw data
   def self.create_packet(raw_data)
@@ -70,6 +73,8 @@ class SteamPacket
         return MasterServerQueryRequestPacket.new(data)
       when SteamPacket::MASTER_SERVER_QUERY_RESPONSE_HEADER
         return MasterServerQueryResponsePacket.new(data)
+      when SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
+        return RCONGoldSrcResponse.new(data)
       else
         raise Exception.new("Unknown packet with header 0x#{header.to_s 16} received.")
     end

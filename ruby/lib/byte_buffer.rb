@@ -5,6 +5,8 @@
 #
 # $Id$
 
+require "exceptions/buffer_underflow_exception"
+
 # The ByteBuffer class derived from Java's java.nio.ByteBuffer
 class ByteBuffer
 
@@ -93,6 +95,10 @@ class ByteBuffer
       @position += 1    
       return data_string
     end
+  end
+  
+  def length
+    return @byte_array.length
   end
   
   def remaining

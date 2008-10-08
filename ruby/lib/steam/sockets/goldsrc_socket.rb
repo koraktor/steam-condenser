@@ -6,6 +6,7 @@
 # $Id$
 
 require "byte_buffer"
+require "steam/packets/rcon/rcon_goldsrc_request"
 require "steam/sockets/steam_socket"
 
 # The SourceSocket class is a sub class of SteamSocket respecting the
@@ -53,6 +54,31 @@ class GoldSrcSocket < SteamSocket
     debug "Got reply of type \"#{packet.class.to_s}\"."
     
     return packet
+  end
+  
+  def rcon_exec(password, command)
+    if @rcon_challenge.nil?
+      self.rcon_get_challenge
+    end
+    
+    self.rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
+    
+    return self.get_reply.get_response
+  end
+  
+  def rcon_get_challenge
+    self.rcon_send "challenge rcon"
+    bytes_read = self.receive_packet 1400
+    
+    if bytes_read == 0
+      raise NothingReceivedException.new
+    end
+    
+    @rcon_challenge = @buffer.array[19..29].to_i
+  end
+  
+  def rcon_send(command)
+    self.send RCONGoldSrcRequest.new(command)
   end
   
 end

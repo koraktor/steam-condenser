@@ -20,6 +20,16 @@ import steamcondenser.steam.packets.rcon.RCONPacket;
 
 public class RCONSocket extends SteamSocket
 {
+	public RCONSocket(InetAddress ipAddress, int portNumber)
+		throws IOException
+	{
+		super(ipAddress, portNumber);
+		
+		this.buffer = ByteBuffer.allocate(1500);
+		
+		this.channel = SocketChannel.open();
+	}
+	
 	public RCONPacket createPacket()
 		throws PacketFormatException
 	{
@@ -41,16 +51,6 @@ public class RCONSocket extends SteamSocket
 		}
 	}
 	
-	public RCONSocket(InetAddress ipAddress, int portNumber)
-		throws IOException
-	{
-		super(ipAddress, portNumber);
-		
-		this.buffer = ByteBuffer.allocate(1500);
-		
-		this.channel = SocketChannel.open();
-	}
-	
 	public void send(RCONPacket dataPacket)
 		throws IOException
 	{
@@ -66,7 +66,7 @@ public class RCONSocket extends SteamSocket
 	public RCONPacket getReply()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-	    	this.buffer = ByteBuffer.allocate(1400);
+	    this.buffer = ByteBuffer.allocate(1400);
 		((SocketChannel) this.channel).read(this.buffer);
 		
 		return this.createPacket();

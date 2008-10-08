@@ -39,7 +39,8 @@ class Tests < Test::Unit::TestCase
   def test_random_goldsrc_server
     assert_nothing_raised do
       master_server = MasterServer.new MasterServer::GOLDSRC_MASTER_SERVER
-      server = GoldSrcServer.new *master_server.get_servers.choice
+      servers = master_server.get_servers
+      server = GoldSrcServer.new *servers[rand(servers.length)]
       server.init
       server.update_player_info
       server.update_rules_info
@@ -51,12 +52,32 @@ class Tests < Test::Unit::TestCase
   def test_random_source_server
     assert_nothing_raised do
       master_server = MasterServer.new MasterServer::SOURCE_MASTER_SERVER
-      server = SourceServer.new *master_server.get_servers.choice
+      servers = master_server.get_servers
+      server = SourceServer.new *servers[rand(servers.length)]
       server.init
       server.update_player_info
       server.update_rules_info
       
       print server.to_s
+    end
+  end
+  
+  def test_rcon_goldsrc_server
+    assert_nothing_raised do
+      server = GoldSrcServer.new IPAddr.new("192.168.0.2")
+      server.rcon_auth "test"
+      rcon_reply = server.rcon_exec "status"
+      print "#{rcon_reply}\n"
+    end
+  end
+  
+  def test_rcon_source_server
+    assert_nothing_raised do
+      server = SourceServer.new IPAddr.new("127.0.0.1")
+      if server.rcon_auth "test"
+        rcon_reply = server.rcon_exec "status"
+        print "#{rcon_reply}\n"
+      end
     end
   end
   

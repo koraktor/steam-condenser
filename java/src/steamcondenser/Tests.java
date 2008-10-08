@@ -102,7 +102,7 @@ public class Tests
 	public void rconGoldSrcServer()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("carcharoth"), 27015);
+		GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
 		server.rconAuth("test");
 		String rconReply = server.rconExec("status");
 		
@@ -119,10 +119,11 @@ public class Tests
 	public void rconSourceServer()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		SourceServer server = new SourceServer(InetAddress.getByName("carcharoth"), 27015);
-		server.rconAuth("test");
-		String rconReply = server.rconExec("status");
-		
-		System.out.println(rconReply);
+		SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
+		if(server.rconAuth("test"))
+		{
+			String rconReply = server.rconExec("status");
+			System.out.println(rconReply);
+		}
 	}
 }

@@ -21,6 +21,8 @@ class SteamSocket
     @channel = DatagramChannel.open
     @channel.connect *args
     @channel.configure_blocking false
+    
+    @remote_socket = Socket.getaddrinfo args[0].to_s, args[1]
   end
 
   # Abstract get_reply method

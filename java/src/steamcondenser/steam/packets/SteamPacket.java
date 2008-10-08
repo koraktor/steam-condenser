@@ -38,6 +38,7 @@ abstract public class SteamPacket
 	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
 	public static final byte MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31;
 	public static final byte MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66;
+	public static final byte RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39;
 	public static final byte RCON_GOLDSRC_RESPONSE_HEADER = 0x6c;
 	
 	protected PacketBuffer contentData;

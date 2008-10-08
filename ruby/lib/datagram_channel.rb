@@ -53,6 +53,10 @@ class DatagramChannel
   end
   
   def write(source_buffer)
+    if !source_buffer.is_a? ByteBuffer
+      raise ArgumentError
+    end
+    
     return @socket.send(source_buffer.get, 0)
   end
   
