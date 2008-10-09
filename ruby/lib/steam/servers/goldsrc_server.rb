@@ -5,7 +5,6 @@
 #
 # $Id$
 
-
 require "steam/servers/game_server"
 require "steam/sockets/goldsrc_socket"
 

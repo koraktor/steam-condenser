@@ -64,5 +64,21 @@ class Tests extends PHPUnit_Framework_TestCase
       
       echo $server;
   }
+  
+  public function testRconGoldSrcServer()
+  {
+    $server = new GoldSrcServer(new InetAddress("192.168.0.2"));
+    $server->rconAuth("test");
+    $rconReply = $server->rconExec("status");
+    echo "$rconReply\n";    
+  }
+  
+  public function testRconSourceServer()
+  {
+    $server = new SourceServer(new InetAddress("192.168.0.2"));
+    $server->rconAuth("test");
+    $rconReply = $server->rconExec("status");
+    echo "$rconReply\n";
+  }
 }
 ?>

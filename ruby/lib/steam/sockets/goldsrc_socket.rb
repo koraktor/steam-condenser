@@ -6,6 +6,7 @@
 # $Id$
 
 require "byte_buffer"
+require "steam/packets/steam_packet"
 require "steam/packets/rcon/rcon_goldsrc_request"
 require "steam/sockets/steam_socket"
 

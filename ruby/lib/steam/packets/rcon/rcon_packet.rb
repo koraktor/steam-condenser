@@ -18,14 +18,13 @@ class RCONPacket < SteamPacket
   SERVERDATA_RESPONSE_VALUE = 0
   
   def initialize(request_id, rcon_header, rcon_data)
-    super 0x00, "#{rcon_data}\0\0"
+    super rcon_header, "#{rcon_data}\0\0"
     
-    @header = rcon_header
     @request_id = request_id
   end
   
   def get_bytes
-    return [@content_data.length + 8, @request_id, @header, @content_data.array].pack("V3a*")
+    return [@content_data.length + 8, @request_id, @header_data, @content_data.array].pack("V3a*")
   end
   
   def get_request_id

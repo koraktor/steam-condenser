@@ -53,7 +53,7 @@ class ByteBuffer
   /**
    * @param byte[] $byteArray
    */
-  protected function __construct($byteArray)
+  public function __construct($byteArray)
   {
     $this->byteArray = $byteArray;
     $this->capacity = strlen($byteArray);

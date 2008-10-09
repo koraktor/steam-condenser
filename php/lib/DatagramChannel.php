@@ -9,7 +9,7 @@
 
 require_once "ByteBuffer.php";
 require_once "InetAddress.php";
-require_once "Socket.php";
+require_once "UDPSocket.php";
 
 /**
  * @package Steam Condenser (PHP)
@@ -24,7 +24,7 @@ class DatagramChannel
 	
 	protected function __construct()
 	{
-		$this->socket = new Socket();
+		$this->socket = new UDPSocket();
 		$this->configureBlocking(true);
 	}
 	

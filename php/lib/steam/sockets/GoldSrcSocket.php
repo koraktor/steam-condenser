@@ -8,6 +8,7 @@
  */
 
 require_once "steam/packets/SteamPacket.php";
+require_once "steam/packets/rcon/RCONGoldSrcRequest.php";
 require_once "steam/sockets/SteamSocket.php";
 
 /**
@@ -16,6 +17,11 @@ require_once "steam/sockets/SteamSocket.php";
  */
 class GoldSrcSocket extends SteamSocket
 {
+  /**
+   * @var int
+   */
+  private $rconChallenge;
+  
 	/**
 	 * @return SteamPacket
 	 */
@@ -55,6 +61,36 @@ class GoldSrcSocket extends SteamSocket
     debug("Received packet of type \"" . get_class($packet) . "\"");
     
     return $packet;
+	}
+	
+	public function rconExec($password, $command)
+	{
+	  if(empty($this->rconChallenge))
+	  {
+	    $this->rconGetChallenge();
+	  }
+	  
+	  $this->rconSend("rcon {$this->rconChallenge} $password $command");
+	  
+	  return $this->getReply()->getResponse();
+	}
+	
+	public function rconGetChallenge()
+	{
+	  $this->rconSend("challenge rcon");
+	  $bytesRead = $this->receivePacket(1400);
+	  
+	  if($bytesRead == 0)
+	  {
+	    throw new NothingReceivedException();
+	  }
+	  
+	  $this->rconChallenge = intval(substr($this->buffer->_array(), 19, 10));
+	}
+	
+	public function rconSend($command)
+	{
+	  $this->send(new RCONGoldSrcRequest($command));
 	}
 }
 ?>

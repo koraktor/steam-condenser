@@ -29,5 +29,16 @@ class GoldSrcServer extends GameServer
 		
 		$this->socket = new GoldSrcSocket($ipAddress, $portNumber);
 	}
+	
+	public function rconAuth($password)
+	{
+	  $this->rconPassword = $password;
+	  return true;
+	}
+	
+	public function rconExec($command)
+	{
+	  return $this->socket->rconExec($this->rconPassword, $command);
+	}
 }
 ?>
