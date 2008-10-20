@@ -17,6 +17,9 @@ multitask :all => [:rdoc, :gem]
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 
+# Set language to English
+ENV["LANG"] = "en"
+
 # Parsing info from svn
 svn_info = Hash[*`svn info`.split("\n").map {|line| line.split(": ")}.flatten]
 
