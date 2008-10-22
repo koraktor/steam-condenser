@@ -5,8 +5,10 @@
 #
 # $Id$
 
+# The SteamGroup class represents a group in the Steam Community
 class SteamGroup
   
+  # Creates a SteamGroup object with the given group ID
   def initialize(id)
     @id = id
   end
