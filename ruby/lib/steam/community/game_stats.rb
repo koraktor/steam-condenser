@@ -19,27 +19,28 @@ class GameStats
   def initialize(steam_id, game_name)
     @steam_id = steam_id
     
-    game_stats = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@steam_id}/stats/#{game_name}?xml=1", {:proxy => true}).read).elements["playerstats"]
+    @xml_data = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@steam_id}/stats/#{game_name}?xml=1", {:proxy => true}).read).elements["playerstats"]
     
-    @privacy_state = game_stats.elements["privacyState"].text
+    @privacy_state = @xml_data.elements["privacyState"].text
     if @privacy_state == "public"
-      @accumulated_points = game_stats.elements["stats"].elements["accumulatedPoints"].text.to_i
-      @achievement_data   = game_stats.elements["achievements"]
-      @app_id             = game_stats.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([0-9]+)")[1]
-      @game_friendly_name = game_stats.elements["game"].elements["gameFriendlyName"].text
-      @game_name          = game_stats.elements["game"].elements["gameName"].text
-      @hours_played       = game_stats.elements["stats"].elements["hoursPlayed"].text.to_f
+      @accumulated_points = @xml_data.elements["stats"].elements["accumulatedPoints"].text.to_i
+      @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([0-9]+)")[1]
+      @class_data         = @xml_data.elements["class"]
+      @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
+      @game_name          = @xml_data.elements["game"].elements["gameName"].text
+      @hours_played       = @xml_data.elements["stats"].elements["hoursPlayed"].text.to_f
     end
   end
   
   # Returns the achievements for this stats' user and game. If the achievements
-  # haven't been parsed already, parsing is done now
+  # haven't been parsed already, parsing is done now.
   def get_achievements
     if @achievements.nil?
       @achievements = Array.new
-      @achievement_data.elements.each("achievement") do |achievement|
+      @xml_data.elements["achievements"].elements.each("achievement") do |achievement|
         @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements["name"].text, (achievement.attributes["closed"].to_i == 1))
       end
+      @achievement_data = nil
     end
     
     return @achievements

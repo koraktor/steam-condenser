@@ -10,15 +10,17 @@ require "rexml/document"
 
 require "steam/community/game_stats"
 require "steam/community/steam_group"
+require "steam/community/tf2/tf2_stats"
+
 
 # The SteamId class represents a Steam Community profile (also called Steam ID)
 class SteamId
   
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
               :friends, :groups, :head_line, :hours_played, :image_url, :links,
-              :location, :member_since, :most_played_games, :online_state,
-              :privacy_state, :real_name, :state_message, :steam_rating,
-              :steam_rating_text, :summary, :vac_banned, :visibility_state
+              :location, :member_since, :most_played_games, :privacy_state,
+              :real_name, :state_message, :steam_rating, :steam_rating_text,
+              :summary, :vac_banned, :visibility_state
 
   # Creates a new SteamId object for the given SteamID, either numeric or the
   # custom URL specified by the user. If fetch is true, fetch_data is used to
@@ -27,7 +29,7 @@ class SteamId
     @id = id
     
     begin
-      self.fetch_data if fetch_data
+      self.fetch_data if fetch
     rescue REXML::ParseException
       raise Exception.new("SteamID could not be loaded.")
     end
@@ -39,7 +41,7 @@ class SteamId
     profile = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@id}?xml=1", {:proxy => true}).read).elements["profile"]
       
     @image_url        = profile.elements["avatarIcon"].text[0..-5]
-    @is_online     = (profile.elements["onlineState"].text == "online")
+    @online           = (profile.elements["onlineState"].text == "online")
     @privacy_state    = profile.elements["privacyState"].text
     @state_message    = profile.elements["stateMessage"].text
     @steam_id         = profile.elements["steamID"].text
@@ -89,7 +91,11 @@ class SteamId
   
   # Returns a GameStats object for the given game for the owner of this SteamID
   def get_game_stats(game_name)
-    return GameStats.new(@custom_url, game_name)
+    if game_name == "TF2"
+      return TF2Stats.new(@custom_url)
+    else
+      return GameStats.new(@custom_url, game_name)
+    end
   end
   
   # Returns the URL of the icon version of this user's avatar
@@ -97,9 +103,14 @@ class SteamId
     return "#{@image_url}.jpg"
   end
   
+  # Returns whether the owner of this SteamID is VAC banned
+  def is_banned?
+    return @vac_banned 
+  end
+  
   # Returns whether the owner of this SteamID is currently logged into Steam
   def is_online?
-    return @is_online
+    return @online
   end
   
   # Returns the URL of the medium version of this user's avatar
