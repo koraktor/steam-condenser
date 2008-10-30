@@ -13,15 +13,15 @@ import java.util.concurrent.TimeoutException;
 
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.SteamPlayer;
-import steamcondenser.steam.packets.A2A_INFO_RequestPacket;
-import steamcondenser.steam.packets.A2A_INFO_ResponsePacket;
-import steamcondenser.steam.packets.A2A_PING_RequestPacket;
-import steamcondenser.steam.packets.A2A_PLAYER_RequestPacket;
-import steamcondenser.steam.packets.A2A_PLAYER_ResponsePacket;
-import steamcondenser.steam.packets.A2A_RULES_RequestPacket;
-import steamcondenser.steam.packets.A2A_RULES_ResponsePacket;
-import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_RequestPacket;
-import steamcondenser.steam.packets.A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket;
+import steamcondenser.steam.packets.A2S_INFO_Packet;
+import steamcondenser.steam.packets.S2A_INFO_BasePacket;
+import steamcondenser.steam.packets.A2A_PING_Packet;
+import steamcondenser.steam.packets.A2S_PLAYER_Packet;
+import steamcondenser.steam.packets.S2A_PLAYER_Packet;
+import steamcondenser.steam.packets.A2S_RULES_Packet;
+import steamcondenser.steam.packets.S2A_RULES_Packet;
+import steamcondenser.steam.packets.A2S_SERVERQUERY_GETCHALLENGE_Packet;
+import steamcondenser.steam.packets.S2C_CHALLENGE_Packet;
 import steamcondenser.steam.packets.SteamPacket;
 import steamcondenser.steam.sockets.QuerySocket;
 
@@ -121,8 +121,8 @@ abstract public class GameServer
 	public void updateChallengeNumber()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		this.sendRequest(new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket());
-		this.challengeNumber = ((A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket) this.getReply()).getChallengeNumber();
+		this.sendRequest(new A2S_SERVERQUERY_GETCHALLENGE_Packet());
+		this.challengeNumber = ((S2C_CHALLENGE_Packet) this.getReply()).getChallengeNumber();
 	}
 	
 	/**
@@ -134,7 +134,7 @@ abstract public class GameServer
 	public void updatePing()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		this.sendRequest(new A2A_PING_RequestPacket());
+		this.sendRequest(new A2A_PING_Packet());
 		long startTime = System.currentTimeMillis();
 		this.getReply();
 		long endTime = System.currentTimeMillis();
@@ -150,8 +150,8 @@ abstract public class GameServer
 	public void updatePlayerInfo()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		this.sendRequest(new A2A_PLAYER_RequestPacket(this.challengeNumber));
-		this.playerArray = ((A2A_PLAYER_ResponsePacket) this.getReply()).getPlayerArray();
+		this.sendRequest(new A2S_PLAYER_Packet(this.challengeNumber));
+		this.playerArray = ((S2A_PLAYER_Packet) this.getReply()).getPlayerArray();
 	}
 	
 	/**
@@ -163,8 +163,8 @@ abstract public class GameServer
 	public void updateRulesInfo()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		this.sendRequest(new A2A_RULES_RequestPacket(this.challengeNumber));
-		this.rulesHash = ((A2A_RULES_ResponsePacket) this.getReply()).getRulesHash();
+		this.sendRequest(new A2S_RULES_Packet(this.challengeNumber));
+		this.rulesHash = ((S2A_RULES_Packet) this.getReply()).getRulesHash();
 	}
 	
 	/**
@@ -176,8 +176,8 @@ abstract public class GameServer
 	public void updateServerInfo()
 		throws IOException, TimeoutException, SteamCondenserException
 	{
-		this.sendRequest(new A2A_INFO_RequestPacket());
-		this.serverInfo = ((A2A_INFO_ResponsePacket) this.getReply()).getInfoHash();
+		this.sendRequest(new A2S_INFO_Packet());
+		this.serverInfo = ((S2A_INFO_BasePacket) this.getReply()).getInfoHash();
 	}
 	
 	/**

@@ -13,6 +13,6 @@
  */
 class TimeoutException extends Exception
 {
-	
+
 }
 ?>

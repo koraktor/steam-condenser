@@ -21,21 +21,21 @@ class RCONSocket extends SteamSocket
   public function __construct(InetAddress $ipAddress, $portNumber)
   {
     parent::__construct($ipAddress, $portNumber);
-    
+
     $this->buffer = ByteBuffer::allocate(1400);
     $this->channel = SocketChannel::open();
     $this->remoteSocket = array($ipAddress, $portNumber);
   }
-  
+
   public function createPacket()
   {
     $byteBuffer = new ByteBuffer($this->buffer->_array());
-    
+
     $packetSize = $byteBuffer->getLong();
     $requestId = $byteBuffer->getLong();
     $header = $byteBuffer->getLong();
     $data = $byteBuffer->getString();
-    
+
     switch($header)
     {
       case RCONPacket::SERVERDATA_AUTH_RESPONSE:
@@ -46,23 +46,23 @@ class RCONSocket extends SteamSocket
         throw new PacketFormatException("Unknown packet with header " . dechex($header) . " received.");
     }
   }
-  
+
   public function send(RCONPacket $dataPacket)
   {
     if(!$this->channel->isConnected())
     {
       $this->channel->connect($this->remoteSocket[0], $this->remoteSocket[1]);
     }
-    
+
     $this->buffer = ByteBuffer::wrap($dataPacket->getBytes());
     $this->channel->write($this->buffer);
   }
-  
+
   public function getReply()
   {
     $this->buffer = ByteBuffer::allocate(1400);
     $this->channel->read($this->buffer);
-    
+
     return $this->createPacket();
   }
 }

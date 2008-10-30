@@ -27,42 +27,42 @@ class SourceServer extends GameServer
    * @var long
    */
   private $rconRequestId;
-  
-	/**
-	 * @param InetAddress $serverIP
-	 * @param int $portNumber The listening port of the server, defaults to 27015
-	 * @since v0.1
-	 */
-	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
-	{
-		parent::__construct($portNumber);
-		
-		$this->rconSocket = new RCONSocket($ipAddress, $portNumber);
-		$this->socket = new SourceSocket($ipAddress, $portNumber);
-	}
-	
-	public function rconAuth($password)
-	{
-	  $this->rconRequestId = rand(0, pow(2, 16));
-	  
-	  $this->rconSocket->send(new RCONAuthRequest($this->rconRequestId, $password));
-	  $this->rconSocket->getReply();
-	  $reply = $this->rconSocket->getReply();
-	  
-	  return $reply->getRequestId() == $this->rconRequestId;
-	}
-	
-	public function rconExec($command)
-	{
-	  $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
-	  $reply = $this->rconSocket->getReply();
-	  
-	  if($reply instanceof RCONAuthResponse)
-	  {
-	    throw new RCONNoAuthException();
-	  }
-	  
-	  return $reply->getResponse();
-	}
+
+  /**
+   * @param InetAddress $serverIP
+   * @param int $portNumber The listening port of the server, defaults to 27015
+   * @since v0.1
+   */
+  public function __construct(InetAddress $ipAddress, $portNumber = 27015)
+  {
+    parent::__construct($portNumber);
+
+    $this->rconSocket = new RCONSocket($ipAddress, $portNumber);
+    $this->socket = new SourceSocket($ipAddress, $portNumber);
+  }
+
+  public function rconAuth($password)
+  {
+    $this->rconRequestId = rand(0, pow(2, 16));
+     
+    $this->rconSocket->send(new RCONAuthRequest($this->rconRequestId, $password));
+    $this->rconSocket->getReply();
+    $reply = $this->rconSocket->getReply();
+     
+    return $reply->getRequestId() == $this->rconRequestId;
+  }
+
+  public function rconExec($command)
+  {
+    $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
+    $reply = $this->rconSocket->getReply();
+     
+    if($reply instanceof RCONAuthResponse)
+    {
+      throw new RCONNoAuthException();
+    }
+     
+    return $reply->getResponse();
+  }
 }
 ?>

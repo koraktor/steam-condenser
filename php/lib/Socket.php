@@ -13,36 +13,36 @@ abstract class Socket
    * @var boolean
    */
   protected $isBlocking = true;
-  
+
   /**
    * The IP address the socket is connected to
    * @var InetAddress
    */
   protected $ipAddress;
-  
+
   /**
    * The port number the socket is connected to
    * @var int
    */
   protected $portNumber;
-  
+
   /**
    * @var String
    */
   protected $readBuffer = "";
-  
+
   /**
    * The socket itself
    * @var resource
    */
   protected $socket;
-  
+
   /**
    * Stores if the sockets extension is loaded
    * @var bool
    */
   protected $socketsEnabled;
-  
+
   /**
    * Constructs the Socket object
    */
@@ -50,14 +50,14 @@ abstract class Socket
   {
     $this->socketsEnabled = extension_loaded("sockets");
   }
-  
+
   public function __desctruct()
   {
     $this->close();
   }
-  
-  abstract public function connect(InetAddress $ipAddress, $portNumber); 
-  
+
+  abstract public function connect(InetAddress $ipAddress, $portNumber);
+
   /**
    * Closes the socket
    */
@@ -72,7 +72,7 @@ abstract class Socket
       fclose($this->socket);
     }
   }
-  
+
   /**
    * @return byte
    */
@@ -80,7 +80,7 @@ abstract class Socket
   {
     return ord($this->read(1));
   }
-  
+
   /**
    * @return float
    */
@@ -88,7 +88,7 @@ abstract class Socket
   {
     return floatval($this->read(4));
   }
-  
+
   /**
    * @return long
    */
@@ -97,7 +97,7 @@ abstract class Socket
     $reply = unpack("Vlong", $this->read(4));
     return $reply["long"];
   }
-  
+
   /**
    * @return String
    */
@@ -107,7 +107,7 @@ abstract class Socket
     $this->readBuffer = "";
     return $reply;
   }
-  
+
   /**
    * @return short
    */
@@ -116,7 +116,7 @@ abstract class Socket
     $reply = unpack("vshort", $this->read(2));
     return $reply["short"];
   }
-  
+
   /**
    * @return String
    */
@@ -132,7 +132,7 @@ abstract class Socket
       }
       $returnString .= chr($byte);
     }
-    
+
     return $returnString;
   }
 
@@ -142,7 +142,7 @@ abstract class Socket
    */
   public function recv($length = 128)
   {
-   if($this->socketsEnabled)
+    if($this->socketsEnabled)
     {
       $data = socket_read($this->socket, $length, PHP_BINARY_READ);
     }
@@ -150,10 +150,10 @@ abstract class Socket
     {
       $data = fread($this->socket, $length);
     }
-    
+
     return $data;
   }
-  
+
   /**
    * @return boolean
    */
@@ -162,7 +162,7 @@ abstract class Socket
     $read = array($this->socket);
     $write = null;
     $except = null;
-    
+
     if($this->socketsEnabled)
     {
       $select = socket_select($read, $write, $except, $timeout);
@@ -171,10 +171,10 @@ abstract class Socket
     {
       $select = stream_select($read, $write, $except, $timeout);
     }
-    
+
     return $select > 0;
   }
-  
+
   /**
    * @param String $data
    */
@@ -194,17 +194,17 @@ abstract class Socket
       throw new Exception("Could not send data.");
     }
   }
-  
+
   /**
-   * 
+   *
    */
   public function setBlock($doBlock)
   {
     $this->isBlocking = $doBlock;
   }
-  
+
   /**
-   * 
+   *
    */
   public function socket()
   {

@@ -16,6 +16,6 @@
  */
 class BufferUnderflowException extends Exception
 {
-	
+
 }
 ?>

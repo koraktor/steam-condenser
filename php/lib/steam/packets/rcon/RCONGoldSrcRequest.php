@@ -15,7 +15,7 @@ class RCONGoldSrcRequest extends SteamPacket
   {
     parent::__construct(0x00, $request);
   }
-  
+
   public function getBytes()
   {
     return pack("Va*", 0xFFFFFFFF, $this->contentData->_array());

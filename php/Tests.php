@@ -21,58 +21,58 @@ include("includes/functions.php");
 
 class Tests extends PHPUnit_Framework_TestCase
 {
- /**
-   * @expectedException TimeoutException 
+  /**
+   * @expectedException TimeoutException
    */
   public function testInvalidGoldSrcServer()
   {
     $server = new GoldSrcServer(new InetAddress("1.0.0.0"), 27015);
     $server->getPing();
   }
-	
-	/**
-	 * @expectedException TimeoutException 
-	 */
-	public function testInvalidSourceServer()
-	{
+
+  /**
+   * @expectedException TimeoutException
+   */
+  public function testInvalidSourceServer()
+  {
     $server = new SourceServer(new InetAddress("1.0.0.0"), 27015);
     $server->getPing();
-	}
-	
-	public function testRandomGoldsrcServer()
-	{
-      $masterServer = new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
-      $serverArray = $masterServer->getServers();
-      $serverAddress = $serverArray[array_rand($serverArray)];
-      $server = new GoldSrcServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
-      $server->initialize();
-      $server->updatePlayerInfo();
-      $server->updateRulesInfo();
-      
-      echo $server;
   }
-  
+
+  public function testRandomGoldsrcServer()
+  {
+    $masterServer = new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
+    $serverArray = $masterServer->getServers();
+    $serverAddress = $serverArray[array_rand($serverArray)];
+    $server = new GoldSrcServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
+    $server->initialize();
+    $server->updatePlayerInfo();
+    $server->updateRulesInfo();
+
+    echo $server;
+  }
+
   public function testRandomSourceServer()
   {
-      $masterServer = new MasterServer(MasterServer::SOURCE_MASTER_SERVER);
-      $serverArray = $masterServer->getServers();
-      $serverAddress = $serverArray[array_rand($serverArray)];
-      $server = new SourceServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
-      $server->initialize();
-      $server->updatePlayerInfo();
-      $server->updateRulesInfo();
-      
-      echo $server;
+    $masterServer = new MasterServer(MasterServer::SOURCE_MASTER_SERVER);
+    $serverArray = $masterServer->getServers();
+    $serverAddress = $serverArray[array_rand($serverArray)];
+    $server = new SourceServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
+    $server->initialize();
+    $server->updatePlayerInfo();
+    $server->updateRulesInfo();
+
+    echo $server;
   }
-  
+
   public function testRconGoldSrcServer()
   {
     $server = new GoldSrcServer(new InetAddress("192.168.0.2"));
     $server->rconAuth("test");
     $rconReply = $server->rconExec("status");
-    echo "$rconReply\n";    
+    echo "$rconReply\n";
   }
-  
+
   public function testRconSourceServer()
   {
     $server = new SourceServer(new InetAddress("192.168.0.2"));

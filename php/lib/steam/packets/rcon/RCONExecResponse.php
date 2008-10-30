@@ -15,7 +15,7 @@ class RCONExecResponse extends RCONPacket
   {
     parent::__construct($requestId, RCONPacket::SERVERDATA_RESPONSE_VALUE, $commandResponse);
   }
-  
+
   public function getResponse()
   {
     return $this->contentData->_array();

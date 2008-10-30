@@ -19,35 +19,35 @@ class ByteBuffer
    * @var byte[]
    */
   private $byteArray;
-  
+
   /**
    * @var int
    */
   private $capacity;
-  
+
   /**
    * @var int
    */
   private $limit;
-  
+
   /**
    * @var int
    */
   private $mark;
-  
+
   /**
    * @var int
    */
   private $position;
-  
+
   public static function allocate($length)
   {
-  	return new ByteBuffer(str_repeat("\0", 1400));
+    return new ByteBuffer(str_repeat("\0", 1400));
   }
-  
+
   public static function wrap($byteArray)
   {
-  	return new ByteBuffer($byteArray);
+    return new ByteBuffer($byteArray);
   }
 
   /**
@@ -61,46 +61,46 @@ class ByteBuffer
     $this->position = 0;
     $this->mark = -1;
   }
-  
+
   public function _array()
   {
-  	return $this->byteArray;
+    return $this->byteArray;
   }
-  
+
   public function clear()
   {
-  	$this->limit = $this->capacity;
-  	$this->position = 0;
-  	$this->mark = -1;
+    $this->limit = $this->capacity;
+    $this->position = 0;
+    $this->mark = -1;
   }
-  
+
   /**
    * @param int $length
    * @return mixed
    */
   public function get($length = null)
   {
-  	if($length === null)
-  	{
-  		$length = $this->limit - $this->position;
-  	}
-  	elseif($length > $this->remaining())
-  	{
-  		throw new BufferUnderFlowException();
-  	}
-  	
+    if($length === null)
+    {
+      $length = $this->limit - $this->position;
+    }
+    elseif($length > $this->remaining())
+    {
+      throw new BufferUnderFlowException();
+    }
+     
     $data = substr($this->byteArray, $this->position, $length);
     $this->position += $length;
-    
+
     if($length < 0)
     {
-    	debug_print_backtrace();
-    	die();
+      debug_print_backtrace();
+      die();
     }
-    
+
     return $data;
   }
-  
+
   /**
    * @return byte
    */
@@ -108,14 +108,14 @@ class ByteBuffer
   {
     return ord($this->get(1));
   }
-  
+
   /**
    * @return float
    */
   public function getFloat()
   {
-  	$data = unpack("f", $this->get(4));
-  	return $data[1];
+    $data = unpack("f", $this->get(4));
+    return $data[1];
   }
 
   /**
@@ -123,74 +123,74 @@ class ByteBuffer
    */
   public function getLong()
   {
-  	$data = unpack("V", $this->get(4));
-  	return $data[1];
+    $data = unpack("V", $this->get(4));
+    return $data[1];
   }
-  
+
   /**
    * @return short
-   */  
+   */
   public function getShort()
   {
     $data = unpack("v", $this->get(2));
     return $data[1];
   }
-  
+
   /**
    * @return String
    */
   public function getString()
   {
-  	$zeroByteIndex = strpos($this->byteArray, "\0", $this->position);
-  	if($zeroByteIndex === false)
-  	{
-  		return "";
-  	}
-  	else
-  	{
-  		$dataString = $this->get($zeroByteIndex - $this->position);
-  		$this->position ++;
-  		return $dataString;
-  	}
+    $zeroByteIndex = strpos($this->byteArray, "\0", $this->position);
+    if($zeroByteIndex === false)
+    {
+      return "";
+    }
+    else
+    {
+      $dataString = $this->get($zeroByteIndex - $this->position);
+      $this->position ++;
+      return $dataString;
+    }
   }
-  
+
   public function limit($newLimit = null)
   {
-  	if($newLimit == null)
-  	{
-  		return $this->limit();
-  	}
-  	else
-  	{
-  	 $this->limit = $newLimit;
-  	}
+    if($newLimit == null)
+    {
+      return $this->limit();
+    }
+    else
+    {
+      $this->limit = $newLimit;
+    }
   }
-  
+
   public function position()
   {
-  	return $this->position;
+    return $this->position;
   }
-  
+
   public function put($sourceByteArray)
   {
-  	$newPosition = min($this->remaining(), strlen($sourceByteArray));
-  	$this->byteArray = substr_replace($this->byteArray, $sourceByteArray, $this->position, $newPosition);
-  	$this->position = $newPosition;
-  	
-  	return $this;
+    $newPosition = min($this->remaining(), strlen($sourceByteArray));
+    $this->byteArray = substr_replace($this->byteArray, $sourceByteArray, $this->position, $newPosition);
+    $this->position = $newPosition;
+     
+    return $this;
   }
-  
+
   public function remaining()
   {
-  	return $this->limit - $this->position;
+    return $this->limit - $this->position;
   }
-  
+
   public function rewind()
   {
-  	$this->mark = -1;
-  	$this->position = 0;
-  	
-  	return $this;
+    $this->mark = -1;
+    $this->position = 0;
+     
+    return $this;
   }
 }
 ?>

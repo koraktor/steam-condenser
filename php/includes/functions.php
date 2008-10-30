@@ -12,15 +12,15 @@
  */
 function exceptionHandler(Exception $exception)
 {
-	echo "Uncaught exception (" . get_class($exception) . ") occured in " . $exception->getFile() . ":" . $exception->getLine() . "\n";
-	echo "Stack trace:\n";
-	$stackTrace = $exception->getTrace();
-	//var_dump($stackTrace);
+  echo "Uncaught exception (" . get_class($exception) . ") occured in " . $exception->getFile() . ":" . $exception->getLine() . "\n";
+  echo "Stack trace:\n";
+  $stackTrace = $exception->getTrace();
+  //var_dump($stackTrace);
 
-	foreach($stackTrace as $traceNumber => $tracePoint)
-	{
-		echo "#$traceNumber: {$tracePoint["file"]}({$tracePoint["line"]}): {$tracePoint["class"]}{$tracePoint["type"]}{$tracePoint["function"]}()\n";
-	}
+  foreach($stackTrace as $traceNumber => $tracePoint)
+  {
+    echo "#$traceNumber: {$tracePoint["file"]}({$tracePoint["line"]}): {$tracePoint["class"]}{$tracePoint["type"]}{$tracePoint["function"]}()\n";
+  }
 }
 
 /**
@@ -28,9 +28,9 @@ function exceptionHandler(Exception $exception)
  */
 function debug($debugMessage)
 {
-	if($GLOBALS["debug"])
-	{
-		echo "DEBUG: $debugMessage\n";
-	}
+  if($GLOBALS["debug"])
+  {
+    echo "DEBUG: $debugMessage\n";
+  }
 }
 ?>

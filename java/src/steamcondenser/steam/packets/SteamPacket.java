@@ -25,19 +25,19 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
  */
 abstract public class SteamPacket
 {
-	public static final byte A2A_INFO_REQUEST_HEADER = 0x54;
-	public static final byte A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49;
-	public static final byte A2A_INFO_GOLDSRC_RESPONSE_HEADER = 0x6D;
-	public static final byte A2A_PING_REQUEST_HEADER = 0x69;
-	public static final byte A2A_PING_RESPONSE_HEADER = 0x6A;
-	public static final byte A2A_PLAYER_REQUEST_HEADER = 0x55;
-	public static final byte A2A_PLAYER_RESPONSE_HEADER = 0x44;
-	public static final byte A2A_RULES_REQUEST_HEADER = 0x56;
-	public static final byte A2A_RULES_RESPONSE_HEADER = 0x45;
-	public static final byte A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57;
-	public static final byte A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41;
-	public static final byte MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31;
-	public static final byte MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66;
+	public static final byte A2S_INFO_HEADER = 0x54;
+	public static final byte S2A_INFO2_HEADER = 0x49;
+	public static final byte S2A_INFO_DETAILED_HEADER = 0x6D;
+	public static final byte A2A_PING_HEADER = 0x69;
+	public static final byte A2A_ACK_HEADER = 0x6A;
+	public static final byte A2S_PLAYER_HEADER = 0x55;
+	public static final byte S2A_PLAYER_HEADER = 0x44;
+	public static final byte A2S_RULES_HEADER = 0x56;
+	public static final byte S2A_RULES_HEADER = 0x45;
+	public static final byte A2S_SERVERQUERY_GETCHALLENGE_HEADER = 0x57;
+	public static final byte S2C_CHALLENGE_HEADER = 0x41;
+	public static final byte A2M_GET_SERVERS_BATCH2_HEADER = 0x31;
+	public static final byte M2A_SERVER_BATCH_HEADER = 0x66;
 	public static final byte RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39;
 	public static final byte RCON_GOLDSRC_RESPONSE_HEADER = 0x6c;
 	
@@ -53,41 +53,41 @@ abstract public class SteamPacket
 		
 		switch(header)
 		{
-			case SteamPacket.A2A_INFO_REQUEST_HEADER:
-				return new A2A_INFO_RequestPacket();
+			case SteamPacket.A2S_INFO_HEADER:
+				return new A2S_INFO_Packet();
 				
-			case SteamPacket.A2A_INFO_GOLDSRC_RESPONSE_HEADER:
-				return new A2A_INFO_GoldSrcResponsePacket(data);
+			case SteamPacket.S2A_INFO_DETAILED_HEADER:
+				return new S2A_INFO_DETAILED_Packet(data);
 				
-			case SteamPacket.A2A_INFO_SOURCE_RESPONSE_HEADER:
-				return new A2A_INFO_SourceResponsePacket(data);
+			case SteamPacket.S2A_INFO2_HEADER:
+				return new S2A_INFO2_Packet(data);
 			
-			case SteamPacket.A2A_PING_REQUEST_HEADER:
-				return new A2A_PING_RequestPacket();
+			case SteamPacket.A2A_PING_HEADER:
+				return new A2A_PING_Packet();
 				
-			case SteamPacket.A2A_PING_RESPONSE_HEADER:
-				return new A2A_PING_ResponsePacket(data);
+			case SteamPacket.A2A_ACK_HEADER:
+				return new A2A_ACK_Packet(data);
 				
-			case SteamPacket.A2A_PLAYER_REQUEST_HEADER:
-				return new A2A_PLAYER_RequestPacket(Helper.integerFromByteArray(data));
+			case SteamPacket.A2S_PLAYER_HEADER:
+				return new A2S_PLAYER_Packet(Helper.integerFromByteArray(data));
 			
-			case SteamPacket.A2A_PLAYER_RESPONSE_HEADER:
-				return new A2A_PLAYER_ResponsePacket(data);
+			case SteamPacket.S2A_PLAYER_HEADER:
+				return new S2A_PLAYER_Packet(data);
 				
-			case SteamPacket.A2A_RULES_REQUEST_HEADER:
-				return new A2A_RULES_RequestPacket(Helper.integerFromByteArray(data));
+			case SteamPacket.A2S_RULES_HEADER:
+				return new A2S_RULES_Packet(Helper.integerFromByteArray(data));
 			
-			case SteamPacket.A2A_RULES_RESPONSE_HEADER:
-				return new A2A_RULES_ResponsePacket(data);
+			case SteamPacket.S2A_RULES_HEADER:
+				return new S2A_RULES_Packet(data);
 				
-			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER:
-				return new A2A_SERVERQUERY_GETCHALLENGE_RequestPacket();
+			case SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER:
+				return new A2S_SERVERQUERY_GETCHALLENGE_Packet();
 				
-			case SteamPacket.A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER:
-				return new A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket(data);
+			case SteamPacket.S2C_CHALLENGE_HEADER:
+				return new S2C_CHALLENGE_Packet(data);
 				
-			case SteamPacket.MASTER_SERVER_QUERY_RESPONSE_HEADER:
-				return new MasterServerQueryResponsePacket(data);
+			case SteamPacket.M2A_SERVER_BATCH_HEADER:
+				return new M2A_SERVER_BATCH_Paket(data);
 				
 			case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
 				return new RCONGoldSrcResponsePacket(data);

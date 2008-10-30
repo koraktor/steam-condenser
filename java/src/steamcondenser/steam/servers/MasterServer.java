@@ -12,8 +12,8 @@ import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 
 import steamcondenser.SteamCondenserException;
-import steamcondenser.steam.packets.MasterServerQueryRequestPacket;
-import steamcondenser.steam.packets.MasterServerQueryResponsePacket;
+import steamcondenser.steam.packets.A2M_GET_SERVERS_BATCH2_Paket;
+import steamcondenser.steam.packets.M2A_SERVER_BATCH_Paket;
 import steamcondenser.steam.sockets.MasterServerSocket;
 
 /**
@@ -37,7 +37,7 @@ public class MasterServer
 	public Vector<InetSocketAddress> getServers()
 		throws IOException, SteamCondenserException, TimeoutException
 	{
-		return this.getServers(MasterServerQueryRequestPacket.REGION_ALL, "");
+		return this.getServers(A2M_GET_SERVERS_BATCH2_Paket.REGION_ALL, "");
 	}
 	
 	public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
@@ -51,8 +51,8 @@ public class MasterServer
 		
 		do
 		{
-			this.socket.send(new MasterServerQueryRequestPacket(regionCode, hostName + ":" + portNumber, filter));
-			serverStringArray = ((MasterServerQueryResponsePacket) this.socket.getReply()).getServers();
+			this.socket.send(new A2M_GET_SERVERS_BATCH2_Paket(regionCode, hostName + ":" + portNumber, filter));
+			serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
 			
 			for(String serverString : serverStringArray)
 			{

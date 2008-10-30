@@ -19,78 +19,78 @@ require_once "steam/packets/SteamPacket.php";
  */
 abstract class SteamSocket
 {
-	/**
-	 * @var ByteBuffer
-	 */
-	protected $buffer;
-	
-	/**
-	 * @var DatagramChannel
-	 */
-	protected $channel;
-	
-	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
-	{
+  /**
+   * @var ByteBuffer
+   */
+  protected $buffer;
+
+  /**
+   * @var DatagramChannel
+   */
+  protected $channel;
+
+  public function __construct(InetAddress $ipAddress, $portNumber = 27015)
+  {
     $this->channel = DatagramChannel::open();
     $this->channel->connect($ipAddress, $portNumber);
-    $this->channel->configureBlocking(false);	
-	}
-	
-	public function __destruct()
-	{
-		//$this->channel->close();
-	}
-	
-	protected function createPacket()
-	{
+    $this->channel->configureBlocking(false);
+  }
+
+  public function __destruct()
+  {
+    //$this->channel->close();
+  }
+
+  protected function createPacket()
+  {
     return SteamPacket::createPacket($this->buffer->get());
   }
-	
+
   /**
    * Abstract getReply() method
    * @return SteamPacket
    */
   abstract public function getReply();
-  
+
   /**
    * @return int
    */
   public function receivePacket($bufferLength = 0)
   {
-  	if($bufferLength == 0)
-  	{
-  		if(!$this->channel->socket()->select())
-  		{
-  			return 0;
-  		}
-  		$this->buffer->clear();
-  	}
-  	else
-  	{
-  		if(!$this->channel->socket()->select(5))
-  		{
-  			throw new TimeoutException();
-  		}
-  		$this->buffer = ByteBuffer::allocate($bufferLength);
-  	}
-  	
-  	$this->channel->read($this->buffer);
-  	$bytesRead = $this->buffer->position();
-  	$this->buffer->rewind();
-  	$this->buffer->limit($bytesRead);
-  	
-  	return $bytesRead;
+    if($bufferLength == 0)
+    {
+      if(!$this->channel->socket()->select())
+      {
+        return 0;
+      }
+      $this->buffer->clear();
+    }
+    else
+    {
+      if(!$this->channel->socket()->select(5))
+      {
+        throw new TimeoutException();
+      }
+      $this->buffer = ByteBuffer::allocate($bufferLength);
+    }
+     
+    $this->channel->read($this->buffer);
+    $bytesRead = $this->buffer->position();
+    $this->buffer->rewind();
+    $this->buffer->limit($bytesRead);
+     
+    return $bytesRead;
   }
-	
-	/**
-	 *
-	 */
-	public function send(SteamPacket $dataPacket)
-	{
-		debug("Sending packet of type \"" . get_class($dataPacket) . "\"...");
-		
-		$this->buffer = ByteBuffer::wrap($dataPacket->__toString());
-		$this->channel->write($this->buffer);
-	}
+
+  /**
+   *
+   */
+  public function send(SteamPacket $dataPacket)
+  {
+    debug("Sending packet of type \"" . get_class($dataPacket) . "\"...");
+
+    $this->buffer = ByteBuffer::wrap($dataPacket->__toString());
+    $this->channel->write($this->buffer);
+  }
 }
 ?>

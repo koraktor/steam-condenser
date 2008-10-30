@@ -20,52 +20,52 @@ class DatagramChannel
   /**
    * @var Socket
    */
-	private $socket;
-	
-	protected function __construct()
-	{
-		$this->socket = new UDPSocket();
-		$this->configureBlocking(true);
-	}
-	
-	public static function open()
-	{
-		return new DatagramChannel();
-	}
-	
-	public function close()
-	{
-		$this->socket->close();
-	}
-	
-	public function connect(InetAddress $ipAddress, $portNumber)
-	{
-		$this->socket->connect($ipAddress, $portNumber); 
-	}
-	
-	public function configureBlocking($doBlock)
-	{
+  private $socket;
+
+  protected function __construct()
+  {
+    $this->socket = new UDPSocket();
+    $this->configureBlocking(true);
+  }
+
+  public static function open()
+  {
+    return new DatagramChannel();
+  }
+
+  public function close()
+  {
+    $this->socket->close();
+  }
+
+  public function connect(InetAddress $ipAddress, $portNumber)
+  {
+    $this->socket->connect($ipAddress, $portNumber);
+  }
+
+  public function configureBlocking($doBlock)
+  {
     $this->socket->setBlock($doBlock);
-	}
-	
-	public function read(ByteBuffer $destinationBuffer)
-	{
-		$length = $destinationBuffer->remaining();
-		$data = $this->socket->recv($length);
-		
-		$destinationBuffer->put($data);
-		
-		return strlen($data);
-	}
-	
-	public function socket()
-	{
-		return $this->socket;
-	}
-	
-	public function write(ByteBuffer $sourceBuffer)
-	{
-		return $this->socket->send($sourceBuffer->get());
-	}
+  }
+
+  public function read(ByteBuffer $destinationBuffer)
+  {
+    $length = $destinationBuffer->remaining();
+    $data = $this->socket->recv($length);
+
+    $destinationBuffer->put($data);
+
+    return strlen($data);
+  }
+
+  public function socket()
+  {
+    return $this->socket;
+  }
+
+  public function write(ByteBuffer $sourceBuffer)
+  {
+    return $this->socket->send($sourceBuffer->get());
+  }
 }
 ?>

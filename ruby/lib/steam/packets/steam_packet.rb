@@ -8,37 +8,37 @@
 class SteamPacket
 end
 
-require "steam/packets/a2a_info_goldsrc_response_packet"
-require "steam/packets/a2a_info_request_packet"
-require "steam/packets/a2a_info_source_response_packet"
-require "steam/packets/a2a_ping_request_packet"
-require "steam/packets/a2a_ping_response_packet"
-require "steam/packets/a2a_player_request_packet"
-require "steam/packets/a2a_player_response_packet"
-require "steam/packets/a2a_rules_request_packet"
-require "steam/packets/a2a_rules_response_packet"
-require "steam/packets/a2a_serverquery_getchallenge_request_packet"
-require "steam/packets/a2a_serverquery_getchallenge_response_packet"
-require "steam/packets/master_server_query_request_packet"
-require "steam/packets/master_server_query_response_packet"
+require "steam/packets/s2a_info_detailed_packet"
+require "steam/packets/a2s_info_packet"
+require "steam/packets/s2a_info2_packet"
+require "steam/packets/a2a_ping_packet"
+require "steam/packets/a2a_ack_packet"
+require "steam/packets/a2s_player_packet"
+require "steam/packets/s2a_player_packet"
+require "steam/packets/a2s_rules_packet"
+require "steam/packets/s2a_rules_packet"
+require "steam/packets/a2s_serverquery_getchallenge_packet"
+require "steam/packets/s2c_challenge_packet"
+require "steam/packets/a2m_get_servers_batch2_packet"
+require "steam/packets/m2a_server_batch_packet"
 require "steam/packets/rcon/rcon_goldsrc_response"
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket
-  A2A_INFO_GOLDSRC_RESPONSE_HEADER = 0x6D
-  A2A_INFO_REQUEST_HEADER = 0x54
-  A2A_INFO_SOURCE_RESPONSE_HEADER = 0x49
-  A2A_PING_REQUEST_HEADER = 0x69
-  A2A_PING_RESPONSE_HEADER = 0x6A
-  A2A_PLAYER_REQUEST_HEADER = 0x55
-  A2A_PLAYER_RESPONSE_HEADER = 0x44
-  A2A_RULES_REQUEST_HEADER = 0x56
-  A2A_RULES_RESPONSE_HEADER = 0x45
-  A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER = 0x57
-  A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER = 0x41
-  MASTER_SERVER_QUERY_REQUEST_HEADER = 0x31
-  MASTER_SERVER_QUERY_RESPONSE_HEADER = 0x66
-  RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39
+  S2A_INFO_DETAILED_HEADER = 0x6D
+  A2S_INFO_HEADER = 0x54
+  S2A_INFO2_HEADER = 0x49
+  A2A_PING_HEADER = 0x69
+  A2A_ACK_HEADER = 0x6A
+  A2S_PLAYER_HEADER = 0x55
+  S2A_PLAYER_HEADER = 0x44
+  A2S_RULES_HEADER = 0x56
+  S2A_RULES_HEADER = 0x45
+  A2A_SERVERQUERY_GETCHALLENGE_HEADER = 0x57
+  S2C_CHALLENGE_HEADER = 0x41
+  A2M_GET_SERVERS_BATCH2_HEADER = 0x31
+  M2A_SERVER_BATCH_HEADER = 0x66
+  S2C_CONNREJECT_HEADER = 0x39
   RCON_GOLDSRC_RESPONSE_HEADER = 0x6c
 
   # Creates a new packet object based on the header byte of the given raw data
@@ -47,32 +47,32 @@ class SteamPacket
     data = raw_data[1..-1];
     
     case header
-      when SteamPacket::A2A_INFO_GOLDSRC_RESPONSE_HEADER
-        return A2A_INFO_GoldSrcResponsePacket.new(data)
-      when SteamPacket::A2A_INFO_REQUEST_HEADER
-        return A2A_INFO_RequestPacket.new;
-      when SteamPacket::A2A_INFO_SOURCE_RESPONSE_HEADER
-        return A2A_INFO_SourceResponsePacket.new(data)
-      when SteamPacket::A2A_PING_REQUEST_HEADER
-        return A2A_PING_RequestPacket.new
-      when SteamPacket::A2A_PING_RESPONSE_HEADER
-        return A2A_PING_ResponsePacket.new(data)
-      when SteamPacket::A2A_PLAYER_REQUEST_HEADER
-        return A2A_PLAYER_ResponsePacket.new
-      when SteamPacket::A2A_PLAYER_RESPONSE_HEADER
-        return A2A_PLAYER_ResponsePacket.new(data)
-      when SteamPacket::A2A_RULES_REQUEST_HEADER
-        return A2A_RULES_RequestPacket
-      when SteamPacket::A2A_RULES_RESPONSE_HEADER
-        return A2A_RULES_ResponsePacket.new(data)
-      when SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_REQUEST_HEADER
-        return A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.new
-      when SteamPacket::A2A_SERVERQUERY_GETCHALLENGE_RESPONSE_HEADER
-        return A2A_SERVERQUERY_GETCHALLENGE_ResponsePacket.new(data)
-      when SteamPacket::MASTER_SERVER_QUERY_REQUEST_HEADER
-        return MasterServerQueryRequestPacket.new(data)
-      when SteamPacket::MASTER_SERVER_QUERY_RESPONSE_HEADER
-        return MasterServerQueryResponsePacket.new(data)
+      when SteamPacket::S2A_INFO_DETAILED_HEADER
+        return S2A_INFO_DETAILED_HPacket.new(data)
+      when SteamPacket::A2S_INFO_HEADER
+        return A2S_INFO_Packet.new;
+      when SteamPacket::S2A_INFO2_HEADER
+        return S2A_INFO2_Packet.new(data)
+      when SteamPacket::A2A_PING_HEADER
+        return A2A_PING_Packet.new
+      when SteamPacket::A2A_ACK_HEADER
+        return A2A_ACK_Packet.new(data)
+      when SteamPacket::A2S_PLAYER_HEADER
+        return A2S_PLAYER_Packet.new
+      when SteamPacket::S2A_PLAYER_HEADER
+        return S2A_PLAYER_Packet.new(data)
+      when SteamPacket::A2S_RULES_HEADER
+        return A2S_RULES_Packet
+      when SteamPacket::S2A_RULES_HEADER
+        return S2A_RULES_Packet.new(data)
+      when SteamPacket::A2S_SERVERQUERY_GETCHALLENGE_HEADER
+        return A2S_SERVERQUERY_GETCHALLENGE_Packet.new
+      when SteamPacket::S2C_CHALLENGE_HEADER
+        return S2C_CHALLENGE_Packet.new(data)
+      when SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER
+        return A2M_GET_SERVERS_BATCH2.new(data)
+      when SteamPacket::M2A_SERVER_BATCH_HEADER
+        return M2A_SERVER_BATCH_Packet.new(data)
       when SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
         return RCONGoldSrcResponse.new(data)
       else

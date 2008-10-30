@@ -5,7 +5,7 @@
 #
 # $Id$
 
-require "steam/packets/master_server_query_request_packet"
+require "steam/packets/a2m_get_servers_batch2_packet"
 require "steam/sockets/master_server_socket"
 
 class MasterServer
@@ -18,7 +18,7 @@ class MasterServer
     @server_array = Array.new
   end
   
-  def get_servers(region_code = MasterServerQueryRequestPacket::REGION_ALL, filters = "")
+  def get_servers(region_code = A2M_GET_SERVERS_BATCH2_Packet::REGION_ALL, filters = "")
     if @server_array.empty?
       self.update_servers region_code, filters
     end
@@ -31,14 +31,15 @@ class MasterServer
     current_server = "0.0.0.0:0"
     
     begin
-      @socket.send MasterServerQueryRequestPacket.new(region_code, current_server, filters)
+      @socket.send A2M_GET_SERVERS_BATCH2_Packet.new(region_code, current_server, filters)
       servers = @socket.get_reply.get_servers
       
-      servers.each do |current_server|
-        if current_server == "0.0.0.0:0"
+      servers.each do |server|
+        if server == "0.0.0.0:0"
           finished = true
         else
-          @server_array << current_server.split(":")
+          current_server = server
+          @server_array << server.split(":")
         end
       end
     end while !finished

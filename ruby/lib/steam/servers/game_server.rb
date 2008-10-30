@@ -7,11 +7,11 @@
 
 require "abstract_class"
 require "steam/steam_player"
-require "steam/packets/a2a_info_request_packet"
-require "steam/packets/a2a_ping_request_packet"
-require "steam/packets/a2a_player_request_packet"
-require "steam/packets/a2a_rules_request_packet"
-require "steam/packets/a2a_serverquery_getchallenge_request_packet"
+require "steam/packets/a2s_info_packet"
+require "steam/packets/a2a_ping_packet"
+require "steam/packets/a2s_player_packet"
+require "steam/packets/a2s_rules_packet"
+require "steam/packets/a2s_serverquery_getchallenge_packet"
 
 class GameServer
   
@@ -86,27 +86,27 @@ class GameServer
   end
 
   def update_player_info
-    send_request A2A_PLAYER_RequestPacket.new(@challenge_number)
+    send_request A2S_PLAYER_Packet.new(@challenge_number)
     @player_array = get_reply.get_player_array
   end
 
   def update_rules_info
-    send_request A2A_RULES_RequestPacket.new(@challenge_number)
+    send_request A2S_RULES_Packet.new(@challenge_number)
     @rules_hash = get_reply.get_rules_hash
   end
   
   def update_server_info
-    send_request A2A_INFO_RequestPacket.new
+    send_request A2S_INFO_Packet.new
     @info_hash = get_reply.get_info_hash
   end
   
   def update_challenge_number
-    send_request A2A_SERVERQUERY_GETCHALLENGE_RequestPacket.new
+    send_request A2S_SERVERQUERY_GETCHALLENGE_Packet.new
     @challenge_number = get_reply.get_challenge_number    
   end
  
   def update_ping
-    send_request A2A_PING_RequestPacket.new
+    send_request A2A_PING_Packet.new
     start_time = Time.now
     get_reply
     end_time = Time.now
