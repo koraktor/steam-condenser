@@ -9,6 +9,7 @@
 
 require_once "ByteBuffer.php";
 require_once "exceptions/PacketFormatException.php";
+require_once "steam/packets/rcon/RCONGoldSrcResponse.php";
 require_once "steam/packets/S2A_INFO_DETAILED_Packet.php";
 require_once "steam/packets/A2S_INFO_Packet.php";
 require_once "steam/packets/S2A_INFO2_Packet.php";
@@ -40,8 +41,9 @@ abstract class SteamPacket
   const S2A_RULES_HEADER = 0x45;
   const A2S_SERVERQUERY_GETCHALLENGE_HEADER = 0x57;
   const S2C_CHALLENGE_HEADER = 0x41;
-  const A2M_GET_SERVERS_BATCH_HEADER = 0x31;
+  const A2M_GET_SERVERS_BATCH2_HEADER = 0x31;
   const M2A_SERVER_BATCH_HEADER = 0x66;
+  const RCON_GOLDSRC_RESPONSE_HEADER = 0x6C;
 
   /**
    * This variable stores the content of the package
@@ -99,11 +101,14 @@ abstract class SteamPacket
       case SteamPacket::S2C_CHALLENGE_HEADER:
         return new S2C_CHALLENGE_Packet($data);
 
-      case SteamPacket::A2M_GET_SERVERS_BATCH_HEADER:
+      case SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER:
         return new A2M_GET_SERVERS_BATCH2_Packet($data);
 
       case SteamPacket::M2A_SERVER_BATCH_HEADER:
         return new M2A_SERVER_BATCH_Packet($data);
+        
+      case SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER:
+      	return new RCONGoldSrcResponse($data);
 
       default:
         throw new PacketFormatException("Unknown packet with header 0x" . dechex($header) . " received.");
