@@ -1,5 +1,8 @@
 <?php
 /**
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ * 
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
@@ -9,6 +12,7 @@
 ini_set("include_path", ini_get("include_path") . ":./lib");
 
 require_once "InetAddress.php";
+require_once "steam/community/SteamId.php";
 require_once "steam/servers/GoldSrcServer.php";
 require_once "steam/servers/MasterServer.php";
 require_once "steam/servers/SourceServer.php";
@@ -37,6 +41,12 @@ class Tests extends PHPUnit_Framework_TestCase
   {
     $server = new SourceServer(new InetAddress("1.0.0.0"), 27015);
     $server->getPing();
+  }
+  
+  public function testOnlineSteamId()
+  {
+  	$steamId = new SteamId("Koraktor");
+  	print_r($steamId);
   }
 
   public function testRandomGoldsrcServer()

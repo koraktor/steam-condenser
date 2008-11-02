@@ -6,13 +6,13 @@
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
- * @subpackage SteamCondenserException
+ * @subpackage Exceptions
  * @version $Id$
  */
 
 /**
  * @package Steam Condenser (PHP)
- * @subpackage SteamCondenserException
+ * @subpackage Exceptions
  */
 class SteamCondenserException extends Exception
 {

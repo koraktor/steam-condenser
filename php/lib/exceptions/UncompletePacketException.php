@@ -6,7 +6,7 @@
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
- * @subpackage UncompletePacketException
+ * @subpackage Exceptions
  * @version $Id$
  */
 
@@ -14,7 +14,7 @@ require_once "exceptions/SteamCondenserException.php";
 
 /**
  * @package Steam Condenser (PHP)
- * @subpackage UncompletePacketException
+ * @subpackage Exceptions
  */
 class UncompletePacketException extends SteamCondenserException
 {

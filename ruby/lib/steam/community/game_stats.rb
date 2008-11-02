@@ -40,7 +40,6 @@ class GameStats
       @xml_data.elements["achievements"].elements.each("achievement") do |achievement|
         @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements["name"].text, (achievement.attributes["closed"].to_i == 1))
       end
-      @achievement_data = nil
     end
     
     return @achievements

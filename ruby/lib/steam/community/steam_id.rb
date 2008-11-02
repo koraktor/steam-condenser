@@ -41,7 +41,7 @@ class SteamId
     profile = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@id}?xml=1", {:proxy => true}).read).elements["profile"]
       
     @image_url        = profile.elements["avatarIcon"].text[0..-5]
-    @online           = (profile.elements["onlineState"].text == "online")
+    @online_state     = profile.elements["onlineState"].text
     @privacy_state    = profile.elements["privacyState"].text
     @state_message    = profile.elements["stateMessage"].text
     @steam_id         = profile.elements["steamID"].text
@@ -69,7 +69,7 @@ class SteamId
       
       @friends = Array.new
       profile.elements["friends"].elements.each("friend") do |friend|
-        @friends << SteamId.new(friend.elements["steamID64"].text, false)
+        @friends << SteamId.new(friend.elements["steamID64"].text.to_i, false)
       end
       
       @groups = Array.new
@@ -108,9 +108,14 @@ class SteamId
     return @vac_banned 
   end
   
+  # Returns whether the owner of this SteamId is playing a game
+  def is_in_game?
+    return @online_state == "in-game"
+  end
+  
   # Returns whether the owner of this SteamID is currently logged into Steam
   def is_online?
-    return @online
+    return @online_state != "offline"
   end
   
   # Returns the URL of the medium version of this user's avatar

@@ -23,7 +23,7 @@ class TF2Class
     @max_time_alive          = class_data.elements["iplaytime"].text.to_i
     @play_time               = class_data.elements["playtimeSeconds"].text.to_i
     
-    case @classname
+    case @class_name
       when "Engineer" then
         @max_buildings_built = class_data.elements["ibuildingsbuilt"].text.to_i
         @max_teleports       = class_data.elements["inumteleports"].text.to_i

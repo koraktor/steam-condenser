@@ -6,7 +6,7 @@
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
- * @subpackage MasterServerSocket
+ * @subpackage Sockets
  * @version $Id$
  */
 
@@ -16,7 +16,7 @@ require_once "steam/sockets/SteamSocket.php";
 
 /**
  * @package Steam Condenser (PHP)
- * @subpackage MasterServerSocket
+ * @subpackage Sockets
  */
 class MasterServerSocket extends SteamSocket
 {
