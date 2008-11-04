@@ -16,36 +16,36 @@ import steamcondenser.PacketFormatException;
  */
 public class M2A_SERVER_BATCH_Paket extends SteamPacket
 {
-	private Vector<String> serverArray;
-	
-	public M2A_SERVER_BATCH_Paket(byte[] data)
-		throws PacketFormatException
+    private Vector<String> serverArray;
+
+    public M2A_SERVER_BATCH_Paket(byte[] data)
+    throws PacketFormatException
+    {
+	super(SteamPacket.M2A_SERVER_BATCH_HEADER, data);
+
+	if(this.contentData.getByte() != 0x0A)
 	{
-		super(SteamPacket.M2A_SERVER_BATCH_HEADER, data);
-		
-		if(this.contentData.getByte() != 0x0A)
-		{
-			throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
-		}
-		
-		int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
-		this.serverArray = new Vector<String>();
-		
-		do
-		{
-			firstOctet = this.contentData.getByte() & 0xFF;
-			secondOctet = this.contentData.getByte() & 0xFF;
-			thirdOctet = this.contentData.getByte() & 0xFF;
-			fourthOctet = this.contentData.getByte() & 0xFF;
-			portNumber = this.contentData.getShort() & 0xFFFF;
-			
-			this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
-		}
-		while(this.contentData.remaining() > 0);
+	    throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
 	}
-	
-	public Vector<String> getServers()
+
+	int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
+	this.serverArray = new Vector<String>();
+
+	do
 	{
-		return this.serverArray;
+	    firstOctet = this.contentData.getByte() & 0xFF;
+	    secondOctet = this.contentData.getByte() & 0xFF;
+	    thirdOctet = this.contentData.getByte() & 0xFF;
+	    fourthOctet = this.contentData.getByte() & 0xFF;
+	    portNumber = this.contentData.getShort() & 0xFFFF;
+
+	    this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
 	}
+	while(this.contentData.remaining() > 0);
+    }
+
+    public Vector<String> getServers()
+    {
+	return this.serverArray;
+    }
 }

@@ -7,8 +7,8 @@ package steamcondenser.steam.packets.rcon;
 
 public class RCONExecRequestPacket extends RCONPacket
 {
-	public RCONExecRequestPacket(int requestId, String rconCommand)
-	{
-		super(requestId, RCONPacket.SERVERDATA_EXECCOMMAND, rconCommand);
-	}
+    public RCONExecRequestPacket(int requestId, String rconCommand)
+    {
+	super(requestId, RCONPacket.SERVERDATA_EXECCOMMAND, rconCommand);
+    }
 }

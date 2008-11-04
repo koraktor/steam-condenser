@@ -11,8 +11,8 @@ package steamcondenser.steam.packets;
  */
 public class A2S_INFO_Packet extends SteamPacket
 {
-	public A2S_INFO_Packet()
-	{
-		super(SteamPacket.A2S_INFO_HEADER, "Source Engine Query".getBytes());
-	}
+    public A2S_INFO_Packet()
+    {
+	super(SteamPacket.A2S_INFO_HEADER, "Source Engine Query".getBytes());
+    }
 }

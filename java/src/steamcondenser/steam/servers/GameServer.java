@@ -31,217 +31,217 @@ import steamcondenser.steam.sockets.QuerySocket;
  */
 abstract public class GameServer
 {
-	protected int challengeNumber = 0xFFFFFFFF;
+    protected int challengeNumber = 0xFFFFFFFF;
 
-	protected int ping;
-	
-	protected ArrayList<SteamPlayer> playerArray;
-	
-	protected int rconRequestId;
-	
-	protected HashMap<String, String> rulesHash;
-	
-	protected HashMap<String, Object> serverInfo;
-	
-	protected QuerySocket socket;
-	
-	/**
-	 * Checks if the port number is valid
-	 * @param portNumber The port number of the server
-	 * @throws IllegalArgumentException 
-	 */
-	protected GameServer(int portNumber)
-		throws IllegalArgumentException
+    protected int ping;
+
+    protected ArrayList<SteamPlayer> playerArray;
+
+    protected int rconRequestId;
+
+    protected HashMap<String, String> rulesHash;
+
+    protected HashMap<String, Object> serverInfo;
+
+    protected QuerySocket socket;
+
+    /**
+     * Checks if the port number is valid
+     * @param portNumber The port number of the server
+     * @throws IllegalArgumentException 
+     */
+    protected GameServer(int portNumber)
+    throws IllegalArgumentException
+    {
+	if(portNumber < 0 || portNumber > 65535)
 	{
-		if(portNumber < 0 || portNumber > 65535)
-		{
-			throw new IllegalArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
-		}
+	    throw new IllegalArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
 	}
-	
-	/**
-	 * @return The response time of this server in milliseconds
-	 */
-	public int getPing()
+    }
+
+    /**
+     * @return The response time of this server in milliseconds
+     */
+    public int getPing()
+    {
+	return this.ping;
+    }
+
+    /**
+     * @return An ArrayList of SteamPlayers representing all players on this server
+     */
+    public ArrayList<SteamPlayer> getPlayers()
+    {
+	return this.playerArray;
+    }
+
+    /**
+     * @return A HashMap containing the rules of this server
+     */
+    public HashMap<String, String> getRules()
+    {
+	return this.rulesHash;
+    }
+
+    /**
+     * @return A HashMap containing basic information about the server
+     */
+    public HashMap<String, Object> getServerInfo()
+    {
+	return this.serverInfo;
+    }
+
+    /**
+     * Initializes the server object with basic data (ping, server info and
+     * challenge number)
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void initialize()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.updatePing();
+	this.updateServerInfo();
+	this.updateChallengeNumber();
+    }
+
+    abstract public boolean rconAuth(String password)
+    throws IOException, TimeoutException, SteamCondenserException;
+
+    abstract public String rconExec(String command)
+    throws IOException, TimeoutException, SteamCondenserException;
+
+    /**
+     * Get the challenge number from the server 
+     * @throws IOException
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    public void updateChallengeNumber()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2S_SERVERQUERY_GETCHALLENGE_Packet());
+	this.challengeNumber = ((S2C_CHALLENGE_Packet) this.getReply()).getChallengeNumber();
+    }
+
+    /**
+     * Pings the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updatePing()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2A_PING_Packet());
+	long startTime = System.currentTimeMillis();
+	this.getReply();
+	long endTime = System.currentTimeMillis();
+	this.ping = Long.valueOf(endTime - startTime).intValue();
+    }
+
+    /**
+     * Gets information about the players on the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updatePlayerInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2S_PLAYER_Packet(this.challengeNumber));
+	this.playerArray = ((S2A_PLAYER_Packet) this.getReply()).getPlayerArray();
+    }
+
+    /**
+     * Gets information about the setting of the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updateRulesInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2S_RULES_Packet(this.challengeNumber));
+	this.rulesHash = ((S2A_RULES_Packet) this.getReply()).getRulesHash();
+    }
+
+    /**
+     * Gets basic server information
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updateServerInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2S_INFO_Packet());
+	this.serverInfo = ((S2A_INFO_BasePacket) this.getReply()).getInfoHash();
+    }
+
+    /**
+     * Returns a packet sent by the server in response to a query
+     * @return Packet recieved from the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    private SteamPacket getReply()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	return this.socket.getReply();
+    }
+
+    /**
+     * Sends a query packet to the server
+     * @param requestData The query packet to send to the server
+     * @throws IOException
+     */
+    private void sendRequest(SteamPacket requestData)
+    throws IOException
+    {
+	this.socket.send(requestData);
+    }
+
+    /**
+     * Returns a String representation of this server
+     * @return A human readable version of this server's information
+     */
+    public String toString()
+    {
+	String returnString = "";
+
+	returnString += "Ping: " + this.ping + "\n";
+	returnString += "Challenge number: " + this.challengeNumber + "\n";
+
+	if(this.serverInfo != null)
 	{
-		return this.ping;
+	    returnString += "Info:" + "\n";
+	    for(Entry<String, Object> info : this.serverInfo.entrySet())
+	    {
+		returnString += "  " + info.getKey() + ": " + info.getValue() + "\n";
+	    }
 	}
-	
-	/**
-	 * @return An ArrayList of SteamPlayers representing all players on this server
-	 */
-	public ArrayList<SteamPlayer> getPlayers()
+
+	if(this.playerArray != null)
 	{
-		return this.playerArray;
+	    returnString += "Players:" + "\n";
+	    for(SteamPlayer player : this.playerArray)
+	    {
+		returnString += "  " + player + "\n";
+	    }
 	}
-	
-	/**
-	 * @return A HashMap containing the rules of this server
-	 */
-	public HashMap<String, String> getRules()
+
+	if(this.rulesHash != null)
 	{
-		return this.rulesHash;
+	    returnString += "Rules:" + "\n";
+	    for(Entry<String, String> rule : this.rulesHash.entrySet())
+	    {
+		returnString += "  " + rule.getKey() + ": " + rule.getValue() + "\n";
+	    }
 	}
-	
-	/**
-	 * @return A HashMap containing basic information about the server
-	 */
-	public HashMap<String, Object> getServerInfo()
-	{
-		return this.serverInfo;
-	}
-	
-	/**
-	 * Initializes the server object with basic data (ping, server info and
-	 * challenge number)
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	public void initialize()
-	throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.updatePing();
-		this.updateServerInfo();
-		this.updateChallengeNumber();
-	}
-	
-	abstract public boolean rconAuth(String password)
-		throws IOException, TimeoutException, SteamCondenserException;
-	
-	abstract public String rconExec(String command)
-		throws IOException, TimeoutException, SteamCondenserException;
-	
-	/**
-	 * Get the challenge number from the server 
-	 * @throws IOException
-	 * @throws SteamCondenserException 
-	 * @throws TimeoutException 
-	 */
-	public void updateChallengeNumber()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.sendRequest(new A2S_SERVERQUERY_GETCHALLENGE_Packet());
-		this.challengeNumber = ((S2C_CHALLENGE_Packet) this.getReply()).getChallengeNumber();
-	}
-	
-	/**
-	 * Pings the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	public void updatePing()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.sendRequest(new A2A_PING_Packet());
-		long startTime = System.currentTimeMillis();
-		this.getReply();
-		long endTime = System.currentTimeMillis();
-		this.ping = Long.valueOf(endTime - startTime).intValue();
-	}
-	
-	/**
-	 * Gets information about the players on the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	public void updatePlayerInfo()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.sendRequest(new A2S_PLAYER_Packet(this.challengeNumber));
-		this.playerArray = ((S2A_PLAYER_Packet) this.getReply()).getPlayerArray();
-	}
-	
-	/**
-	 * Gets information about the setting of the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	public void updateRulesInfo()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.sendRequest(new A2S_RULES_Packet(this.challengeNumber));
-		this.rulesHash = ((S2A_RULES_Packet) this.getReply()).getRulesHash();
-	}
-	
-	/**
-	 * Gets basic server information
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	public void updateServerInfo()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.sendRequest(new A2S_INFO_Packet());
-		this.serverInfo = ((S2A_INFO_BasePacket) this.getReply()).getInfoHash();
-	}
-	
-	/**
-	 * Returns a packet sent by the server in response to a query
-	 * @return Packet recieved from the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
-	 */
-	private SteamPacket getReply()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		return this.socket.getReply();
-	}
-	
-	/**
-	 * Sends a query packet to the server
-	 * @param requestData The query packet to send to the server
-	 * @throws IOException
-	 */
-	private void sendRequest(SteamPacket requestData)
-		throws IOException
-	{
-		this.socket.send(requestData);
-	}
-	
-	/**
-	 * Returns a String representation of this server
-	 * @return A human readable version of this server's information
-	 */
-	public String toString()
-	{
-		String returnString = "";
-		
-		returnString += "Ping: " + this.ping + "\n";
-		returnString += "Challenge number: " + this.challengeNumber + "\n";
-		
-		if(this.serverInfo != null)
-		{
-			returnString += "Info:" + "\n";
-			for(Entry<String, Object> info : this.serverInfo.entrySet())
-			{
-				returnString += "  " + info.getKey() + ": " + info.getValue() + "\n";
-			}
-		}
-		
-		if(this.playerArray != null)
-		{
-			returnString += "Players:" + "\n";
-			for(SteamPlayer player : this.playerArray)
-			{
-				returnString += "  " + player + "\n";
-			}
-		}
-		
-		if(this.rulesHash != null)
-		{
-			returnString += "Rules:" + "\n";
-			for(Entry<String, String> rule : this.rulesHash.entrySet())
-			{
-				returnString += "  " + rule.getKey() + ": " + rule.getValue() + "\n";
-			}
-		}
-		
-		return returnString;
-	}
+
+	return returnString;
+    }
 }

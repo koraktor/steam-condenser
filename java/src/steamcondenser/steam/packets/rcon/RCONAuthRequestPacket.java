@@ -7,8 +7,8 @@ package steamcondenser.steam.packets.rcon;
 
 public class RCONAuthRequestPacket extends RCONPacket
 {
-	public RCONAuthRequestPacket(int requestId, String rconPassword)
-	{
-		super(requestId, RCONPacket.SERVERDATA_AUTH, rconPassword);
-	}
+    public RCONAuthRequestPacket(int requestId, String rconPassword)
+    {
+	super(requestId, RCONPacket.SERVERDATA_AUTH, rconPassword);
+    }
 }

@@ -11,10 +11,10 @@ package steamcondenser;
  */
 public class SteamCondenserException extends Exception
 {
-	private static final long serialVersionUID = -3312085872515871885L;
-	
-	public SteamCondenserException(String message)
-	{
-		super(message);
-	}
+    private static final long serialVersionUID = -3312085872515871885L;
+
+    public SteamCondenserException(String message)
+    {
+	super(message);
+    }
 }

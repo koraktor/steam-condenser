@@ -15,28 +15,28 @@ import steamcondenser.PacketFormatException;
  */
 public class S2A_RULES_Packet extends SteamPacket
 {
-	private HashMap<String, String>rulesHash;
-	
-	public S2A_RULES_Packet(byte[] dataBytes)
-		throws PacketFormatException
+    private HashMap<String, String>rulesHash;
+
+    public S2A_RULES_Packet(byte[] dataBytes)
+    throws PacketFormatException
+    {
+	super(SteamPacket.S2A_RULES_HEADER, dataBytes);
+
+	if(this.contentData.getLength() == 0)
 	{
-		super(SteamPacket.S2A_RULES_HEADER, dataBytes);
-		
-		if(this.contentData.getLength() == 0)
-		{
-			throw new PacketFormatException("Wrong formatted A2A_RULES response packet.");
-		}
-		
-		this.rulesHash = new HashMap<String, String>(Short.reverseBytes(this.contentData.getShort()));
-		
-		while(this.contentData.hasRemaining())
-		{
-			this.rulesHash.put(this.contentData.getString(), this.contentData.getString());
-		}
+	    throw new PacketFormatException("Wrong formatted A2A_RULES response packet.");
 	}
-	
-	public HashMap<String, String> getRulesHash()
+
+	this.rulesHash = new HashMap<String, String>(Short.reverseBytes(this.contentData.getShort()));
+
+	while(this.contentData.hasRemaining())
 	{
-		return this.rulesHash;
+	    this.rulesHash.put(this.contentData.getString(), this.contentData.getString());
 	}
+    }
+
+    public HashMap<String, String> getRulesHash()
+    {
+	return this.rulesHash;
+    }
 }

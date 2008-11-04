@@ -7,13 +7,13 @@ package steamcondenser.steam.packets.rcon;
 
 public class RCONExecResponsePacket extends RCONPacket
 {
-	public RCONExecResponsePacket(int requestId, String commandReturn)
-	{
-		super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn);
-	}
-	
-	public String getResponse()
-	{
-		return new String(this.contentData.array());
-	}
+    public RCONExecResponsePacket(int requestId, String commandReturn)
+    {
+	super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn);
+    }
+
+    public String getResponse()
+    {
+	return new String(this.contentData.array());
+    }
 }

@@ -27,53 +27,53 @@ import steamcondenser.steam.sockets.SourceSocket;
  */
 public class SourceServer extends GameServer
 {
-    	protected RCONSocket rconSocket;
-    
-	/**
-	 * @param ipAddress The IP of the server to connect to
-	 * @param portNumber The port number of the server
-	 */
-	public SourceServer(InetAddress ipAddress, int portNumber)
-		throws IOException
+    protected RCONSocket rconSocket;
+
+    /**
+     * @param ipAddress The IP of the server to connect to
+     * @param portNumber The port number of the server
+     */
+    public SourceServer(InetAddress ipAddress, int portNumber)
+    throws IOException
+    {
+	super(portNumber);
+	this.rconSocket = new RCONSocket(ipAddress, portNumber);
+	this.socket = new SourceSocket(ipAddress, portNumber);
+    }
+
+    /**
+     * Authenticate via RCON
+     * @throws IOException 
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    public boolean rconAuth(String password)
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.rconRequestId = new Random().nextInt();
+
+	this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
+	this.rconSocket.getReply();
+	RCONAuthResponse reply = (RCONAuthResponse) this.rconSocket.getReply();
+	return (reply.getRequestId() == this.rconRequestId);
+    }
+
+    /**
+     * Execute a command on the server via RCON
+     * @throws IOException 
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    public String rconExec(String command) 
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
+	RCONPacket reply = this.rconSocket.getReply();
+	if(reply instanceof RCONAuthResponse)
 	{
-		super(portNumber);
-		this.rconSocket = new RCONSocket(ipAddress, portNumber);
-		this.socket = new SourceSocket(ipAddress, portNumber);
+	    throw new RCONNoAuthException();
 	}
-	
-	/**
-	 * Authenticate via RCON
-	 * @throws IOException 
-	 * @throws SteamCondenserException 
-	 * @throws TimeoutException 
-	 */
-	public boolean rconAuth(String password)
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.rconRequestId = new Random().nextInt();
-		
-		this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
-		this.rconSocket.getReply();
-		RCONAuthResponse reply = (RCONAuthResponse) this.rconSocket.getReply();
-		return (reply.getRequestId() == this.rconRequestId);
-	}
-	
-	/**
-	 * Execute a command on the server via RCON
-	 * @throws IOException 
-	 * @throws SteamCondenserException 
-	 * @throws TimeoutException 
-	 */
-	public String rconExec(String command) 
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
-		RCONPacket reply = this.rconSocket.getReply();
-		if(reply instanceof RCONAuthResponse)
-		{
-			throw new RCONNoAuthException();
-		}
-		
-		return ((RCONExecResponsePacket) reply).getResponse();
-	}
+
+	return ((RCONExecResponsePacket) reply).getResponse();
+    }
 }

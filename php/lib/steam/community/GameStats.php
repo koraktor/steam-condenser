@@ -43,7 +43,6 @@ class GameStats
 		{
 			$this->accumulatedPoints = intval($this->xmlData->stats->accumulatedPoints);
 			$this->appId = intval($this->xmlData);
-			$this->classData = $this->class;
 			$this->gameFriendlyName = $this->gameFriendlyName;
 			$this->gameName = $this->gameName;
 			$this->hoursPlayed = floatval($this->hoursPlayed);
@@ -59,7 +58,7 @@ class GameStats
 	{
 		if(empty($this->achievements))
 		{
-			foreach($this->xmlData as $achievement)
+			foreach($this->xmlData->achievements as $achievement)
 			{
 				$this->achievements[] = new GameAchievement($this->steamId, $this->appId, $achievement->name, ($achievement->closed == 1));
 			}

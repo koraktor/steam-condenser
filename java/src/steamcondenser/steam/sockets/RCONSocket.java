@@ -20,55 +20,55 @@ import steamcondenser.steam.packets.rcon.RCONPacket;
 
 public class RCONSocket extends SteamSocket
 {
-	public RCONSocket(InetAddress ipAddress, int portNumber)
-		throws IOException
+    public RCONSocket(InetAddress ipAddress, int portNumber)
+    throws IOException
+    {
+	super(ipAddress, portNumber);
+
+	this.buffer = ByteBuffer.allocate(1500);
+
+	this.channel = SocketChannel.open();
+    }
+
+    public RCONPacket createPacket()
+    throws PacketFormatException
+    {
+	PacketBuffer packetBuffer = new PacketBuffer(this.buffer.array());
+
+	int packetSize = Integer.reverseBytes(packetBuffer.getInt());
+	int requestId = Integer.reverseBytes(packetBuffer.getInt());
+	int header = Integer.reverseBytes(packetBuffer.getInt());
+	String data = packetBuffer.getString();
+
+	switch(header)
 	{
-		super(ipAddress, portNumber);
-		
-		this.buffer = ByteBuffer.allocate(1500);
-		
-		this.channel = SocketChannel.open();
+	case RCONPacket.SERVERDATA_AUTH_RESPONSE:
+	    return new RCONAuthResponse(requestId);
+	case RCONPacket.SERVERDATA_RESPONSE_VALUE:
+	    return new RCONExecResponsePacket(requestId, data);
+	default:
+	    throw new PacketFormatException("Unknown packet with header " + Integer.reverseBytes(header) + " received.");
 	}
-	
-	public RCONPacket createPacket()
-		throws PacketFormatException
+    }
+
+    public void send(RCONPacket dataPacket)
+    throws IOException
+    {
+	if(!((SocketChannel) this.channel).isConnected())
 	{
-	    PacketBuffer packetBuffer = new PacketBuffer(this.buffer.array());
-	    
-		int packetSize = Integer.reverseBytes(packetBuffer.getInt());
-		int requestId = Integer.reverseBytes(packetBuffer.getInt());
-		int header = Integer.reverseBytes(packetBuffer.getInt());
-		String data = packetBuffer.getString();
-		
-		switch(header)
-		{
-			case RCONPacket.SERVERDATA_AUTH_RESPONSE:
-				return new RCONAuthResponse(requestId);
-			case RCONPacket.SERVERDATA_RESPONSE_VALUE:
-				return new RCONExecResponsePacket(requestId, data);
-			default:
-				throw new PacketFormatException("Unknown packet with header " + Integer.reverseBytes(header) + " received.");
-		}
-	}
-	
-	public void send(RCONPacket dataPacket)
-		throws IOException
-	{
-		if(!((SocketChannel) this.channel).isConnected())
-		{
-			((SocketChannel) this.channel).connect(this.remoteSocket);
-		}
-		
-		this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
-		((SocketChannel) this.channel).write(this.buffer);
+	    ((SocketChannel) this.channel).connect(this.remoteSocket);
 	}
 
-	public RCONPacket getReply()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-	    this.buffer = ByteBuffer.allocate(1400);
-		((SocketChannel) this.channel).read(this.buffer);
-		
-		return this.createPacket();
-	}
+	this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
+	((SocketChannel) this.channel).write(this.buffer);
+    }
+
+    public RCONPacket getReply()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.buffer = ByteBuffer.allocate(1400);
+	((SocketChannel) this.channel).read(this.buffer);
+
+	return this.createPacket();
+    }
 }

@@ -13,16 +13,16 @@ import steamcondenser.PacketFormatException;
  */
 public class A2A_ACK_Packet extends SteamPacket
 {
-	public A2A_ACK_Packet(byte[] dataBytes)
-		throws PacketFormatException
+    public A2A_ACK_Packet(byte[] dataBytes)
+    throws PacketFormatException
+    {
+	super(SteamPacket.A2A_ACK_HEADER, dataBytes);
+
+	String pingReply = this.contentData.getString();
+
+	if(!pingReply.equals("") && !pingReply.equals("00000000000000"))
 	{
-		super(SteamPacket.A2A_ACK_HEADER, dataBytes);
-		
-		String pingReply = this.contentData.getString();
-		
-		if(!pingReply.equals("") && !pingReply.equals("00000000000000"))
-		{
-			throw new PacketFormatException("Wrong formatted A2A_PING Response Packet.");
-		}
+	    throw new PacketFormatException("Wrong formatted A2A_PING Response Packet.");
 	}
+    }
 }

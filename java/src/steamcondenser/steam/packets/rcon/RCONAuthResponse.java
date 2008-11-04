@@ -7,8 +7,8 @@ package steamcondenser.steam.packets.rcon;
 
 public class RCONAuthResponse extends RCONPacket
 {
-	public RCONAuthResponse(int requestId)
-	{
-		super(requestId, RCONPacket.SERVERDATA_AUTH_RESPONSE, "");
-	}
+    public RCONAuthResponse(int requestId)
+    {
+	super(requestId, RCONPacket.SERVERDATA_AUTH_RESPONSE, "");
+    }
 }

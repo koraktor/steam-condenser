@@ -14,42 +14,42 @@ import java.util.HashMap;
  */
 public abstract class S2A_INFO_BasePacket extends SteamPacket
 {
-	protected byte dedicated;
-	protected String gameDescription;
-	protected String gameDir;
-	protected String mapName;
-	protected int maxPlayers;
-	protected int networkVersion;
-	protected int numberOfBots;
-	protected int numberOfPlayers;
-	protected byte operatingSystem;
-	protected boolean passwordProtected;
-	protected boolean secure;
-	protected String serverName;
-	
-	S2A_INFO_BasePacket(byte headerByte, byte[] dataBytes)
-	{
-		super(headerByte, dataBytes);
-	}
-	
-	public HashMap<String, Object> getInfoHash()
-	{
-		HashMap<String, Object> infoHash = new HashMap<String, Object>();
+    protected byte dedicated;
+    protected String gameDescription;
+    protected String gameDir;
+    protected String mapName;
+    protected int maxPlayers;
+    protected int networkVersion;
+    protected int numberOfBots;
+    protected int numberOfPlayers;
+    protected byte operatingSystem;
+    protected boolean passwordProtected;
+    protected boolean secure;
+    protected String serverName;
 
-		try
-		{
-			for(Field field : this.getClass().getSuperclass().getDeclaredFields())
-			{
-				infoHash.put(field.getName(), field.get(this));
-			}
-			
-			for(Field field : this.getClass().getDeclaredFields())
-			{
-				infoHash.put(field.getName(), field.get(this));
-			}
-		}
-		catch(IllegalAccessException e){}
-		
-		return infoHash;
+    S2A_INFO_BasePacket(byte headerByte, byte[] dataBytes)
+    {
+	super(headerByte, dataBytes);
+    }
+
+    public HashMap<String, Object> getInfoHash()
+    {
+	HashMap<String, Object> infoHash = new HashMap<String, Object>();
+
+	try
+	{
+	    for(Field field : this.getClass().getSuperclass().getDeclaredFields())
+	    {
+		infoHash.put(field.getName(), field.get(this));
+	    }
+
+	    for(Field field : this.getClass().getDeclaredFields())
+	    {
+		infoHash.put(field.getName(), field.get(this));
+	    }
 	}
+	catch(IllegalAccessException e){}
+
+	return infoHash;
+    }
 }

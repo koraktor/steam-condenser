@@ -13,8 +13,8 @@ import steamcondenser.Helper;
  */
 public class A2S_PLAYER_Packet extends SteamPacket
 {
-	public A2S_PLAYER_Packet(int challengeNumber)
-	{
-		super(SteamPacket.A2S_PLAYER_HEADER, Helper.byteArrayFromInteger(Integer.reverseBytes(challengeNumber)));
-	}
+    public A2S_PLAYER_Packet(int challengeNumber)
+    {
+	super(SteamPacket.A2S_PLAYER_HEADER, Helper.byteArrayFromInteger(Integer.reverseBytes(challengeNumber)));
+    }
 }

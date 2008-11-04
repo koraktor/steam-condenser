@@ -29,60 +29,60 @@ package steamcondenser.steam.packets;
  */
 public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
 {
-	public static final byte REGION_US_EAST_COAST = 0x00;
-	public static final byte REGION_US_WEST_COAST = 0x01;
-	public static final byte REGION_SOUTH_AMERICA = 0x02;
-	public static final byte REGION_EUROPE = 0x03;
-	public static final byte REGION_ASIA = 0x04;
-	public static final byte REGION_AUSTRALIA = 0x05;
-	public static final byte REGION_MIDDLE_EAST = 0x06;
-	public static final byte REGION_AFRICA = 0x07;
-	public static final byte REGION_ALL = 0x00;
-	
-	private String filter;
-	private byte regionCode;
-	private String startIp;
-	
-	/**
-	 * Creates a master server request without applying any filters.
-	 */
-	public A2M_GET_SERVERS_BATCH2_Paket()
-	{
-		this(A2M_GET_SERVERS_BATCH2_Paket.REGION_ALL, "0.0.0.0:0", "");
-	}
-	
-	/**
-	 * Creates a master server request, filtering by the given paramters.
-	 * @param regionCode The region code to filter servers by region.
-	 * @param startIp This should be the last IP received from the master
-	 *        server or 0.0.0.0 
-	 * @param filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
-	 */
-	public A2M_GET_SERVERS_BATCH2_Paket(byte regionCode, String startIp, String filter)
-	{
-		super(SteamPacket.A2M_GET_SERVERS_BATCH2_HEADER);
-		
-		this.filter = filter;
-		this.regionCode = regionCode;
-		this.startIp = startIp;
-	}
-	
-	/**
-	 * @return A byte[] representing the contents of this request packet
-	 */
-	public byte[] getBytes()
-	{
-		byte[] bytes, filterBytes, startIpBytes;
+    public static final byte REGION_US_EAST_COAST = 0x00;
+    public static final byte REGION_US_WEST_COAST = 0x01;
+    public static final byte REGION_SOUTH_AMERICA = 0x02;
+    public static final byte REGION_EUROPE = 0x03;
+    public static final byte REGION_ASIA = 0x04;
+    public static final byte REGION_AUSTRALIA = 0x05;
+    public static final byte REGION_MIDDLE_EAST = 0x06;
+    public static final byte REGION_AFRICA = 0x07;
+    public static final byte REGION_ALL = 0x00;
 
-		filterBytes = (this.filter + "\0").getBytes();
-		startIpBytes = (this.startIp + "\0").getBytes();
-		bytes = new byte[2 + startIpBytes.length + filterBytes.length];
-		
-		bytes[0] = this.headerData;
-		bytes[1] = this.regionCode;
-		System.arraycopy(startIpBytes, 0, bytes, 2, startIpBytes.length);
-		System.arraycopy(filterBytes, 0, bytes, startIpBytes.length + 2, filterBytes.length);
-		
-		return bytes;
-	}
+    private String filter;
+    private byte regionCode;
+    private String startIp;
+
+    /**
+     * Creates a master server request without applying any filters.
+     */
+    public A2M_GET_SERVERS_BATCH2_Paket()
+    {
+	this(A2M_GET_SERVERS_BATCH2_Paket.REGION_ALL, "0.0.0.0:0", "");
+    }
+
+    /**
+     * Creates a master server request, filtering by the given paramters.
+     * @param regionCode The region code to filter servers by region.
+     * @param startIp This should be the last IP received from the master
+     *        server or 0.0.0.0 
+     * @param filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
+     */
+    public A2M_GET_SERVERS_BATCH2_Paket(byte regionCode, String startIp, String filter)
+    {
+	super(SteamPacket.A2M_GET_SERVERS_BATCH2_HEADER);
+
+	this.filter = filter;
+	this.regionCode = regionCode;
+	this.startIp = startIp;
+    }
+
+    /**
+     * @return A byte[] representing the contents of this request packet
+     */
+    public byte[] getBytes()
+    {
+	byte[] bytes, filterBytes, startIpBytes;
+
+	filterBytes = (this.filter + "\0").getBytes();
+	startIpBytes = (this.startIp + "\0").getBytes();
+	bytes = new byte[2 + startIpBytes.length + filterBytes.length];
+
+	bytes[0] = this.headerData;
+	bytes[1] = this.regionCode;
+	System.arraycopy(startIpBytes, 0, bytes, 2, startIpBytes.length);
+	System.arraycopy(filterBytes, 0, bytes, startIpBytes.length + 2, filterBytes.length);
+
+	return bytes;
+    }
 }

@@ -19,16 +19,16 @@ import steamcondenser.steam.sockets.GoldSrcSocket;
 public class GoldSrcServer extends GameServer
 {
     private String rconPassword;
-    
+
     /**
      * @param ipAddress The IP of the server to connect to
      * @param portNumber The port number of the server
      */
     public GoldSrcServer(InetAddress ipAddress, int portNumber)
-    	throws IOException
+    throws IOException
     {
-    	super(portNumber);
-    	this.socket = new GoldSrcSocket(ipAddress, portNumber);
+	super(portNumber);
+	this.socket = new GoldSrcSocket(ipAddress, portNumber);
     }
 
     /**
@@ -38,8 +38,8 @@ public class GoldSrcServer extends GameServer
      */
     public boolean rconAuth(String password)
     {
-    	this.rconPassword = password;
-    	return true;
+	this.rconPassword = password;
+	return true;
     }
 
     /**
@@ -48,8 +48,8 @@ public class GoldSrcServer extends GameServer
      * @throws SteamCondenserException 
      */
     public String rconExec(String command)
-    	throws IOException, TimeoutException, SteamCondenserException
+    throws IOException, TimeoutException, SteamCondenserException
     {
-		return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command);
+	return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command);
     }
 }

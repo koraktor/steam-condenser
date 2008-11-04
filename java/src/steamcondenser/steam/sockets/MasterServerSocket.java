@@ -20,23 +20,23 @@ import steamcondenser.steam.packets.SteamPacket;
  */
 public class MasterServerSocket extends QuerySocket
 {
-	public MasterServerSocket(InetAddress ipAddress, int portNumber)
-		throws IOException
+    public MasterServerSocket(InetAddress ipAddress, int portNumber)
+    throws IOException
+    {
+	super(ipAddress, portNumber);
+    }
+
+    public SteamPacket getReply()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.receivePacket(1500);
+
+	if(this.buffer.getInt() != -1)
 	{
-		super(ipAddress, portNumber);
+	    throw new PacketFormatException("Master query response has wrong packet header.");
 	}
 
-	public SteamPacket getReply()
-		throws IOException, TimeoutException, SteamCondenserException
-	{
-		this.receivePacket(1500);
-		
-		if(this.buffer.getInt() != -1)
-		{
-			throw new PacketFormatException("Master query response has wrong packet header.");
-		}
-		
-		return this.createPacket();
-	}
+	return this.createPacket();
+    }
 
 }

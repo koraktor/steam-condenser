@@ -25,7 +25,6 @@ class GameStats
     if @privacy_state == "public"
       @accumulated_points = @xml_data.elements["stats"].elements["accumulatedPoints"].text.to_i
       @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([0-9]+)")[1]
-      @class_data         = @xml_data.elements["class"]
       @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
       @game_name          = @xml_data.elements["game"].elements["gameName"].text
       @hours_played       = @xml_data.elements["stats"].elements["hoursPlayed"].text.to_f

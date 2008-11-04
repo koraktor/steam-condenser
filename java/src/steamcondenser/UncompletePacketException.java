@@ -11,13 +11,13 @@ package steamcondenser;
  */
 public class UncompletePacketException extends SteamCondenserException
 {
-	private static final long serialVersionUID = 5524570166078828173L;
+    private static final long serialVersionUID = 5524570166078828173L;
 
-	/**
-	 * Creates an UncompletePacketException
-	 */
-	public UncompletePacketException()
-	{
-		super("Packet is missing a part of data.");
-	}
+    /**
+     * Creates an UncompletePacketException
+     */
+    public UncompletePacketException()
+    {
+	super("Packet is missing a part of data.");
+    }
 }

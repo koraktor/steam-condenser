@@ -11,8 +11,8 @@ package steamcondenser.steam.packets;
  */
 public class A2A_PING_Packet extends SteamPacket
 {
-	public A2A_PING_Packet()
-	{
-		super(SteamPacket.A2A_PING_HEADER);
-	}
+    public A2A_PING_Packet()
+    {
+	super(SteamPacket.A2A_PING_HEADER);
+    }
 }

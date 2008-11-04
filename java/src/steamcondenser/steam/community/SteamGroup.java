@@ -12,10 +12,15 @@ package steamcondenser.steam.community;
  */
 public class SteamGroup
 {
-	private String id;
-	
-	public SteamGroup(String id)
-	{
-		this.id = id;
-	}
+    private long id;
+
+    public SteamGroup(long id)
+    {
+	this.id = id;
+    }
+
+    public long getId()
+    {
+	return this.id;
+    }
 }
