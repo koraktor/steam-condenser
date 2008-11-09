@@ -3,21 +3,21 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @author     Sebastian Staudt
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
- * @version $Id$
+ * @version    $Id$
  */
 
 require_once "ByteBuffer.php";
 require_once "DatagramChannel.php";
 require_once "InetAddress.php";
 require_once "exceptions/TimeoutException.php";
-require_once "steam/packets/SteamPacket.php";
+require_once "steam/packets/SteamPacketFactory.php";
 
 /**
- * @package Steam Condenser (PHP)
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
  */
 abstract class SteamSocket
@@ -44,16 +44,20 @@ abstract class SteamSocket
     //$this->channel->close();
   }
 
-  protected function createPacket()
+  public function getReply()
   {
-    return SteamPacket::createPacket($this->buffer->get());
+    $packet = SteamPacketFactory::getPacketFromData($this->getReplyData());
+    
+    trigger_error("Received packet of type \"" . get_class($packet) . "\"");
+    
+    return $packet;
   }
 
   /**
-   * Abstract getReply() method
-   * @return SteamPacket
+   * Abstract getReplyData() method
+   * @return byte[]
    */
-  abstract public function getReply();
+  abstract public function getReplyData();
 
   /**
    * @return int
@@ -90,7 +94,7 @@ abstract class SteamSocket
    */
   public function send(SteamPacket $dataPacket)
   {
-    debug("Sending packet of type \"" . get_class($dataPacket) . "\"...");
+    trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
 
     $this->buffer = ByteBuffer::wrap($dataPacket->__toString());
     $this->channel->write($this->buffer);

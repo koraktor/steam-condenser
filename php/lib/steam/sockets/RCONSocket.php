@@ -3,11 +3,11 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @author     Sebastian Staudt
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
- * @version $Id$
+ * @version    $Id$
  */
 
 require_once "ByteBuffer.php";
@@ -20,7 +20,7 @@ require_once "steam/packets/rcon/RCONPacket.php";
 require_once "steam/sockets/SteamSocket.php";
 
 /**
- * @package Steam Condenser (PHP)
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
  */
 class RCONSocket extends SteamSocket
@@ -65,12 +65,12 @@ class RCONSocket extends SteamSocket
     $this->channel->write($this->buffer);
   }
 
-  public function getReply()
+  public function getReplyData()
   {
     $this->buffer = ByteBuffer::allocate(1400);
     $this->channel->read($this->buffer);
 
-    return $this->createPacket();
+    return $this->buffer->get();
   }
 }
 ?>

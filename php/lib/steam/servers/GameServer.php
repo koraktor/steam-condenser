@@ -3,13 +3,14 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @author     Sebastian Staudt
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package    Steam Condenser (PHP)
  * @subpackage GameServer
- * @version $Id$
+ * @version    $Id$
  */
 
+require_once "exceptions/TimeoutException.php";
 require_once "steam/packets/A2S_INFO_Packet.php";
 require_once "steam/packets/A2A_PING_Packet.php";
 require_once "steam/packets/A2S_PLAYER_Packet.php";
@@ -17,12 +18,16 @@ require_once "steam/packets/A2S_RULES_Packet.php";
 require_once "steam/packets/A2S_SERVERQUERY_GETCHALLENGE_Packet.php";
 
 /**
- * @package Steam Condenser (PHP)
+ * @package    Steam Condenser (PHP)
  * @subpackage GameServer
- * @todo Server has to recognize incoming packets
  */
 class GameServer
 {
+  const REQUEST_CHALLENGE = 0;
+  const REQUEST_INFO      = 1;
+  const REQUEST_PLAYER    = 2;
+  const REQUEST_RULES     = 3;
+  
   /**
    * @var int
    */
@@ -110,6 +115,91 @@ class GameServer
   }
 
   /**
+   * @return SteamPacket
+   */
+  private function getReply()
+  {
+    return $this->socket->getReply();
+  }
+  
+  /**
+   * 
+   */
+  private function handleResponseForRequest($requestType, $repeatOnFailure = true)
+  {
+    try
+    {
+      switch($requestType)
+      {
+        case self::REQUEST_CHALLENGE:
+          $expectedResponse = "S2C_CHALLENGE_Packet";
+          $requestPacket    = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
+          break;
+        case self::REQUEST_INFO:
+          $expectedResponse = "S2A_INFO_BasePacket";
+          $requestPacket    = new A2S_INFO_Packet();
+          break;
+        case self::REQUEST_PLAYER:
+          $expectedResponse = "S2A_PLAYER_Packet";
+          $requestPacket    = new A2S_PLAYER_Packet($this->challengeNumber);
+          break;
+        case self::REQUEST_RULES:
+          $expectedResponse = "S2A_RULES_Packet";
+          $requestPacket    = new A2S_RULES_Packet($this->challengeNumber);
+      }
+      
+      $this->sendRequest($requestPacket);
+      
+      $responsePacket = $this->getReply();
+      
+      switch(get_class($responsePacket))
+      {
+        case "S2A_INFO_DETAILED_Packet":
+        case "S2A_INFO2_Packet":
+          $this->infoHash = $responsePacket->getInfoHash();
+          break;
+        case "S2A_PLAYER_Packet":
+          $this->playerArray = $responsePacket->getPlayerArray();
+          break;
+        case "S2A_RULES_Packet":
+          $this->rulesHash = $responsePacket->getRulesArray();
+          break;
+        case "S2C_CHALLENGE_Packet":
+          $this->challengeNumber = $responsePacket->getChallengeNumber();
+      }
+      
+      if(!is_a($responsePacket, $expectedResponse))
+      {
+        trigger_error("Expected {$expectedResponse}, got " . get_class($responsePacket) . ".");
+        if($repeatOnFailure)
+        {
+          $this->handleResponseForRequest($requestType, false);
+        }
+      }
+    }
+    catch(TimeoutException $e)
+    {
+      trigger_error("Expected {$expectedResponse}, but timed out. The server is probably offline.");
+    }
+  }
+
+  /**
+   * @param SteamPacket $requestData
+   */
+  private function sendRequest(SteamPacket $requestData)
+  {
+    $this->socket->send($requestData);
+  }
+  
+  /**
+   *
+   */
+  public function updateChallengeNumber()
+  {
+    $this->handleResponseForRequest(self::REQUEST_CHALLENGE);
+  }
+  
+  /**
    *
    */
   public function updatePing()
@@ -126,19 +216,9 @@ class GameServer
   /**
    *
    */
-  public function updateChallengeNumber()
-  {
-    $this->sendRequest(new A2S_SERVERQUERY_GETCHALLENGE_Packet());
-    $this->challengeNumber = $this->getReply()->getChallengeNumber();
-  }
-
-  /**
-   *
-   */
   public function updatePlayerInfo()
   {
-    $this->sendRequest(new A2S_PLAYER_Packet($this->challengeNumber));
-    $this->playerArray = $this->getReply()->getPlayerArray();
+    $this->handleResponseForRequest(self::REQUEST_PLAYER);
   }
 
   /**
@@ -146,8 +226,7 @@ class GameServer
    */
   public function updateRulesInfo()
   {
-    $this->sendRequest(new A2S_RULES_Packet($this->challengeNumber));
-    $this->rulesHash = $this->getReply()->getRulesArray();
+    $this->handleResponseForRequest(self::REQUEST_RULES);
   }
 
   /**
@@ -155,24 +234,7 @@ class GameServer
    */
   public function updateServerInfo()
   {
-    $this->sendRequest(new A2S_INFO_Packet());
-    $this->infoHash = $this->getReply()->getInfoHash();
-  }
-
-  /**
-   * @return SteamPacket
-   */
-  private function getReply()
-  {
-    return $this->socket->getReply();
-  }
-
-  /**
-   * @param SteamPacket $requestData
-   */
-  private function sendRequest(SteamPacket $requestData)
-  {
-    $this->socket->send($requestData);
+    $this->handleResponseForRequest(self::REQUEST_INFO);
   }
 
   /**

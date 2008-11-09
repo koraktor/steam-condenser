@@ -3,11 +3,11 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @author     Sebastian Staudt
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
- * @version $Id$
+ * @version    $Id$
  */
 
 require_once "steam/packets/SteamPacket.php";
@@ -15,7 +15,7 @@ require_once "steam/packets/rcon/RCONGoldSrcRequest.php";
 require_once "steam/sockets/SteamSocket.php";
 
 /**
- * @package Steam Condenser (PHP)
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
  */
 class GoldSrcSocket extends SteamSocket
@@ -28,7 +28,7 @@ class GoldSrcSocket extends SteamSocket
   /**
    * @return SteamPacket
    */
-  public function getReply()
+  public function getReplyData()
   {
     $bytesRead = $this->receivePacket(1400);
 
@@ -48,22 +48,20 @@ class GoldSrcSocket extends SteamSocket
         }
         $splitPackets[$packetNumber] = $this->buffer->get();
 
-        debug("Received packet $packetNumber of $packetCount for request #$requestId");
+        trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 
         $bytesRead = $this->receivePacket();
       }
       while($bytesRead > 0 && $this->buffer->getLong() == -2);
 
-      $packet = SteamPacket::createPacket(implode("", $splitPackets));
+      $packetData = implode("", $splitPackets);
     }
     else
     {
-      $packet = SteamPacket::createPacket($this->buffer->get());
+      $packetData = $this->buffer->get();
     }
 
-    debug("Received packet of type \"" . get_class($packet) . "\"");
-
-    return $packet;
+    return $packetData;
   }
 
   public function rconExec($password, $command)

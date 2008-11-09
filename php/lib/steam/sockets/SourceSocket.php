@@ -3,26 +3,26 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * @author Sebastian Staudt
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @author     Sebastian Staudt
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
- * @version $Id$
+ * @version    $Id$
  */
 
-require_once "steam/packets/SteamPacket.php";
+require_once "steam/packets/SteamPacketFactory.php";
 require_once "steam/sockets/SteamSocket.php";
 
 /**
- * @package Steam Condenser (PHP)
+ * @package    Steam Condenser (PHP)
  * @subpackage Sockets
  */
 class SourceSocket extends SteamSocket
 {
   /**
-   * @return SteamPacket
+   * @return byte[]
    */
-  public function getReply()
+  public function getReplyData()
   {
     $bytesRead = $this->receivePacket(1400);
 
@@ -51,7 +51,7 @@ class SourceSocket extends SteamSocket
         }
         $splitPackets[$packetNumber] = $this->buffer->get();
 
-        debug("Received packet $packetNumber of $packetCount for request #$requestId");
+        trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 
         $bytesRead = $this->receivePacket();
       }
@@ -59,21 +59,19 @@ class SourceSocket extends SteamSocket
       	
       if($isCompressed)
       {
-        $packet = SteamPacket::reassemblePacket($splitPackets, true, $uncompressedSize, $packetChecksum);
+        $packet = SteamPacketFactory::reassemblePacket($splitPackets, true, $uncompressedSize, $packetChecksum);
       }
       else
       {
-        $packet = SteamPacket::reassemblePacket($splitPackets);
+        $packet = SteamPacketFactory::reassemblePacket($splitPackets);
       }
     }
     else
     {
-      $packet = SteamPacket::createPacket($this->buffer->get());
+      $packetData = $this->buffer->get();
     }
 
-    debug("Received packet of type \"" . get_class($packet) . "\"");
-
-    return $packet;
+    return $packetData;
   }
 
   /**

@@ -36,7 +36,8 @@ class S2A_PLAYER_Packet extends SteamPacket
     parent::__construct(SteamPacket::S2A_PLAYER_HEADER, $contentData);
 
     $this->contentData->getByte();
-
+    
+    $this->playerArray = array();
     while($this->contentData->remaining() > 0)
     {
       $playerData = array($this->contentData->getByte(), $this->contentData->getString(), $this->contentData->getLong(), $this->contentData->getFloat());
