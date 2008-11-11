@@ -7,10 +7,19 @@ package steamcondenser.steam.community.tf2;
 
 import org.w3c.dom.Element;
 
+/**
+ * Represents the stats for the Team Fortress 2 sniper class for a specific user
+ * @author  Sebastian Staudt
+ * @version $Id$
+ */
 public class TF2Sniper extends TF2Class
 {
     private int maxHeadshots;
 
+    /**
+     * Creates a new instance of TF2Sniper based on the assigned XML data
+     * @param classData
+     */
     public TF2Sniper(Element classData)
     {
 	super(classData);

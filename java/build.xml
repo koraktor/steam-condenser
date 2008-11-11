@@ -15,6 +15,7 @@
 	</typedef>
 
 	<property name="src.path" location="src" />
+	<property name="test.path" location="test" />
 	<property name="build.path" location="build" />
 	<property name="dist.path" location="dist" />
 	<property name="doc.dir" value="doc" />

@@ -52,7 +52,7 @@ class SteamSocket
   end
   
   def send(data_packet)
-    debug "Sending data packet of type \"#{data_packet.class.to_s}\"."
+    warn "Sending data packet of type \"#{data_packet.class.to_s}\"."
     
     @buffer = ByteBuffer.wrap data_packet.to_s
     @channel.write @buffer
@@ -65,9 +65,7 @@ class SteamSocket
   protected
   
   def create_packet
-    packet_data = @buffer.get 
-    
-    return SteamPacket.create_packet(packet_data)
+    return SteamPacketFactory.get_packet_from_data(@buffer.get )
   end
   
 end

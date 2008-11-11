@@ -31,6 +31,14 @@ import steamcondenser.steam.sockets.QuerySocket;
  */
 abstract public class GameServer
 {
+    private static final int REQUEST_CHALLENGE = 0;
+    
+    private static final int REQUEST_INFO = 1;
+    
+    private static final int REQUEST_PLAYER = 2;
+    
+    private static final int REQUEST_RULES = 3;
+    
     protected int challengeNumber = 0xFFFFFFFF;
 
     protected int ping;
@@ -90,6 +98,104 @@ abstract public class GameServer
     {
 	return this.serverInfo;
     }
+    
+    /**
+     * Returns a packet sent by the server in response to a query
+     * @return Packet recieved from the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    private SteamPacket getReply()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	return this.socket.getReply();
+    }
+    
+    /**
+     * @throws IOException 
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    private void handleResponseForRequest(int requestType)
+    	throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.handleResponseForRequest(requestType, true);
+    }
+    
+    /**
+     * @throws IOException 
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    private void handleResponseForRequest(int requestType, boolean repeatOnFailure)
+    	throws IOException, TimeoutException, SteamCondenserException
+    {
+	Class<? extends SteamPacket> expectedResponse = null;
+	SteamPacket requestPacket = null;
+	
+	try {
+	    switch(requestType)
+	    {
+	    	case GameServer.REQUEST_CHALLENGE:
+	    	    expectedResponse = S2C_CHALLENGE_Packet.class;
+	    	    requestPacket    = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
+	    	    break;
+	    	case GameServer.REQUEST_INFO:
+	    	    expectedResponse = S2A_INFO_BasePacket.class;
+	    	    requestPacket    = new A2S_INFO_Packet();
+	    	    break;
+	    	case GameServer.REQUEST_PLAYER:
+	    	    expectedResponse = S2A_PLAYER_Packet.class;
+	    	    requestPacket    = new A2S_PLAYER_Packet(this.challengeNumber);
+	    	    break;
+	    	case GameServer.REQUEST_RULES:
+	    	    expectedResponse = S2A_RULES_Packet.class;
+	    	    requestPacket    = new A2S_RULES_Packet(this.challengeNumber);
+	    	    break;
+	    	default:
+	    	    throw new SteamCondenserException("Called with wrong request type.");
+	    }
+	    
+	    this.sendRequest(requestPacket);
+	    
+	    SteamPacket responsePacket = this.getReply();
+	    
+	    if(responsePacket instanceof S2A_INFO_BasePacket)
+	    {
+	        this.serverInfo = ((S2A_INFO_BasePacket) responsePacket).getInfoHash();
+	    }
+	    else if(responsePacket instanceof S2A_PLAYER_Packet)
+	    {
+	        this.playerArray = ((S2A_PLAYER_Packet) responsePacket).getPlayerArray();
+	    }
+	    else if(responsePacket instanceof S2A_RULES_Packet)
+	    {
+	        this.rulesHash = ((S2A_RULES_Packet) responsePacket).getRulesHash();
+	    }
+	    else if(responsePacket instanceof S2C_CHALLENGE_Packet)
+	    {
+	        this.challengeNumber = ((S2C_CHALLENGE_Packet) responsePacket).getChallengeNumber();
+	    }
+	    else
+	    {
+		throw new SteamCondenserException("Response of type " + responsePacket.getClass() + " cannot be handled by this method.");
+	    }
+	    
+	    if(responsePacket.getClass() == expectedResponse)
+	    {
+	        System.out.println("Expected " + expectedResponse + ", got " + responsePacket.getClass() + ".");
+	        if(repeatOnFailure)
+	        {
+	    	this.handleResponseForRequest(requestType, false);
+	        }
+	    }
+	}
+	catch(TimeoutException e)
+	{
+	    System.out.println("Expected " + expectedResponse + ", but timed out. The server is probably offline.");
+	}
+    }
 
     /**
      * Initializes the server object with basic data (ping, server info and
@@ -111,87 +217,6 @@ abstract public class GameServer
 
     abstract public String rconExec(String command)
     throws IOException, TimeoutException, SteamCondenserException;
-
-    /**
-     * Get the challenge number from the server 
-     * @throws IOException
-     * @throws SteamCondenserException 
-     * @throws TimeoutException 
-     */
-    public void updateChallengeNumber()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	this.sendRequest(new A2S_SERVERQUERY_GETCHALLENGE_Packet());
-	this.challengeNumber = ((S2C_CHALLENGE_Packet) this.getReply()).getChallengeNumber();
-    }
-
-    /**
-     * Pings the server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    public void updatePing()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	this.sendRequest(new A2A_PING_Packet());
-	long startTime = System.currentTimeMillis();
-	this.getReply();
-	long endTime = System.currentTimeMillis();
-	this.ping = Long.valueOf(endTime - startTime).intValue();
-    }
-
-    /**
-     * Gets information about the players on the server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    public void updatePlayerInfo()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	this.sendRequest(new A2S_PLAYER_Packet(this.challengeNumber));
-	this.playerArray = ((S2A_PLAYER_Packet) this.getReply()).getPlayerArray();
-    }
-
-    /**
-     * Gets information about the setting of the server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    public void updateRulesInfo()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	this.sendRequest(new A2S_RULES_Packet(this.challengeNumber));
-	this.rulesHash = ((S2A_RULES_Packet) this.getReply()).getRulesHash();
-    }
-
-    /**
-     * Gets basic server information
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    public void updateServerInfo()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	this.sendRequest(new A2S_INFO_Packet());
-	this.serverInfo = ((S2A_INFO_BasePacket) this.getReply()).getInfoHash();
-    }
-
-    /**
-     * Returns a packet sent by the server in response to a query
-     * @return Packet recieved from the server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    private SteamPacket getReply()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	return this.socket.getReply();
-    }
 
     /**
      * Sends a query packet to the server
@@ -243,5 +268,69 @@ abstract public class GameServer
 	}
 
 	return returnString;
+    }
+    
+    /**
+     * Get the challenge number from the server 
+     * @throws IOException
+     * @throws SteamCondenserException 
+     * @throws TimeoutException 
+     */
+    public void updateChallengeNumber()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.handleResponseForRequest(GameServer.REQUEST_CHALLENGE);
+    }
+
+    /**
+     * Pings the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updatePing()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.sendRequest(new A2A_PING_Packet());
+	long startTime = System.currentTimeMillis();
+	this.getReply();
+	long endTime = System.currentTimeMillis();
+	this.ping = Long.valueOf(endTime - startTime).intValue();
+    }
+
+    /**
+     * Gets information about the players on the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updatePlayerInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.handleResponseForRequest(GameServer.REQUEST_PLAYER);
+    }
+
+    /**
+     * Gets information about the setting of the server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updateRulesInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.handleResponseForRequest(GameServer.REQUEST_RULES);
+    }
+
+    /**
+     * Gets basic server information
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    public void updateServerInfo()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	this.handleResponseForRequest(GameServer.REQUEST_INFO);
     }
 }

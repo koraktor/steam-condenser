@@ -5,7 +5,7 @@
 #
 # $Id$
 
-$:.push File.join(File.dirname(__FILE__), "lib")
+$:.push File.join(File.dirname(__FILE__), "../lib")
 
 require "exceptions/timeout_exception"
 require "ipaddr"
@@ -14,14 +14,9 @@ require "steam/servers/master_server"
 require "steam/servers/source_server"
 require "test/unit"
 
-def debug(debug_string)
-  if $-v
-    puts "DEBUG: #{debug_string}"
-  end
-end
+class QueryTests < Test::Unit::TestCase
 
-class Tests < Test::Unit::TestCase
-  
+  # This test tries to initialize an invalid GoldSrc server
   def test_invalid_goldsrc_server
     assert_raise TimeoutException do
       invalidServer = GoldSrcServer.new IPAddr.new("1.0.0.0")
@@ -29,6 +24,7 @@ class Tests < Test::Unit::TestCase
     end
   end
   
+  # This test tries to initialize an invalid Source server
   def test_invalid_source_server
     assert_raise TimeoutException do
       invalidServer = SourceServer.new IPAddr.new("1.0.0.0")
@@ -36,6 +32,8 @@ class Tests < Test::Unit::TestCase
     end
   end
   
+  # This test gets a random GoldSrc server from the master server and does a
+  # full query on it
   def test_random_goldsrc_server
     assert_nothing_raised do
       master_server = MasterServer.new MasterServer::GOLDSRC_MASTER_SERVER
@@ -49,6 +47,8 @@ class Tests < Test::Unit::TestCase
     end
   end
   
+  # This test gets a rand om Source server from the master server and does a 
+  # full query on it 
   def test_random_source_server
     assert_nothing_raised do
       master_server = MasterServer.new MasterServer::SOURCE_MASTER_SERVER
@@ -59,25 +59,6 @@ class Tests < Test::Unit::TestCase
       server.update_rules_info
       
       print server.to_s
-    end
-  end
-  
-  def test_rcon_goldsrc_server
-    assert_nothing_raised do
-      server = GoldSrcServer.new IPAddr.new("192.168.0.2")
-      server.rcon_auth "test"
-      rcon_reply = server.rcon_exec "status"
-      print "#{rcon_reply}\n"
-    end
-  end
-  
-  def test_rcon_source_server
-    assert_nothing_raised do
-      server = SourceServer.new IPAddr.new("127.0.0.1")
-      if server.rcon_auth "test"
-        rcon_reply = server.rcon_exec "status"
-        print "#{rcon_reply}\n"
-      end
     end
   end
   

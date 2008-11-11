@@ -6,6 +6,7 @@
 # $Id$
 
 require "abstract_class"
+require "exceptions/steam_condenser_exception"
 require "steam/steam_player"
 require "steam/packets/a2s_info_packet"
 require "steam/packets/a2a_ping_packet"
@@ -16,6 +17,11 @@ require "steam/packets/a2s_serverquery_getchallenge_packet"
 class GameServer
   
   include AbstractClass
+  
+  REQUEST_CHALLENGE = 0
+  REQUEST_INFO = 1
+  REQUEST_PLAYER = 2
+  REQUEST_RULES = 3
   
   # Returns the last measured response time of this server
   #
@@ -79,6 +85,51 @@ class GameServer
     return @info_hash
   end
   
+  def handle_response_for_request(request_type, repeat_on_failure = true)
+    begin
+    case request_type
+      when GameServer::REQUEST_CHALLENGE then
+        request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
+        expected_response = S2C_CHALLENGE_Packet
+      when GameServer::REQUEST_INFO then
+        request_packet = A2S_INFO_Packet.new
+        expected_response = S2A_INFO_BasePacket
+      when GameServer::REQUEST_PLAYER then
+        request_packet = A2S_PLAYER_Packet.new
+        expected_response = S2A_PLAYER_Packet
+      when GameServer::REQUEST_RULES then
+        request_packet = A2S_RULES_Packet.new
+        expected_response = S2A_RULES_Packet
+      else
+        raise SteamCondenserException.new("Called with wrong request type.")
+    end
+    
+    self.send_request request_packet
+    
+    response_packet = self.get_reply
+    
+    case response_packet.class
+      when S2A_INFO_BasePacket then
+        @info_hash = response_packet.get_info_hash
+      when S2A_PLAYER_Packet then
+        @player_array = response_packet.get_player_array
+      when S2A_RULES_Packet then
+        @rules_hash = response_packet.get_rules_hash
+      when S2C_CHALLENGE_Packet then
+        @challenge_number = response_packet.get_challenge_number
+      else
+        raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
+    end
+    
+    if response_packet.kind_of? expected_response
+      warn "Expected #{expected_response}, got #{response_packet.class}."
+      self.handle_response_for_request(request_type, false) if repeat_on_failure
+    end
+    rescue TimeoutException
+      warn "Expected #{expected_response}, but timed out."
+    end
+  end
+  
   def init
     update_ping
     update_server_info
@@ -86,23 +137,19 @@ class GameServer
   end
 
   def update_player_info
-    send_request A2S_PLAYER_Packet.new(@challenge_number)
-    @player_array = get_reply.get_player_array
+    self.handle_response_for_request 2
   end
 
   def update_rules_info
-    send_request A2S_RULES_Packet.new(@challenge_number)
-    @rules_hash = get_reply.get_rules_hash
+    self.handle_response_for_request 3
   end
   
   def update_server_info
-    send_request A2S_INFO_Packet.new
-    @info_hash = get_reply.get_info_hash
+    self.handle_response_for_request 1
   end
   
   def update_challenge_number
-    send_request A2S_SERVERQUERY_GETCHALLENGE_Packet.new
-    @challenge_number = get_reply.get_challenge_number    
+    self.handle_response_for_request 0
   end
  
   def update_ping

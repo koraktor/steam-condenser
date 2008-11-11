@@ -38,21 +38,21 @@ class GoldSrcSocket < SteamSocket
         # Caching of split packet Data
         split_packets[packet_number] = @buffer.get
         
-        debug("Received packet #{packet_number} of #{packet_count} for request ##{request_id}")
+        warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
         
         # Receiving the next packet
         bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
-      packet = SteamPacket.create_packet(split_packets.join(""))
+      packet = SteamPacketFactory.get_packet_from_data(split_packets.join(""))
         
     else
        
-      packet = SteamPacket.create_packet(@buffer.get)
+      packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
       
     end
     
-    debug "Got reply of type \"#{packet.class.to_s}\"."
+    warn "Got reply of type \"#{packet.class.to_s}\"."
     
     return packet
   end

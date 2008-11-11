@@ -16,6 +16,7 @@ import java.util.concurrent.TimeoutException;
 import steamcondenser.PacketFormatException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
+import steamcondenser.steam.packets.SteamPacketFactory;
 
 /**
  * Defines common methods for sockets used to connect to game and master
@@ -57,7 +58,7 @@ abstract public class SteamSocket
 	byte[] packetData = new byte[this.buffer.remaining()];
 	this.buffer.get(packetData);
 
-	return SteamPacket.createPacket(packetData);
+	return SteamPacketFactory.getPacketFromData(packetData);
     }
 
     /**

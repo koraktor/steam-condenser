@@ -31,20 +31,20 @@ class SourceSocket < SteamSocket
         end
         split_packets[packet_number] = @buffer.get
         
-        debug("Received packet #{packet_number} of #{packet_count} for request ##{request_id}")
+        warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
         
         bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
-      packet = SteamPacket.create_packet(split_packets.join(""))
+      packet = SteamPacketFactory.create_packet(split_packets.join(""))
         
     else
        
-      packet = SteamPacket.create_packet(@buffer.get)
+      packet = SteamPacketFactory.create_packet(@buffer.get)
       
     end
     
-    debug "Got reply of type \"#{packet.class.to_s}\"."
+    warn "Got reply of type \"#{packet.class.to_s}\"."
     
     return packet
   end

@@ -19,9 +19,9 @@ public class GameAchievement
 
     private String name;
 
-    private int steamId;
+    private String steamId;
 
-    public GameAchievement(int steamId, int appId, String name, boolean done)
+    public GameAchievement(String steamId, int appId, String name, boolean done)
     {
 	this.appId   = appId;
 	this.done    = done;
@@ -39,7 +39,7 @@ public class GameAchievement
 	return this.name;
     }
 
-    public int getSteamId()
+    public String getSteamId()
     {
 	return this.steamId;
     }

@@ -22,6 +22,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import steamcondenser.steam.community.tf2.TF2Stats;
+
 /**
  * The SteamId class represents a Steam Community profile (also called Steam ID)
  * @author Sebastian Staudt
@@ -248,6 +250,19 @@ public class SteamId
     public SteamId[] getFriends()
     {
 	return this.friends;
+    }
+    
+    public GameStats getGameStats(String gameName)
+    	throws ParserConfigurationException, SAXException, IOException
+    {
+	if(gameName == "TF2")
+	{
+	    return new TF2Stats(this.customUrl);
+	}
+	else
+	{
+	    return new GameStats(this.customUrl, gameName);
+	}
     }
 
     public SteamGroup[] getGroups()

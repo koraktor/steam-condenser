@@ -10,6 +10,7 @@
  * @version    $Id$
  */
 
+require_once "exceptions/SteamCondenserException.php";
 require_once "exceptions/TimeoutException.php";
 require_once "steam/packets/A2S_INFO_Packet.php";
 require_once "steam/packets/A2A_PING_Packet.php";
@@ -146,6 +147,9 @@ class GameServer
         case self::REQUEST_RULES:
           $expectedResponse = "S2A_RULES_Packet";
           $requestPacket    = new A2S_RULES_Packet($this->challengeNumber);
+          break;
+        default:
+          throw new SteamCondenserException("Called with wrong request type.");
       }
       
       $this->sendRequest($requestPacket);
@@ -166,6 +170,9 @@ class GameServer
           break;
         case "S2C_CHALLENGE_Packet":
           $this->challengeNumber = $responsePacket->getChallengeNumber();
+          break;
+        default:
+          throw new SteamCondenserException("Response of type " . get_class($responsePacket) . " cannot be handled by this method.");
       }
       
       if(!is_a($responsePacket, $expectedResponse))

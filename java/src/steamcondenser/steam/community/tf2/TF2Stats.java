@@ -27,16 +27,30 @@ public class TF2Stats extends GameStats
 {
     private ArrayList<TF2Class> classStats;
 
-    public TF2Stats(int steamId)
-    throws ParserConfigurationException, SAXException, IOException
+    /**
+     * Creates a new object holding Team Fortress 2 statistics for the given
+     * user
+     * @param steamId
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    public TF2Stats(String steamId)
+    	throws ParserConfigurationException, SAXException, IOException
     {
 	super(steamId, "TF2");
     }
 
+    /**
+     * Returns the statistics for all Team Fortress 2 classes for this user
+     * @return An array storing individual TF2Class objects for each Team
+     *         Fortress 2 class
+     */
     public ArrayList<TF2Class> getClassStats()
     {
 	if(this.classStats == null)
 	{
+	    this.classStats = new ArrayList<TF2Class>();
 	    NodeList classes = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("classData");
 	    for(int i = 0; i < classes.getLength(); i ++)
 	    {

@@ -19,30 +19,30 @@ import steamcondenser.steam.servers.MasterServer;
 import steamcondenser.steam.servers.SourceServer;
 
 /**
- * @author Sebastian Staudt
+ * @author  Sebastian Staudt
  * @version $Id$
  */
-public class Tests
+public class QueryTests
 {
     /**
-     * This test tries to initialize a invalid GoldSrc server
+     * This test tries to initialize an invalid GoldSrc server
      * @throws Exception
      */
     @Test(expected = TimeoutException.class)
     public void invalidGoldSrcServer()
-    throws Exception
+    	throws Exception
     {
 	GoldSrcServer invalidServer = new GoldSrcServer(InetAddress.getByName("1.0.0.0"), 27015);
 	invalidServer.initialize();
     }
 
     /**
-     * This test tries to initialize a invalid Source server
+     * This test tries to initialize an invalid Source server
      * @throws Exception
      */
     @Test(expected = TimeoutException.class)
     public void invalidSourceServer()
-    throws Exception
+    	throws Exception
     {
 	SourceServer invalidServer = new SourceServer(InetAddress.getByName("1.0.0.0"), 27015);
 	invalidServer.initialize();
@@ -55,7 +55,7 @@ public class Tests
      */
     @Test
     public void randomGoldSrcServer()
-    throws Exception
+    	throws Exception
     {
 	Random randomizer = new Random();
 	MasterServer masterServer = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
@@ -77,7 +77,7 @@ public class Tests
      */
     @Test
     public void randomSourceServer()
-    throws Exception
+    	throws Exception
     {
 	Random randomizer = new Random();
 	MasterServer masterServer = new MasterServer(MasterServer.SOURCE_MASTER_SERVER);
@@ -90,40 +90,5 @@ public class Tests
 	server.updateRulesInfo();
 
 	System.out.println(server);
-    }
-
-    /**
-     * This test tries to run the "status" command over RCON on a GoldSrc server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    @Test
-    public void rconGoldSrcServer()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
-	server.rconAuth("test");
-	String rconReply = server.rconExec("status");
-
-	System.out.println(rconReply);
-    }
-
-    /**
-     * This test tries to run the "status" command over RCON on a Source server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
-     */
-    @Test
-    public void rconSourceServer()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
-	if(server.rconAuth("test"))
-	{
-	    String rconReply = server.rconExec("status");
-	    System.out.println(rconReply);
-	}
     }
 }

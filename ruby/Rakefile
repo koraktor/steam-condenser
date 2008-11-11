@@ -16,6 +16,7 @@ task :default => :gem
 multitask :all => [:rdoc, :gem]
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
+test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
 # Set language to English
 ENV["LANG"] = "en"
@@ -41,7 +42,7 @@ spec = Gem::Specification.new do |s|
   s.rdoc_options = rdoc_options
   s.extra_rdoc_files = %w(README Rakefile LICENSE)
   
-  s.files = %w(README Rakefile LICENSE) + src_files
+  s.files = %w(README Rakefile LICENSE) + src_files + test_files
 end
 
 # Create a rake task +:gem+ to build the gem using the specification
@@ -54,8 +55,7 @@ end
 desc "Building docs"
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title = "Steam Condenser documentation"
-  rdoc.rdoc_files.include "lib/**/*.rb"
-  rdoc.rdoc_files.include ["LICENSE", "README", "tests.rb"]
+  rdoc.rdoc_files.include ["lib/**/*.rb", "test/**/*.rb", "LICENSE", "README"]
   rdoc.main = "README"
   rdoc.rdoc_dir = "doc"
   rdoc.options = rdoc_options

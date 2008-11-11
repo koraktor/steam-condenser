@@ -15,6 +15,7 @@ import steamcondenser.NothingReceivedException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.UncompletePacketException;
 import steamcondenser.steam.packets.SteamPacket;
+import steamcondenser.steam.packets.SteamPacketFactory;
 import steamcondenser.steam.packets.rcon.RCONGoldSrcRequestPacket;
 import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
@@ -87,7 +88,7 @@ public class GoldSrcSocket extends QuerySocket
 	    }
 	    while(bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
 
-	    packet = SteamPacket.reassemblePacket(splitPackets);
+	    packet = SteamPacketFactory.reassemblePacket(splitPackets);
 	}
 	else
 	{

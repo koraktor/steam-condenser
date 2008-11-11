@@ -38,11 +38,11 @@ public class GameStats
 
     protected String privacyState;
 
-    protected int steamId;
+    protected String steamId;
 
     protected Element xmlData;
 
-    public GameStats(int steamId, String gameName)
+    public GameStats(String steamId, String gameName)
     throws ParserConfigurationException, SAXException, IOException
     {
 	this.steamId = steamId;

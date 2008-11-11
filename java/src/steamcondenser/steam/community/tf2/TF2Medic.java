@@ -1,7 +1,17 @@
+/** 
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
+ */
+
 package steamcondenser.steam.community.tf2;
 
 import org.w3c.dom.Element;
 
+/**
+ * Represents the stats for the Team Fortress 2 medic class for a specific user
+ * @author  Sebastian Staudt
+ * @version $Id$
+ */
 public class TF2Medic extends TF2Class
 {
     private int maxHealthHealed;

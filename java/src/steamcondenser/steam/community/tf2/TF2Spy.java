@@ -7,12 +7,21 @@ package steamcondenser.steam.community.tf2;
 
 import org.w3c.dom.Element;
 
+/**
+ * Represents the stats for the Team Fortress 2 spy class for a specific user
+ * @author  Sebastian Staudt
+ * @version $Id$
+ */
 public class TF2Spy extends TF2Class
 {
     private int maxBackstabs;
 
     private int maxHealthLeeched;
 
+    /**
+     * Creates a new instance of TF2Spy based on the assigned XML data
+     * @param classData
+     */
     public TF2Spy(Element classData)
     {
 	super(classData);

@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 
 /**
  * Represents the stats for a Team Fortress 2 class for a specific user
- * @author Sebastian Staudt
+ * @author  Sebastian Staudt
  * @version $Id$
  */
 public class TF2Class
@@ -38,6 +38,10 @@ public class TF2Class
 
     protected int playTime;
 
+    /**
+     * Creates a new instance of TF2Class based on the assigned XML data
+     * @param classData
+     */
     public TF2Class(Element classData)
     {
 	this.className             = classData.getElementsByTagName("className").item(0).getTextContent();
@@ -51,7 +55,7 @@ public class TF2Class
 	this.maxRevenges           = Integer.parseInt(classData.getElementsByTagName("irevenge").item(0).getTextContent());
 	this.maxScore              = Integer.parseInt(classData.getElementsByTagName("ipointsscored").item(0).getTextContent());
 	this.maxTimeAlive          = Integer.parseInt(classData.getElementsByTagName("iplaytime").item(0).getTextContent());
-	this.playTime              = Integer.parseInt(classData.getElementsByTagName("playtimeseconds").item(0).getTextContent());
+	this.playTime              = Integer.parseInt(classData.getElementsByTagName("playtimeSeconds").item(0).getTextContent());
     }
 
     public String getClassName()

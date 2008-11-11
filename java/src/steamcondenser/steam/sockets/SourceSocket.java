@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.SteamPacket;
+import steamcondenser.steam.packets.SteamPacketFactory;
 
 /**
  * A socket used for connections to Source game servers.
@@ -83,11 +84,11 @@ public class SourceSocket extends QuerySocket
 
 	    if(isCompressed)
 	    {
-		packet = SteamPacket.reassemblePacket(splitPackets, true, uncompressedSize, packetChecksum);
+		packet = SteamPacketFactory.reassemblePacket(splitPackets, true, uncompressedSize, packetChecksum);
 	    }
 	    else
 	    {
-		packet = SteamPacket.reassemblePacket(splitPackets);
+		packet = SteamPacketFactory.reassemblePacket(splitPackets);
 	    }
 	}
 	else
