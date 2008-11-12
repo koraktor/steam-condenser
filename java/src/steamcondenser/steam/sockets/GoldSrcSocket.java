@@ -7,11 +7,13 @@ package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import steamcondenser.NothingReceivedException;
+import steamcondenser.RCONNoAuthException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.UncompletePacketException;
 import steamcondenser.steam.packets.SteamPacket;
@@ -121,8 +123,25 @@ public class GoldSrcSocket extends QuerySocket
 	}
 
 	this.rconSend("rcon " + this.rconChallenge + " " + password + " "+ command);
+	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+	
+	if(response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server"))
+	{
+	    throw new RCONNoAuthException();
+	}
+	    
+	String responsePart;
+	
+	do
+	{
+	    this.rconSend("rcon " + this.rconChallenge + " " + password);
+	    responsePart = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+	    response += responsePart;
+	    System.out.println(responsePart.length());
+	}
+	while(responsePart.equals("\0\0"));
 
-	return ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+	return response;
     }
 
     /**
@@ -134,14 +153,14 @@ public class GoldSrcSocket extends QuerySocket
     throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
     {
 	this.rconSend("challenge rcon");
-	int bytesRead = this.receivePacket(1400);
-
-	if(bytesRead == 0)
+	
+	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+	if(response.trim().equals("You have been banned from this server."))
 	{
-	    throw new NothingReceivedException();
+	    throw new RCONNoAuthException();
 	}
 
-	this.rconChallenge = Integer.parseInt(new String(this.buffer.array()).substring(19, 29));
+	this.rconChallenge = Integer.parseInt(response.substring(14, 23));
     }
 
     private void rconSend(String command)

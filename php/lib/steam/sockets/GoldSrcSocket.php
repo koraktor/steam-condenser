@@ -21,7 +21,7 @@ require_once "steam/sockets/SteamSocket.php";
 class GoldSrcSocket extends SteamSocket
 {
   /**
-   * @var int
+   * @var long
    */
   private $rconChallenge;
 
@@ -64,6 +64,11 @@ class GoldSrcSocket extends SteamSocket
     return $packetData;
   }
 
+  /**
+   * @param String $password
+   * @param String $command
+   * @return String
+   */
   public function rconExec($password, $command)
   {
     if(empty($this->rconChallenge))
@@ -72,23 +77,42 @@ class GoldSrcSocket extends SteamSocket
     }
      
     $this->rconSend("rcon {$this->rconChallenge} $password $command");
+    $response = $this->getReply()->getResponse();
+    
+    if(trim($response) == "Bad rcon_password." || trim($response) == "You have been banned from this server.")
+    {
+      throw new RCONNoAuthException();
+    }
+    
+    do
+    {
+      $this->rconSend("rcon {$this->rconChallenge} $password");
+      $responsePart = $this->getReply()->getResponse();
+      $response .= $responsePart;
+    }
+    while($responsePart != "\0\0");
      
-    return $this->getReply()->getResponse();
+    return $response;
   }
 
+  /**
+   */
   public function rconGetChallenge()
   {
     $this->rconSend("challenge rcon");
-    $bytesRead = $this->receivePacket(1400);
+    $response = $this->getReply()->getResponse();
+    
+    if(trim($response) == "You have been banned from this server.")
+	{
+	    throw new RCONNoAuthException();
+	}
      
-    if($bytesRead == 0)
-    {
-      throw new NothingReceivedException();
-    }
-     
-    $this->rconChallenge = intval(substr($this->buffer->_array(), 19, 10));
+    $this->rconChallenge = intval(substr($response, 18, 10));
   }
 
+  /**
+   * @param String $command
+   */
   public function rconSend($command)
   {
     $this->send(new RCONGoldSrcRequest($command));

@@ -6,7 +6,7 @@
 # $Id$
 
 require "byte_buffer"
-require "steam/packets/steam_packet"
+require "steam/packets/steam_packet_factory"
 require "steam/packets/rcon/rcon_goldsrc_request"
 require "steam/sockets/steam_socket"
 
@@ -36,7 +36,7 @@ class GoldSrcSocket < SteamSocket
         end
         
         # Caching of split packet Data
-        split_packets[packet_number] = @buffer.get
+        split_packets[packet_number - 1] = @buffer.get
         
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
         
@@ -63,19 +63,30 @@ class GoldSrcSocket < SteamSocket
     end
     
     self.rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
+    response = self.get_reply.get_response
     
-    return self.get_reply.get_response
+    if response.strip == "Bad rcon_password." or response.strip == "You have been banned from this server."
+      raise RCONNoAuthException.new
+    end
+    
+    begin
+      self.rcon_send "rcon #{@rcon_challenge} #{password}"
+      response_part = self.get_reply.get_response
+      response << response_part
+    end while response_part != "\0\0"
+    
+    return response
   end
   
   def rcon_get_challenge
     self.rcon_send "challenge rcon"
-    bytes_read = self.receive_packet 1400
+    response = self.get_reply.get_response
     
-    if bytes_read == 0
-      raise NothingReceivedException.new
+    if response.strip == "You have been banned from this server."
+      raise RCONNoAuthException.new;
     end
     
-    @rcon_challenge = @buffer.array[19..29].to_i
+    @rcon_challenge = @buffer.array[18..28].to_i
   end
   
   def rcon_send(command)

@@ -43,7 +43,8 @@ class SteamPacketFactory
         return A2M_GET_SERVERS_BATCH2.new(data)
       when SteamPacket::M2A_SERVER_BATCH_HEADER
         return M2A_SERVER_BATCH_Packet.new(data)
-      when SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
+      when SteamPacket::RCON_GOLDSRC_CHALLENGE_HEADER,
+           SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
         return RCONGoldSrcResponse.new(data)
       else
         raise Exception.new("Unknown packet with header 0x#{header.to_s 16} received.")

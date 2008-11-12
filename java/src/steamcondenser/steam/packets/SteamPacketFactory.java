@@ -69,6 +69,7 @@ public abstract class SteamPacketFactory
 	case SteamPacket.M2A_SERVER_BATCH_HEADER:
 	    return new M2A_SERVER_BATCH_Paket(data);
 
+	case SteamPacket.RCON_GOLDSRC_CHALLENGE_HEADER:
 	case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
 	    return new RCONGoldSrcResponsePacket(data);
 

@@ -87,44 +87,43 @@ class GameServer
   
   def handle_response_for_request(request_type, repeat_on_failure = true)
     begin
-    case request_type
-      when GameServer::REQUEST_CHALLENGE then
-        request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
-        expected_response = S2C_CHALLENGE_Packet
-      when GameServer::REQUEST_INFO then
-        request_packet = A2S_INFO_Packet.new
-        expected_response = S2A_INFO_BasePacket
-      when GameServer::REQUEST_PLAYER then
-        request_packet = A2S_PLAYER_Packet.new
-        expected_response = S2A_PLAYER_Packet
-      when GameServer::REQUEST_RULES then
-        request_packet = A2S_RULES_Packet.new
-        expected_response = S2A_RULES_Packet
-      else
-        raise SteamCondenserException.new("Called with wrong request type.")
-    end
-    
-    self.send_request request_packet
-    
-    response_packet = self.get_reply
-    
-    case response_packet.class
-      when S2A_INFO_BasePacket then
-        @info_hash = response_packet.get_info_hash
-      when S2A_PLAYER_Packet then
-        @player_array = response_packet.get_player_array
-      when S2A_RULES_Packet then
-        @rules_hash = response_packet.get_rules_hash
-      when S2C_CHALLENGE_Packet then
-        @challenge_number = response_packet.get_challenge_number
-      else
-        raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
-    end
-    
-    if response_packet.kind_of? expected_response
-      warn "Expected #{expected_response}, got #{response_packet.class}."
-      self.handle_response_for_request(request_type, false) if repeat_on_failure
-    end
+      case request_type
+        when GameServer::REQUEST_CHALLENGE then
+          request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
+          expected_response = S2C_CHALLENGE_Packet
+        when GameServer::REQUEST_INFO then
+          request_packet = A2S_INFO_Packet.new
+          expected_response = S2A_INFO_BasePacket
+        when GameServer::REQUEST_PLAYER then
+          request_packet = A2S_PLAYER_Packet.new(@challenge_number)
+          expected_response = S2A_PLAYER_Packet
+        when GameServer::REQUEST_RULES then
+          request_packet = A2S_RULES_Packet.new(@challenge_number)
+          expected_response = S2A_RULES_Packet
+        else
+          raise SteamCondenserException.new("Called with wrong request type.")
+      end
+      
+      self.send_request request_packet
+      response_packet = self.get_reply
+      
+      case response_packet.class.to_s
+        when "S2A_INFO_BasePacket" then
+          @info_hash = response_packet.get_info_hash
+        when "S2A_PLAYER_Packet" then
+          @player_array = response_packet.get_player_array
+        when "S2A_RULES_Packet" then
+          @rules_hash = response_packet.get_rules_hash
+        when "S2C_CHALLENGE_Packet" then
+          @challenge_number = response_packet.get_challenge_number
+        else
+          raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
+      end
+      
+      if !response_packet.kind_of? expected_response
+        warn "Expected #{expected_response}, got #{response_packet.class}."
+        self.handle_response_for_request(request_type, false) if repeat_on_failure
+      end
     rescue TimeoutException
       warn "Expected #{expected_response}, but timed out."
     end
@@ -197,7 +196,7 @@ class GameServer
     return return_string
   end
 
-  private
+  protected
 
   def get_reply
     @socket.get_reply
