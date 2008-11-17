@@ -24,19 +24,19 @@ require_once "PHPUnit/Framework.php";
  */
 class QueryTests extends PHPUnit_Framework_TestCase
 {
-  public function testRconGoldSrcServer()
+  /*public function testRconGoldSrcServer()
   {
-    $server = new GoldSrcServer(new InetAddress("192.168.0.2"));
+    $server = new GoldSrcServer(new InetAddress("192.168.0.166"));
     $server->rconAuth("test");
     $rconReply = $server->rconExec("status");
     echo "$rconReply\n";
-  }
+  }*/
 
   public function testRconSourceServer()
   {
-    $server = new SourceServer(new InetAddress("192.168.0.2"));
+    $server = new SourceServer(new InetAddress("192.168.0.166"));
     $server->rconAuth("test");
-    $rconReply = $server->rconExec("status");
+    $rconReply = $server->rconExec("version");
     echo "$rconReply\n";
   }
 }

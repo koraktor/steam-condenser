@@ -22,7 +22,7 @@ class SourceSocket extends SteamSocket
   /**
    * @return byte[]
    */
-  public function getReplyData()
+  public function getReply()
   {
     $bytesRead = $this->receivePacket(1400);
 
@@ -68,10 +68,10 @@ class SourceSocket extends SteamSocket
     }
     else
     {
-      $packetData = $this->buffer->get();
+      $packet = SteamPacketFactory::getPacketFromData($this->buffer->get());
     }
 
-    return $packetData;
+    return $packet;
   }
 
   /**

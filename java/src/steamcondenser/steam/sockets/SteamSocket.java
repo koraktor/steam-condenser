@@ -52,8 +52,8 @@ abstract public class SteamSocket
      * @throws PacketFormatException When the SteamPacket could not be created
      *         because of an format error
      */
-    protected SteamPacket createPacket()
-    throws PacketFormatException
+    protected SteamPacket getPacketFromData()
+    	throws PacketFormatException
     {
 	byte[] packetData = new byte[this.buffer.remaining()];
 	this.buffer.get(packetData);

@@ -36,7 +36,7 @@ public class MasterServerSocket extends QuerySocket
 	    throw new PacketFormatException("Master query response has wrong packet header.");
 	}
 
-	return this.createPacket();
+	return this.getPacketFromData();
     }
 
 }

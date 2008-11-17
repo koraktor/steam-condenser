@@ -44,20 +44,11 @@ abstract class SteamSocket
     //$this->channel->close();
   }
 
-  public function getReply()
-  {
-    $packet = SteamPacketFactory::getPacketFromData($this->getReplyData());
-    
-    trigger_error("Received packet of type \"" . get_class($packet) . "\"");
-    
-    return $packet;
-  }
-
   /**
    * Abstract getReplyData() method
    * @return byte[]
    */
-  abstract public function getReplyData();
+  abstract public function getReply();
 
   /**
    * @return int

@@ -36,12 +36,9 @@ class SourceSocket < SteamSocket
         bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
-      packet = SteamPacketFactory.create_packet(split_packets.join(""))
-        
+      packet = SteamPacketFactory.get_packet_from_data(split_packets.join(""))
     else
-       
-      packet = SteamPacketFactory.create_packet(@buffer.get)
-      
+      packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
     end
     
     warn "Got reply of type \"#{packet.class.to_s}\"."

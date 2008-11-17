@@ -94,7 +94,7 @@ public class GoldSrcSocket extends QuerySocket
 	}
 	else
 	{
-	    packet = this.createPacket();
+	    packet = SteamPacketFactory.getPacketFromData(this.buffer.array());
 	}
 
 	this.buffer.flip();
@@ -154,13 +154,13 @@ public class GoldSrcSocket extends QuerySocket
     {
 	this.rconSend("challenge rcon");
 	
-	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
-	if(response.trim().equals("You have been banned from this server."))
+	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse().trim();
+	if(response.equals("You have been banned from this server."))
 	{
 	    throw new RCONNoAuthException();
 	}
 
-	this.rconChallenge = Integer.parseInt(response.substring(14, 23));
+	this.rconChallenge = Integer.parseInt(response.substring(15));
     }
 
     private void rconSend(String command)

@@ -11,12 +11,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.TimeoutException;
 
-import steamcondenser.PacketBuffer;
-import steamcondenser.PacketFormatException;
 import steamcondenser.SteamCondenserException;
-import steamcondenser.steam.packets.rcon.RCONAuthResponse;
-import steamcondenser.steam.packets.rcon.RCONExecResponsePacket;
 import steamcondenser.steam.packets.rcon.RCONPacket;
+import steamcondenser.steam.packets.rcon.RCONPacketFactory;
 
 public class RCONSocket extends SteamSocket
 {
@@ -28,27 +25,6 @@ public class RCONSocket extends SteamSocket
 	this.buffer = ByteBuffer.allocate(1500);
 
 	this.channel = SocketChannel.open();
-    }
-
-    public RCONPacket createPacket()
-    throws PacketFormatException
-    {
-	PacketBuffer packetBuffer = new PacketBuffer(this.buffer.array());
-
-	int packetSize = Integer.reverseBytes(packetBuffer.getInt());
-	int requestId = Integer.reverseBytes(packetBuffer.getInt());
-	int header = Integer.reverseBytes(packetBuffer.getInt());
-	String data = packetBuffer.getString();
-
-	switch(header)
-	{
-	case RCONPacket.SERVERDATA_AUTH_RESPONSE:
-	    return new RCONAuthResponse(requestId);
-	case RCONPacket.SERVERDATA_RESPONSE_VALUE:
-	    return new RCONExecResponsePacket(requestId, data);
-	default:
-	    throw new PacketFormatException("Unknown packet with header " + Integer.reverseBytes(header) + " received.");
-	}
     }
 
     public void send(RCONPacket dataPacket)
@@ -69,6 +45,6 @@ public class RCONSocket extends SteamSocket
 	this.buffer = ByteBuffer.allocate(1400);
 	((SocketChannel) this.channel).read(this.buffer);
 
-	return this.createPacket();
+	return RCONPacketFactory.getPacketFromData(this.buffer.array());
     }
 }

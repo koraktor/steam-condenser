@@ -62,10 +62,4 @@ class SteamSocket
     @channel.close
   end
   
-  protected
-  
-  def create_packet
-    return SteamPacketFactory.get_packet_from_data(@buffer.get )
-  end
-  
 end

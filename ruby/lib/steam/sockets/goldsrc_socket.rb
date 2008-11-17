@@ -47,9 +47,7 @@ class GoldSrcSocket < SteamSocket
       packet = SteamPacketFactory.get_packet_from_data(split_packets.join(""))
         
     else
-       
       packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
-      
     end
     
     warn "Got reply of type \"#{packet.class.to_s}\"."
@@ -80,13 +78,13 @@ class GoldSrcSocket < SteamSocket
   
   def rcon_get_challenge
     self.rcon_send "challenge rcon"
-    response = self.get_reply.get_response
+    response = self.get_reply.get_response.strip
     
-    if response.strip == "You have been banned from this server."
+    if response == "You have been banned from this server."
       raise RCONNoAuthException.new;
     end
     
-    @rcon_challenge = @buffer.array[18..28].to_i
+    @rcon_challenge = response[15..-1]
   end
   
   def rcon_send(command)

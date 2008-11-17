@@ -93,7 +93,7 @@ public class SourceSocket extends QuerySocket
 	}
 	else
 	{
-	    packet = this.createPacket();
+	    packet = this.getPacketFromData();
 	}
 
 	this.buffer.flip();

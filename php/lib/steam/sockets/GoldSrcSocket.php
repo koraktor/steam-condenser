@@ -28,7 +28,7 @@ class GoldSrcSocket extends SteamSocket
   /**
    * @return SteamPacket
    */
-  public function getReplyData()
+  public function getReply()
   {
     $bytesRead = $this->receivePacket(1400);
 
@@ -61,7 +61,7 @@ class GoldSrcSocket extends SteamSocket
       $packetData = $this->buffer->get();
     }
 
-    return $packetData;
+    return SteamPacketFactory::getPacketFromData($packetData);
   }
 
   /**
@@ -100,14 +100,14 @@ class GoldSrcSocket extends SteamSocket
   public function rconGetChallenge()
   {
     $this->rconSend("challenge rcon");
-    $response = $this->getReply()->getResponse();
+    $response = trim($this->getReply()->getResponse());
     
-    if(trim($response) == "You have been banned from this server.")
+    if($response == "You have been banned from this server.")
 	{
 	    throw new RCONNoAuthException();
 	}
      
-    $this->rconChallenge = intval(substr($response, 18, 10));
+    $this->rconChallenge = intval(substr($response, 15));
   }
 
   /**
