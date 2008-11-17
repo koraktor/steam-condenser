@@ -84,7 +84,7 @@ class GoldSrcSocket < SteamSocket
       raise RCONNoAuthException.new;
     end
     
-    @rcon_challenge = response[15..-1]
+    @rcon_challenge = response[14..-1]
   end
   
   def rcon_send(command)

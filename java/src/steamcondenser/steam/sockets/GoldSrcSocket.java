@@ -94,7 +94,7 @@ public class GoldSrcSocket extends QuerySocket
 	}
 	else
 	{
-	    packet = SteamPacketFactory.getPacketFromData(this.buffer.array());
+	    packet = this.getPacketFromData();
 	}
 
 	this.buffer.flip();
@@ -160,7 +160,7 @@ public class GoldSrcSocket extends QuerySocket
 	    throw new RCONNoAuthException();
 	}
 
-	this.rconChallenge = Integer.parseInt(response.substring(15));
+	this.rconChallenge = Integer.parseInt(response.substring(14));
     }
 
     private void rconSend(String command)

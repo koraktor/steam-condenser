@@ -107,7 +107,7 @@ class GoldSrcSocket extends SteamSocket
 	    throw new RCONNoAuthException();
 	}
      
-    $this->rconChallenge = intval(substr($response, 15));
+    $this->rconChallenge = intval(substr($response, 14));
   }
 
   /**
