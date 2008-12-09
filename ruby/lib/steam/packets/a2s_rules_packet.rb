@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008, Sebastian Staudt
 #
-# $Id: a2a_rules_request_packet.rb 97 2008-08-07 07:25:49Z koraktor $
+# $Id$
 
 require "steam/packets/request_with_challenge"
 require "steam/packets/steam_packet"

@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008, Sebastian Staudt
 #
-# $Id: a2a_info_source_response_packet.rb 97 2008-08-07 07:25:49Z koraktor $
+# $Id$
 
 require "steam/packets/s2a_info_base_packet"
 

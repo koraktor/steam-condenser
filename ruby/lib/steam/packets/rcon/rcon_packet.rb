@@ -17,6 +17,8 @@ class RCONPacket < SteamPacket
   SERVERDATA_EXECCOMMAND = 2
   SERVERDATA_RESPONSE_VALUE = 0
   
+  attr_reader :request_id
+  
   def initialize(request_id, rcon_header, rcon_data)
     super rcon_header, "#{rcon_data}\0\0"
     

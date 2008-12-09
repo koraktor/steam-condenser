@@ -29,10 +29,24 @@ class RCONSocket < SteamSocket
   end
   
   def get_reply
-    @buffer = ByteBuffer.allocate 1400
-    @channel.read @buffer
+    self.receive_packet 1440
+    packet_data = @buffer.array[0..@buffer.limit]
+    packet_size = @buffer.get_long + 4
     
-    return RCONPacketFactory.get_packet_from_data @buffer.array
+    if packet_size > 1440
+      remaining_bytes = packet_size - 1440
+      begin
+        if remaining_bytes < 1440
+          self.receive_packet remaining_bytes
+        else
+          self.receive_packet 1440
+        end
+        packet_data << @buffer.array[0..@buffer.limit]
+        remaining_bytes -= @buffer.limit
+      end while remaining_bytes > 0
+    end
+    
+    return RCONPacketFactory.get_packet_from_data(packet_data)
   end
   
 end

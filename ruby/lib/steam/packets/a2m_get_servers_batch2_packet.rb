@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008, Sebastian Staudt
 #
-# $Id: master_server_query_request_packet.rb 103 2008-08-10 19:58:11Z koraktor $
+# $Id$
 
 require "steam/packets/steam_packet"
 

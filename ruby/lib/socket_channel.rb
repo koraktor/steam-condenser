@@ -9,6 +9,8 @@ require "byte_buffer"
 
 class SocketChannel
   
+  attr_reader :socket
+  
   def self.open
     return SocketChannel.new
   end

@@ -8,6 +8,7 @@
 require "open-uri"
 require "rexml/document"
 
+require "exceptions/steam_condenser_exception"
 require "steam/community/game_stats"
 require "steam/community/steam_group"
 require "steam/community/tf2/tf2_stats"
@@ -21,6 +22,22 @@ class SteamId
               :location, :member_since, :most_played_games, :privacy_state,
               :real_name, :state_message, :steam_rating, :steam_rating_text,
               :summary, :vac_banned, :visibility_state
+  
+  def self.convert_steam_id_to_community_id(steam_id)
+    if steam_id == "STEAM_ID_LAN"
+      raise SteamCondenserException.new("Cannot convert SteamID \"STEAM_ID_LAN\" to a community ID.")
+    elsif steam_id.match(/STEAM_[0-1]:[0-1]:[0-9]*/).nil?
+      raise SteamCondenserException.new("SteamID \"#{steam_id}\" doesn't have the correct format.")
+    end
+    
+    steam_id = steam_id[6..-1].split(":").map!{|s| s.to_i}
+    
+    return steam_id[1] + 76561197960265728 + steam_id[2] * 2
+  end
+  
+  def self.get_from_steam_id(steam_id)
+    return self.new(self.convert_steam_id_to_community_id(steam_id))
+  end
 
   # Creates a new SteamId object for the given SteamID, either numeric or the
   # custom URL specified by the user. If fetch is true, fetch_data is used to
@@ -31,14 +48,20 @@ class SteamId
     begin
       self.fetch_data if fetch
     rescue REXML::ParseException
-      raise Exception.new("SteamID could not be loaded.")
+      raise SteamCondenserException.new("SteamID could not be loaded.")
     end
   end
   
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
   def fetch_data
-    profile = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@id}?xml=1", {:proxy => true}).read).elements["profile"]
+    if @id.is_a? Numeric
+      url = "http://www.steamcommunity.com/profiles/#{@id}?xml=1"
+    else
+      url = "http://www.steamcommunity.com/id/#{@id}?xml=1"
+    end
+    
+    profile = REXML::Document.new(open(url, {:proxy => true}).read).elements["profile"]
       
     @image_url        = profile.elements["avatarIcon"].text[0..-5]
     @online_state     = profile.elements["onlineState"].text

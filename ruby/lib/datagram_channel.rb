@@ -8,6 +8,7 @@
 require "byte_buffer"
 
 class DatagramChannel
+  
   attr_reader :socket
   
   def self.open

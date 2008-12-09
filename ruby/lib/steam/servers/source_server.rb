@@ -27,17 +27,34 @@ class SourceServer < GameServer
     @rcon_socket.send RCONAuthRequest.new(@rcon_request_id, password)
     @rcon_socket.get_reply
     reply = @rcon_socket.get_reply
+    
+    if reply.request_id == -1
+      raise RCONNoAuthException.new
+    end
+    
     return reply.get_request_id == @rcon_request_id
   end
   
   def rcon_exec(command)
     @rcon_socket.send RCONExecRequest.new(@rcon_request_id, command)
-    reply = @rcon_socket.get_reply
-    if reply.is_a? RCONAuthResponse
-      raise RCONNoAuthException.new
+    response_packets = Array.new
+    
+    begin
+      begin
+        response_packet = @rcon_socket.get_reply
+        raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
+        response_packets << response_packet
+      end while true
+    rescue TimeoutException
+      raise TimeoutException if response_packets.empty?
     end
     
-    return reply.get_response
+    response = String.new
+    response_packets.each do |packet|
+      response << packet.get_response
+    end
+    
+    return response
   end
   
 end

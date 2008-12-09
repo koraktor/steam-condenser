@@ -15,4 +15,5 @@ class SteamPlayer
     @name = name
     @score = score
   end
+  
 end
