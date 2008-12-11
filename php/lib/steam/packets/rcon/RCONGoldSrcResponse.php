@@ -18,14 +18,14 @@ require_once "steam/packets/rcon/RCONPacket.php";
  */
 class RCONGoldSrcResponse extends SteamPacket
 {
-  public function __construct($commandResponse)
-  {
-    parent::__construct(SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER, $commandResponse);
-  }
+	public function __construct($commandResponse)
+	{
+		parent::__construct(SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER, $commandResponse);
+	}
 
-  public function getResponse()
-  {
-    return $this->contentData->_array();
-  }
+	public function getResponse()
+	{
+		return $this->contentData->_array();
+	}
 }
 ?>

@@ -20,25 +20,25 @@ require_once "steam/sockets/SteamSocket.php";
  */
 class MasterServerSocket extends SteamSocket
 {
-  public function __construct(InetAddress $ipAddress, $portNumber)
-  {
-    parent::__construct($ipAddress, $portNumber);
-  }
+	public function __construct(InetAddress $ipAddress, $portNumber)
+	{
+		parent::__construct($ipAddress, $portNumber);
+	}
 
-  /**
-   * @throws PacketFormatException
-   */
-  public function getReplyData()
-  {
-    $this->receivePacket(1500);
+	/**
+	 * @throws PacketFormatException
+	 */
+	public function getReplyData()
+	{
+		$this->receivePacket(1500);
 
-    if($this->buffer->getLong() != -1)
-    {
-      throw new PacketFormatException("Master query response has wrong packet header.");
-    }
+		if($this->buffer->getLong() != -1)
+		{
+			throw new PacketFormatException("Master query response has wrong packet header.");
+		}
 
-    return $this->buffer->get();
-  }
+		return $this->buffer->get();
+	}
 
 }
 ?>

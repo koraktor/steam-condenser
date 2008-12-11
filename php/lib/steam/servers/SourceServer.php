@@ -2,7 +2,7 @@
 /**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
- * 
+ *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
@@ -26,46 +26,68 @@ require_once "steam/sockets/SourceSocket.php";
  */
 class SourceServer extends GameServer
 {
-  /**
-   * @var long
-   */
-  private $rconRequestId;
+	/**
+	 * @var long
+	 */
+	private $rconRequestId;
 
-  /**
-   * @param InetAddress $serverIP
-   * @param int $portNumber The listening port of the server, defaults to 27015
-   * @since v0.1
-   */
-  public function __construct(InetAddress $ipAddress, $portNumber = 27015)
-  {
-    parent::__construct($portNumber);
+	/**
+	 * @param InetAddress $serverIP
+	 * @param int $portNumber The listening port of the server, defaults to 27015
+	 * @since v0.1
+	 */
+	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
+	{
+		parent::__construct($portNumber);
 
-    $this->rconSocket = new RCONSocket($ipAddress, $portNumber);
-    $this->socket = new SourceSocket($ipAddress, $portNumber);
-  }
+		$this->rconSocket = new RCONSocket($ipAddress, $portNumber);
+		$this->socket = new SourceSocket($ipAddress, $portNumber);
+	}
 
-  public function rconAuth($password)
-  {
-    $this->rconRequestId = rand(0, pow(2, 16));
-     
-    $this->rconSocket->send(new RCONAuthRequest($this->rconRequestId, $password));
-    $this->rconSocket->getReply();
-    $reply = $this->rconSocket->getReply();
-     
-    return $reply->getRequestId() == $this->rconRequestId;
-  }
+	public function rconAuth($password)
+	{
+		$this->rconRequestId = rand(0, pow(2, 16));
+		 
+		$this->rconSocket->send(new RCONAuthRequest($this->rconRequestId, $password));
+		$this->rconSocket->getReply();
+		$reply = $this->rconSocket->getReply();
+		 
+		return $reply->getRequestId() == $this->rconRequestId;
+	}
 
-  public function rconExec($command)
-  {
-    $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
-    $reply = $this->rconSocket->getReply();
-     
-    if($reply instanceof RCONAuthResponse)
-    {
-      throw new RCONNoAuthException();
-    }
-     
-    return $reply->getResponse();
-  }
+	public function rconExec($command)
+	{
+		$this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
+
+		try
+		{
+			while(true)
+			{
+				$responsePacket = $this->rconSocket->getReply();
+				 
+				if($responsePacket instanceof RCONAuthResponse)
+				{
+					throw new RCONNoAuthException();
+				}
+
+				$responsePackets[] = $responsePacket;
+			}
+		}
+		catch(TimeoutException $e)
+		{
+			if(empty($responsePackets))
+			{
+				throw $e;
+			}
+		}
+
+		$response = "";
+		foreach($responsePackets as $packet)
+		{
+			$response .= $packet->getResponse();
+		}
+		 
+		return $response;
+	}
 }
 ?>

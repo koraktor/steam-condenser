@@ -21,23 +21,23 @@ require_once "steam/community/GameStats.php";
 class GameStats
 {
 	/**
-	 * Used to cache the XML data of the statistics for this game and this user 
+	 * Used to cache the XML data of the statistics for this game and this user
 	 * @var SimpleXML
 	 */
 	private $xmlData;
-	
+
 	/**
 	 * Creates a GameStats object and fetchs data from Steam Community for the
-     * given user and game
+	 * given user and game
 	 * @param $steamId
 	 * @param $gameName
 	 */
 	public function __construct($steamId, $gameName)
 	{
 		$this->steamId = $steamId;
-		
+
 		$this->xmlData = new SimpleXMLElement("http://www.steamcommunity.com/id/{$this->steamId}/stats/{$this->gameName}?xml=1", null, true);
-		
+
 		$this->privacyState = $this->xmlData->privacyState;
 		if($this->privacyState == "public")
 		{
@@ -48,10 +48,10 @@ class GameStats
 			$this->hoursPlayed = floatval($this->hoursPlayed);
 		}
 	}
-	
+
 	/**
 	 * Returns the achievements for this stats' user and game. If the achievements
-     * haven't been parsed already, parsing is done now.
+	 * haven't been parsed already, parsing is done now.
 	 * @return GameAchievements[]
 	 */
 	public function getAchievements()
@@ -63,7 +63,7 @@ class GameStats
 				$this->achievements[] = new GameAchievement($this->steamId, $this->appId, $achievement->name, ($achievement->closed == 1));
 			}
 		}
-		
+
 		return $this->achievements;
 	}
 }

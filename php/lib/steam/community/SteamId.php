@@ -21,7 +21,7 @@ require_once "steam/community/tf2/TF2Stats.php";
 class SteamId
 {
 	/**
-	 * 
+	 *
 	 * @param $id
 	 * @param $fetch
 	 * @return unknown_type
@@ -35,14 +35,14 @@ class SteamId
 			$this->fetchData();
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public function fetchData()
 	{
 		$profile = new SimpleXMLElement("http://www.steamcommunity.com/id/{$this->id}?xml=1", null, true);
-		
+
 		$this->imageUrl = (string) $profile->avatarIcon;
 		$this->onlineState = (string) $profile->onlineState;
 		$this->privacyState = (string) $profile->privacyState;
@@ -67,39 +67,39 @@ class SteamId
 			$this->steamRatingText = $steamRating[1];
 			$this->summary = (string) $profile->summary;
 		}
-		
+
 		foreach($profile->mostPlayedGames->mostPlayedGame as $mostPlayedGame)
 		{
 			$this->mostPlayedGames[(string) $mostPlayedGame->gameName] = floatval((string) $mostPlayedGame->hoursPlayed);
 		}
-		
+
 		foreach($profile->friends->friend as $friend)
 		{
 			$this->friends[] = new SteamId(intval((string) $friend->steamID64), false);
 		}
-		
+
 		foreach($profile->groups->group as $group)
 		{
 			$this->groups[] = new SteamGroup(intval((string) $group->groupID64));
 		}
-		
+
 		foreach($profile->weblinks->weblink as $link)
 		{
 			$this->links[(string) $link->title] = (string) $link->link;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return String
 	 */
 	public function getFullAvatarUrl()
 	{
 		return $this->imageUrl . "_full.jpg";
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param $gameName
 	 * @return GameStats
 	 */
@@ -114,16 +114,16 @@ class SteamId
 			return new GameStats($this->customUrl, $gameName);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return String
 	 */
 	public function getIconAvatarUrl()
 	{
 		return $this->imageUrl . "_.jpg";
 	}
-	
+
 	/**
 	 * Returns the URL of the medium version of this user's avatar
 	 * @return String
@@ -132,7 +132,7 @@ class SteamId
 	{
 		return $this->imageUrl . "_medium.jpg";
 	}
-	
+
 	/**
 	 * Returns whether the owner of this SteamID is VAC banned
 	 * @return boolean
@@ -141,7 +141,7 @@ class SteamId
 	{
 		return $this->vacBanned;
 	}
-	
+
 	/**
 	 * Returns whether the owner of this SteamId is playing a game
 	 * @return boolean
@@ -150,7 +150,7 @@ class SteamId
 	{
 		return $this->onlineState == "in-game";
 	}
-	
+
 	/**
 	 * Returns whether the owner of this SteamID is currently logged into Steam
 	 * @return boolean

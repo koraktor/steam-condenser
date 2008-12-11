@@ -20,40 +20,44 @@ require_once "Socket.php";
  */
 class TCPSocket extends Socket
 {
-  /**
-   * Connects the TCP socket to the host with the given IP address and port number
-   */
-  public function connect(InetAddress $ipAddress, $portNumber)
-  {
-    $this->ipAddress = $ipAddress;
-    $this->portNumber = $portNumber;
+	/**
+	 * Connects the TCP socket to the host with the given IP address and port number
+	 */
+	public function connect(InetAddress $ipAddress, $portNumber)
+	{
+		$this->ipAddress = $ipAddress;
+		$this->portNumber = $portNumber;
 
-    if($this->socketsEnabled)
-    {
-      if(!$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))
-      {
-        $errorCode = socket_last_error($this->socket);
-        throw new Exception("Could not create socket: " . socket_strerror($errorCode));
-      }
-      socket_connect($this->socket, $ipAddress, $portNumber);
+		if($this->socketsEnabled)
+		{
+			if(!$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))
+			{
+				$errorCode = socket_last_error($this->socket);
+				throw new Exception("Could not create socket: " . socket_strerror($errorCode));
+			}
+			if(@!socket_connect($this->socket, $ipAddress, $portNumber))
+			{
+				$errorCode = socket_last_error($this->socket);
+				throw new Exception("Could not connect socket: " . socket_strerror($errorCode));
+			}
 
-      if($this->isBlocking)
-      {
-        socket_set_block($this->socket);
-      }
-      else
-      {
-        socket_set_nonblock($this->socket);
-      }
-    }
-    else
-    {
-      if(!$this->socket = fsockopen("tcp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
-      {
-        throw new Exception("Could not create socket.");
-      }
-      stream_set_blocking($this->socket, $doBlock);
-    }
-  }
+			if($this->isBlocking)
+			{
+				socket_set_block($this->socket);
+			}
+			else
+			{
+				socket_set_nonblock($this->socket);
+			}
+		}
+		else
+		{
+			if(!$this->socket = fsockopen("tcp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
+			{
+				throw new Exception("Could not create socket.");
+			}
+			stream_set_blocking($this->socket, $doBlock);
+		}
+	}
 }
 ?>

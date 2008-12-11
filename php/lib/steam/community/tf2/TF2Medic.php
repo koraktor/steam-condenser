@@ -19,16 +19,16 @@ require_once "steam/community/tf2/TF2Class.php";
  */
 class TF2Medic extends TF2Class
 {
-  /**
-   * Creates a new instance of TF2Medic based on the assigned XML data
-   * @param $classData
-   */
-  public function __construct($classData)
-  {
-    parent::__construct($classData);
-    
-    $this->maxUberCharges    = (int) $classData->inuminvulnerable;
-    $this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
-  }
+	/**
+	 * Creates a new instance of TF2Medic based on the assigned XML data
+	 * @param $classData
+	 */
+	public function __construct($classData)
+	{
+		parent::__construct($classData);
+
+		$this->maxUberCharges    = (int) $classData->inuminvulnerable;
+		$this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
+	}
 }
 ?>

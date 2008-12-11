@@ -19,16 +19,16 @@ require_once "steam/community/tf2/TF2Class.php";
  */
 class TF2Spy extends TF2Class
 {
-  /**
-   * Creates a new instance of TF2Spy based on the assigned XML data
-   * @param $classData
-   */
-  public function __construct($classData)
-  {
-    parent::__construct($classData);
+	/**
+	 * Creates a new instance of TF2Spy based on the assigned XML data
+	 * @param $classData
+	 */
+	public function __construct($classData)
+	{
+		parent::__construct($classData);
 
-    $this->maxBackstabs     = (int) $classData->ibackstabs;
-    $this->maxHealthLeeched = (int) $classData->ihealthpointsleached;
-  }
+		$this->maxBackstabs     = (int) $classData->ibackstabs;
+		$this->maxHealthLeeched = (int) $classData->ihealthpointsleached;
+	}
 }
 ?>

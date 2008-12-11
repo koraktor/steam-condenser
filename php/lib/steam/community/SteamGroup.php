@@ -23,7 +23,7 @@ class SteamGroup
 	 */
 	public function __construct($id)
 	{
-		$this->id = $id;		
+		$this->id = $id;
 	}
 }
 ?>

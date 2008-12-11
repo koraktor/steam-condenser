@@ -15,12 +15,12 @@ require_once "steam/packets/RequestPacketWithChallenge.php";
  */
 class A2S_PLAYER_Packet extends RequestPacketWithChallenge
 {
-  /**
-   * @param long $challengeNumber
-   */
-  public function __construct($challengeNumber = "\xFF\xFF\xFF\xFF")
-  {
-    parent::__construct(SteamPacket::A2S_PLAYER_HEADER, $challengeNumber);
-  }
+	/**
+	 * @param long $challengeNumber
+	 */
+	public function __construct($challengeNumber = "\xFF\xFF\xFF\xFF")
+	{
+		parent::__construct(SteamPacket::A2S_PLAYER_HEADER, $challengeNumber);
+	}
 }
 ?>

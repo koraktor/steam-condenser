@@ -36,42 +36,42 @@ require_once "steam/packets/SteamPacket.php";
  */
 class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
 {
-  const REGION_US_EAST_COAST = 0x00;
-  const REGION_US_WEST_COAST = 0x01;
-  const REGION_SOUTH_AMERICA = 0x02;
-  const REGION_EUROPE = 0x03;
-  const REGION_ASIA = 0x04;
-  const REGION_AUSTRALIA = 0x05;
-  const REGION_MIDDLE_EAST = 0x06;
-  const REGION_AFRICA = 0x07;
-  const REGION_ALL = 0x00;
+	const REGION_US_EAST_COAST = 0x00;
+	const REGION_US_WEST_COAST = 0x01;
+	const REGION_SOUTH_AMERICA = 0x02;
+	const REGION_EUROPE = 0x03;
+	const REGION_ASIA = 0x04;
+	const REGION_AUSTRALIA = 0x05;
+	const REGION_MIDDLE_EAST = 0x06;
+	const REGION_AFRICA = 0x07;
+	const REGION_ALL = 0x00;
 
-  private $filter;
-  private $regionCode;
-  private $startIp;
+	private $filter;
+	private $regionCode;
+	private $startIp;
 
-  /**
-   * Creates a master server request, filtering by the given paramters.
-   * @param byte regionCode The region code to filter servers by region.
-   * @param String startIp This should be the last IP received from the master
-   *        server or 0.0.0.0
-   * @param String filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
-   */
-  public function __construct($regionCode, $startIp, $filter)
-  {
-    parent::__construct(SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER);
+	/**
+	 * Creates a master server request, filtering by the given paramters.
+	 * @param byte regionCode The region code to filter servers by region.
+	 * @param String startIp This should be the last IP received from the master
+	 *        server or 0.0.0.0
+	 * @param String filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
+	 */
+	public function __construct($regionCode, $startIp, $filter)
+	{
+		parent::__construct(SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER);
 
-    $this->filter = $filter;
-    $this->regionCode = $regionCode;
-    $this->startIp = $startIp;
-  }
+		$this->filter = $filter;
+		$this->regionCode = $regionCode;
+		$this->startIp = $startIp;
+	}
 
-  /**
-   * @return byte[] A byte[] representing the contents of this request packet
-   */
-  public function __toString()
-  {
-    return chr($this->headerData) . chr($this->regionCode) . $this->startIp . $this->filter;
-  }
+	/**
+	 * @return byte[] A byte[] representing the contents of this request packet
+	 */
+	public function __toString()
+	{
+		return chr($this->headerData) . chr($this->regionCode) . $this->startIp . $this->filter;
+	}
 }
 ?>

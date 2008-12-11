@@ -20,17 +20,17 @@ require_once "steam/community/tf2/TF2Class.php";
  */
 class TF2Engineer extends TF2Class
 {
-  /**
-   * Creates a new instance of TF2Engineer based on the assigned XML data
-   * @param $classData
-   */
-  public function __construct($classData)
-  {
-    parent::__construct($classData);
-    
-    $this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
-    $this->maxTeleports      = (int) $classData->inumteleports;
-    $this->maxSentryKills    = (int) $classData->isentrykills;
-  }
+	/**
+	 * Creates a new instance of TF2Engineer based on the assigned XML data
+	 * @param $classData
+	 */
+	public function __construct($classData)
+	{
+		parent::__construct($classData);
+
+		$this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
+		$this->maxTeleports      = (int) $classData->inumteleports;
+		$this->maxSentryKills    = (int) $classData->isentrykills;
+	}
 }
 ?>

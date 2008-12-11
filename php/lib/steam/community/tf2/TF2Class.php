@@ -19,44 +19,44 @@ require_once "steam/community/GameStats.php";
  */
 class TF2Class
 {
-  /**
-   * Creates a new instance of TF2Class based on the assigned XML data
-   * @param $classData
-   */
-  public function __construct($classData)
-  {
-    $this->className             = (string) $classData->className;
-    $this->maxBuildingsDestroyed = (int) $classData->ibuildingsdestroyed;
-    $this->maxCaptures           = (int) $classData->ipointcaptures;
-    $this->maxDamage             = (int) $classData->idamagedealt;
-    $this->maxDefenses           = (int) $classData->ipointdefenses;
-    $this->maxDominations        = (int) $classData->idominations;
-    $this->maxKillAssists        = (int) $classData->ikillassists;
-    $this->maxKils               = (int) $classData->inumberofkills;
-    $this->maxRevenges           = (int) $classData->irevenge;
-    $this->maxScore              = (int) $classData->ipointsscored;
-    $this->maxTimeAlive          = (int) $classData->iplaytime;
-    $this->playTime              = (int) $classData->playtimeSeconds;
+	/**
+	 * Creates a new instance of TF2Class based on the assigned XML data
+	 * @param $classData
+	 */
+	public function __construct($classData)
+	{
+		$this->className             = (string) $classData->className;
+		$this->maxBuildingsDestroyed = (int) $classData->ibuildingsdestroyed;
+		$this->maxCaptures           = (int) $classData->ipointcaptures;
+		$this->maxDamage             = (int) $classData->idamagedealt;
+		$this->maxDefenses           = (int) $classData->ipointdefenses;
+		$this->maxDominations        = (int) $classData->idominations;
+		$this->maxKillAssists        = (int) $classData->ikillassists;
+		$this->maxKils               = (int) $classData->inumberofkills;
+		$this->maxRevenges           = (int) $classData->irevenge;
+		$this->maxScore              = (int) $classData->ipointsscored;
+		$this->maxTimeAlive          = (int) $classData->iplaytime;
+		$this->playTime              = (int) $classData->playtimeSeconds;
 
-    switch($this->className)
-    {
-      case "Engineer":
-        $this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
-        $this->maxTeleports      = (int) $classData->inumteleports;
-        $this->maxSentryKills    = (int) $classData->isentrykills;
-        break;
-      case "Medic":
-        $this->maxUberCharges    = (int) $classData->inuminvulnerable;
-        $this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
-        break;
-      case "Sniper":
-        $this->maxHeadshots      = (int) $classData->iheadshots;
-        break;
-      case "Spy":
-        $this->maxBackstabs      = (int) $classData->ibackstabs;
-        $this->maxHealthLeeched  = (int) $classData->ihealthpointsleached;
-        break;
-    }
-  }
+		switch($this->className)
+		{
+			case "Engineer":
+				$this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
+				$this->maxTeleports      = (int) $classData->inumteleports;
+				$this->maxSentryKills    = (int) $classData->isentrykills;
+				break;
+			case "Medic":
+				$this->maxUberCharges    = (int) $classData->inuminvulnerable;
+				$this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
+				break;
+			case "Sniper":
+				$this->maxHeadshots      = (int) $classData->iheadshots;
+				break;
+			case "Spy":
+				$this->maxBackstabs      = (int) $classData->ibackstabs;
+				$this->maxHealthLeeched  = (int) $classData->ihealthpointsleached;
+				break;
+		}
+	}
 }
 ?>

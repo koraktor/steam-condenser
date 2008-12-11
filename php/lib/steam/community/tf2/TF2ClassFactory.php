@@ -19,36 +19,36 @@ require_once "steam/community/tf2/TF2Spy.php";
 /**
  * The TF2ClassFactory is used to created instances of TF2Class based on the
  * XML input data
- * @package    Steam Condenser (PHP) 
+ * @package    Steam Condenser (PHP)
  * @subpackage Steam Community
  */
 abstract class TF2ClassFactory
 {
-  /**
-   * Creates a new instance of TF2Class storing the statistics for a Team
-   * Fortress 2 class with the assigned XML data
-   * @return TF2Class
-   */
-  public static function getTF2Class(SimpleXMLElement $classData)
-  {
-    switch($classData->className)
-    {
-      case "Engineer":
-        return new TF2Engineer($classData);
-        break;
-      case "Medic":
-        return new TF2Medic($classData);
-        break;
-      case "Sniper":
-        return new TF2Sniper($classData);
-        break;
-      case "Spy":
-        return new TF2Spy($classData);
-        break;
-      default:
-        return new TF2Class($classData);
-    }
-  }
+	/**
+	 * Creates a new instance of TF2Class storing the statistics for a Team
+	 * Fortress 2 class with the assigned XML data
+	 * @return TF2Class
+	 */
+	public static function getTF2Class(SimpleXMLElement $classData)
+	{
+		switch($classData->className)
+		{
+			case "Engineer":
+				return new TF2Engineer($classData);
+				break;
+			case "Medic":
+				return new TF2Medic($classData);
+				break;
+			case "Sniper":
+				return new TF2Sniper($classData);
+				break;
+			case "Spy":
+				return new TF2Spy($classData);
+				break;
+			default:
+				return new TF2Class($classData);
+		}
+	}
 }
 
 ?>
