@@ -51,4 +51,22 @@ class SteamPacketFactory
     end
   end
   
+  def self.reassemble_packet(split_packets, is_compressed = false, packet_checksum = 0)
+    packet_data = split_packets.join ""
+    
+    if is_compressed
+      if defined? BZ2
+        packet_data = BZ2.uncompress(packet_data)
+      else
+        raise SteamCondenserException.new("You need to install the libbzip2 interface for Ruby.")
+      end
+      
+      if Zlib.crc32(packet_data) != packet_checksum
+        raise PacketFormatException.new("CRC32 checksum mismatch of uncompressed packet data.")
+      end
+    end
+    
+    packet_data = packet_data[4..-1]
+  end
+  
 end

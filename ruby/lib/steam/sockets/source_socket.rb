@@ -25,10 +25,14 @@ class SourceSocket < SteamSocket
         request_id = @buffer.get_long
         packet_count = @buffer.get_byte.to_i
         packet_number = @buffer.get_byte.to_i + 1
-        split_size = @buffer.get_short
-        if packet_number == 1
-          @buffer.get_long
+        
+        if is_compressed
+          split_size = @buffer.get_long
+          packet_checksum = @buffer.get_long
+        else
+          split_size = @buffer.get_short
         end
+
         split_packets[packet_number] = @buffer.get
         
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
@@ -36,7 +40,11 @@ class SourceSocket < SteamSocket
         bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
-      packet = SteamPacketFactory.get_packet_from_data(split_packets.join(""))
+      if is_compressed
+        packet = SteamPacketFactory.reassemble_packet(split_packets, true, packet_checksum)
+      else
+        packet = SteamPacketFactory.reassemble_packet(split_packets)
+      end
     else
       packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
     end

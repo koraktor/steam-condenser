@@ -19,16 +19,16 @@ class QueryTests < Test::Unit::TestCase
   # This test tries to initialize an invalid GoldSrc server
   def test_invalid_goldsrc_server
     assert_raise TimeoutException do
-      invalidServer = GoldSrcServer.new IPAddr.new("1.0.0.0")
-      invalidServer.get_ping
+      invalid_server = GoldSrcServer.new IPAddr.new("1.0.0.0")
+      invalid_server.get_ping
     end
   end
   
   # This test tries to initialize an invalid Source server
   def test_invalid_source_server
     assert_raise TimeoutException do
-      invalidServer = SourceServer.new IPAddr.new("1.0.0.0")
-      invalidServer.get_ping
+      invalid_server = SourceServer.new IPAddr.new("1.0.0.0")
+      invalid_server.get_ping
     end
   end
   

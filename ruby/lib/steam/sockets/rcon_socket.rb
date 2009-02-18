@@ -14,8 +14,6 @@ class RCONSocket < SteamSocket
   
   def initialize(ip_address, port_number)
     super ip_address, port_number
-    
-    @buffer = ByteBuffer.allocate 1400
     @channel = SocketChannel.open
   end
   

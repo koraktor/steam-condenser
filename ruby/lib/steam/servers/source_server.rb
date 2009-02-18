@@ -46,7 +46,7 @@ class SourceServer < GameServer
         response_packets << response_packet
       end while true
     rescue TimeoutException
-      raise TimeoutException if response_packets.empty?
+      raise $! if response_packets.empty?
     end
     
     response = String.new
