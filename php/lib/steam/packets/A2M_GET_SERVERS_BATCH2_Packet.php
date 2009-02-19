@@ -71,7 +71,7 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
 	 */
 	public function __toString()
 	{
-		return chr($this->headerData) . chr($this->regionCode) . $this->startIp . $this->filter;
+		return chr($this->headerData) . chr($this->regionCode) . $this->startIp . "\0" . $this->filter . "\0";
 	}
 }
 ?>

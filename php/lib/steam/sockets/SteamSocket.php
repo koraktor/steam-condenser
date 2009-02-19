@@ -43,7 +43,7 @@ abstract class SteamSocket
 	{
 		//$this->channel->close();
 	}
-
+	
 	/**
 	 * Abstract getReplyData() method
 	 * @return byte[]

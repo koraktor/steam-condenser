@@ -37,7 +37,7 @@ abstract class SteamPacketFactory
 	 * @return SteamPacket
 	 */
 	public static function getPacketFromData($rawData)
-	{
+	{	
 		$header = ord($rawData[0]);
 		$data = substr($rawData, 1);
 
@@ -91,7 +91,7 @@ abstract class SteamPacketFactory
 		}
 	}
 
-	public static function reassemblePacket($splitPackets, $isCompressed = false, $uncompressedSize = 0, $packetChecksum = 0)
+	public static function reassemblePacket($splitPackets, $isCompressed = false, $packetChecksum = 0)
 	{
 		$packetData = "";
 		 
@@ -102,11 +102,11 @@ abstract class SteamPacketFactory
 				throw new UncompletePacketException();
 			}
 
-			$packetData += $splitPacket;
+			$packetData .= $splitPacket;
 		}
 
 		if($isCompressed)
-		{
+		{	
 			$packetData = bzdecompress($packetData);
 
 			if(crc32($packetData) != $packetChecksum)
@@ -114,6 +114,9 @@ abstract class SteamPacketFactory
 				throw new PacketFormatException("CRC32 checksum mismatch of uncompressed packet data.");
 			}
 		}
+		
+		// Omit leading 0xFFFFFFFF
+		$packetData = substr($packetData, 4);
 
 		return self::getPacketFromData($packetData);
 	}

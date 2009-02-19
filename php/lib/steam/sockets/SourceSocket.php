@@ -32,23 +32,20 @@ class SourceSocket extends SteamSocket
 			do
 			{
 				$requestId = $this->buffer->getLong();
-				$isCompressed = $this->packetIsCompressed($requestId);
-
+				$isCompressed = (($requestId & 0x80000000) != 0);
 				$packetCount = $this->buffer->getByte();
 				$packetNumber = $this->buffer->getByte() + 1;
-				$splitSize = $this->buffer->getShort();
 
 				if($isCompressed)
 				{
-					$uncompressedSize = $this->buffer->getShort();
+					$splitSize = $this->buffer->getLong();
 					$packetChecksum = $this->buffer->getLong();
 				}
-
-				// Omit additional header on the first packet
-				if($packetNumber == 1)
+				else
 				{
-					$this->buffer->getLong();
+					$splitSize = $this->buffer->getShort();
 				}
+
 				$splitPackets[$packetNumber] = $this->buffer->get();
 
 				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
@@ -59,7 +56,7 @@ class SourceSocket extends SteamSocket
 			 
 			if($isCompressed)
 			{
-				$packet = SteamPacketFactory::reassemblePacket($splitPackets, true, $uncompressedSize, $packetChecksum);
+				$packet = SteamPacketFactory::reassemblePacket($splitPackets, true, $packetChecksum);
 			}
 			else
 			{
@@ -72,14 +69,6 @@ class SourceSocket extends SteamSocket
 		}
 
 		return $packet;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	private function packetIsCompressed($requestId)
-	{
-		return ($requestId & 0x8000) != 0;
 	}
 }
 ?>
