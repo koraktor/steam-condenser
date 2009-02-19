@@ -157,7 +157,7 @@ class SteamId
 	 */
 	public function isOnline()
 	{
-		return ($this->onlineState == "online") ||Ê($this->onlineState == "in-game");
+		return ($this->onlineState == "online") || ($this->onlineState == "in-game");
 	}
 }
 ?>

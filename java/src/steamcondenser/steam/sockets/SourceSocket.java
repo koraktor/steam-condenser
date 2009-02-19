@@ -49,12 +49,11 @@ public class SourceSocket extends QuerySocket
 	    {
 		// Parsing of split packet headers
 		requestId = Integer.reverseBytes(this.buffer.getInt());
-		isCompressed = ((requestId & 0x8000) != 0);
+		isCompressed = ((requestId & 0x8000000) != 0);
 		packetCount = this.buffer.get();
 		packetNumber = this.buffer.get() + 1;
 
-		if(isCompressed)
-		{
+		if(isCompressed) {
 		    splitSize = Short.reverseBytes(this.buffer.getShort());
 		    packetChecksum = Integer.reverseBytes(this.buffer.getInt());
 		}
