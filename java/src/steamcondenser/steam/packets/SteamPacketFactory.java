@@ -115,6 +115,8 @@ public abstract class SteamPacketFactory
 		throw new PacketFormatException("CRC32 checksum mismatch of uncompressed packet data.");
 	    }
 	}
+	
+	packetData = packetData.toString().substring(4).getBytes();
 
 	return SteamPacketFactory.getPacketFromData(packetData);
     }

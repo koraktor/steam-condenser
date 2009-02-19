@@ -7,6 +7,7 @@ package steamcondenser.steam.servers;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
@@ -68,12 +69,35 @@ public class SourceServer extends GameServer
     throws IOException, TimeoutException, SteamCondenserException
     {
 	this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
-	RCONPacket reply = this.rconSocket.getReply();
-	if(reply instanceof RCONAuthResponse)
+	ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
+	RCONPacket responsePacket;
+	
+	try
 	{
-	    throw new RCONNoAuthException();
+	    while(true)
+	    {
+		responsePacket = this.rconSocket.getReply();
+		if(responsePacket instanceof RCONAuthResponse)
+        	{
+		    throw new RCONNoAuthException();
+        	}
+        	responsePackets.add((RCONExecResponsePacket) responsePacket);
+	    }
 	}
-
-	return ((RCONExecResponsePacket) reply).getResponse();
+	catch(TimeoutException e)
+	{
+	    if(responsePackets.isEmpty())
+	    {
+		throw e;
+	    }
+	}
+	
+	String response = new String();
+	for(RCONExecResponsePacket packet : responsePackets)
+	{
+	    response += packet.getResponse();
+	}
+	
+	return response;
     }
 }

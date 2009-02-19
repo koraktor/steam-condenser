@@ -21,9 +21,6 @@ public class RCONSocket extends SteamSocket
     throws IOException
     {
 	super(ipAddress, portNumber);
-
-	this.buffer = ByteBuffer.allocate(1500);
-
 	this.channel = SocketChannel.open();
     }
 
@@ -33,6 +30,7 @@ public class RCONSocket extends SteamSocket
 	if(!((SocketChannel) this.channel).isConnected())
 	{
 	    ((SocketChannel) this.channel).connect(this.remoteSocket);
+	    this.channel.configureBlocking(false);
 	}
 
 	this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
@@ -42,9 +40,29 @@ public class RCONSocket extends SteamSocket
     public RCONPacket getReply()
     throws IOException, TimeoutException, SteamCondenserException
     {
-	this.buffer = ByteBuffer.allocate(1400);
-	((SocketChannel) this.channel).read(this.buffer);
-
-	return RCONPacketFactory.getPacketFromData(this.buffer.array());
+	this.receivePacket(1440);
+	String packetData = new String(this.buffer.array()).substring(0, this.buffer.limit());
+	int packetSize = (int) this.buffer.getLong() + 4;
+	
+	if(packetSize > 1440)
+	{
+	    int remainingBytes = packetSize - 1440;
+	    do
+	    {
+		if(remainingBytes < 1440)
+		{
+		    this.receivePacket(remainingBytes);
+		}
+		else
+		{
+		    this.receivePacket(1440);
+		}
+		packetData += new String(this.buffer.array()).substring(0, this.buffer.limit());
+		remainingBytes -= this.buffer.limit();
+	    }
+	    while(remainingBytes > 0);
+	}
+	
+	return RCONPacketFactory.getPacketFromData(packetData.getBytes());
     }
 }

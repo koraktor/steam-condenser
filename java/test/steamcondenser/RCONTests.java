@@ -21,36 +21,71 @@ import steamcondenser.steam.servers.SourceServer;
 public class RCONTests
 {
     /**
-     * This test tries to run the "status" command over RCON on a GoldSrc server
+     * This test tries to run the "cvarlist" command over RCON on a GoldSrc server
      * @throws IOException
      * @throws TimeoutException
      * @throws SteamCondenserException
      */
     @Test
-    public void rconGoldSrcServer()
+    public void rconLongGoldSrcServer()
     throws IOException, TimeoutException, SteamCondenserException
     {
 	GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
 	server.rconAuth("test");
-	String rconReply = server.rconExec("status");
+	String rconReply = server.rconExec("cvarlist");
 
 	System.out.println(rconReply);
     }
-
+    
     /**
-     * This test tries to run the "status" command over RCON on a Source server
+     * This test tries to run the "version" command over RCON on a GoldSrc server
      * @throws IOException
      * @throws TimeoutException
      * @throws SteamCondenserException
      */
     @Test
-    public void rconSourceServer()
+    public void rconShortGoldSrcServer()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
+	server.rconAuth("test");
+	String rconReply = server.rconExec("version");
+
+	System.out.println(rconReply);
+    }
+    
+    /**
+     * This test tries to run the "cvarlist" command over RCON on a Source server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    @Test
+    public void rconLongSourceServer()
     throws IOException, TimeoutException, SteamCondenserException
     {
 	SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
 	if(server.rconAuth("test"))
 	{
-	    String rconReply = server.rconExec("status");
+	    String rconReply = server.rconExec("cvarlist");
+	    System.out.println(rconReply);
+	}
+    }
+
+    /**
+     * This test tries to run the "version" command over RCON on a Source server
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws SteamCondenserException
+     */
+    @Test
+    public void rconShortSourceServer()
+    throws IOException, TimeoutException, SteamCondenserException
+    {
+	SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
+	if(server.rconAuth("test"))
+	{
+	    String rconReply = server.rconExec("version");
 	    System.out.println(rconReply);
 	}
     }

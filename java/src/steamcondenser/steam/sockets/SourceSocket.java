@@ -43,30 +43,23 @@ public class SourceSocket extends QuerySocket
 	    int packetCount, packetNumber, requestId;
 	    int packetChecksum = 0;
 	    short splitSize;
-	    short uncompressedSize = 0;
 	    Vector<byte[]> splitPackets = new Vector<byte[]>();
 
 	    do
 	    {
 		// Parsing of split packet headers
 		requestId = Integer.reverseBytes(this.buffer.getInt());
-
-		isCompressed = this.packetIsCompressed(requestId);
-
+		isCompressed = ((requestId & 0x8000) != 0);
 		packetCount = this.buffer.get();
 		packetNumber = this.buffer.get() + 1;
-		splitSize = Short.reverseBytes(this.buffer.getShort());
 
 		if(isCompressed)
 		{
-		    uncompressedSize = Short.reverseBytes(this.buffer.getShort());
+		    splitSize = Short.reverseBytes(this.buffer.getShort());
 		    packetChecksum = Integer.reverseBytes(this.buffer.getInt());
 		}
-
-		// Omit additional header on the first packet 
-		if(packetNumber == 1)
-		{
-		    this.buffer.getInt();
+		else {
+		    splitSize = Short.reverseBytes(this.buffer.getShort());
 		}
 
 		// Caching of split packet Data
@@ -84,7 +77,7 @@ public class SourceSocket extends QuerySocket
 
 	    if(isCompressed)
 	    {
-		packet = SteamPacketFactory.reassemblePacket(splitPackets, true, uncompressedSize, packetChecksum);
+		packet = SteamPacketFactory.reassemblePacket(splitPackets, true, splitSize, packetChecksum);
 	    }
 	    else
 	    {
@@ -101,15 +94,5 @@ public class SourceSocket extends QuerySocket
 	Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 
 	return packet;
-    }
-
-    /**
-     * Checks whether a packet is split or not by it's request ID
-     * @param packetHeader The request ID of the packet to check
-     * @return true if the packet is compressed, otherwise false
-     */
-    private boolean packetIsCompressed(int requestId)
-    {
-	return (requestId & 0x8000) != 0;
     }
 }

@@ -48,44 +48,6 @@ public abstract class QuerySocket extends SteamSocket
     }
 
     /**
-     * Reads an UDP packet into an existing or a new buffer
-     * @param bufferLength The length of the new buffer to created or 0 to use
-     *        the existing buffer
-     * @return The number of bytes received
-     * @throws IOException
-     * @throws TimeoutException
-     */
-    protected int receivePacket(int bufferLength)
-    throws IOException, TimeoutException
-    {
-	Selector selector = Selector.open();
-	this.channel.register(selector, SelectionKey.OP_READ);
-
-	int bytesRead;
-
-	if(bufferLength == 0)
-	{
-	    this.buffer.clear();
-	    selector.selectNow();
-	}
-	else
-	{
-	    this.buffer = ByteBuffer.allocate(bufferLength);
-	    if(selector.select(1000) == 0)
-	    {
-		throw new TimeoutException();
-	    }
-	}
-
-	((DatagramChannel) this.channel).receive(this.buffer);
-	bytesRead = this.buffer.position();
-	this.buffer.rewind();
-	this.buffer.limit(bytesRead);
-
-	return bytesRead;
-    }
-
-    /**
      * Sends a SteamPacket object over the UDP channel to the remote end
      * @param dataPacket The {@link steamcondenser.steam.packets.SteamPacket
      *        SteamPacket} to send to the remote end
