@@ -116,7 +116,7 @@ public abstract class SteamPacketFactory
 	    }
 	}
 	
-	packetData = packetData.toString().substring(4).getBytes();
+	packetData = new String(packetData).substring(4).getBytes();
 
 	return SteamPacketFactory.getPacketFromData(packetData);
     }

@@ -12,7 +12,7 @@ class M2A_SERVER_BATCH_Packet < SteamPacket
   def initialize(data)
     super SteamPacket::M2A_SERVER_BATCH_HEADER, data
     
-    if(@content_data.get_byte != 10)
+    if(@content_data.get_byte != 0x0A)
       raise PacketFormatException.new("Master query response is missing additional 0x0A byte.")
     end
     

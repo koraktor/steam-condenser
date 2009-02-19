@@ -24,6 +24,7 @@ public abstract class QuerySocket extends SteamSocket
 	super(ipAddress, portNumber);
 	this.channel = DatagramChannel.open();
 	this.channel.configureBlocking(false);
+	((DatagramChannel) this.channel).connect(this.remoteSocket);
     }
 
     /**

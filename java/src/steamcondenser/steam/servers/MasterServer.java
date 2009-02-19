@@ -37,10 +37,10 @@ public class MasterServer
     public Vector<InetSocketAddress> getServers()
     throws IOException, SteamCondenserException, TimeoutException
     {
-	return this.getServers(A2M_GET_SERVERS_BATCH2_Paket.REGION_ALL, "");
+	return this.getServers(A2M_GET_SERVERS_BATCH2_Paket.REGION_ALL, "", true);
     }
 
-    public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
+    public Vector<InetSocketAddress> getServers(byte regionCode, String filter, boolean raiseTimeout)
     throws IOException, SteamCondenserException, TimeoutException
     {
 	boolean finished = false;
@@ -52,21 +52,27 @@ public class MasterServer
 	do
 	{
 	    this.socket.send(new A2M_GET_SERVERS_BATCH2_Paket(regionCode, hostName + ":" + portNumber, filter));
-	    serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
+	    try {
+        	serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
 
-	    for(String serverString : serverStringArray)
+		for (String serverString : serverStringArray) {
+		    hostName = serverString.substring(0, serverString.lastIndexOf(":"));
+		    portNumber = Integer.valueOf(serverString.substring(serverString.lastIndexOf(":") + 1));
+
+		    if (hostName != "0.0.0.0" && portNumber != 0) {
+			serverArray.add(new InetSocketAddress(hostName, portNumber));
+		    } else {
+			finished = true;
+		    }
+		}
+	    }
+	    catch(TimeoutException e)
 	    {
-		hostName = serverString.substring(0, serverString.lastIndexOf(":"));
-		portNumber = Integer.valueOf(serverString.substring(serverString.lastIndexOf(":") + 1));
-
-		if(hostName != "0.0.0.0" && portNumber != 0)
+		if(raiseTimeout)
 		{
-		    serverArray.add(new InetSocketAddress(hostName, portNumber));
+		    throw e;
 		}
-		else
-		{
-		    finished = true;
-		}
+		finished = true;
 	    }
 	}
 	while(!finished);

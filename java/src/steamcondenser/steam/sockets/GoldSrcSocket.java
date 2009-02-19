@@ -71,12 +71,6 @@ public class GoldSrcSocket extends QuerySocket
 		packetCount = packetNumberAndCount & 15;
 		packetNumber = (packetNumberAndCount >> 4) + 1;
 
-		// Omit additional header on the first packet 
-		if(packetNumber == 1)
-		{
-		    this.buffer.getInt();
-		}
-
 		// Caching of split packet Data
 		splitData = new byte[this.buffer.remaining()];
 		this.buffer.get(splitData);

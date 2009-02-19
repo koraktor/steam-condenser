@@ -41,11 +41,8 @@ class GoldSrcSocket extends SteamSocket
 				$packetCountAndNumber = $this->buffer->getByte();
 				$packetCount = $packetCountAndNumber & 0xF;
 				$packetNumber = ($packetCountAndNumber >> 4) + 1;
-				// Omit additional header on the first packet
-				if($packetNumber == 1)
-				{
-					$this->buffer->getLong();
-				}
+
+				// Caching of split packet Data
 				$splitPackets[$packetNumber] = $this->buffer->get();
 
 				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");

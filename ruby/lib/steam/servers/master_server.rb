@@ -26,22 +26,29 @@ class MasterServer
     return @server_array
   end
   
-  def update_servers(region_code, filters)
+  def update_servers(region_code, filters, raise_timeout = true)
     finished = false
     current_server = "0.0.0.0:0"
     
     begin
       @socket.send A2M_GET_SERVERS_BATCH2_Packet.new(region_code, current_server, filters)
-      servers = @socket.get_reply.get_servers
-      
-      servers.each do |server|
-        if server == "0.0.0.0:0"
-          finished = true
-        else
-          current_server = server
-          @server_array << server.split(":")
+      begin
+        
+        servers = @socket.get_reply.get_servers
+        servers.each do |server|
+          if server == "0.0.0.0:0"
+            finished = true
+          else
+            current_server = server
+            @server_array << server.split(":")
+          end
         end
+      
+      rescue TimeoutException
+        raise $! if raise_timeout
+        finished = true
       end
+      
     end while !finished
   end
   

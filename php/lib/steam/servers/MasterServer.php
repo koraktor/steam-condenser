@@ -35,7 +35,7 @@ class MasterServer
 	}
 
 
-	public function getServers($regionCode = A2M_GET_SERVERS_BATCH2_Packet::REGION_ALL , $filter = "")
+	public function getServers($regionCode = A2M_GET_SERVERS_BATCH2_Packet::REGION_ALL , $filter = "", $raiseTimeout = true)
 	{
 		$finished = false;
 		$portNumber = 0;
@@ -44,22 +44,30 @@ class MasterServer
 		do
 		{
 			$this->socket->send(new A2M_GET_SERVERS_BATCH2_Packet($regionCode, "$hostName:$portNumber", $filter));
-			$serverStringArray = $this->socket->getReply()->getServers();
+			try {
+				$serverStringArray = $this->socket->getReply()->getServers();
 			 
-			foreach($serverStringArray as $serverString)
-			{
-				$serverString = explode(":", $serverString);
-				$hostName = $serverString[0];
-				$portNumber = $serverString[1];
-
-				if($hostName != "0.0.0.0" && $portNumber != 0)
+				foreach($serverStringArray as $serverString)
 				{
-					$serverArray[] = array($hostName, $portNumber);
+					$serverString = explode(":", $serverString);
+					$hostName = $serverString[0];
+					$portNumber = $serverString[1];
+	
+					if($hostName != "0.0.0.0" && $portNumber != 0)
+					{
+						$serverArray[] = array($hostName, $portNumber);
+					}
+					else
+					{
+						$finished = true;
+					}
 				}
-				else
-				{
-					$finished = true;
+			}
+			catch(TimeoutException $e) {
+				if($raiseTimeout) {
+					throw $e;
 				}
+				$finished = true;
 			}
 		}
 		while(!$finished);

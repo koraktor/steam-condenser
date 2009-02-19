@@ -67,6 +67,8 @@ class SteamPacketFactory
     end
     
     packet_data = packet_data[4..-1]
+    
+    return self.get_packet_from_data(packet_data)
   end
   
 end

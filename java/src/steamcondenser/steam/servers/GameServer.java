@@ -182,12 +182,12 @@ abstract public class GameServer
 		throw new SteamCondenserException("Response of type " + responsePacket.getClass() + " cannot be handled by this method.");
 	    }
 	    
-	    if(responsePacket.getClass() == expectedResponse)
+	    if(responsePacket.getClass() != expectedResponse)
 	    {
 	        System.out.println("Expected " + expectedResponse + ", got " + responsePacket.getClass() + ".");
 	        if(repeatOnFailure)
 	        {
-	    	this.handleResponseForRequest(requestType, false);
+	    		this.handleResponseForRequest(requestType, false);
 	        }
 	    }
 	}

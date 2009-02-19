@@ -29,13 +29,8 @@ class GoldSrcSocket < SteamSocket
         packet_number_and_count = @buffer.get_byte.to_i
         packet_count = packet_number_and_count & 0xF
         packet_number = (packet_number_and_count >> 4) + 1
-
-        # Omit additional header on the first packet
-        if packet_number == 1
-          @buffer.get_long
-        end
         
-        # Caching of split packet Data
+        # Caching of split packet data
         split_packets[packet_number - 1] = @buffer.get
         
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
