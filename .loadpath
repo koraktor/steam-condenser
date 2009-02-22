@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<loadpath>
-	<pathentry excluding="ruby/" path="" type="src"/>
-	<pathentry path="ruby" type="src"/>
-</loadpath>
