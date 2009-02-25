@@ -14,7 +14,7 @@ class RCONGoldSrcResponse < SteamPacket
   end
   
   def get_response
-    return @content_data.array
+    return @content_data.array[0..-3]
   end
   
 end

@@ -74,6 +74,15 @@ class ByteBuffer
 		$this->mark = -1;
 	}
 
+    public function flip()
+    {
+        $this->limit = $this->position;
+        $this->position = 0;
+        $this->mark = -1;
+
+        return $this;
+    }
+
 	/**
 	 * @param int $length
 	 * @return mixed

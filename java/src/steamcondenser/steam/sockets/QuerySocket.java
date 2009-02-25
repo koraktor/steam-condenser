@@ -2,15 +2,12 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
-
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
@@ -19,12 +16,12 @@ import steamcondenser.steam.packets.SteamPacket;
 public abstract class QuerySocket extends SteamSocket
 {
     protected QuerySocket(InetAddress ipAddress, int portNumber)
-    throws IOException
+            throws IOException
     {
-	super(ipAddress, portNumber);
-	this.channel = DatagramChannel.open();
-	this.channel.configureBlocking(false);
-	((DatagramChannel) this.channel).connect(this.remoteSocket);
+        super(ipAddress, portNumber);
+        this.channel = DatagramChannel.open();
+        this.channel.configureBlocking(false);
+        ((DatagramChannel) this.channel).connect(this.remoteSocket);
     }
 
     /**
@@ -33,7 +30,7 @@ public abstract class QuerySocket extends SteamSocket
      */
     protected boolean packetIsSplit()
     {
-	return (Integer.reverseBytes(this.buffer.getInt()) == -2);
+        return (Integer.reverseBytes(this.buffer.getInt()) == -2);
     }
 
     /**
@@ -43,9 +40,9 @@ public abstract class QuerySocket extends SteamSocket
      * @throws TimeoutException
      */
     protected int receivePacket()
-    throws IOException, TimeoutException
+            throws IOException, TimeoutException
     {
-	return this.receivePacket(0);
+        return this.receivePacket(0);
     }
 
     /**
@@ -54,12 +51,12 @@ public abstract class QuerySocket extends SteamSocket
      *        SteamPacket} to send to the remote end
      */
     public void send(SteamPacket dataPacket)
-    throws IOException
+            throws IOException
     {
-	Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
+        Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
-	this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
-	((DatagramChannel) this.channel).send(this.buffer, this.remoteSocket);
-	this.buffer.flip();
+        this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
+        ((DatagramChannel) this.channel).send(this.buffer, this.remoteSocket);
+        this.buffer.flip();
     }
 }

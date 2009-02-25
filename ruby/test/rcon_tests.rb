@@ -21,6 +21,10 @@ class RCONTests < Test::Unit::TestCase
       server.rcon_auth "test"
       rcon_reply = server.rcon_exec "cvarlist"
       print "#{rcon_reply}\n"
+
+      assert(
+        rcon_reply.include?("CvarList ? for syntax"),
+        "Did not receive complete cvarlist.")
     end
   end
   
@@ -42,6 +46,12 @@ class RCONTests < Test::Unit::TestCase
       server.rcon_auth "test"
       rcon_reply = server.rcon_exec "version"
       print "#{rcon_reply}\n"
+
+      assert(
+        rcon_reply.include?("Protocol version") &&
+        rcon_reply.include?("Exe version") &&
+        rcon_reply.include?("Exe build"),
+        "Did not receive correct version response.");
     end
   end
   

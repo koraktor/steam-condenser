@@ -2,17 +2,14 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
-
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import steamcondenser.NothingReceivedException;
 import steamcondenser.RCONNoAuthException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.UncompletePacketException;
@@ -25,9 +22,9 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class GoldSrcSocket extends QuerySocket
-{
-    private int rconChallenge = 0;
+public class GoldSrcSocket extends QuerySocket {
+
+    private long rconChallenge = -1;
 
     /**
      * 
@@ -36,9 +33,8 @@ public class GoldSrcSocket extends QuerySocket
      * @throws IOException
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber)
-    throws IOException
-    {
-	super(ipAddress, portNumber);
+            throws IOException {
+        super(ipAddress, portNumber);
     }
 
     /**
@@ -48,54 +44,46 @@ public class GoldSrcSocket extends QuerySocket
      * @throws TimeoutException
      */
     public SteamPacket getReply()
-    throws IOException, SteamCondenserException, TimeoutException
-    {
-	int bytesRead;
-	SteamPacket packet;
+            throws IOException, SteamCondenserException, TimeoutException {
+        int bytesRead;
+        SteamPacket packet;
 
-	bytesRead = this.receivePacket(1400);
+        bytesRead = this.receivePacket(1400);
 
-	if(this.packetIsSplit())
-	{
-	    byte[] splitData;
-	    int packetCount, packetNumber;
-	    int requestId;
-	    byte packetNumberAndCount;
-	    Vector<byte[]> splitPackets = new Vector<byte[]>();
+        if (this.packetIsSplit()) {
+            byte[] splitData;
+            int packetCount, packetNumber;
+            int requestId;
+            byte packetNumberAndCount;
+            Vector<byte[]> splitPackets = new Vector<byte[]>();
 
-	    do
-	    {
-		// Parsing of split packet headers
-		requestId = Integer.reverseBytes(this.buffer.getInt());
-		packetNumberAndCount = this.buffer.get();
-		packetCount = packetNumberAndCount & 15;
-		packetNumber = (packetNumberAndCount >> 4) + 1;
+            do {
+                // Parsing of split packet headers
+                requestId = Integer.reverseBytes(this.buffer.getInt());
+                packetNumberAndCount = this.buffer.get();
+                packetCount = packetNumberAndCount & 0xF;
+                packetNumber = (packetNumberAndCount >> 4) + 1;
 
-		// Caching of split packet Data
-		splitData = new byte[this.buffer.remaining()];
-		this.buffer.get(splitData);
-		splitPackets.setSize(packetCount);
-		splitPackets.set(packetNumber - 1, splitData);
+                // Caching of split packet Data
+                splitData = new byte[this.buffer.remaining()];
+                this.buffer.get(splitData);
+                splitPackets.setSize(packetCount);
+                splitPackets.set(packetNumber - 1, splitData);
 
-		// Receiving the next packet
-		bytesRead = this.receivePacket();
+                Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 
-		Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
-	    }
-	    while(bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
+                // Receiving the next packet
+                bytesRead = this.receivePacket();
+            } while (bytesRead > 0 && this.packetIsSplit());
 
-	    packet = SteamPacketFactory.reassemblePacket(splitPackets);
-	}
-	else
-	{
-	    packet = this.getPacketFromData();
-	}
+            packet = SteamPacketFactory.reassemblePacket(splitPackets);
+        } else {
+            packet = this.getPacketFromData();
+        }
 
-	this.buffer.flip();
+        Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 
-	Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
-
-	return packet;
+        return packet;
     }
 
     /**
@@ -109,33 +97,29 @@ public class GoldSrcSocket extends QuerySocket
      * @throws UncompletePacketException 
      */
     public String rconExec(String password, String command)
-    throws IOException, TimeoutException, SteamCondenserException
-    {
-	if(this.rconChallenge == 0)
-	{
-	    this.rconGetChallenge();
-	}
+            throws IOException, TimeoutException, SteamCondenserException {
+        if (this.rconChallenge == -1) {
+            this.rconGetChallenge();
+        }
 
-	this.rconSend("rcon " + this.rconChallenge + " " + password + " "+ command);
-	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
-	
-	if(response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server"))
-	{
-	    throw new RCONNoAuthException();
-	}
-	    
-	String responsePart;
-	
-	do
-	{
-	    this.rconSend("rcon " + this.rconChallenge + " " + password);
-	    responsePart = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
-	    response += responsePart;
-	    System.out.println(responsePart.length());
-	}
-	while(responsePart.equals("\0\0"));
+        this.rconSend("rcon " + this.rconChallenge + " " + password + " " + command);
+        String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
 
-	return response;
+        if (response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server")) {
+            throw new RCONNoAuthException();
+        }
+
+        String responsePart;
+
+        try {
+            do {
+                responsePart = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+                response += responsePart;
+            } while (true);
+        }
+        catch(TimeoutException e) {}
+
+        return response;
     }
 
     /**
@@ -144,22 +128,19 @@ public class GoldSrcSocket extends QuerySocket
      * 
      */
     public void rconGetChallenge()
-    throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
-    {
-	this.rconSend("challenge rcon");
-	
-	String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse().trim();
-	if(response.equals("You have been banned from this server."))
-	{
-	    throw new RCONNoAuthException();
-	}
+            throws IOException, TimeoutException, NumberFormatException, SteamCondenserException {
+        this.rconSend("challenge rcon");
 
-	this.rconChallenge = Integer.parseInt(response.substring(14));
+        String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse().trim();
+        if (response.equals("You have been banned from this server.")) {
+            throw new RCONNoAuthException();
+        }
+
+        this.rconChallenge = Long.valueOf(response.substring(14));
     }
 
     private void rconSend(String command)
-    throws IOException
-    {
-	this.send(new RCONGoldSrcRequestPacket(command));
+            throws IOException {
+        this.send(new RCONGoldSrcRequestPacket(command));
     }
 }

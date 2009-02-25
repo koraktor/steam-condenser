@@ -37,7 +37,7 @@ abstract class SteamPacketFactory
 	 * @return SteamPacket
 	 */
 	public static function getPacketFromData($rawData)
-	{	
+	{
 		$header = ord($rawData[0]);
 		$data = substr($rawData, 1);
 
@@ -83,6 +83,7 @@ abstract class SteamPacketFactory
 				return new M2A_SERVER_BATCH_Packet($data);
 
 			case SteamPacket::RCON_GOLDSRC_CHALLENGE_HEADER:
+            case SteamPacket::RCON_GOLDSRC_NO_CHALLENGE_HEADER:
 			case SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER:
 				return new RCONGoldSrcResponse($data);
 

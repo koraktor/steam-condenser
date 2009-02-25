@@ -31,15 +31,13 @@ class SteamSocket
   end
   
   def receive_packet(buffer_length = 0)
+    if select([@channel.socket], nil, nil, 1) == nil
+        raise TimeoutException.new
+    end
+
     if buffer_length == 0
-      if select([@channel.socket], nil, nil, 0) == nil
-        return 0
-      end
       @buffer.clear
     else
-      if select([@channel.socket], nil, nil, 1) == nil
-        raise TimeoutException.new
-      end
       @buffer = ByteBuffer.allocate buffer_length
     end
     

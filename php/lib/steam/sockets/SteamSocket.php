@@ -55,20 +55,17 @@ abstract class SteamSocket
 	 */
 	public function receivePacket($bufferLength = 0)
 	{
+        if(!$this->channel->socket()->select(1))
+        {
+			throw new TimeoutException();
+		}
+
 		if($bufferLength == 0)
 		{
-			if(!$this->channel->socket()->select())
-			{
-				return 0;
-			}
 			$this->buffer->clear();
 		}
 		else
 		{
-			if(!$this->channel->socket()->select(5))
-			{
-				throw new TimeoutException();
-			}
 			$this->buffer = ByteBuffer::allocate($bufferLength);
 		}
 		 

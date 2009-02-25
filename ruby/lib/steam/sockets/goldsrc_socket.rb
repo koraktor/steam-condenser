@@ -39,7 +39,7 @@ class GoldSrcSocket < SteamSocket
         bytes_read = self.receive_packet
       end while bytes_read > 0 && @buffer.get_long == -2
       
-      packet = SteamPacketFactory.get_packet_from_data(split_packets.join(""))
+      packet = SteamPacketFactory.reassemble_packet(split_packets)
         
     else
       packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
@@ -63,10 +63,12 @@ class GoldSrcSocket < SteamSocket
     end
     
     begin
-      self.rcon_send "rcon #{@rcon_challenge} #{password}"
-      response_part = self.get_reply.get_response
-      response << response_part
-    end while response_part != "\0\0"
+      while true
+        response_part = self.get_reply.get_response
+        response << response_part
+      end
+    rescue TimeoutException
+    end
     
     return response
   end

@@ -20,99 +20,102 @@ require_once "steam/sockets/SteamSocket.php";
  */
 class GoldSrcSocket extends SteamSocket
 {
-	/**
-	 * @var long
-	 */
-	private $rconChallenge;
+    /**
+     * @var long
+     */
+    private $rconChallenge = -1;
 
-	/**
-	 * @return SteamPacket
-	 */
-	public function getReply()
-	{
-		$bytesRead = $this->receivePacket(1400);
+    /**
+     * @return SteamPacket
+     */
+    public function getReply()
+    {
+        $bytesRead = $this->receivePacket(1400);
 
-		// Check wether it is a split packet
-		if($this->buffer->getLong() == -2)
-		{
-			do
-			{
-				$requestId = $this->buffer->getLong();
-				$packetCountAndNumber = $this->buffer->getByte();
-				$packetCount = $packetCountAndNumber & 0xF;
-				$packetNumber = ($packetCountAndNumber >> 4) + 1;
+        // Check wether it is a split packet
+        if($this->buffer->getLong() == -2)
+        {
+            do
+            {
+                $requestId = $this->buffer->getLong();
+                $packetCountAndNumber = $this->buffer->getByte();
+                $packetCount = $packetCountAndNumber & 0xF;
+                $packetNumber = ($packetCountAndNumber >> 4) + 1;
 
-				// Caching of split packet Data
-				$splitPackets[$packetNumber] = $this->buffer->get();
+                // Caching of split packet Data
+                $splitPackets[$packetNumber] = $this->buffer->get();
 
-				trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
+                trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 
-				$bytesRead = $this->receivePacket();
-			}
-			while($bytesRead > 0 && $this->buffer->getLong() == -2);
+                $bytesRead = $this->receivePacket();
+            }
+            while($bytesRead > 0 && $this->buffer->getLong() == -2);
 
-			$packetData = implode("", $splitPackets);
-		}
-		else
-		{
-			$packetData = $this->buffer->get();
-		}
+            $packet = SteamPacketFactory::reassemblePacket($splitPackets);
+        }
+        else
+        {
+            $packet = SteamPacketFactory::getPacketFromData($this->buffer->get());
+        }
 
-		return SteamPacketFactory::getPacketFromData($packetData);
-	}
+        trigger_error("Received packet of type \"" . get_class($packet) . "\"");
 
-	/**
-	 * @param String $password
-	 * @param String $command
-	 * @return String
-	 */
-	public function rconExec($password, $command)
-	{
-		if(empty($this->rconChallenge))
-		{
-			$this->rconGetChallenge();
-		}
-		 
-		$this->rconSend("rcon {$this->rconChallenge} $password $command");
-		$response = $this->getReply()->getResponse();
+        return $packet;
+    }
 
-		if(trim($response) == "Bad rcon_password." || trim($response) == "You have been banned from this server.")
-		{
-			throw new RCONNoAuthException();
-		}
+    /**
+     * @param String $password
+     * @param String $command
+     * @return String
+     */
+    public function rconExec($password, $command)
+    {
+        if($this->rconChallenge == -1)
+        {
+            $this->rconGetChallenge();
+        }
 
-		do
-		{
-			$this->rconSend("rcon {$this->rconChallenge} $password");
-			$responsePart = $this->getReply()->getResponse();
-			$response .= $responsePart;
-		}
-		while($responsePart != "\0\0");
-		 
-		return $response;
-	}
+        $this->rconSend("rcon {$this->rconChallenge} $password $command");
+        $response = $this->getReply()->getResponse();
 
-	/**
-	 */
-	public function rconGetChallenge()
-	{
-		$this->rconSend("challenge rcon");
-		$response = trim($this->getReply()->getResponse());
+        if(trim($response) == "Bad rcon_password." || trim($response) == "You have been banned from this server.")
+        {
+            throw new RCONNoAuthException();
+        }
 
-		if($response == "You have been banned from this server.")
-		{
-			throw new RCONNoAuthException();
-		}
-		 
-		$this->rconChallenge = intval(substr($response, 14));
-	}
+        try
+        {
+            while(true) {
+                $responsePart = $this->getReply()->getResponse();
+                $response .= $responsePart;
+            }
+        }
+        catch(TimeoutException $e) {}
 
-	/**
-	 * @param String $command
-	 */
-	public function rconSend($command)
-	{
-		$this->send(new RCONGoldSrcRequest($command));
-	}
+        return $response;
+    }
+
+    /**
+     */
+    public function rconGetChallenge()
+    {
+        $this->rconSend("challenge rcon");
+        $response = trim($this->getReply()->getResponse());
+
+        if($response == "You have been banned from this server.")
+        {
+            throw new RCONNoAuthException();
+        }
+
+        $this->rconChallenge = floatval(substr($response, 14));
+    }
+
+    /**
+     * @param String $command
+     */
+    public function rconSend($command)
+    {
+        $this->send(new RCONGoldSrcRequest($command));
+    }
 }
 ?>

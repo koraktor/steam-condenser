@@ -40,6 +40,7 @@ class SteamPacket
   M2A_SERVER_BATCH_HEADER = 0x66
   S2C_CONNREJECT_HEADER = 0x39
   RCON_GOLDSRC_CHALLENGE_HEADER = 0x63
+  RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39
   RCON_GOLDSRC_RESPONSE_HEADER = 0x6c
 
   # Creates a new SteamPacket object with given header and content data

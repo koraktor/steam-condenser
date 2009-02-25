@@ -44,6 +44,7 @@ class SteamPacketFactory
       when SteamPacket::M2A_SERVER_BATCH_HEADER
         return M2A_SERVER_BATCH_Packet.new(data)
       when SteamPacket::RCON_GOLDSRC_CHALLENGE_HEADER,
+           SteamPacket::RCON_GOLDSRC_NO_CHALLENGE_HEADER,
            SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
         return RCONGoldSrcResponse.new(data)
       else

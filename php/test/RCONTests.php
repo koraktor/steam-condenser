@@ -22,7 +22,7 @@ require_once "PHPUnit/Framework.php";
  * @package    Steam Condenser (PHP)
  * @subpackage Tests
  */
-class QueryTests extends PHPUnit_Framework_TestCase
+class RCONTests extends PHPUnit_Framework_TestCase
 {
 	public function testRconLongGoldSrcServer()
 	{
@@ -30,6 +30,9 @@ class QueryTests extends PHPUnit_Framework_TestCase
 		$server->rconAuth("test");
 		$rconReply = $server->rconExec("cvarlist");
 		echo "$rconReply\n";
+        $this->assertTrue(
+            strpos($rconReply, "CvarList ? for syntax") !== false,
+            "Did not receive complete cvarlist.");
 	}
 
 	public function testRconShortGoldSrcServer()
@@ -38,6 +41,11 @@ class QueryTests extends PHPUnit_Framework_TestCase
 		$server->rconAuth("test");
 		$rconReply = $server->rconExec("version");
 		echo "$rconReply\n";
+        $this->assertTrue(
+            strpos($rconReply, "Protocol version") !== false &&
+            strpos($rconReply, "Exe version") !== false &&
+            strpos($rconReply, "Exe build") !== false,
+            "Did not receive correct version response.");
 	}
 
 	public function testRconLongSourceServer()

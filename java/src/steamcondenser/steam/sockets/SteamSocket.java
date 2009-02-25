@@ -2,7 +2,6 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
-
 package steamcondenser.steam.sockets;
 
 import java.io.IOException;
@@ -30,9 +29,7 @@ import steamcondenser.steam.packets.SteamPacketFactory;
 abstract public class SteamSocket
 {
     protected ByteBuffer buffer;
-
     protected SelectableChannel channel;
-
     protected InetSocketAddress remoteSocket;
 
     /**
@@ -43,10 +40,10 @@ abstract public class SteamSocket
      */
     protected SteamSocket(InetAddress ipAddress, int portNumber)
     {
-	this.buffer = ByteBuffer.allocate(1400);
-	this.buffer.order(ByteOrder.LITTLE_ENDIAN);
-
-	this.remoteSocket = new InetSocketAddress(ipAddress, portNumber);
+        this.buffer = ByteBuffer.allocate(1400);
+        this.buffer.order(ByteOrder.LITTLE_ENDIAN);
+        
+        this.remoteSocket = new InetSocketAddress(ipAddress, portNumber);
     }
 
     /**
@@ -56,12 +53,12 @@ abstract public class SteamSocket
      *         because of an format error
      */
     protected SteamPacket getPacketFromData()
-    	throws PacketFormatException
+            throws PacketFormatException
     {
-	byte[] packetData = new byte[this.buffer.remaining()];
-	this.buffer.get(packetData);
+        byte[] packetData = new byte[this.buffer.remaining()];
+        this.buffer.get(packetData);
 
-	return SteamPacketFactory.getPacketFromData(packetData);
+        return SteamPacketFactory.getPacketFromData(packetData);
     }
 
     /**
@@ -72,7 +69,7 @@ abstract public class SteamSocket
      * @throws Exception
      */
     abstract public SteamPacket getReply()
-    throws IOException, TimeoutException, SteamCondenserException;
+            throws IOException, TimeoutException, SteamCondenserException;
 
     /**
      * Reads an UDP packet into an existing or a new buffer
@@ -81,43 +78,40 @@ abstract public class SteamSocket
      * @return The number of bytes received
      * @throws IOException
      * @throws TimeoutException
+     * TODO select() seems to "miss" some packets (e.g. long RCON responses)
      */
     protected int receivePacket(int bufferLength)
-    throws IOException, TimeoutException
+            throws IOException, TimeoutException
     {
-	Selector selector = Selector.open();
-	this.channel.register(selector, SelectionKey.OP_READ);
+        Selector selector = Selector.open();
+        this.channel.register(selector, SelectionKey.OP_READ);
 
-	int bytesRead;
+        if (selector.select(1000) == 0) {
+            throw new TimeoutException();
+        }
 
-	if(bufferLength == 0)
-	{
-	    this.buffer.clear();
-	    selector.selectNow();
-	}
-	else
-	{
-	    this.buffer = ByteBuffer.allocate(bufferLength);
-	    if(selector.select(1000) == 0)
-	    {
-		throw new TimeoutException();
-	    }
-	}
+        int bytesRead;
 
-	((ReadableByteChannel) this.channel).read(this.buffer);
-	bytesRead = this.buffer.position();
-	this.buffer.rewind();
-	this.buffer.limit(bytesRead);
+        if (bufferLength == 0) {
+            this.buffer.clear();
+        } else {
+            this.buffer = ByteBuffer.allocate(bufferLength);
+        }
 
-	return bytesRead;
+        bytesRead = ((ReadableByteChannel) this.channel).read(this.buffer);
+        this.buffer.rewind();
+        this.buffer.limit(bytesRead);
+
+        return bytesRead;
     }
-    
+
     /**
      * Closes the DatagramChannel
      */
+    @Override
     public void finalize()
-    throws IOException
+            throws IOException
     {
-	this.channel.close();
+        this.channel.close();
     }
 }
