@@ -1,6 +1,8 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
 package steamcondenser;
 
@@ -55,6 +57,10 @@ public class RCONTests
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("cvarlist");
             System.out.println(rconReply);
+
+            Assert.assertTrue(
+                "Did not receive complete cvarlist.",
+                rconReply.contains("total convars/concommands"));
         }
     }
 
@@ -95,6 +101,12 @@ public class RCONTests
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("version");
             System.out.println(rconReply);
+
+            Assert.assertTrue(
+                "Did not receive correct version response.",
+                rconReply.contains("Protocol version") &&
+                rconReply.contains("Exe version") &&
+                rconReply.contains("Exe build"));
         }
     }
 }

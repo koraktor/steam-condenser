@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -36,6 +36,10 @@ class RCONTests < Test::Unit::TestCase
         rcon_reply = server.rcon_exec "cvarlist"
         print "#{rcon_reply}\n"
       end
+
+      assert(
+        rcon_reply.include?("total convars/concommands"),
+        "Did not receive complete cvarlist.")
     end
   end
 
@@ -59,10 +63,16 @@ class RCONTests < Test::Unit::TestCase
   def test_short_rcon_source_server
     assert_nothing_raised do
       server = SourceServer.new IPAddr.new("127.0.0.1")
-      if server.rcon_auth "test"
+      if server.rcon_auth "282"
         rcon_reply = server.rcon_exec "version"
         print "#{rcon_reply}\n"
       end
+
+      assert(
+        rcon_reply.include?("Protocol version") &&
+        rcon_reply.include?("Exe version") &&
+        rcon_reply.include?("Exe build"),
+        "Did not receive correct version response.");
     end
   end
 
