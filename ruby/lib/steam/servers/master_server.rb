@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -12,13 +12,23 @@ class MasterServer
   
   GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com", 27010
   SOURCE_MASTER_SERVER = "hl2master.steampowered.com", 27011
+
+  REGION_US_EAST_COAST = 0x00
+  REGION_US_WEST_COAST = 0x01
+  REGION_SOUTH_AMERICA = 0x02
+  REGION_EUROPE = 0x03
+  REGION_ASIA = 0x04
+  REGION_AUSTRALIA = 0x05
+  REGION_MIDDLE_EAST = 0x06
+  REGION_AFRICA = 0x07
+  REGION_ALL = 0xFF
   
-  def initialize(master_server_address)
-    @socket = MasterServerSocket.new *master_server_address
+  def initialize(master_server_address, master_server_port)
+    @socket = MasterServerSocket.new master_server_address, master_server_port
     @server_array = Array.new
   end
   
-  def get_servers(region_code = A2M_GET_SERVERS_BATCH2_Packet::REGION_ALL, filters = "")
+  def get_servers(region_code = MasterServer::REGION_ALL, filters = "")
     if @server_array.empty?
       self.update_servers region_code, filters
     end

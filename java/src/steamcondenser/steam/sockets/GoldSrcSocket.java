@@ -1,6 +1,8 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
 package steamcondenser.steam.sockets;
 
@@ -22,8 +24,8 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
  * @author Sebastian Staudt
  * @version $Id$
  */
-public class GoldSrcSocket extends QuerySocket {
-
+public class GoldSrcSocket extends QuerySocket
+{
     private long rconChallenge = -1;
 
     /**
@@ -33,7 +35,8 @@ public class GoldSrcSocket extends QuerySocket {
      * @throws IOException
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber)
-            throws IOException {
+            throws IOException
+    {
         super(ipAddress, portNumber);
     }
 
@@ -44,13 +47,14 @@ public class GoldSrcSocket extends QuerySocket {
      * @throws TimeoutException
      */
     public SteamPacket getReply()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws IOException, SteamCondenserException, TimeoutException
+    {
         int bytesRead;
         SteamPacket packet;
 
         bytesRead = this.receivePacket(1400);
 
-        if (this.packetIsSplit()) {
+        if(this.packetIsSplit()) {
             byte[] splitData;
             int packetCount, packetNumber;
             int requestId;
@@ -73,11 +77,17 @@ public class GoldSrcSocket extends QuerySocket {
                 Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 
                 // Receiving the next packet
-                bytesRead = this.receivePacket();
-            } while (bytesRead > 0 && this.packetIsSplit());
+                try {
+                    bytesRead = this.receivePacket();
+                }
+                catch(TimeoutException e) {
+                    bytesRead = 0;
+                }
+            } while(bytesRead > 0 && this.packetIsSplit());
 
             packet = SteamPacketFactory.reassemblePacket(splitPackets);
-        } else {
+        }
+        else {
             packet = this.getPacketFromData();
         }
 
@@ -97,15 +107,16 @@ public class GoldSrcSocket extends QuerySocket {
      * @throws UncompletePacketException 
      */
     public String rconExec(String password, String command)
-            throws IOException, TimeoutException, SteamCondenserException {
-        if (this.rconChallenge == -1) {
+            throws IOException, TimeoutException, SteamCondenserException
+    {
+        if(this.rconChallenge == -1) {
             this.rconGetChallenge();
         }
 
         this.rconSend("rcon " + this.rconChallenge + " " + password + " " + command);
-        String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+        String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
 
-        if (response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server")) {
+        if(response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server")) {
             throw new RCONNoAuthException();
         }
 
@@ -113,11 +124,12 @@ public class GoldSrcSocket extends QuerySocket {
 
         try {
             do {
-                responsePart = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse();
+                responsePart = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
                 response += responsePart;
-            } while (true);
+            } while(true);
         }
-        catch(TimeoutException e) {}
+        catch(TimeoutException e) {
+        }
 
         return response;
     }
@@ -128,11 +140,12 @@ public class GoldSrcSocket extends QuerySocket {
      * 
      */
     public void rconGetChallenge()
-            throws IOException, TimeoutException, NumberFormatException, SteamCondenserException {
+            throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
+    {
         this.rconSend("challenge rcon");
 
-        String response = ((RCONGoldSrcResponsePacket) this.getReply()).getResponse().trim();
-        if (response.equals("You have been banned from this server.")) {
+        String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse().trim();
+        if(response.equals("You have been banned from this server.")) {
             throw new RCONNoAuthException();
         }
 
@@ -140,7 +153,8 @@ public class GoldSrcSocket extends QuerySocket {
     }
 
     private void rconSend(String command)
-            throws IOException {
+            throws IOException
+    {
         this.send(new RCONGoldSrcRequestPacket(command));
     }
 }

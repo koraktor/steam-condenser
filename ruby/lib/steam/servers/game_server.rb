@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -106,21 +106,20 @@ class GameServer
       
       self.send_request request_packet
       response_packet = self.get_reply
-      
-      case response_packet.class.to_s
-        when "S2A_INFO_BasePacket" then
-          @info_hash = response_packet.get_info_hash
-        when "S2A_PLAYER_Packet" then
-          @player_array = response_packet.get_player_array
-        when "S2A_RULES_Packet" then
-          @rules_hash = response_packet.get_rules_hash
-        when "S2C_CHALLENGE_Packet" then
-          @challenge_number = response_packet.get_challenge_number
-        else
-          raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
+
+      if response_packet.kind_of? S2A_INFO_BasePacket
+        @info_hash = response_packet.get_info_hash
+      elsif response_packet.kind_of? S2A_PLAYER_Packet
+        @player_array = response_packet.get_player_array
+      elsif response_packet.kind_of? S2A_RULES_Packet
+        @rules_hash = response_packet.get_rules_hash
+      elsif response_packet.kind_of? S2C_CHALLENGE_Packet
+        @challenge_number = response_packet.get_challenge_number
+      else
+        raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
       end
       
-      if !response_packet.kind_of? expected_response
+      unless response_packet.kind_of? expected_response
         warn "Expected #{expected_response}, got #{response_packet.class}."
         self.handle_response_for_request(request_type, false) if repeat_on_failure
       end
@@ -130,31 +129,31 @@ class GameServer
   end
   
   def init
-    update_ping
-    update_server_info
-    update_challenge_number
+    self.update_ping
+    self.update_server_info
+    self.update_challenge_number
   end
 
   def update_player_info
-    self.handle_response_for_request 2
+    self.handle_response_for_request GameServer::REQUEST_PLAYER
   end
 
   def update_rules_info
-    self.handle_response_for_request 3
+    self.handle_response_for_request GameServer::REQUEST_RULES
   end
   
   def update_server_info
-    self.handle_response_for_request 1
+    self.handle_response_for_request GameServer::REQUEST_INFO
   end
   
   def update_challenge_number
-    self.handle_response_for_request 0
+    self.handle_response_for_request GameServer::REQUEST_CHALLENGE
   end
  
   def update_ping
-    send_request A2A_PING_Packet.new
+    self.send_request A2A_PING_Packet.new
     start_time = Time.now
-    get_reply
+    self.get_reply
     end_time = Time.now
     return @ping = (end_time - start_time) * 1000
   end

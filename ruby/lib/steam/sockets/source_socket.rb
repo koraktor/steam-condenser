@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -18,11 +18,14 @@ class SourceSocket < SteamSocket
   # objects.
   def get_reply
     bytes_read = self.receive_packet 1400
+    is_compressed = false
 
     if @buffer.get_long == -2
       split_packets = Array.new
       begin
+        # Parsing of split packet headers
         request_id = @buffer.get_long
+        is_compressed = ((request_id & 0x80000000) != 0)
         packet_count = @buffer.get_byte.to_i
         packet_number = @buffer.get_byte.to_i + 1
         
@@ -33,11 +36,17 @@ class SourceSocket < SteamSocket
           split_size = @buffer.get_short
         end
 
+        # Caching of split packet data
         split_packets[packet_number] = @buffer.get
         
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
-        
-        bytes_read = self.receive_packet
+
+        # Receiving the next packet
+        begin
+          bytes_read = self.receive_packet
+        rescue TimeoutException
+          bytes_read = 0
+        end
       end while bytes_read > 0 && @buffer.get_long == -2
       
       if is_compressed
@@ -48,8 +57,12 @@ class SourceSocket < SteamSocket
     else
       packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
     end
-    
-    warn "Got reply of type \"#{packet.class.to_s}\"."
+
+    if is_compressed
+      warn "Got compressed reply of type \"#{packet.class.to_s}\"."
+    else
+      warn "Got reply of type \"#{packet.class.to_s}\"."
+    end
     
     return packet
   end

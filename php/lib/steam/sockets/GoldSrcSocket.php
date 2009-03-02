@@ -3,6 +3,8 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2009, Sebastian Staudt
+ *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
@@ -47,7 +49,13 @@ class GoldSrcSocket extends SteamSocket
 
                 trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 
-                $bytesRead = $this->receivePacket();
+                // Receiving the next packet
+                try {
+                    $bytesRead = $this->receivePacket();
+                }
+                catch(TimeoutException $e) {
+                    $bytesRead = 0;
+                }
             }
             while($bytesRead > 0 && $this->buffer->getLong() == -2);
 

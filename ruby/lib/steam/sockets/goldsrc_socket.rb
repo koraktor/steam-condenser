@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -36,7 +36,11 @@ class GoldSrcSocket < SteamSocket
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
         
         # Receiving the next packet
-        bytes_read = self.receive_packet
+        begin
+          bytes_read = self.receive_packet
+        rescue TimeoutException
+          bytes_read = 0
+        end
       end while bytes_read > 0 && @buffer.get_long == -2
       
       packet = SteamPacketFactory.reassemble_packet(split_packets)

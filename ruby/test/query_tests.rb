@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -37,12 +37,15 @@ class QueryTests < Test::Unit::TestCase
   def test_random_goldsrc_server
     assert_nothing_raised do
       master_server = MasterServer.new MasterServer::GOLDSRC_MASTER_SERVER
-      servers = master_server.get_servers
-      server = GoldSrcServer.new *servers[rand(servers.length)]
+      servers = master_server.get_servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve"
+
+      assert !servers.empty?, "Got no servers from master server."
+
+      server = GoldSrcServer.new(*servers[rand(servers.length)])
       server.init
       server.update_player_info
       server.update_rules_info
-      
+
       print server.to_s
     end
   end
@@ -51,9 +54,12 @@ class QueryTests < Test::Unit::TestCase
   # full query on it 
   def test_random_source_server
     assert_nothing_raised do
-      master_server = MasterServer.new MasterServer::SOURCE_MASTER_SERVER
-      servers = master_server.get_servers
-      server = SourceServer.new *servers[rand(servers.length)]
+      master_server = MasterServer.new "69.28.140.246", 27011
+      servers = master_server.get_servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf"
+
+      assert !servers.empty?, "Got no servers from master server."
+
+      server = SourceServer.new(*servers[rand(servers.length)])
       server.init
       server.update_player_info
       server.update_rules_info

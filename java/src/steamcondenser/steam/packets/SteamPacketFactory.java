@@ -1,6 +1,8 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
 package steamcondenser.steam.packets;
 
@@ -80,10 +82,10 @@ public abstract class SteamPacketFactory
     public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets)
             throws IOException, SteamCondenserException
     {
-        return SteamPacketFactory.reassemblePacket(splitPackets, false, (short) 0, 0);
+        return SteamPacketFactory.reassemblePacket(splitPackets, false, 0, 0);
     }
 
-    public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets, boolean isCompressed, short uncompressedSize, int packetChecksum)
+    public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets, boolean isCompressed, int uncompressedSize, int packetChecksum)
             throws IOException, SteamCondenserException
     {
         byte[] packetData, tmpData;
@@ -100,6 +102,7 @@ public abstract class SteamPacketFactory
         }
 
         if (isCompressed) {
+            packetData = new String(packetData).substring(2).getBytes();
             CBZip2InputStream bzip2 = new CBZip2InputStream(new ByteArrayInputStream(packetData));
             bzip2.read(packetData, 0, uncompressedSize);
 
