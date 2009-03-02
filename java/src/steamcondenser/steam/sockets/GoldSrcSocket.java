@@ -26,10 +26,11 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
  */
 public class GoldSrcSocket extends QuerySocket
 {
+    private boolean isHLTV;
     private long rconChallenge = -1;
 
     /**
-     * 
+     *
      * @param ipAddress
      * @param portNumber
      * @throws IOException
@@ -38,6 +39,21 @@ public class GoldSrcSocket extends QuerySocket
             throws IOException
     {
         super(ipAddress, portNumber);
+        this.isHLTV = false;
+    }
+
+    /**
+     * 
+     * @param ipAddress
+     * @param portNumber
+     * @param isHLTV
+     * @throws IOException
+     */
+    public GoldSrcSocket(InetAddress ipAddress, int portNumber, boolean isHLTV)
+            throws IOException
+    {
+        super(ipAddress, portNumber);
+        this.isHLTV = isHLTV;
     }
 
     /**
@@ -114,7 +130,19 @@ public class GoldSrcSocket extends QuerySocket
         }
 
         this.rconSend("rcon " + this.rconChallenge + " " + password + " " + command);
-        String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
+        String response;
+        if(this.isHLTV) {
+            try {
+                response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
+            }
+            catch(TimeoutException e) {
+                response = "";
+            }
+        }
+        else {
+            response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
+        }
+        
 
         if(response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server")) {
             throw new RCONNoAuthException();

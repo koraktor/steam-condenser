@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -10,9 +10,9 @@ require "steam/sockets/goldsrc_socket"
 
 class GoldSrcServer < GameServer
   
-  def initialize(ip_address, port_number = 27015)
+  def initialize(ip_address, port_number = 27015, is_hltv = false)
     super port_number
-    @socket = GoldSrcSocket.new ip_address, port_number
+    @socket = GoldSrcSocket.new ip_address, port_number, is_hltv
   end
   
   def rcon_auth(password)

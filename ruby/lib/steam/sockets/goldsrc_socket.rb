@@ -14,6 +14,11 @@ require "steam/sockets/steam_socket"
 # specifications of the Source query protocol.
 class GoldSrcSocket < SteamSocket
 
+  def initialize(ipaddress, port_number = 27015, is_hltv = false)
+    super ipaddress, port_number
+    @is_hltv = is_hltv
+  end
+
   # Reads a packet from the channel. The Source query protocol specifies a
   # maximum packet size of 1400 byte. Greater packets will be split over several
   # UDP packets. This method reassembles split packets into single packet
@@ -60,7 +65,15 @@ class GoldSrcSocket < SteamSocket
     end
     
     self.rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
-    response = self.get_reply.get_response
+    if @is_hltv
+      begin
+        response = self.get_reply.get_response
+      rescue TimeoutException
+        response = ""
+      end
+    else
+      response = self.get_reply.get_response
+    end
     
     if response.strip == "Bad rcon_password." or response.strip == "You have been banned from this server."
       raise RCONNoAuthException.new

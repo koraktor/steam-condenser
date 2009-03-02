@@ -1,8 +1,9 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
-
 package steamcondenser.steam.servers;
 
 import java.io.IOException;
@@ -25,10 +26,22 @@ public class GoldSrcServer extends GameServer
      * @param portNumber The port number of the server
      */
     public GoldSrcServer(InetAddress ipAddress, int portNumber)
-    throws IOException
+            throws IOException
     {
-	super(portNumber);
-	this.socket = new GoldSrcSocket(ipAddress, portNumber);
+        super(portNumber);
+        this.socket = new GoldSrcSocket(ipAddress, portNumber, false);
+    }
+
+    /**
+     * @param ipAddress The IP of the server to connect to
+     * @param portNumber The port number of the server
+     * @param isHLTV Whether this server is a HLTV server
+     */
+    public GoldSrcServer(InetAddress ipAddress, int portNumber, boolean isHLTV)
+            throws IOException
+    {
+        super(portNumber);
+        this.socket = new GoldSrcSocket(ipAddress, portNumber, isHLTV);
     }
 
     /**
@@ -38,8 +51,8 @@ public class GoldSrcServer extends GameServer
      */
     public boolean rconAuth(String password)
     {
-	this.rconPassword = password;
-	return true;
+        this.rconPassword = password;
+        return true;
     }
 
     /**
@@ -48,8 +61,8 @@ public class GoldSrcServer extends GameServer
      * @throws SteamCondenserException 
      */
     public String rconExec(String command)
-    throws IOException, TimeoutException, SteamCondenserException
+            throws IOException, TimeoutException, SteamCondenserException
     {
-	return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command);
+        return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command);
     }
 }

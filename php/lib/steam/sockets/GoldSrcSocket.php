@@ -23,9 +23,20 @@ require_once "steam/sockets/SteamSocket.php";
 class GoldSrcSocket extends SteamSocket
 {
     /**
+     * @var boolean
+     */
+    private $isHLTV;
+
+    /**
      * @var long
      */
     private $rconChallenge = -1;
+
+    public function  __construct($ipAddress, $portNumber = 27015, $isHLTV = false)
+    {
+        parent::__construct($ipAddress, $portNumber);
+        $this->isHLTV = $isHLTV;
+    }
 
     /**
      * @return SteamPacket
@@ -84,7 +95,17 @@ class GoldSrcSocket extends SteamSocket
         }
 
         $this->rconSend("rcon {$this->rconChallenge} $password $command");
-        $response = $this->getReply()->getResponse();
+        if($this->isHLTV) {
+            try {
+                $response = $this->getReply()->getResponse();
+            }
+            catch(TimeoutException $e) {
+                $response = "";
+            }
+        }
+        else {
+            $response = $this->getReply()->getResponse();
+        }
 
         if(trim($response) == "Bad rcon_password." || trim($response) == "You have been banned from this server.")
         {
