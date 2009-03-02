@@ -8,6 +8,7 @@ Java, PHP and Ruby.
 
 * Linux, MacOS X or Windows
 * Ruby 1.8.7 or newer
+* {Ruby BZ2 module}[http://raa.ruby-lang.org/project/bz2]
 
 == License
 
@@ -22,4 +23,5 @@ LICENSE[link:files/LICENSE.html] file.
 == See Also
 
 * {Steam Condensor project page}[http://code.google.com/p/steam-condenser]
+* {Steam Condensor group}[http://groups.google.com/group/steam-condenser]
 * {Steam Condensor's Ohloh page}[http://www.ohloh.net/projects/steam-condenser]

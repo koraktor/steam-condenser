@@ -35,7 +35,12 @@
 		<copy todir="${build.path}/${doc.dir}">
 			<fileset dir="${doc.path}" />
 		</copy>
-		<jar jarfile="${dist.path}/steam-condenser-r${revision}.jar">
+
+        <condition property="jar.suffix" value="${release.version}" else="r${revision}">
+            <isset property="release.version" />
+        </condition>
+
+		<jar jarfile="${dist.path}/steam-condenser-${jar.suffix}.jar">
 			<fileset dir="${build.path}" />
 			<fileset file="LICENSE" />
 			<fileset file="README" />

@@ -12,8 +12,8 @@ Java, PHP and Ruby.
 == License
 
 This code is free software; you can redistribute it and/or modify it under the
-terms of the new BSD License. A copy of this license can be found in the included
-LICENSE file.
+terms of the new BSD License. A copy of this license can be found in the
+included LICENSE file.
 
 == Credits
 
@@ -22,4 +22,5 @@ LICENSE file.
 == See Also
 
 * Steam Condensor project page: http://code.google.com/p/steam-condenser
+* Steam Condensor group: http://groups.google.com/group/steam-condenser
 * Steam Condensor's Ohloh page: http://www.ohloh.net/projects/steam-condenser
