@@ -6,11 +6,15 @@
  */
 package steamcondenser;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Properties;
 import java.util.concurrent.TimeoutException;
 
 import junit.framework.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import steamcondenser.steam.servers.GoldSrcServer;
@@ -22,6 +26,54 @@ import steamcondenser.steam.servers.SourceServer;
  */
 public class RCONTests
 {
+    private InetAddress goldSrcServerAddress;
+    private int goldSrcServerPort;
+    private InetAddress sourceServerAddress;
+    private int sourceServerPort;
+
+    /**
+     * Setup method to load fixtures from test-fixtures.properties
+     * @throws java.net.UnknownHostException
+     */
+    @Before
+    public void setUp()
+        throws UnknownHostException
+    {
+        Properties testFixtures = new Properties();
+        try {
+            testFixtures.load(new FileInputStream("test-fixtures.properties"));
+        }
+        catch(IOException e) {}
+
+        if(testFixtures.containsKey("goldSrcServerAddress")) {
+            this.goldSrcServerAddress = InetAddress.getByName(testFixtures.getProperty("goldSrcServerAddress"));
+        }
+        else {
+            this.goldSrcServerAddress = InetAddress.getLocalHost();
+        }
+
+        if(testFixtures.containsKey("goldSrcServerPort")) {
+            this.goldSrcServerPort = Integer.valueOf(testFixtures.getProperty("goldSrcServerPort"));
+        }
+        else {
+            this.goldSrcServerPort = 27015;
+        }
+
+        if(testFixtures.containsKey("sourceServerAddress")) {
+            this.sourceServerAddress = InetAddress.getByName(testFixtures.getProperty("sourceServerAddress"));
+        }
+        else {
+            this.sourceServerAddress = InetAddress.getLocalHost();
+        }
+
+        if(testFixtures.containsKey("sourceServerPort")) {
+            this.sourceServerPort = Integer.valueOf(testFixtures.getProperty("sourceServerPort"));
+        }
+        else {
+            this.sourceServerPort = 27015;
+        }
+    }
+
     /**
      * This test tries to run the "cvarlist" command over RCON on a GoldSrc server
      * @throws IOException
@@ -32,7 +84,7 @@ public class RCONTests
     public void rconLongGoldSrcServer()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
+        GoldSrcServer server = new GoldSrcServer(this.goldSrcServerAddress, this.goldSrcServerPort);
         server.rconAuth("test");
         String rconReply = server.rconExec("cvarlist");
 
@@ -53,7 +105,7 @@ public class RCONTests
     public void rconLongSourceServer()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
+        SourceServer server = new SourceServer(this.sourceServerAddress, this.sourceServerPort);
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("cvarlist");
             System.out.println(rconReply);
@@ -74,7 +126,7 @@ public class RCONTests
     public void rconShortGoldSrcServer()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        GoldSrcServer server = new GoldSrcServer(InetAddress.getByName("localhost"), 27015);
+        GoldSrcServer server = new GoldSrcServer(this.goldSrcServerAddress, this.goldSrcServerPort);
         server.rconAuth("test");
         String rconReply = server.rconExec("version");
 
@@ -97,7 +149,7 @@ public class RCONTests
     public void rconShortSourceServer()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        SourceServer server = new SourceServer(InetAddress.getByName("localhost"), 27015);
+        SourceServer server = new SourceServer(this.sourceServerAddress, this.sourceServerPort);
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("version");
             System.out.println(rconReply);

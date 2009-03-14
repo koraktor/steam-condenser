@@ -1,66 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <project name="Steam Condenser" default="dist" basedir=".">
-	<description>
-		Build file for Steam Condenser
-	</description>
+    <description>
+            Build file for Steam Condenser
+    </description>
 
-	<typedef resource="com/googlecode/svntask/svntask.xml">
-		<classpath>
-			<fileset dir="${ant.home}/lib">
-				<include name="svnkit.jar" />
-				<include name="svntask.jar" />
-			</fileset>
-		</classpath>
-	</typedef>
+    <typedef resource="com/googlecode/svntask/svntask.xml">
+        <classpath>
+            <fileset dir="${ant.home}/lib">
+                <include name="svnkit.jar" />
+                <include name="svntask.jar" />
+            </fileset>
+        </classpath>
+    </typedef>
 
-	<property name="src.path" location="src" />
-	<property name="test.path" location="test" />
-	<property name="build.path" location="build" />
-	<property name="dist.path" location="dist" />
-	<property name="doc.dir" value="doc" />
-	<property name="doc.path" location="${doc.dir}" />
+    <property name="src.path" location="src" />
+    <property name="test.path" location="test" />
+    <property name="build.path" location="build" />
+    <property name="dist.path" location="dist" />
+    <property name="doc.dir" value="doc" />
+    <property name="doc.path" location="${doc.dir}" />
+    <property name="test.path" location="test" />
+    <property name="test-build.path" location="test-build" />
 
-	<target name="init">
-		<tstamp />
-		<mkdir dir="${build.path}" />
-	</target>
+    <path id="classpath.test">
+        <pathelement path="${build.path}" />
+        <pathelement path="${test-build.path}" />
+    </path>
 
-	<target name="compile" depends="init" description="compile source">
-		<javac srcdir="${src.path}" destdir="${build.path}" />
-	</target>
+    <target name="init">
+        <tstamp />
+    </target>
 
-	<target name="dist" depends="compile, doc, svninfo" description="generate jar file">
-		<mkdir dir="${dist.path}" />
-		<copy todir="${build.path}/${doc.dir}">
-			<fileset dir="${doc.path}" />
-		</copy>
+    <target name="compile" depends="init" description="compile source">
+        <mkdir dir="${build.path}" />
+        <javac srcdir="${src.path}" destdir="${build.path}" />
+    </target>
+
+    <target name="compile-tests" depends="compile" description="compile tests">
+        <mkdir dir="${test-build.path}" />
+        <javac srcdir="${test.path}" destdir="${test-build.path}">
+            <classpath refid="classpath.test" />
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile, doc, svninfo" description="generate jar file">
+        <mkdir dir="${dist.path}" />
+        <copy todir="${build.path}/${doc.dir}">
+            <fileset dir="${doc.path}" />
+        </copy>
 
         <condition property="jar.suffix" value="${release.version}" else="r${revision}">
             <isset property="release.version" />
         </condition>
 
-		<jar jarfile="${dist.path}/steam-condenser-${jar.suffix}.jar">
-			<fileset dir="${build.path}" />
-			<fileset file="LICENSE" />
-			<fileset file="README" />
-		</jar>
-		<delete dir="${build.path}/${doc.dir}" />
-	</target>
+        <jar jarfile="${dist.path}/steam-condenser-${jar.suffix}.jar">
+            <fileset dir="${build.path}" />
+            <fileset file="LICENSE" />
+            <fileset file="README" />
+        </jar>
+        <delete dir="${build.path}/${doc.dir}" />
+    </target>
 
-	<target name="doc" description="generate documentation">
-		<mkdir dir="${doc.path}" />
-		<javadoc destdir="${doc.path}" doctitle="Steam Condenser" sourcepath="${src.path}" private="true" />
-	</target>
+    <target name="doc" description="Generate documentation">
+        <mkdir dir="${doc.path}" />
+        <javadoc destdir="${doc.path}" doctitle="Steam Condenser" sourcepath="${src.path}" private="true" />
+    </target>
 
-	<target name="clean" description="clean build and dist directories">
-		<delete dir="${build.path}" />
-		<delete dir="${dist.path}" />
-	</target>
+    <target name="clean" description="Clean build and dist directories">
+        <delete dir="${build.path}" />
+        <delete dir="${dist.path}" />
+        <delete dir="${test-build.path}" />
+    </target>
 
-	<target name="svninfo">
-		<svn>
-			<info path="${basedir}" revisionProperty="revision" />
-		</svn>
-	</target>
+    <target name="svninfo" description="Generate SVN information">
+        <svn>
+            <info path="${basedir}" revisionProperty="revision" />
+        </svn>
+    </target>
+
+    <target name="test" depends="compile-tests" description="Run tests">
+        <junit fork="yes" dir="test">
+            <classpath refid="classpath.test" />
+            <test name="steamcondenser.QueryTests" />
+            <test name="steamcondenser.RCONTests" />
+            <formatter type="plain" usefile="false" />
+        </junit>
+    </target>
+
 </project>
