@@ -21,7 +21,7 @@ public class SteamPlayer
     private int score;
 
     /**
-     * Creates a new player with the given parameters
+     * Creates a new SteamPlayer object with the given information
      * @param id The ID of the player
      * @param name The nickname of the player
      * @param score The score of the player
@@ -36,10 +36,43 @@ public class SteamPlayer
     }
 
     /**
-     * @return A String representation of this player.
+     * @return Returns the time this player is connected to the server
      */
+    public float getConnectTime()
+    {
+        return this.connectTime;
+    }
+
+    /**
+     * @return Returns the ID of this player
+     */
+    public int getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * @return Returns the nickname of this player
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
+    /**
+     * @return Returns the score of this player
+     */
+    public int getScore()
+    {
+        return this.score;
+    }
+
+    /**
+     * @return A String representation of this player
+     */
+    @Override
     public String toString()
     {
-	return "#" + this.id + " \"" + this.name + "\" " + this.score + " " + this.connectTime;
+	return "#" + this.id + " \"" + this.name + "\", Score: " + this.score + ", Time: " + this.connectTime;
     }
 }

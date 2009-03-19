@@ -7,6 +7,8 @@
 
 # The SteamPlayer class represents a player connected to a server
 class SteamPlayer
+
+  attr_reader :connect_time, :id, :name, :score
   
   # Creates a new SteamPlayer object based on the given information
   def initialize(id, name, score, connect_time)
@@ -14,6 +16,11 @@ class SteamPlayer
     @id = id
     @name = name
     @score = score
+  end
+
+  # Returns a String representation of this player
+  def to_s
+    return "#{@id} \"{@name}\", Score: {@score}, Time: {@connect_time}"
   end
   
 end
