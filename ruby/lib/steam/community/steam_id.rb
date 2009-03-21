@@ -43,7 +43,11 @@ class SteamId
   # custom URL specified by the user. If fetch is true, fetch_data is used to
   # load data into the object. fetch defaults to true.
   def initialize(id, fetch = true)
-    @id = id
+    if id.is_a? Numeric
+      @steam_id64 = id
+    else
+      @custom_url = id
+    end
     
     begin
       self.fetch_data if fetch
@@ -55,13 +59,18 @@ class SteamId
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
   def fetch_data
-    if @id.is_a? Numeric
-      url = "http://www.steamcommunity.com/profiles/#{@id}?xml=1"
+    if @custom_url.nil?
+      url = "http://steamcommunity.com/profiles/#{@steam_id64}?xml=1"
     else
-      url = "http://www.steamcommunity.com/id/#{@id}?xml=1"
+      url = "http://steamcommunity.com/id/#{@custom_url}?xml=1"
+    end
+
+    profile_url = open(url, {:proxy => true})
+    if profile_url.base_uri.to_s != url
+      profile_url = open(profile_url.base_uri.to_s + "?xml=1", {:proxy => true})
     end
     
-    profile = REXML::Document.new(open(url, {:proxy => true}).read).elements["profile"]
+    profile = REXML::Document.new(profile_url.read).elements["profile"]
       
     @image_url        = profile.elements["avatarIcon"].text[0..-5]
     @online_state     = profile.elements["onlineState"].text
@@ -75,19 +84,25 @@ class SteamId
     # Only public profiles can be scanned for further information
     if @privacy_state == "public"
       @custom_url                       = profile.elements["customURL"].text
-      @favorite_game                    = profile.elements["favoriteGame"].elements["name"].text
-      @favorite_game_hours_played       = profile.elements["favoriteGame"].elements["hoursPlayed2wk"].text
+
+      unless REXML::XPath.first(profile, "favoriteGame").nil?
+        @favorite_game                    = profile.elements["favoriteGame/name"].text
+        @favorite_game_hours_played       = profile.elements["favoriteGame/hoursPlayed2wk"].text
+      end
+
       @head_line                        = profile.elements["headline"].text
       @hours_played                     = profile.elements["hoursPlayed2Wk"].text.to_f
       @location                         = profile.elements["location"].text
       @member_since                     = Time.parse profile.elements["memberSince"].text
       @real_name                        = profile.elements["realname"].text
-      @steam_rating, @steam_rating_text = profile.elements["steamRating"].text.split(" - ")
+      @steam_rating                     = profile.elements["steamRating"].text.to_f
       @summary                          = profile.elements["summary"].text
-      
-      @most_played_games = Hash.new
-      profile.elements["mostPlayedGames"].elements.each("mostPlayedGame") do |most_played_game|
-        @most_played_games[most_played_game.elements["gameName"].text] = most_played_game.elements["hoursPlayed"].text.to_f
+
+      unless REXML::XPath.first(profile, "mostPlayedGames").nil?
+        @most_played_games = Hash.new
+        profile.elements["mostPlayedGames"].elements.each("mostPlayedGame") do |most_played_game|
+          @most_played_games[most_played_game.elements["gameName"].text] = most_played_game.elements["hoursPlayed"].text.to_f
+        end
       end
       
       @friends = Array.new
@@ -114,8 +129,8 @@ class SteamId
   
   # Returns a GameStats object for the given game for the owner of this SteamID
   def get_game_stats(game_name)
-    if game_name == "TF2"
-      return TF2Stats.new(@custom_url)
+    if @custom_url.nil?
+      return GameStats.new(@steam_id64, game_name)
     else
       return GameStats.new(@custom_url, game_name)
     end

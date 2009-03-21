@@ -6,6 +6,20 @@
 # $Id$
 
 require "abstract_class"
+require "steam/packets/s2a_info_detailed_packet"
+require "steam/packets/a2s_info_packet"
+require "steam/packets/s2a_info2_packet"
+require "steam/packets/a2a_ping_packet"
+require "steam/packets/a2a_ack_packet"
+require "steam/packets/a2s_player_packet"
+require "steam/packets/s2a_player_packet"
+require "steam/packets/a2s_rules_packet"
+require "steam/packets/s2a_rules_packet"
+require "steam/packets/a2s_serverquery_getchallenge_packet"
+require "steam/packets/s2c_challenge_packet"
+require "steam/packets/a2m_get_servers_batch2_packet"
+require "steam/packets/m2a_server_batch_packet"
+require "steam/packets/rcon/rcon_goldsrc_response"
 
 class SteamPacketFactory
   

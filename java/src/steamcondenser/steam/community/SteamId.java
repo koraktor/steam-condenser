@@ -6,6 +6,8 @@
 package steamcondenser.steam.community;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -45,8 +47,6 @@ public class SteamId
 
     private float hoursPlayed;
 
-    private String id;
-
     private String imageUrl;
 
     private Map<String, String> links;
@@ -81,23 +81,23 @@ public class SteamId
 
     /**
      * Creates a new SteamId object for the given ID and fetches the data
-     * @param id The numeric ID of the SteamID
+     * @param steamId64 The numeric ID of the SteamID
      * @throws IOException
      * @throws DOMException
      * @throws ParseException
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    public SteamId(int id)
+    public SteamId(long steamId64)
     throws IOException, DOMException, ParseException, ParserConfigurationException, SAXException
     {
-	this(Integer.toString(id), true);
+	this(steamId64, true);
     }
 
     /**
      * Creates a new SteamId object for the given ID and fetches the data if
      * fetchData is set to true
-     * @param id The numeric ID of the SteamID
+     * @param steamId64 The numeric ID of the SteamID
      * @param fetchData If set to true, the data of this SteamID will be fetched
      *                  from Steam Community
      * @throws IOException
@@ -106,33 +106,37 @@ public class SteamId
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    public SteamId(int id, boolean fetchData)
+    public SteamId(long steamId64, boolean fetchData)
     throws IOException, DOMException, ParseException, ParserConfigurationException, SAXException
     {
-	this(Integer.toString(id), fetchData);
+	this.steamId64 = steamId64;
+
+        if(fetchData) {
+	    this.fetchData();
+	}
     }
 
     /**
      * Creates a new SteamId object for the given ID and fetches the data
-     * @param id The ID, either numeric or the custom URL given by the person
-     *           to the SteamID
+     * @param customUrl The ID, either numeric or the custom URL given by the person
+     *                  to the SteamID
      * @throws IOException
      * @throws DOMException
      * @throws ParseException
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    public SteamId(String id)
+    public SteamId(String customUrl)
     throws IOException, DOMException, ParseException, ParserConfigurationException, SAXException
     {
-	this(id, true);
+	this(customUrl, true);
     }
 
     /**
      * Creates a new SteamId object for the given ID and fetches the data if
      * fetchData is set to true
-     * @param id The ID, either numeric or the custom URL given by the person
-     *           to the SteamID
+     * @param customUrl The ID, either numeric or the custom URL given by the person
+     *                  to the SteamID
      * @param fetchData If set to true, the data of this SteamID will be fetched
      *                  from Steam Community
      * @throws IOException
@@ -141,13 +145,12 @@ public class SteamId
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    public SteamId(String id, boolean fetchData)
+    public SteamId(String customUrl, boolean fetchData)
     throws IOException, DOMException, ParseException, ParserConfigurationException, SAXException
     {
-	this.id = id;
+	this.customUrl = customUrl;
 
-	if(fetchData)
-	{
+	if(fetchData) {
 	    this.fetchData();
 	}
     }
@@ -163,8 +166,22 @@ public class SteamId
     private void fetchData()
     throws IOException, DOMException, ParserConfigurationException, ParseException, SAXException
     {
+        String url;
+        if(this.customUrl == null) {
+            url = "http://steamcommunity.com/profiles/" + this.steamId64 + "?xml=1";
+        }
+        else {
+            url = "http://steamcommunity.com/id/" + this.customUrl + "?xml=1";
+        }
+
+        HttpURLConnection.setFollowRedirects(false);
+        HttpURLConnection connection = (HttpURLConnection) (new URL(url)).openConnection();
+        if(connection.getHeaderField("Location") != null) {
+            url = connection.getHeaderField("Location") + "?xml=1";
+        }
+
 	DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	Element profile = parser.parse("http://www.steamcommunity.com/id/" + this.id + "?xml=1").getDocumentElement();
+	Element profile = parser.parse(url).getDocumentElement();
 
 	String avatarIconUrl = profile.getElementsByTagName("avatarIcon").item(0).getTextContent();
 	this.imageUrl = avatarIconUrl.substring(0, avatarIconUrl.length() - 4);
@@ -173,7 +190,7 @@ public class SteamId
 	this.stateMessage = profile.getElementsByTagName("stateMessage").item(0).getTextContent();
 	this.steamId = profile.getElementsByTagName("steamID").item(0).getTextContent();
 	this.steamId64 = Long.parseLong(profile.getElementsByTagName("steamID64").item(0).getTextContent());
-	this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent() == "1");
+	this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent().equals("1"));
 	this.visibilityState = Integer.parseInt(profile.getElementsByTagName("visibilityState").item(0).getTextContent());
 
 	if(this.privacyState.compareTo("public") == 0)
@@ -186,32 +203,30 @@ public class SteamId
 	    this.location                = profile.getElementsByTagName("location").item(0).getTextContent();
 	    this.memberSince             = DateFormat.getDateInstance(DateFormat.LONG, Locale.ENGLISH).parse(profile.getElementsByTagName("memberSince").item(0).getTextContent());
 	    this.realName                = profile.getElementsByTagName("realname").item(0).getTextContent();
-	    String[] steamRating = profile.getElementsByTagName("steamRating").item(0).getTextContent().split(" - ");
-	    this.steamRating             = Float.parseFloat(steamRating[0]);
-	    this.steamRatingText         = steamRating[1];
+	    this.steamRating             = Float.parseFloat(profile.getElementsByTagName("steamRating").item(0).getTextContent());
 	    this.summary                 = profile.getElementsByTagName("summary").item(0).getTextContent();
 
 	    this.mostPlayedGames = new HashMap<String, Float>();
-	    NodeList mostPlayedGames = ((Element) profile.getElementsByTagName("mostPlayedGames").item(0)).getElementsByTagName("mostPlayedGame");
-	    for(int i = 0; i < mostPlayedGames.getLength(); i++)
+	    NodeList mostPlayedGamesNode = ((Element) profile.getElementsByTagName("mostPlayedGames").item(0)).getElementsByTagName("mostPlayedGame");
+	    for(int i = 0; i < mostPlayedGamesNode.getLength(); i++)
 	    {
-		Element mostPlayedGame = (Element) mostPlayedGames.item(i);
+		Element mostPlayedGame = (Element) mostPlayedGamesNode.item(i);
 		this.mostPlayedGames.put(mostPlayedGame.getElementsByTagName("gameName").item(0).getTextContent(), Float.parseFloat(mostPlayedGame.getElementsByTagName("hoursPlayed").item(0).getTextContent()));
 	    }
 
-	    NodeList friends = ((Element) profile.getElementsByTagName("friends").item(0)).getElementsByTagName("friend");
-	    this.friends = new SteamId[friends.getLength()];
-	    for(int i = 0; i < friends.getLength(); i++)
+	    NodeList friendsNode = ((Element) profile.getElementsByTagName("friends").item(0)).getElementsByTagName("friend");
+	    this.friends = new SteamId[friendsNode.getLength()];
+	    for(int i = 0; i < friendsNode.getLength(); i++)
 	    {
-		Element friend = (Element) friends.item(i);
+		Element friend = (Element) friendsNode.item(i);
 		this.friends[i] = new SteamId(friend.getElementsByTagName("steamID64").item(0).getTextContent(), false);
 	    }
 
-	    NodeList groups = ((Element) profile.getElementsByTagName("groups").item(0)).getElementsByTagName("group");
-	    this.groups = new SteamGroup[groups.getLength()];
-	    for(int i = 0; i < groups.getLength(); i++)
+	    NodeList groupsNode = ((Element) profile.getElementsByTagName("groups").item(0)).getElementsByTagName("group");
+	    this.groups = new SteamGroup[groupsNode.getLength()];
+	    for(int i = 0; i < groupsNode.getLength(); i++)
 	    {
-		Element group = (Element) groups.item(i);
+		Element group = (Element) groupsNode.item(i);
 		this.groups[i] = new SteamGroup(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()));
 	    }
 	}
@@ -255,9 +270,9 @@ public class SteamId
     public GameStats getGameStats(String gameName)
     	throws ParserConfigurationException, SAXException, IOException
     {
-	if(gameName == "TF2")
+	if(this.customUrl == null)
 	{
-	    return new TF2Stats(this.customUrl);
+	    return new GameStats(this.steamId64, gameName);
 	}
 	else
 	{
@@ -278,11 +293,6 @@ public class SteamId
     public float getHoursPlayed()
     {
 	return this.hoursPlayed;
-    }
-
-    public String getId()
-    {
-	return this.id;
     }
 
     public Map<String, String> getLinks()
@@ -318,7 +328,7 @@ public class SteamId
      */
     public boolean isInGame()
     {
-	return this.onlineState == "in-game";
+	return this.onlineState.equals("in-game");
     }
 
     /**
@@ -327,7 +337,7 @@ public class SteamId
      */
     public boolean isOnline()
     {
-	return (this.onlineState == "online" || this.onlineState == "in-game");
+	return (this.onlineState.equals("online") || this.onlineState.equals("in-game"));
     }
 
     public String getRealName()

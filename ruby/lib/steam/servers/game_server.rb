@@ -13,6 +13,10 @@ require "steam/packets/a2a_ping_packet"
 require "steam/packets/a2s_player_packet"
 require "steam/packets/a2s_rules_packet"
 require "steam/packets/a2s_serverquery_getchallenge_packet"
+require "steam/packets/s2a_info_base_packet"
+require "steam/packets/s2a_player_packet"
+require "steam/packets/s2a_rules_packet"
+require "steam/packets/s2c_challenge_packet"
 
 class GameServer
   
