@@ -19,7 +19,7 @@ class TF2Stats < GameStats
   
   # Returns a Hash of TF2Class for this user containing all Team Fortress 2
   # classes. If the classes haven't been parsed already, parsing is done now.
-  def get_class_stats
+  def class_stats
     if @class_stats.nil?
       @class_stats = Hash.new
       @xml_data.elements["stats"].elements.each("classData") do |class_data|

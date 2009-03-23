@@ -9,10 +9,27 @@ require "open-uri"
 require "rexml/document"
 
 require "steam/community/game_achievement"
+require "steam/community/tf2/tf2_stats"
 
 # The GameStats class represents the game statistics for a single user and a
 # specific game
 class GameStats
+  
+  protected :initialize
+
+  attr_reader :accumulated_points, :app_id, :game_friendly_name, :game_name,
+              :hours_played, :privacy_state, :steam_id
+
+  # Creates a GameStats (or one of its subclasses) object for the given user
+  # depending on the game selected
+  def self.create_game_stats(steam_id, game_name)
+    case game_name
+      when "TF2":
+        return TF2Stats.new(steam_id)
+      else
+        return self.new(steam_id, game_name)
+    end
+  end
   
   # Creates a GameStats object and fetchs data from Steam Community for the
   # given user and game
@@ -33,7 +50,7 @@ class GameStats
   
   # Returns the achievements for this stats' user and game. If the achievements
   # haven't been parsed already, parsing is done now.
-  def get_achievements
+  def achievements
     if @achievements.nil?
       @achievements = Array.new
       @xml_data.elements["achievements"].elements.each("achievement") do |achievement|

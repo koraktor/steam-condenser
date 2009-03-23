@@ -11,8 +11,6 @@ require "rexml/document"
 require "exceptions/steam_condenser_exception"
 require "steam/community/game_stats"
 require "steam/community/steam_group"
-require "steam/community/tf2/tf2_stats"
-
 
 # The SteamId class represents a Steam Community profile (also called Steam ID)
 class SteamId
@@ -22,7 +20,8 @@ class SteamId
               :location, :member_since, :most_played_games, :privacy_state,
               :real_name, :state_message, :steam_rating, :steam_rating_text,
               :summary, :vac_banned, :visibility_state
-  
+
+  # Converts a SteamID as reported by game servers to a 64bit SteamID
   def self.convert_steam_id_to_community_id(steam_id)
     if steam_id == "STEAM_ID_LAN"
       raise SteamCondenserException.new("Cannot convert SteamID \"STEAM_ID_LAN\" to a community ID.")
@@ -34,7 +33,9 @@ class SteamId
     
     return steam_id[1] + 76561197960265728 + steam_id[2] * 2
   end
-  
+
+  # Creates a new SteamId object using a SteamID64 converted from a server
+  # SteamID
   def self.get_from_steam_id(steam_id)
     return self.new(self.convert_steam_id_to_community_id(steam_id))
   end
