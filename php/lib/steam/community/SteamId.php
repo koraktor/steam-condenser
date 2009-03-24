@@ -12,7 +12,6 @@
 
 require_once "steam/community/GameStats.php";
 require_once "steam/community/SteamGroup.php";
-require_once "steam/community/tf2/TF2Stats.php";
 
 /**
  * @package Steam Condenser (PHP)
@@ -115,10 +114,10 @@ class SteamId
     public function getGameStats($gameName)
     {
         if(empty($this->customUrl)) {
-            return new GameStats($this->steamId64, $gameName);
+            return GameStats::createGameStats($this->steamId64, $gameName);
         }
         else {
-            return new GameStats($this->customUrl, $gameName);
+            return GameStats::createGameStats($this->customUrl, $gameName);
         }
     }
 

@@ -3,6 +3,8 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2009, Sebastian Staudt
+ *
  * @author  Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
@@ -22,10 +24,18 @@ require_once "PHPUnit/Framework.php";
  */
 class SteamCommunityTests extends PHPUnit_Framework_TestCase
 {
-	public function testOnlineSteamId()
+	public function testSteamIdByCustomUrl()
 	{
 		$steamId = new SteamId("Koraktor");
 		print_r($steamId);
+                print_r($steamId->getGameStats("TF2"));
+	}
+
+        public function testSteamIdBySteamId64()
+	{
+		$steamId = new SteamId(76561197961384956);
+		print_r($steamId);
+                print_r($steamId->getGameStats("TF2"));
 	}
 }
 ?>

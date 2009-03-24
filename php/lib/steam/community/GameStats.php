@@ -10,7 +10,8 @@
  * @version $Id$
  */
 
-require_once "steam/community/GameStats.php";
+require_once "steam/community/GameAchievement.php";
+require_once "steam/community/TF2Stats.php";
 
 /**
  * The GameStats class represents the game statistics for a single user and a
@@ -26,13 +27,26 @@ class GameStats
 	 */
 	private $xmlData;
 
+        /**
+         *
+         */
+        public static function createGameStats($steamId, $gameName)
+        {
+            switch($gameName) {
+                case "TF2":
+                    return new TF2Stats($steamId, $gameName);
+                default:
+                    return new GameStats($steamId, $gameName);
+            }
+        }
+
 	/**
 	 * Creates a GameStats object and fetchs data from Steam Community for the
 	 * given user and game
 	 * @param $steamId
 	 * @param $gameName
 	 */
-	public function __construct($steamId, $gameName)
+	protected function __construct($steamId, $gameName)
 	{
 		$this->steamId = $steamId;
 
@@ -56,11 +70,13 @@ class GameStats
 	 */
 	public function getAchievements()
 	{
-		if(empty($this->achievements))
-		{
-			foreach($this->xmlData->achievements as $achievement)
-			{
+		if(empty($this->achievements)) {
+                        $this->achievementsDone = 0;
+			foreach($this->xmlData->achievements as $achievement) {
 				$this->achievements[] = new GameAchievement($this->steamId, $this->appId, $achievement->name, ($achievement->closed == 1));
+                                if($achievement->closed == 1) {
+                                    $this->achievementsDone += 1;
+                                }
 			}
 		}
 
