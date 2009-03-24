@@ -131,9 +131,9 @@ class SteamId
   # Returns a GameStats object for the given game for the owner of this SteamID
   def get_game_stats(game_name)
     if @custom_url.nil?
-      return GameStats.new(@steam_id64, game_name)
+      return GameStats.create_game_stats(@steam_id64, game_name)
     else
-      return GameStats.new(@custom_url, game_name)
+      return GameStats.create_game_stats(@custom_url, game_name)
     end
   end
   

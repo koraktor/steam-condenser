@@ -9,6 +9,10 @@ require "open-uri"
 require "rexml/document"
 
 require "steam/community/game_achievement"
+
+class GameStats
+end
+
 require "steam/community/tf2/tf2_stats"
 
 # The GameStats class represents the game statistics for a single user and a
@@ -17,8 +21,9 @@ class GameStats
   
   protected :initialize
 
-  attr_reader :accumulated_points, :app_id, :game_friendly_name, :game_name,
-              :hours_played, :privacy_state, :steam_id
+  attr_reader :accumulated_points, :achievements_done, :app_id,
+              :game_friendly_name, :game_name, :hours_played, :privacy_state,
+              :steam_id
 
   # Creates a GameStats (or one of its subclasses) object for the given user
   # depending on the game selected
@@ -55,6 +60,11 @@ class GameStats
       @achievements = Array.new
       @xml_data.elements["achievements"].elements.each("achievement") do |achievement|
         @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements["name"].text, (achievement.attributes["closed"].to_i == 1))
+      end
+
+      @achievements_done = 0
+      @achievements.each do |achievement|
+        @achievements_done += 1 if achievement.done?
       end
     end
     

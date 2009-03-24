@@ -9,7 +9,7 @@
 # and for a single user
 class GameAchievement
 
-  attr_reader :app_id, :done, :name, :steam_id
+  attr_reader :app_id, :name, :steam_id
   
   # Creates the achievement with the given name for the given user and game and
   # marks it as already done if set to true
@@ -18,6 +18,11 @@ class GameAchievement
     @done     = done
     @name     = name
     @steam_id = steam_id
+  end
+  
+  # Returns whether this achievement has been done by its owner
+  def done?
+    return done
   end
   
 end
