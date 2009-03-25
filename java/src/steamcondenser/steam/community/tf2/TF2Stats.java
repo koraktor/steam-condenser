@@ -2,7 +2,6 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
-
 package steamcondenser.steam.community.tf2;
 
 import java.io.IOException;
@@ -35,10 +34,24 @@ public class TF2Stats extends GameStats
      * @throws SAXException
      * @throws IOException
      */
-    public TF2Stats(String steamId)
-    	throws ParserConfigurationException, SAXException, IOException
+    public TF2Stats(String customUrl)
+            throws ParserConfigurationException, SAXException, IOException
     {
-	super(steamId, "TF2");
+        super(customUrl, "TF2");
+    }
+
+    /**
+     * Creates a new object holding Team Fortress 2 statistics for the given
+     * user
+     * @param steamId
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    public TF2Stats(long steamId64)
+            throws ParserConfigurationException, SAXException, IOException
+    {
+        super(steamId64, "TF2");
     }
 
     /**
@@ -48,16 +61,14 @@ public class TF2Stats extends GameStats
      */
     public ArrayList<TF2Class> getClassStats()
     {
-	if(this.classStats == null)
-	{
-	    this.classStats = new ArrayList<TF2Class>();
-	    NodeList classes = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("classData");
-	    for(int i = 0; i < classes.getLength(); i ++)
-	    {
-		this.classStats.add(TF2ClassFactory.getTF2Class((Element) classes.item(i))); 
-	    }
-	}
+        if(this.classStats == null) {
+            this.classStats = new ArrayList<TF2Class>();
+            NodeList classes = ((Element)this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("classData");
+            for(int i = 0; i < classes.getLength(); i ++) {
+                this.classStats.add(TF2ClassFactory.getTF2Class((Element)classes.item(i)));
+            }
+        }
 
-	return this.classStats;
+        return this.classStats;
     }
 }

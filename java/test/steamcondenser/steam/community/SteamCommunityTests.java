@@ -32,11 +32,31 @@ public class SteamCommunityTests
      * @throws SAXException
      */
     @Test
-    public void onlineSteamId()
+    public void steamIdByCustomUrl()
     	throws DOMException, IOException, ParseException,
     	       ParserConfigurationException, SAXException
     {
 	SteamId steamId = new SteamId("Koraktor");
+	System.out.println(steamId.getSteamId64());
+	TF2Stats tf2Stats = (TF2Stats) steamId.getGameStats("TF2");
+	System.out.println(tf2Stats.getClassStats().get(0).getClassName());
+    }
+
+        /**
+     * This test tries to aquire information from a online Steam ID. This test
+     * only passes if the parsing of the XML document works
+     * @throws DOMException
+     * @throws IOException
+     * @throws ParseException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    @Test
+    public void steamIdBySteamId64()
+    	throws DOMException, IOException, ParseException,
+    	       ParserConfigurationException, SAXException
+    {
+	SteamId steamId = new SteamId(76561197961384956L);
 	System.out.println(steamId.getSteamId64());
 	TF2Stats tf2Stats = (TF2Stats) steamId.getGameStats("TF2");
 	System.out.println(tf2Stats.getClassStats().get(0).getClassName());

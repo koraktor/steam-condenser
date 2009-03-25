@@ -2,7 +2,6 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
-
 package steamcondenser.steam.community;
 
 /**
@@ -14,38 +13,28 @@ package steamcondenser.steam.community;
 public class GameAchievement
 {
     private int appId;
-
     private boolean done;
-
     private String name;
 
-    private String steamId;
-
-    public GameAchievement(String steamId, int appId, String name, boolean done)
+    public GameAchievement(int appId, String name, boolean done)
     {
-	this.appId   = appId;
-	this.done    = done;
-	this.name    = name;
-	this.steamId = steamId;
+        this.appId = appId;
+        this.done = done;
+        this.name = name;
     }
 
     public int getAppId()
     {
-	return this.appId;
+        return this.appId;
     }
 
     public String getName()
     {
-	return this.name;
-    }
-
-    public String getSteamId()
-    {
-	return this.steamId;
+        return this.name;
     }
 
     public boolean isDone()
     {
-	return this.done;
+        return this.done;
     }
 }
