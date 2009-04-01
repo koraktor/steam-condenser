@@ -1,0 +1,42 @@
+\chapter{Programming conventions}
+
+\section{Error handling}
+Error handling in \steamcondenser\ is purely based on exceptions. At the moment
+most of the exceptions are thrown to the user. So you are able to handle them
+how you want to. This may change in future releases to provide easier error
+handling to the user while remaining flexible.\\
+All custom exceptions used are based on a base class called
+\lstinline{SteamCondenserException}.
+
+\section{Code style}
+Although featuring several programming languages and supporting as much
+Steam-related features as possible, \steamcondenser\ also tries to implement a
+programming interface both easy to understand and powerful to use. This also
+includes matching class and method names between different implementations
+assuring easy portable application code. But programming languages are different
+and they also feature their very own naming convetions and programming styles.
+Therefore it's more or less impossible to have the same names in all
+implementations.
+
+\subsection{Class names}
+The first and most important part of the isomorphic code base are class names.
+These are equal for all important \steamcondenser\ classes. For example the
+class \lstinline{SourceServer} is called like that in all implementations. But
+Helper classes may differ from this scheme. This is mostly because some
+programming languages like Ruby feature a lot of functionality already built
+into classes while it has to be build from scratch for less object-oriented
+languages like PHP. This results in new classes which don't exist in other
+implementations. A good example for this is \lstinline{InetAddress} in PHP.
+While a class with similar functionality exists in Java
+(\lstinline{InetAddress}) and Ruby (\lstinline{IPAddr}) it had to be
+programmed from scratch for PHP. This results in a class unique to the PHP
+implementation and is therefore not contained in other implementations.
+
+\subsection{Method names}
+Method names are usually given in camel-case (e.g.
+\lstinline{SourceServer.getPlayers()}). Ruby's naming conventions demand
+underscored method names (\lstinline{SourceServer.get_players()}). All of the
+classes of the Ruby implementation include a module
+\lstinline{CamelCaseMethods} which rewrites calls to camel-cased methods to
+their real counterparts with underscores. This further increases portability
+while coding can follow the Ruby code conventions.

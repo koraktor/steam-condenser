@@ -1,0 +1,4 @@
+\chapter{Known Issues}
+\begin{itemize}
+  \item The Java implementation \steamcondenser\ is currently not able to reliably handle really long RCON responses. For example the execution of \lstinline{cvarlist} may fail. You should therefore resign from using commands which return long responses (which have to be split over several packets).
+\end{itemize}

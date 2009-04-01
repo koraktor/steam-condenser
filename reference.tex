@@ -1,0 +1,27 @@
+\chapter{Reference}
+This chapter is all about programming with \steamcondenser\. It includes
+descriptions of all classes and their methods in this library and how they work
+together.
+
+\section{Server classes}
+The objects of the *Serve are the starting point for working with Steam Condensers query functionality.
+
+\subsection{GoldSrcServer / SourceServer}
+These classes work pretty similar for the user, but are somewhat different inside.
+
+\subsubsection{bool rconAuth(String password)}
+This method excepts a string containing the RCON password for this server. It returns \textbf{true} after successful authentification with the server.
+
+\note{This returns always \textbf{true} for GoldSrcServer objects as GoldSrc uses a pretty simple authentication mechanism. You have to catch RCONNoAuthException when using rconExec if you want to handle failed authentication attemps.}
+
+\subsubsection{String rconExec(String command)}
+\label{rconExec}
+This method excepts a string containing the command that should be executed on the server via RCON. The returned String is the response from the server just like it would be displayed in the server's console.
+
+\subsection{MasterServer}
+
+\subsubsection{GameServers[] getServers(int regionCode, String filters)}
+Returns an array of GameServer objects based on the region code and filters given. If there are no server present, updateServers() is called with the same parameters to receive information about available servers.
+
+\subsubsection{void updateServer(int regionCode, String filters)}
+Receives information about available servers from the master server using the given region code and filters.

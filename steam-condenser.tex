@@ -1,0 +1,147 @@
+\documentclass[draft=false, fontsize=12pt, oneside, paper=a4, DIV15,
+twocolumn=false, footsepline, headsepline, titlepage, parskip=half]{scrreprt}
+
+\usepackage{color}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\newcommand{\changefont}[3]{\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
+\usepackage[breaklinks]{hyperref}
+\usepackage{listings}
+
+\definecolor{lightblue}{rgb}{0.9, 0.9, 1.0}
+\definecolor{lightgreengray}{rgb}{0.8, 0.95, 0.8}
+
+\lstset{
+    basicstyle=\tt\small, breaklines=true, breakatwhitespace=true,
+    keywordstyle=\bfseries\color{blue},
+    stringstyle=\itshape, showstringspaces=false, numbers=left,
+    frame=single, backgroundcolor=\color{lightgreengray}}
+
+\newcommand{\steamcondenser}{\textbf{Steam Condenser}}
+\newcommand{\note}[1]{
+	\begin{center}
+	\colorbox{lightblue}{
+	\begin{minipage}{0.8\textwidth}
+	\rule[1ex]{\textwidth}{1mm}
+	\textbf{Note:}\\#1\\
+	\rule[1ex]{\textwidth}{1mm}
+	\end{minipage}
+	}
+	\end{center}
+}
+
+\begin{document}
+
+\changefont{cmss}{m}{n}
+\addtokomafont{subsection}{\changefont{cmss}{bx}{sl}}
+\addtokomafont{footnote}{\changefont{cmss}{m}{n}}
+
+\input{title}
+
+\tableofcontents
+
+\chapter{Introduction}
+\steamcondenser\ is a library to acquire information from Valve's online
+platform Steam. This includes querying game servers based on Valve's game
+engines GoldSrc and Source, querying the Steam master servers to find game
+servers and gathering user information from the Steam
+Community\footnotemark[1]. At the moment the library is implemented in Java,
+PHP and Ruby.
+
+\footnotetext[1]{The Steam Community feature is usable but incomplete as it's
+based on Valve's XML data which is still work-in-progress.}
+
+\chapter{Using \steamcondenser}
+
+\section{Server queries}
+
+\subsection{Querying game servers}
+To query game servers (both GoldSrc and Source engine based), you have to create
+a corresponding server object first (\lstinline{GoldSrcServer} or
+\lstinline{SourceServer}). After that you should use the method
+\lstinline{initialize()} to query basic information from the server. This
+includes measuring latency (Ping), receiving a challenge number and other
+querying other basic information like the name of the server, number of players
+and the map running at the moment. After that you may use the methods
+\lstinline{getPlayers()} and \lstinline{getRules()} to query the server for
+additional information about the players on the server and the server rules
+respectively.
+
+\begin{lstlisting}[caption=Querying a local Source game server listening on port
+	27016 in Ruby, language=Ruby]
+	server = SourceServer.new "127.0.0.1", 27016
+	server.initialize
+	server.get_players
+	server.get_rules
+	...
+\end{lstlisting}
+
+\subsection{Querying master servers}
+Querying Steam's master servers is done with the help of the
+\lstinline{MasterServer} object. As the master server protocol for both
+GoldSrc and Source is the same, only the address of the master servers
+differ. These are stored in class constants of the class
+\lstinline{MasterServer}, namingly \lstinline{GOLDSRC_MASTER_SERVER} for
+GoldSrc and \lstinline{SOURCE_MASTER_SERVER} for Source respectively.
+
+\begin{lstlisting}[caption=Querying the GoldSrc master server and getting a
+	random GoldSrc server in Java, language=Java]
+	MasterServer master = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
+	Vector<InetSocketAddress> server = master.getServers();
+	InetSocketAddress randomServer = servers.elementAt(randomizer.nextInt(servers.size()));
+	GoldSrcServer server = new GoldSrcServer(randomServer.getAddress(), randomServer.getPort());
+	...
+\end{lstlisting}
+
+\subsection{Remote controlling a game server (RCON)}
+Remote controlling a game server via RCON is done with
+the \lstinline{GameServer} objects \lstinline{GoldSrcServer} and
+\lstinline{SourceServer}. They feature two methods called
+\lstinline{rconAuth()} and \lstinline{rconExec()} used for authenticating with
+the server and executing commands on the server respectively.
+
+\begin{lstlisting}[caption=Executing the command \lstinline{status} on a local Source
+	server and displaying the output, language=PHP]
+	$server = new SourceServer("127.0.0.1");
+	$server->rconAuth("password");
+	try
+	{
+		echo $server->rconExec("status");
+	}
+	catch(RCONNoAuthException $e)
+	{
+		trigger_error("Could not authenticate with the game server.", E_USER_ERROR);
+	}
+\end{lstlisting}
+
+RCON communication is completely different in GoldSrc and Source. While GoldSrc
+uses the same UDP communication used for queries, Source uses a TCP channel
+for RCON requests and responses. Because of this GoldSrc RCON always sends the
+password with the command, while for Source a RCON client authenticates once
+and is then allowed to execute commands. Therefore authenticating with a wrong
+password to a Source server will lead to a \lstinline{RCONNoAuthException}. For
+GoldSrc you will not get a \lstinline{RCONNoAuthException} until you try to 
+execute a command on the server. This is because GoldSrc RCON always sends the
+password with the command.
+
+\section{Using Steam Community features}
+A second feature set of \steamcondenser\ can be used to obtain data directly
+from the Steam Community. This is done via a XML interface provided by Valve. While
+this features is still in progress by Valve, the \steamcondenser\ feature is
+also unfinished and very likely to change in future releases.
+
+\subsection{Steam IDs}
+The user profiles in the Steam Community are called Steam IDs. The
+\steamcondenser\ class representing this profiles is called \lstinline{SteamId}
+and is the central class of the Steam Community features, which can be used to
+get all of the other information about groups and so on.
+
+\include{reference}
+\include{programming-conventions}
+\include{known-issues}
+\include{changelog}
+\include{license}
+
+\lstlistoflistings
+
+\end{document}
