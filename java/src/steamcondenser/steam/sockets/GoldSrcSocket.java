@@ -93,10 +93,15 @@ public class GoldSrcSocket extends QuerySocket
                 Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 
                 // Receiving the next packet
-                try {
-                    bytesRead = this.receivePacket();
+                if(splitPackets.size() < packetCount) {
+                    try {
+                        bytesRead = this.receivePacket();
+                    }
+                    catch(TimeoutException e) {
+                        bytesRead = 0;
+                    }
                 }
-                catch(TimeoutException e) {
+                else {
                     bytesRead = 0;
                 }
             } while(bytesRead > 0 && this.packetIsSplit());

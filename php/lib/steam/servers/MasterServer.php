@@ -47,7 +47,7 @@ class MasterServer
 	}
 
 
-	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "", $raiseTimeout = true)
+	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
 	{
 		$finished = false;
 		$portNumber = 0;
@@ -75,12 +75,7 @@ class MasterServer
 					}
 				}
 			}
-			catch(TimeoutException $e) {
-				if($raiseTimeout) {
-					throw $e;
-				}
-				$finished = true;
-			}
+			catch(TimeoutException $e) {}
 		}
 		while(!$finished);
 

@@ -66,10 +66,15 @@ public class SourceSocket extends QuerySocket
                 splitPackets.set(packetNumber - 1, splitData);
 
                 // Receiving the next packet
-                try {
-                    bytesRead = this.receivePacket();
+                if(splitPackets.size() < packetCount) {
+                    try {
+                        bytesRead = this.receivePacket();
+                    }
+                    catch(TimeoutException e) {
+                        bytesRead = 0;
+                    }
                 }
-                catch(TimeoutException e) {
+                else {
                     bytesRead = 0;
                 }
 

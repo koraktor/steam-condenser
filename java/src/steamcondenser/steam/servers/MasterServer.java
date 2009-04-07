@@ -48,16 +48,10 @@ public class MasterServer
     public Vector<InetSocketAddress> getServers()
             throws IOException, SteamCondenserException, TimeoutException
     {
-        return this.getServers(MasterServer.REGION_ALL, "", true);
+        return this.getServers(MasterServer.REGION_ALL, "");
     }
 
     public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
-            throws IOException, SteamCondenserException, TimeoutException
-    {
-        return this.getServers(regionCode, filter, true);
-    }
-
-    public Vector<InetSocketAddress> getServers(byte regionCode, String filter, boolean raiseTimeout)
             throws IOException, SteamCondenserException, TimeoutException
     {
         boolean finished = false;
@@ -83,12 +77,7 @@ public class MasterServer
                     }
                 }
             }
-            catch(TimeoutException e) {
-                if(raiseTimeout) {
-                    throw e;
-                }
-                finished = true;
-            }
+            catch(TimeoutException e) {}
         } while( ! finished);
 
         return serverArray;
