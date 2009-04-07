@@ -20,7 +20,7 @@ class SteamPlayer
 
   # Returns a String representation of this player
   def to_s
-    return "#{@id} \"{@name}\", Score: {@score}, Time: {@connect_time}"
+    return "#{@id} \"#{@name}\", Score: #{@score}, Time: #{@connect_time}"
   end
   
 end

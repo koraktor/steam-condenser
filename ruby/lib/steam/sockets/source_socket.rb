@@ -37,14 +37,18 @@ class SourceSocket < SteamSocket
         end
 
         # Caching of split packet data
-        split_packets[packet_number] = @buffer.get
+        split_packets[packet_number - 1] = @buffer.get
         
         warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
 
         # Receiving the next packet
-        begin
-          bytes_read = self.receive_packet
-        rescue TimeoutException
+        if split_packets.size < packet_count
+          begin
+            bytes_read = self.receive_packet
+          rescue TimeoutException
+            bytes_read = 0
+          end
+        else
           bytes_read = 0
         end
       end while bytes_read > 0 && @buffer.get_long == -2
