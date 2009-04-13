@@ -5,15 +5,6 @@
             Build file for Steam Condenser
     </description>
 
-    <typedef resource="com/googlecode/svntask/svntask.xml">
-        <classpath>
-            <fileset dir="${ant.home}/lib">
-                <include name="svnkit.jar" />
-                <include name="svntask.jar" />
-            </fileset>
-        </classpath>
-    </typedef>
-
     <property name="src.path" location="src" />
     <property name="test.path" location="test" />
     <property name="build.path" location="build" />
@@ -32,29 +23,29 @@
         <tstamp />
     </target>
 
-    <target name="compile" depends="init" description="compile source">
+    <target name="compile" depends="init" description="Compile sources">
         <mkdir dir="${build.path}" />
         <javac srcdir="${src.path}" destdir="${build.path}" />
     </target>
 
-    <target name="compile-tests" depends="compile" description="compile tests">
+    <target name="compile-tests" depends="compile" description="Compile test classes">
         <mkdir dir="${test-build.path}" />
         <javac srcdir="${test.path}" destdir="${test-build.path}">
             <classpath refid="classpath.test" />
         </javac>
     </target>
 
-    <target name="dist" depends="compile, doc, svninfo" description="generate jar file">
+    <target name="dist" depends="compile, doc, vcs-info" description="Generate JAR file">
         <mkdir dir="${dist.path}" />
         <copy todir="${build.path}/${doc.dir}">
             <fileset dir="${doc.path}" />
         </copy>
 
-        <condition property="jar.suffix" value="${release.version}" else="r${revision}">
+        <condition property="jar.suffix" value="-${release.version}" else="-${vcs.version}">
             <isset property="release.version" />
         </condition>
 
-        <jar jarfile="${dist.path}/steam-condenser-${jar.suffix}.jar">
+        <jar jarfile="${dist.path}/steam-condenser${jar.suffix}.jar">
             <fileset dir="${build.path}" />
             <fileset file="LICENSE" />
             <fileset file="README" />
@@ -73,12 +64,6 @@
         <delete dir="${test-build.path}" />
     </target>
 
-    <target name="svninfo" description="Generate SVN information">
-        <svn>
-            <info path="${basedir}" revisionProperty="revision" />
-        </svn>
-    </target>
-
     <target name="test" depends="compile-tests" description="Run tests">
         <junit fork="yes" dir="test">
             <classpath refid="classpath.test" />
@@ -86,6 +71,38 @@
             <test name="steamcondenser.RCONTests" />
             <formatter type="plain" usefile="false" />
         </junit>
+    </target>
+
+    <target name="vcs-info" depends="git-info, svn-info" description="Tries to gather information from versioning systems like Git and Subversion">
+        <delete file="svn-info" />
+    </target>
+
+    <target name="svn-info" if="vcs.svn.ok" depends="svn-info-xml" description="Reads revision from Subversion information">
+        <xmlproperty file="svn-info" collapseattributes="true" />
+        <property name="vcs.version" value="r${info.entry.revision}" />
+    </target>
+
+    <target name="svn-info-xml" description="Tries to gather version information from Subversion">
+        <exec executable="svn" failifexecutionfails="false" output="svn-info" resultproperty="svn-result">
+            <arg value="info" />
+            <arg value="--xml" />
+        </exec>
+
+        <condition property="vcs.svn.ok" value="true">
+            <equals arg1="${svn-result}" arg2="0" />
+        </condition>
+    </target>
+
+    <target name="git-info" description="Tries to gather version information from Git">
+        <exec executable="git" failifexecutionfails="false" outputproperty="git-commit" resultproperty="git-result">
+            <arg value="log" />
+            <arg value="-1" />
+            <arg value="--pretty=format:%h" />
+        </exec>
+
+        <condition property="vcs.version" value="${git-commit}">
+            <equals arg1="${git-result}" arg2="0" />
+        </condition>
     </target>
 
 </project>
