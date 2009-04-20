@@ -5,50 +5,30 @@
 #
 # $Id$
 
-require "rake/rdoctask"
-require "rake/gempackagetask"
-require "rubygems"
-
-# Setting the default task
-desc "Default: build gem"
-task :default => :gem
-
-multitask :all => [:rdoc, :gem]
+require 'rake/rdoctask'
+require 'rake/gempackagetask'
+require 'rubygems'
+require 'jeweler'
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
-# Set language to English
-ENV["LANG"] = "en"
-
-# Parsing info from svn
-svn_info = Hash[*`svn info`.split("\n").map {|line| line.split(": ")}.flatten]
-
-rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://code.google.com/p/steam-condenser/source/browse/trunk/ruby/%s?r=#{svn_info["Last Changed Rev"]}"]
+rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 
 # Gem specification
-spec = Gem::Specification.new do |s|
+Jeweler::Tasks.new do |s|
   s.name = "steam-condenser"
-  s.version = svn_info["Last Changed Rev"]
-  s.date = svn_info["Last Changed Date"]
- 
-  s.summary = "A multi-language library for querying Source, GoldSrc servers and Steam master servers"
- 
-  s.authors = ["Sebastian Staudt"]
-  s.email = "koraktor@gmail.com"
-  s.homepage = "http://code.google.com/p/steam-condenser/"
+  s.date = Time.now
+  s.description = s.summary = 'A multi-language library for querying Source, GoldSrc servers and Steam master servers'
+  s.authors = ['Sebastian Staudt']
+  s.email = 'koraktor@gmail.com'
+  s.homepage = 'http://github.com/koraktor/steam-condenser'
   
   s.has_rdoc = true
   s.rdoc_options = rdoc_options
   s.extra_rdoc_files = %w(README Rakefile LICENSE)
   
   s.files = %w(README Rakefile LICENSE) + src_files + test_files
-end
-
-# Create a rake task +:gem+ to build the gem using the specification
-desc "Building gem"
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_tar = true
 end
 
 # Create a rake task +:rdoc+ to build the documentation
