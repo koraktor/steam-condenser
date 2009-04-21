@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
+# Copyright (c) 2008-2009, Sebastian Staudt
 #
 # $Id$
 
@@ -20,11 +20,16 @@ class S2A_PLAYER_Packet < SteamPacket
     super SteamPacket::S2A_PLAYER_HEADER, content_data
     
     @player_array = Array.new @content_data.get_byte
+
+    #p @content_data
     
     while @content_data.remaining > 0
       player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_long, @content_data.get_float
+      p player_data
       @player_array[player_data[0]] = SteamPlayer.new *player_data[0..3]
     end
+
+    @player_array.compact!
   end
   
   # Returns the array containing SteamPlayer objects for all players on the
