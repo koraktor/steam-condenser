@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 require "open-uri"
 require "rexml/document"
@@ -49,7 +47,7 @@ class SteamId
     else
       @custom_url = id
     end
-    
+
     begin
       self.fetch_data if fetch
     rescue REXML::ParseException
@@ -122,6 +120,18 @@ class SteamId
       end
     end
   end
+
+  def fetch_games
+    require 'rubygems'
+    require 'Hpricot'
+
+    games_data = Hpricot(open('/Users/koraktor/steamcommunity_koraktor_games.html').read).at('div#mainContents')
+    games_data.traverse_some_element('h4') do |game|
+      @games << game.inner_html
+    end
+
+    return true
+  end
   
   # Returns the URL of the full version of this user's avatar
   def full_avatar_url
@@ -135,6 +145,11 @@ class SteamId
     else
       return GameStats.create_game_stats(@custom_url, game_name)
     end
+  end
+
+  def get_games
+    fetch_games if @games.nil?
+    @games
   end
   
   # Returns the URL of the icon version of this user's avatar
