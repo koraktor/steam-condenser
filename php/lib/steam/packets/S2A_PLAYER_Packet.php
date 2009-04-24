@@ -43,10 +43,8 @@ class S2A_PLAYER_Packet extends SteamPacket
         while($this->contentData->remaining() > 0)
         {
             $playerData = array($this->contentData->getByte(), $this->contentData->getString(), $this->contentData->getLong(), $this->contentData->getFloat());
-            $this->playerArray[$playerData[0]] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);
+            $this->playerArray[] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);
         }
-
-        $this->playerArray = array_filter($this->playerArray, null);
     }
 
     /**

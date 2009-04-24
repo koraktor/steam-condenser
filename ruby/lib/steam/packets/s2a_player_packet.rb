@@ -18,18 +18,15 @@ class S2A_PLAYER_Packet < SteamPacket
     end
     
     super SteamPacket::S2A_PLAYER_HEADER, content_data
-    
-    @player_array = Array.new @content_data.get_byte
 
-    #p @content_data
-    
+    # Ignore player count
+    @content_data.get_byte
+    @player_array = []
+
     while @content_data.remaining > 0
       player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_long, @content_data.get_float
-      p player_data
-      @player_array[player_data[0]] = SteamPlayer.new *player_data[0..3]
+      @player_array << SteamPlayer.new(*player_data[0..3])
     end
-
-    @player_array.compact!
   end
   
   # Returns the array containing SteamPlayer objects for all players on the
