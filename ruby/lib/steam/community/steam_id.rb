@@ -25,7 +25,7 @@ class SteamId
   def self.convert_steam_id_to_community_id(steam_id)
     if steam_id == "STEAM_ID_LAN"
       raise SteamCondenserException.new("Cannot convert SteamID \"STEAM_ID_LAN\" to a community ID.")
-    elsif steam_id.match(/STEAM_[0-1]:[0-1]:[0-9]*/).nil?
+    elsif steam_id.match(/STEAM_[0-1]:[0-1]:[0-9]+/).nil?
       raise SteamCondenserException.new("SteamID \"#{steam_id}\" doesn't have the correct format.")
     end
     

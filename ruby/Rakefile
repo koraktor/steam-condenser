@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
@@ -12,8 +10,6 @@ require 'jeweler'
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
-
-rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 
 # Gem specification
 Jeweler::Tasks.new do |s|
@@ -24,21 +20,17 @@ Jeweler::Tasks.new do |s|
   s.email = 'koraktor@gmail.com'
   s.homepage = 'http://github.com/koraktor/steam-condenser'
   
-  s.has_rdoc = true
-  s.rdoc_options = rdoc_options
-  s.extra_rdoc_files = %w(README Rakefile LICENSE)
-  
-  s.files = %w(README Rakefile LICENSE) + src_files + test_files
+  s.files = %w(README.md Rakefile LICENSE) + src_files + test_files
 end
 
 # Create a rake task +:rdoc+ to build the documentation
 desc "Building docs"
-Rake::RDocTask.new(:rdoc) do |rdoc|
+Rake::RDocTask.new do |rdoc|
   rdoc.title = "Steam Condenser documentation"
-  rdoc.rdoc_files.include ["lib/**/*.rb", "test/**/*.rb", "LICENSE", "README"]
-  rdoc.main = "README"
-  rdoc.rdoc_dir = "doc"
-  rdoc.options = rdoc_options
+  rdoc.rdoc_files.include ["lib/**/*.rb", "test/**/*.rb", "LICENSE", "README.md"]
+  rdoc.main = "README.md"
+  rdoc.rdoc_dir = "rdoc"
+  rdoc.options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 end
 
 # Task for cleaning documentation and package directories
