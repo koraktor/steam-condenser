@@ -181,24 +181,33 @@ public class SteamId
             this.summary = profile.getElementsByTagName("summary").item(0).getTextContent();
 
             this.mostPlayedGames = new HashMap<String, Float>();
-            NodeList mostPlayedGamesNode = ((Element) profile.getElementsByTagName("mostPlayedGames").item(0)).getElementsByTagName("mostPlayedGame");
-            for(int i = 0; i < mostPlayedGamesNode.getLength(); i ++) {
-                Element mostPlayedGame = (Element) mostPlayedGamesNode.item(i);
-                this.mostPlayedGames.put(mostPlayedGame.getElementsByTagName("gameName").item(0).getTextContent(), Float.parseFloat(mostPlayedGame.getElementsByTagName("hoursPlayed").item(0).getTextContent()));
+            Element mostPlayedGamesNode = (Element) profile.getElementsByTagName("mostPlayedGames").item(0);
+            if(mostPlayedGamesNode != null) {
+                NodeList mostPlayedGameList = mostPlayedGamesNode.getElementsByTagName("mostPlayedGame");
+                for(int i = 0; i < mostPlayedGameList.getLength(); i ++) {
+                    Element mostPlayedGame = (Element) mostPlayedGameList.item(i);
+                    this.mostPlayedGames.put(mostPlayedGame.getElementsByTagName("gameName").item(0).getTextContent(), Float.parseFloat(mostPlayedGame.getElementsByTagName("hoursPlayed").item(0).getTextContent()));
+                }
             }
 
-            NodeList friendsNode = ((Element) profile.getElementsByTagName("friends").item(0)).getElementsByTagName("friend");
-            this.friends = new SteamId[friendsNode.getLength()];
-            for(int i = 0; i < friendsNode.getLength(); i ++) {
-                Element friend = (Element) friendsNode.item(i);
-                this.friends[i] = new SteamId(friend.getElementsByTagName("steamID64").item(0).getTextContent(), false);
+            Element friendsNode = (Element) profile.getElementsByTagName("friends").item(0);
+            if(friendsNode != null) {
+                NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
+                this.friends = new SteamId[friendsNodeList.getLength()];
+                for(int i = 0; i < friendsNodeList.getLength(); i ++) {
+                    Element friend = (Element) friendsNodeList.item(i);
+                    this.friends[i] = new SteamId(friend.getElementsByTagName("steamID64").item(0).getTextContent(), false);
+                }
             }
 
-            NodeList groupsNode = ((Element) profile.getElementsByTagName("groups").item(0)).getElementsByTagName("group");
-            this.groups = new SteamGroup[groupsNode.getLength()];
-            for(int i = 0; i < groupsNode.getLength(); i ++) {
-                Element group = (Element) groupsNode.item(i);
-                this.groups[i] = new SteamGroup(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()));
+            Element groupsNode = (Element) profile.getElementsByTagName("groups").item(0);
+            if(groupsNode != null) {
+                NodeList groupsNodeList = ((Element) groupsNode).getElementsByTagName("group");
+                this.groups = new SteamGroup[groupsNodeList.getLength()];
+                for(int i = 0; i < groupsNodeList.getLength(); i ++) {
+                    Element group = (Element) groupsNodeList.item(i);
+                    this.groups[i] = new SteamGroup(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()));
+                }
             }
         }
     }
