@@ -1,0 +1,37 @@
+---
+layout:      code-sample
+name:        rcon
+description: Executing the command <code>status</code> on a local Source server
+             and displaying the output
+languages:
+  java: |
+    InetAddress serverIp = new InetAddress("127.0.0.1");
+    SourceServer server = new SourceServer(serverIp);
+    try {
+      server.rconAuth("passw0rd");
+      System.out.println(server.rconExec("status"));
+    }
+    catch(RCONNoAuthException e) {
+      System.err.println("Could not authenticate with the game server.");
+    }
+  php:  |
+    $serverIp = new InetAddress('127.0.0.1');
+    $server = new SourceServer($serverIp);
+    try {
+      $server->rconAuth('passw0rd');
+      echo $server->rconExec('status'));
+    }
+    catch(RCONNoAuthException $e) {
+      trigger_error('Could not authenticate with the game server.',
+        E_USER_ERROR);
+    }
+  ruby: |
+    server_ip = IPAddr.new('127.0.0.1')
+    server = SourceServer.new(server_ip)
+    begin
+      server.rcon_auth('passw0rd')
+      puts server.rcon_exec('status')
+    rescue RCONNoAuthException
+      warn 'Could not authenticate with the game server.'
+    end
+---

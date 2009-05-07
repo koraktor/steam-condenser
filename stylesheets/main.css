@@ -108,3 +108,50 @@ li li {
   list-style-type: disc;
   margin-left:     -20px;
 }
+
+div.code-sample {
+  margin: 10px 0px;
+}
+
+div.code-sample a {
+  background: #215373;
+  color:      #999999;
+  cursor:     pointer;
+  font-size:  8pt;
+  margin:     0px;
+  padding:    3px;
+}
+
+div.code-sample a:hover {
+  background: #505050;
+  color:      #bdcbd5;
+}
+
+div.code-sample a.language-selected {
+  background:   #eeeeff;
+  border-left:  1px solid #215373;
+  border-right: 1px solid #215373;
+  border-top:   1px solid #215373;
+  color:        #215373;
+}
+
+div.code-description {
+  background:   #215373;
+  color:        #eeeeff;
+  font-size:    10pt;
+  padding-left: 3px;
+  width:        599px;
+}
+
+div.highlight {
+  background: #eeeeff;
+  border:     1px solid #215373;
+  font-size:  10pt;
+  overflow:   auto;
+  padding:    5px;
+  width:      590px;
+}
+
+div.highlight pre {
+  margin: 0px;
+}

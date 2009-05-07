@@ -1,0 +1,28 @@
+---
+layout:      code-sample
+name:        master-query
+description: Querying the GoldSrc master server and getting a random GoldSrc
+             server
+languages:
+  java: |
+    Random randomizer = new Random();
+    MasterServer master = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);   
+    Vector<InetSocketAddress> servers = master.getServers();
+    InetSocketAddress randomServer = servers.elementAt(
+      randomizer.nextInt(servers.size())
+    );
+    GoldSrcServer server = new GoldSrcServer(randomServer.getAddress(),
+      randomServer.getPort()
+    );
+  php:  |
+    $master = new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
+    $servers = $master->getServers();
+    $randomServer = $servers[array_rand($servers)];
+    $server = new GoldSrcServer(new InetAddress($randomServer[0],
+      $randomServer[1]));
+  ruby: |
+    master = MasterServer.new(*MasterServer::GOLDSRC_MASTER_SERVER)
+    servers = master.get_servers
+    random_server = servers[rand(servers.length)]
+    server = GoldSrcServer.new(*random_server)
+---

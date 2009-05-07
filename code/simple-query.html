@@ -1,0 +1,22 @@
+---
+layout:      code-sample
+name:        simple-query
+description: Querying a GoldSrc game server listening on IP 192.168.0.114 and
+             port 27016
+languages:
+  java: |
+    InetAddress serverIp = new InetAddress("192.168.0.114");
+    GoldSrcServer server = new GoldSrcServer(serverIp, 27016);
+    server.initialize();
+    System.out.println(server.getPlayers());
+  php:  |
+    $serverIp = new InetAddress("192.168.0.114");
+    $server = new GoldSrcServer($serverIp, 27016);
+    $server->initialize();
+    echo $server->getPlayers();
+  ruby: |
+    server_ip = IPAddr.new("192.168.0.114")
+    server = GoldSrcServer.new(server_ip, 27016)
+    server.init
+    puts server.get_players
+---
