@@ -1,0 +1,3 @@
+[submodule "javascripts/scriptaculous"]
+	path = javascripts/scriptaculous
+	url = git://github.com/madrobby/scriptaculous.git
