@@ -39,6 +39,8 @@ progress.
 - If you have a problem with using Steam Condenser or a question, please have
   a look at the [Steam Condenser group][4] for a related topic. If you can't
   find one, feel free to create your own.
+
+{% include google_adsense %}
   
 ## License
 Steam Condenser is free software; you can redistribute it and/or modify it
