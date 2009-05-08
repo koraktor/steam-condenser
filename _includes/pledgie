@@ -1,5 +1,7 @@
-<a href="http://www.pledgie.com/campaigns/3463">
-  <img alt="Click here to lend your support to: steam-condenser and make a
-            donation at www.pledgie.com !"
-       src="http://pledgie.com/campaigns/3463.png?skin_name=chrome" />
-</a>
+<div id="pledgie">
+  <a href="http://www.pledgie.com/campaigns/3463">
+    <img alt="Click here to lend your support to: steam-condenser and make a
+              donation at www.pledgie.com !"
+         src="http://pledgie.com/campaigns/3463.png?skin_name=chrome" />
+  </a>
+</div>
