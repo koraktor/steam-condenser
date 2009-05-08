@@ -86,27 +86,12 @@ div#pledgie {
   right:    50px;
 }
 
-div.text {
-  text-align: justify;
-}
-
-h1 {
-  color:      #215373;
-  margin-top: 0px;
-}
-
-h2 {
-  border-bottom: 2px solid #215373;
-  color:         #505070;
-}
-
-ul {
-  list-style-type: square;
-}
-
-li li {
-  list-style-type: disc;
-  margin-left:     -20px;
+div.code-description {
+  background:   #215373;
+  color:        #eeeeff;
+  font-size:    10pt;
+  padding-left: 3px;
+  width:        599px;
 }
 
 div.code-sample {
@@ -135,14 +120,6 @@ div.code-sample a.language-selected {
   color:        #215373;
 }
 
-div.code-description {
-  background:   #215373;
-  color:        #eeeeff;
-  font-size:    10pt;
-  padding-left: 3px;
-  width:        599px;
-}
-
 div.highlight {
   background: #eeeeff;
   border:     1px solid #215373;
@@ -154,4 +131,27 @@ div.highlight {
 
 div.highlight pre {
   margin: 0px;
+}
+
+div.text {
+  text-align: justify;
+}
+
+h1 {
+  color:      #215373;
+  margin-top: 0px;
+}
+
+h2 {
+  border-bottom: 2px solid #215373;
+  color:         #505070;
+}
+
+ul {
+  list-style-type: square;
+}
+
+li li {
+  list-style-type: disc;
+  margin-left:     -20px;
 }
