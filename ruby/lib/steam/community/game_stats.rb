@@ -11,6 +11,7 @@ require "steam/community/game_achievement"
 class GameStats
 end
 
+require "steam/community/dods/dods_stats"
 require "steam/community/tf2/tf2_stats"
 
 # The GameStats class represents the game statistics for a single user and a
@@ -26,10 +27,12 @@ class GameStats
   # depending on the game selected
   def self.create_game_stats(steam_id, game_name)
     case game_name
+      when "DoD:S":
+        DoDSStats.new(steam_id)
       when "TF2":
-        return TF2Stats.new(steam_id)
+        TF2Stats.new(steam_id)
       else
-        return self.new(steam_id, game_name)
+        new(steam_id, game_name)
     end
   end
   
