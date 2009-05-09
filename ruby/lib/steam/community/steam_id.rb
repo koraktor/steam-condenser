@@ -54,15 +54,20 @@ class SteamId
       raise SteamCondenserException.new("SteamID could not be loaded.")
     end
   end
+
+  # Returns the base URL for this SteamID
+  def base_url
+    if @custom_url.nil?
+      "http://steamcommunity.com/profiles/#{@steam_id64}"
+    else
+      "http://steamcommunity.com/id/#{@custom_url}"
+    end
+  end
   
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
   def fetch_data
-    if @custom_url.nil?
-      url = "http://steamcommunity.com/profiles/#{@steam_id64}?xml=1"
-    else
-      url = "http://steamcommunity.com/id/#{@custom_url}?xml=1"
-    end
+    url = base_url << '?xml=1'
 
     profile_url = open(url, {:proxy => true})
     if profile_url.base_uri.to_s != url
