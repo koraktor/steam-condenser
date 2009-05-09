@@ -157,12 +157,18 @@ class SteamId
   end
   
   # Returns a GameStats object for the given game for the owner of this SteamID
-  def get_game_stats(game_name)
-    if @custom_url.nil?
-      return GameStats.create_game_stats(@steam_id64, game_name)
-    else
-      return GameStats.create_game_stats(@custom_url, game_name)
+  def game_stats(game_name)
+    if games.has_value? game_name
+      friendly_name = game_name
+    elsif games.has_key? game_name
+      friendly_name = games[game_name]
     end
+
+    unless friendly_name
+      raise ArgumentError.new("Stats for game #{game_name} do not exist.")
+    end
+
+    GameStats.create_game_stats(@custom_url || @steam_id64, friendly_name)
   end
 
   # Returns a Hash with the games this user owns. The keys are the games' names
