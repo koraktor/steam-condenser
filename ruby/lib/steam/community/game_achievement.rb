@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 # The GameAchievement class represents a specific achievement for a single game
 # and for a single user
@@ -22,7 +20,7 @@ class GameAchievement
   
   # Returns whether this achievement has been done by its owner
   def done?
-    return done
+    @done
   end
   
 end
