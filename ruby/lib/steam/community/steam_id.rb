@@ -126,13 +126,26 @@ class SteamId
     end
   end
 
+  # Fetches the games this user owns
   def fetch_games
     require 'rubygems'
     require 'Hpricot'
 
-    games_data = Hpricot(open('/Users/koraktor/steamcommunity_koraktor_games.html').read).at('div#mainContents')
+    url = base_url << '/games'
+
+    @games = {}
+    games_data = Hpricot(open(url).read).at('div#mainContents')
+
     games_data.traverse_some_element('h4') do |game|
-      @games << game.inner_html
+      stats = game.next_sibling
+      if stats.name == 'br'
+        @games[game.inner_html] = false
+      else
+        stats = stats.next_sibling if stats.name == 'h5'
+        stats = stats.siblings_at(2)[0]
+        friendly_name = stats['href'].match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
+        @games[game.inner_html] = friendly_name
+      end
     end
 
     return true
@@ -152,7 +165,10 @@ class SteamId
     end
   end
 
-  def get_games
+  # Returns a Hash with the games this user owns. The keys are the games' names
+  # and the values are the "friendly names" used for stats or +false+ if the
+  # games has no stats.
+  def games
     fetch_games if @games.nil?
     @games
   end
