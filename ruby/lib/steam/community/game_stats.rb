@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 require "open-uri"
 require "rexml/document"
@@ -21,9 +19,8 @@ class GameStats
   
   protected :initialize
 
-  attr_reader :accumulated_points, :achievements_done, :app_id,
-              :game_friendly_name, :game_name, :hours_played, :privacy_state,
-              :steam_id
+  attr_reader :app_id, :game_friendly_name, :game_name, :hours_played,
+              :privacy_state, :steam_id
 
   # Creates a GameStats (or one of its subclasses) object for the given user
   # depending on the game selected
@@ -45,7 +42,6 @@ class GameStats
     
     @privacy_state = @xml_data.elements["privacyState"].text
     if @privacy_state == "public"
-      @accumulated_points = @xml_data.elements["stats"].elements["accumulatedPoints"].text.to_i
       @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([0-9]+)")[1]
       @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
       @game_name          = @xml_data.elements["game"].elements["gameName"].text
