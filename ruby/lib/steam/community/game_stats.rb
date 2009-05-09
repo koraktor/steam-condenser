@@ -58,13 +58,23 @@ class GameStats
         @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements["name"].text, (achievement.attributes["closed"].to_i == 1))
       end
 
-      @achievements_done = 0
-      @achievements.each do |achievement|
-        @achievements_done += 1 if achievement.done?
-      end
+      @achievements_done = @achievements.reject{ |a| !a.done? }.size
     end
     
     return @achievements
+  end
+  
+  # Returns the count of achievements done by this player. If achievements
+  # haven't been parsed yet, parsing is done now.
+  def achievements_done
+    achievements if @achievements_done.nil?
+    @achievements_done
+  end
+
+  # Returns a float value representing the percentage of achievements done by
+  # this player.
+  def achievements_percentage
+    achievements_done.to_f / @achievements.size
   end
   
 end
