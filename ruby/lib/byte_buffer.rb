@@ -75,7 +75,7 @@ class ByteBuffer
   end
   
   def get_float
-    return self.get_long.to_f
+    return self.get(4).unpack("e")[0]
   end
   
   def get_long
