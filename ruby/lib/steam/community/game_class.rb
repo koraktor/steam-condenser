@@ -5,7 +5,7 @@
 
 require 'abstract_class'
 
-# Super class for classes representing game statistics
+# Super class for classes representing player classes
 class GameClass
 
   include AbstractClass
