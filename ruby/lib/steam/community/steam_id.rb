@@ -142,9 +142,13 @@ class SteamId
         @games[game.inner_html] = false
       else
         stats = stats.next_sibling if stats.name == 'h5'
-        stats = stats.siblings_at(2)[0]
-        friendly_name = stats['href'].match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
-        @games[game.inner_html] = friendly_name
+        if stats.name == 'br'
+          @games[game.inner_html] = false
+        else
+          stats = stats.siblings_at(2)[0]
+          friendly_name = stats['href'].match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
+          @games[game.inner_html] = friendly_name
+        end
       end
     end
 
