@@ -1,0 +1,146 @@
+# This code is free software; you can redistribute it and/or modify it under the
+# terms of the new BSD License.
+#
+# Copyright (c) 2009, Sebastian Staudt
+
+require 'steam/community/game_stats'
+require 'steam/community/l4d/l4d_explosive'
+require 'steam/community/l4d/l4d_map'
+require 'steam/community/l4d/l4d_weapon'
+
+class L4DStats < GameStats
+
+  attr_reader :xml_data
+
+  # Creates a L4DStats object by calling the super constructor with the game
+  # name "L4D"
+  def initialize(steam_id)
+    super steam_id, 'L4D'
+  end
+
+  # Returns a Hash of favorites for this user like weapons and character.
+  # If the favorites haven't been parsed already, parsing is done now.
+  def favorites
+    if @favorites.nil?
+      @favorites = {}
+      @favorites['campaign']                 = @xml_data.elements['stats/favorites/campaign'].text
+      @favorites['campaign_percentage']      = @xml_data.elements['stats/favorites/campaignpct'].text.to_i
+      @favorites['character']                = @xml_data.elements['stats/favorites/character'].text
+      @favorites['character_percentage']     = @xml_data.elements['stats/favorites/characterpct'].text.to_i
+      @favorites['level1_weapon']            = @xml_data.elements['stats/favorites/weapon1'].text
+      @favorites['level1_weapon_percentage'] = @xml_data.elements['stats/favorites/weapon1pct'].text.to_i
+      @favorites['level2_weapon']            = @xml_data.elements['stats/favorites/weapon2'].text
+      @favorites['level2_weapon_percentage'] = @xml_data.elements['stats/favorites/weapon2pct'].text.to_i
+    end
+
+    @favorites
+  end
+
+  # Returns a Hash of lifetime statistics for this user like the time played.
+  # If the lifetime statistics haven't been parsed already, parsing is done now.
+  def lifetime_stats
+    if @lifetime_stats.nil?
+      @lifetime_stats = {}
+      @lifetime_stats['finales_survived'] = @xml_data.elements['stats/lifetime/finales'].text.to_i
+      @lifetime_stats['games_played']     = @xml_data.elements['stats/lifetime/gamesplayed'].text.to_i
+      @lifetime_stats['finales_survived_percentage'] = @lifetime_stats['finales_survived'].to_f / @lifetime_stats['games_played']
+      @lifetime_stats['infected_killed']  = @xml_data.elements['stats/lifetime/infectedkilled'].text.to_i
+      @lifetime_stats['kills_per_hour']   = @xml_data.elements['stats/lifetime/killsperhour'].text.to_f
+      @lifetime_stats['avg_kits_shared']  = @xml_data.elements['stats/lifetime/kitsshared'].text.to_f
+      @lifetime_stats['avg_kits_used']    = @xml_data.elements['stats/lifetime/kitsused'].text.to_f
+      @lifetime_stats['avg_pills_shared'] = @xml_data.elements['stats/lifetime/pillsshared'].text.to_f
+      @lifetime_stats['avg_pills_used']   = @xml_data.elements['stats/lifetime/pillsused'].text.to_f
+      @lifetime_stats['time_played']      = @xml_data.elements['stats/lifetime/timeplayed'].text
+    end
+
+    @lifetime_stats
+  end
+
+  # Returns a Hash of Survival statistics for this user like revived teammates.
+  # If the Survival statistics haven't been parsed already, parsing is done now.
+  def survival_stats
+    if @survival_stats.nil?
+      @survival_stats = {}
+      @survival_stats['gold_medals']   = @xml_data.elements['stats/survival/goldmedals'].text.to_i
+      @survival_stats['silver_medals'] = @xml_data.elements['stats/survival/silvermedals'].text.to_i
+      @survival_stats['bronze_medals'] = @xml_data.elements['stats/survival/bronzemedals'].text.to_i
+      @survival_stats['rounds_played'] = @xml_data.elements['stats/survival/roundsplayed'].text.to_i
+      @survival_stats['best_time']     = @xml_data.elements['stats/survival/besttime'].text.to_f
+
+      @survival_stats['maps'] = {}
+      @xml_data.elements.each('stats/survival/maps/*') do |map_data|
+        @survival_stats['maps'][map_data.name] = L4DMap.new(map_data)
+      end
+    end
+
+    @survival_stats
+  end
+
+  # Returns a Hash of teamplay statistics for this user like revived teammates.
+  # If the teamplay statistics haven't been parsed already, parsing is done now.
+  def teamplay_stats
+    if @teamplay_stats.nil?
+      @teamplay_stats = {}
+      @teamplay_stats['revived']                       = @xml_data.elements['stats/teamplay/revived'].text.to_i
+      @teamplay_stats['most_revived_difficulty']       = @xml_data.elements['stats/teamplay/reviveddiff'].text
+      @teamplay_stats['revived_average']               = @xml_data.elements['stats/teamplay/revivedavg'].text.to_f
+      @teamplay_stats['avg_was_revived']               = @xml_data.elements['stats/teamplay/wasrevivedavg'].text.to_f
+      @teamplay_stats['protected']                     = @xml_data.elements['stats/teamplay/protected'].text.to_i
+      @teamplay_stats['most_protected_difficulty']     = @xml_data.elements['stats/teamplay/protecteddiff'].text
+      @teamplay_stats['protected_average']             = @xml_data.elements['stats/teamplay/protectedavg'].text.to_f
+      @teamplay_stats['avg_was_protected']             = @xml_data.elements['stats/teamplay/wasprotectedavg'].text.to_f
+      @teamplay_stats['friendly_fire_damage']          = @xml_data.elements['stats/teamplay/ffdamage'].text.to_i
+      @teamplay_stats['most_friendly_fire_difficulty'] = @xml_data.elements['stats/teamplay/ffdamagediff'].text
+      @teamplay_stats['avg_friendly_fire_damage']      = @xml_data.elements['stats/teamplay/ffdamageavg'].text.to_f
+    end
+
+    @teamplay_stats
+  end
+
+  # Returns a Hash of Versus statistics for this user like percentage of rounds
+  # won. If the Versus statistics haven't been parsed already, parsing is done
+  # now.
+  def versus_stats
+    if @versus_stats.nil?
+      @versus_stats = {}
+      @versus_stats['games_played']                = @xml_data.elements['stats/versus/gamesplayed'].text.to_i
+      @versus_stats['games_completed']             = @xml_data.elements['stats/versus/gamescompleted'].text.to_i
+      @versus_stats['finales_survived']            = @xml_data.elements['stats/versus/finales'].text.to_i
+      @versus_stats['finales_survived_percentage'] = @versus_stats['finales_survived'].to_f / @versus_stats['games_played']
+      @versus_stats['points']                      = @xml_data.elements['stats/versus/gamesplayed'].text.to_i
+      @versus_stats['most_points_infected']        = @xml_data.elements['stats/versus/gamesplayed'].text
+      @versus_stats['gameswon']                    = @xml_data.elements['stats/versus/gameswon'].text.to_i
+      @versus_stats['gameslost']                   = @xml_data.elements['stats/versus/gameslost'].text.to_i
+      @versus_stats['highest_survivor_score']      = @xml_data.elements['stats/versus/survivorscore'].text.to_i
+
+      %w(boomer hunter smoker tank).each do |infected|
+        @versus_stats[infected] = {}
+        @versus_stats[infected]['special']      = @xml_data.elements["stats/versus/#{infected}special"].text.to_i
+        @versus_stats[infected]['most_damage']  = @xml_data.elements["stats/versus/#{infected}dmg"].text.to_i
+        @versus_stats[infected]['avg_lifespan'] = @xml_data.elements["stats/versus/#{infected}lifespan"].text.to_i
+      end
+    end
+
+    @versus_stats
+  end
+
+  # Returns a Hash of L4DWeapon for this user containing all Left4Dead weapons.
+  # If the weapons haven't been parsed already, parsing is done now.
+  def weapon_stats
+    if @weapon_stats.nil?
+      @weapon_stats = {}
+      @xml_data.elements.each('stats/weapons/*') do |weapon_data|
+        unless weapon_data.name == 'molotov' or weapon_data.name == 'pipes'
+          weapon = L4DWeapon.new(weapon_data)
+        else
+          weapon = L4DExplosive.new(weapon_data)
+        end
+
+        @weapon_stats[weapon_data.name] = weapon
+      end
+    end
+
+    @weapon_stats
+  end
+
+end

@@ -11,6 +11,7 @@ require "steam/community/game_achievement"
 class GameStats
 end
 
+require "steam/community/l4d/l4d_stats"
 require "steam/community/dods/dods_stats"
 require "steam/community/tf2/tf2_stats"
 
@@ -29,6 +30,8 @@ class GameStats
     case game_name
       when "DoD:S":
         DoDSStats.new(steam_id)
+      when "L4D":
+        L4DStats.new(steam_id)
       when "TF2":
         TF2Stats.new(steam_id)
       else
