@@ -16,6 +16,12 @@ class L4DStats < GameStats
   # name "L4D"
   def initialize(steam_id)
     super steam_id, 'L4D'
+
+    @most_recent_game = {}
+    @most_recent_game['difficulty']  = @xml_data.elements['stats/mostrecentgame/difficulty'].text
+    @most_recent_game['escaped']     = (@xml_data.elements['stats/mostrecentgame/bEscaped'].text == 1)
+    @most_recent_game['movie']       = @xml_data.elements['stats/mostrecentgame/movie'].text
+    @most_recent_game['time_played'] = @xml_data.elements['stats/mostrecentgame/time'].text
   end
 
   # Returns a Hash of favorites for this user like weapons and character.
