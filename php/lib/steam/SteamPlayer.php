@@ -55,9 +55,9 @@ class SteamPlayer
             throw new Exception("Player name has to be a string.");
         }
 
-        if(!is_int($score) || $score < 0)
+        if(!is_int($score))
         {
-            throw new Exception("Player points have to be a number greater than or equal 0.");
+            throw new Exception("Player points have to be a number.");
         }
 
         if(!is_float($connectTime))
