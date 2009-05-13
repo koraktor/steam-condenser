@@ -11,6 +11,7 @@
  */
 
 require_once "steam/community/GameAchievement.php";
+require_once "steam/community/dods/DoDSStats.php";
 require_once "steam/community/tf2/TF2Stats.php";
 
 /**
@@ -20,6 +21,8 @@ require_once "steam/community/tf2/TF2Stats.php";
  * @subpackage Steam Community
  */
 class GameStats {
+
+    protected $achievements;
 
     /**
      * Used to cache the XML data of the statistics for this game and this
@@ -34,19 +37,21 @@ class GameStats {
      */
     public static function createGameStats($steamId, $gameName) {
         switch($gameName) {
-            case "TF2":
+            case 'dod:s':
+                return new DoDSStats($steamId);
+            case 'tf2':
                 return new TF2Stats($steamId);
             default:
                 return new GameStats($steamId, $gameName);
         }
     }
 
-	/**
-	 * Creates a GameStats object and fetchs data from Steam Community for
-         * the given user and game
-	 * @param $steamId
-	 * @param $gameName
-	 */
+    /**
+     * Creates a GameStats object and fetchs data from Steam Community for
+     * the given user and game
+     * @param $steamId
+     * @param $gameName
+     */
     protected function __construct($steamId, $gameName) {
         $this->steamId = $steamId;
 
@@ -62,17 +67,17 @@ class GameStats {
         }
     }
 
-	/**
-	 * Returns the achievements for this stats' user and game. If the achievements
-	 * haven't been parsed already, parsing is done now.
-	 * @return GameAchievements[]
-	 */
+    /**
+     * Returns the achievements for this stats' user and game. If the achievements
+     * haven't been parsed already, parsing is done now.
+     * @return GameAchievements[]
+     */
     public function getAchievements() {
         if(empty($this->achievements)) {
             $this->achievementsDone = 0;
-            foreach($this->xmlData->achievements as $achievement) {
-                $this->achievements[] = new GameAchievement($this->steamId, $this->appId, $achievement->name, ($achievement->closed == 1));
-                if($achievement->closed == 1) {
+            foreach($this->xmlData->achievements->children() as $achievement) {
+                $this->achievements[] = new GameAchievement($this->steamId, $this->appId, (string) $achievement->name, (bool) $achievement->closed);
+                if((bool) $achievement->closed) {
                     $this->achievementsDone += 1;
                 }
             }
