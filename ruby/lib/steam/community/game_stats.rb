@@ -48,10 +48,10 @@ class GameStats
     
     @privacy_state = @xml_data.elements["privacyState"].text
     if @privacy_state == "public"
-      @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([0-9]+)")[1]
+      @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([1-9][0-9]+)")[1]
       @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
       @game_name          = @xml_data.elements["game"].elements["gameName"].text
-      @hours_played       = @xml_data.elements["stats"].elements["hoursPlayed"].text.to_f
+      @hours_played       = @xml_data.elements["stats"].elements["hoursPlayed"].text
     end
   end
   
