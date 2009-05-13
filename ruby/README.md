@@ -1,15 +1,15 @@
 Steam Condenser
 ===============
 
-The Steam Condenser is a multi-language library for querying Source and GoldSrc
-game servers as well as the Steam master servers. Currently it is implemented in
-Java, PHP and Ruby.
+The Steam Condenser is a multi-language library for querying the Steam
+Community, Source and GoldSrc game servers as well as the Steam master servers.
+Currently it is implemented in Java, PHP and Ruby.
 
 ## Requirements
 
 * Linux, MacOS X or Windows
-* Ruby 1.8.7 or newer
-* {Ruby BZ2 module}[http://raa.ruby-lang.org/project/bz2]
+* Ruby 1.8.6 or newer
+* [Ruby BZ2 module](http://raa.ruby-lang.org/project/bz2)
 
 ## License
 
@@ -23,6 +23,7 @@ file.
 
 ## See Also
 
-* {Steam Condensor project page}[http://code.google.com/p/steam-condenser]
-* {Steam Condensor group}[http://groups.google.com/group/steam-condenser]
-* {Steam Condensor's Ohloh page}[http://www.ohloh.net/projects/steam-condenser]
+* [Steam Condenser home](http://koraktor.github.com/steam-condenser)
+* [Steam Condenser project page](http://github.com/koraktor/steam-condenser)
+* [Steam Condenser group](http://groups.google.com/group/steam-condenser)
+* [Steam Condenser's Ohloh page](http://www.ohloh.net/projects/steam-condenser)
