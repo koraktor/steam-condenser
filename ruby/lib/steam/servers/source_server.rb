@@ -54,7 +54,7 @@ class SourceServer < GameServer
       response << packet.get_response
     end
     
-    return response
+    return response.strip
   end
   
 end

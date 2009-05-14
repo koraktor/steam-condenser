@@ -47,9 +47,9 @@ class GameServer
   #  
   # As the players and their scores change quite often be sure to update this
   # list regularly by calling update_player_info.
-  def get_players
+  def get_players(rcon_password = nil)
     if @player_array == nil
-      self.update_player_info
+      self.update_player_info(rcon_password)
     end
     
     return @player_array
@@ -138,8 +138,19 @@ class GameServer
     self.update_challenge_number
   end
 
-  def update_player_info
+  def update_player_info(rcon_password = nil)
     self.handle_response_for_request GameServer::REQUEST_PLAYER
+
+    unless rcon_password.nil? or @player_array.empty?
+      rcon_auth(rcon_password)
+      players = rcon_exec('status').split("\n")[7..-1]
+
+      players.size.times do |i|
+        player_data = players[i].match(/# (\d+) "(.*)" (.*) (.*)/).to_a[1..-1]
+        player_data[3] = player_data[3].split
+        @player_array[i].add_info(*player_data.flatten)
+      end
+    end
   end
 
   def update_rules_info

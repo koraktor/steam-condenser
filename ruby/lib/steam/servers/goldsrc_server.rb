@@ -21,7 +21,7 @@ class GoldSrcServer < GameServer
   end
   
   def rcon_exec(command)
-    return @socket.rcon_exec(@rcon_password, command)
+    return @socket.rcon_exec(@rcon_password, command).strip
   end
   
 end
