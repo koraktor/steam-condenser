@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 require "byte_buffer"
 require "steam/packets/steam_packet_factory"
@@ -64,9 +62,7 @@ class GoldSrcSocket < SteamSocket
   end
   
   def rcon_exec(password, command)
-    if @rcon_challenge.nil?
-      self.rcon_get_challenge
-    end
+    self.rcon_get_challenge if @rcon_challenge.nil? or @is_hltv
     
     self.rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
     if @is_hltv

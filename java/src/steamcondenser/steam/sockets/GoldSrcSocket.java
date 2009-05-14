@@ -22,7 +22,6 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class GoldSrcSocket extends QuerySocket
 {
@@ -130,7 +129,7 @@ public class GoldSrcSocket extends QuerySocket
     public String rconExec(String password, String command)
             throws IOException, TimeoutException, SteamCondenserException
     {
-        if(this.rconChallenge == -1) {
+        if(this.rconChallenge == -1 || this.isHLTV) {
             this.rconGetChallenge();
         }
 

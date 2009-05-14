@@ -9,7 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
  * @subpackage Sockets
- * @version    $Id$
  */
 
 require_once "steam/packets/SteamPacket.php";
@@ -94,7 +93,7 @@ class GoldSrcSocket extends SteamSocket
      */
     public function rconExec($password, $command)
     {
-        if($this->rconChallenge == -1)
+        if($this->rconChallenge == -1 || $this->isHLTV)
         {
             $this->rconGetChallenge();
         }
