@@ -1,78 +1,105 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
-
 package steamcondenser.steam;
+
+import java.util.List;
+import steamcondenser.SteamCondenserException;
 
 /**
  * A player on a GameServer
  * @author Sebastian Staudt
- * @version $Id$
  */
-public class SteamPlayer
-{
-    private float connectTime;
+public class SteamPlayer {
 
-    private int id;
+	private String address;
+	private float connectTime;
+	private boolean extended;
+	private int id;
+	private int loss;
+	private String name;
+	private int ping;
+	private int realId;
+	private int score;
+	private String state;
+	private String steamId;
 
-    private String name;
+	/**
+	 * Creates a new SteamPlayer object with the given information
+	 * @param id The ID of the player
+	 * @param name The nickname of the player
+	 * @param score The score of the player
+	 * @param connectTime The time the player is connected to the server
+	 */
+	public SteamPlayer(int id, String name, int score, float connectTime) {
+		this.connectTime = connectTime;
+		this.id = id;
+		this.name = name;
+		this.score = score;
+	}
 
-    private int score;
+	public void addInformation(List<String> playerData)
+			throws SteamCondenserException {
+		this.extended = true;
 
-    /**
-     * Creates a new SteamPlayer object with the given information
-     * @param id The ID of the player
-     * @param name The nickname of the player
-     * @param score The score of the player
-     * @param connectTime The time the player is connected to the server
-     */
-    public SteamPlayer(int id, String name, int score, float connectTime)
-    {
-	this.connectTime = connectTime;
-	this.id = id;
-	this.name = name;
-	this.score = score;
-    }
+		this.realId = Integer.parseInt(playerData.get(0));
+		this.steamId = playerData.get(2);
 
-    /**
-     * @return Returns the time this player is connected to the server
-     */
-    public float getConnectTime()
-    {
-        return this.connectTime;
-    }
+		if(!playerData.get(1).equals(this.name)) {
+			throw new SteamCondenserException("Information to add belongs to a different player.");
+		}
 
-    /**
-     * @return Returns the ID of this player
-     */
-    public int getId()
-    {
-        return this.id;
-    }
+		if(this.steamId.equals("BOT")) {
+			this.state = playerData.get(3);
+		} else {
+			this.address = playerData.get(6);
+			this.loss = Integer.parseInt(playerData.get(4));
+			this.ping = Integer.parseInt(playerData.get(3));
+			this.state = playerData.get(5);
+		}
+	}
 
-    /**
-     * @return Returns the nickname of this player
-     */
-    public String getName()
-    {
-        return this.name;
-    }
+	/**
+	 * @return Returns the time this player is connected to the server
+	 */
+	public float getConnectTime() {
+		return this.connectTime;
+	}
 
-    /**
-     * @return Returns the score of this player
-     */
-    public int getScore()
-    {
-        return this.score;
-    }
+	/**
+	 * @return Returns the ID of this player
+	 */
+	public int getId() {
+		return this.id;
+	}
 
-    /**
-     * @return A String representation of this player
-     */
-    @Override
-    public String toString()
-    {
-	return "#" + this.id + " \"" + this.name + "\", Score: " + this.score + ", Time: " + this.connectTime;
-    }
+	/**
+	 * @return Returns the nickname of this player
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * @return Returns the score of this player
+	 */
+	public int getScore() {
+		return this.score;
+	}
+
+	/**
+	 * @return A String representation of this player
+	 */
+	@Override
+	public String toString() {
+		if(this.extended) {
+			return "#" + this.realId + " \"" + this.name + "\", SteamID: " + this.steamId + ", Score: " + this.score + ", Time: " + this.connectTime;
+		}
+		else {
+			return "#" + this.id + " \"" + this.name + "\", Score: " + this.score + ", Time: " + this.connectTime;
+		}
+	}
 }
