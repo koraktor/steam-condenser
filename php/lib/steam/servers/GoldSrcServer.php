@@ -9,7 +9,6 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
  * @subpackage GoldSrcServer
- * @version    $Id$
  */
 
 require_once "InetAddress.php";
@@ -20,14 +19,13 @@ require_once "steam/sockets/GoldSrcSocket.php";
  * @package    Steam Condenser (PHP)
  * @subpackage GoldSrcServer
  */
-class GoldSrcServer extends GameServer
-{
+class GoldSrcServer extends GameServer {
+    
     /**
      * @param InetAddress $serverIP
      * @param int $portNumber The listening port of the server, defaults to 27015
      */
-    public function __construct(InetAddress $ipAddress, $portNumber = 27015, $isHLTV = false)
-    {
+    public function __construct(InetAddress $ipAddress, $portNumber = 27015, $isHLTV = false) {
         parent::__construct($portNumber);
 
         $this->socket = new GoldSrcSocket($ipAddress, $portNumber, $isHLTV);
@@ -37,8 +35,7 @@ class GoldSrcServer extends GameServer
      * @param String $password
      * @return boolean
      */
-    public function rconAuth($password)
-    {
+    public function rconAuth($password) {
         $this->rconPassword = $password;
         return true;
     }
@@ -47,9 +44,8 @@ class GoldSrcServer extends GameServer
      * @param String $command
      * @return String
      */
-    public function rconExec($command)
-    {
-        return $this->socket->rconExec($this->rconPassword, $command);
+    public function rconExec($command) {
+        return trim($this->socket->rconExec($this->rconPassword, $command));
     }
 }
 ?>

@@ -3,12 +3,15 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2009, Sebastian Staudt
+ *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
  * @subpackage SteamPlayer
- * @version $Id$
  */
+
+require_once 'exceptions/SteamCondenserException.php';
 
 /**
  * @package Steam Condenser (PHP)
@@ -26,6 +29,11 @@ class SteamPlayer
      */
     private $id;
 
+    /**
+     * @var int
+     */
+    private $loss;
+
    /**
     * @var String
     */
@@ -34,7 +42,22 @@ class SteamPlayer
     /**
      * @var int
      */
+    private $ping;
+
+    /**
+     * @var int
+     */
     private $score;
+
+    /**
+     * @var String
+     */
+    private $state;
+
+    /**
+     * @var String
+     */
+    private $steamId;
 
     /**
      * Creates a new SteamPlayer object with the given information
@@ -69,6 +92,27 @@ class SteamPlayer
         $this->id = $id;
         $this->name = $name;
         $this->score = $score;
+    }
+
+    public function addInformation($playerData) {
+        $this->extended = true;
+
+        $this->realId  = $playerData[0];
+        $this->steamId = $playerData[2];
+
+        if($playerData[1] != $this->name) {
+            throw new SteamCondenserException('Information to add belongs to a different player.');
+        }
+
+        if($this->steamId == 'BOT') {
+            $this->state = $playerData[3];
+        }
+        else {
+            $this->address = $playerData[6];
+            $this->loss    = $playerData[4];
+            $this->ping    = $playerData[3];
+            $this->state   = $playerData[5];
+        }
     }
 
     /**
@@ -108,12 +152,26 @@ class SteamPlayer
     }
 
     /**
+     * Returns the SteamID of this player
+     * @return String
+     */
+    public function getSteamId()
+    {
+        return $this->steamId;
+    }
+
+    /**
      * Returns a String representation of this player
      * @return String
      */
     public function __toString()
     {
-        return "#{$this->id} \"{$this->name}\", Score: {$this->score}, Time: {$this->connectTime}";
+        if($this->extended) {
+            return "#{$this->realId} \"{$this->name}\", SteamID: {$this->steamID} Score: {$this->score}, Time: {$this->connectTime}";
+        }
+        else {
+            return "#{$this->id} \"{$this->name}\", Score: {$this->score}, Time: {$this->connectTime}";
+        }
     }
 }
 ?>
