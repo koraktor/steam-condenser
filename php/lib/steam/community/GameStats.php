@@ -12,6 +12,7 @@
 
 require_once "steam/community/GameAchievement.php";
 require_once "steam/community/dods/DoDSStats.php";
+require_once "steam/community/l4d/L4DStats.php";
 require_once "steam/community/tf2/TF2Stats.php";
 
 /**
@@ -39,6 +40,8 @@ class GameStats {
         switch($gameName) {
             case 'dod:s':
                 return new DoDSStats($steamId);
+            case 'l4d':
+                return new L4DStats($steamId);
             case 'tf2':
                 return new TF2Stats($steamId);
             default:
@@ -58,7 +61,7 @@ class GameStats {
         $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/{$this->steamId}/stats/{$gameName}?xml=1"));
 
         $this->privacyState = (string) $this->xmlData->privacyState;
-        if($this->privacyState == 'public') {
+        if($this->isPublic()) {
             preg_match('#http://store.steampowered.com/app/([1-9][0-9]*)#', (string) $this->xmlData->game->gameLink, $appId);
             $this->appId = (int) $appId[1];
             $this->gameFriendlyName = (string) $this->xmlData->game->gameFriendlyName;
@@ -73,6 +76,10 @@ class GameStats {
      * @return GameAchievements[]
      */
     public function getAchievements() {
+        if($this->isPublic()) {
+            return;
+        }
+
         if(empty($this->achievements)) {
             $this->achievementsDone = 0;
             foreach($this->xmlData->achievements->children() as $achievement) {
@@ -84,6 +91,10 @@ class GameStats {
         }
 
         return $this->achievements;
+    }
+
+    public function isPublic() {
+        return $this->privacyState == 'public';
     }
 }
 ?>
