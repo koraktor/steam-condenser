@@ -24,7 +24,7 @@ class S2A_PLAYER_Packet extends SteamPacket
     /**
      * @var SteamPlayer[]
      */
-    private $playerArray;
+    private $playerHash;
 
     /**
      * @param mixed $contentData
@@ -39,20 +39,20 @@ class S2A_PLAYER_Packet extends SteamPacket
 
         $this->contentData->getByte();
 
-        $this->playerArray = array();
+        $this->playerHash = array();
         while($this->contentData->remaining() > 0)
         {
             $playerData = array($this->contentData->getByte(), $this->contentData->getString(), $this->contentData->getLong(), $this->contentData->getFloat());
-            $this->playerArray[] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);
+            $this->playerHash[$playerData[1]] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);
         }
     }
 
     /**
      * @return SteamPlayer[]
      */
-    public function getPlayerArray()
+    public function getPlayerHash()
     {
-        return $this->playerArray;
+        return $this->playerHash;
     }
 }
 ?>

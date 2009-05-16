@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 require "abstract_class"
 require "exceptions/steam_condenser_exception"
@@ -48,11 +46,11 @@ class GameServer
   # As the players and their scores change quite often be sure to update this
   # list regularly by calling update_player_info.
   def get_players(rcon_password = nil)
-    if @player_array == nil
+    if @player_hash == nil
       self.update_player_info(rcon_password)
     end
     
-    return @player_array
+    return @player_hash
   end
   
   # Returns a hash of the settings applied on the server. These settings are
@@ -114,7 +112,7 @@ class GameServer
       if response_packet.kind_of? S2A_INFO_BasePacket
         @info_hash = response_packet.get_info_hash
       elsif response_packet.kind_of? S2A_PLAYER_Packet
-        @player_array = response_packet.get_player_array
+        @player_hash = response_packet.player_hash
       elsif response_packet.kind_of? S2A_RULES_Packet
         @rules_hash = response_packet.get_rules_hash
       elsif response_packet.kind_of? S2C_CHALLENGE_Packet
@@ -141,14 +139,14 @@ class GameServer
   def update_player_info(rcon_password = nil)
     self.handle_response_for_request GameServer::REQUEST_PLAYER
 
-    unless rcon_password.nil? or @player_array.empty?
+    unless rcon_password.nil? or @player_hash.empty?
       rcon_auth(rcon_password)
       players = rcon_exec('status').split("\n")[7..-1]
 
-      players.size.times do |i|
-        player_data = players[i].match(/# (\d+) "(.*)" (.*) (.*)/).to_a[1..-1]
+      players.each do |player|
+        player_data = player.match(/# (\d+) "(.*)" (.*) (.*)/).to_a[1..-1]
         player_data[3] = player_data[3].split
-        @player_array[i].add_info(*player_data.flatten)
+        @player_hash[player_data[1]].add_info(*player_data.flatten)
       end
     end
   end
@@ -193,9 +191,9 @@ class GameServer
       end
     end
     
-    if @player_array != nil
+    if @player_hash != nil
       return_string << "Players:\n"
-      @player_array.each do |player|
+      @player_hash.each do |player|
         return_string << "  #{player}\n"
       end
     end

@@ -39,7 +39,7 @@ abstract public class GameServer {
 	private static final int REQUEST_RULES = 3;
 	protected int challengeNumber = 0xFFFFFFFF;
 	protected int ping;
-	protected ArrayList<SteamPlayer> playerArray;
+	protected HashMap<String, SteamPlayer> playerHash;
 	protected int rconRequestId;
 	protected HashMap<String, String> rulesHash;
 	protected HashMap<String, Object> serverInfo;
@@ -71,12 +71,12 @@ abstract public class GameServer {
 	/**
 	 * @return An ArrayList of SteamPlayers representing all players on this server
 	 */
-	public ArrayList<SteamPlayer> getPlayers(String rconPassword)
+	public HashMap<String, SteamPlayer> getPlayers(String rconPassword)
 			throws IOException, SteamCondenserException, TimeoutException {
-		if(this.playerArray == null) {
+		if(this.playerHash == null) {
 			this.updatePlayerInfo(rconPassword);
 		}
-		return this.playerArray;
+		return this.playerHash;
 	}
 
 	/**
@@ -162,7 +162,7 @@ abstract public class GameServer {
 			if(responsePacket instanceof S2A_INFO_BasePacket) {
 				this.serverInfo = ((S2A_INFO_BasePacket) responsePacket).getInfoHash();
 			} else if(responsePacket instanceof S2A_PLAYER_Packet) {
-				this.playerArray = ((S2A_PLAYER_Packet) responsePacket).getPlayerArray();
+				this.playerHash = ((S2A_PLAYER_Packet) responsePacket).getPlayerHash();
 			} else if(responsePacket instanceof S2A_RULES_Packet) {
 				this.rulesHash = ((S2A_RULES_Packet) responsePacket).getRulesHash();
 			} else if(responsePacket instanceof S2C_CHALLENGE_Packet) {
@@ -230,9 +230,9 @@ abstract public class GameServer {
 			}
 		}
 
-		if(this.playerArray != null) {
+		if(this.playerHash != null) {
 			returnString += "Players:" + "\n";
-			for(SteamPlayer player : this.playerArray) {
+			for(SteamPlayer player : this.playerHash.values()) {
 				returnString += "  " + player + "\n";
 			}
 		}
@@ -294,19 +294,18 @@ abstract public class GameServer {
 			throws IOException, TimeoutException, SteamCondenserException {
 		this.handleResponseForRequest(GameServer.REQUEST_PLAYER);
 
-		if(rconPassword != null && !this.playerArray.isEmpty()) {
+		if(rconPassword != null && !this.playerHash.isEmpty()) {
 			this.rconAuth(rconPassword);
 			List<String> players = Arrays.asList(this.rconExec("status").split("\n"));
 			players = players.subList(7, players.size());
 
-			System.out.println(players);
-
-			for(int i = 0; i < players.size(); i++) {
-				ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(players.get(i).split(" ")));
+			for(String player : players) {
+				ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(player.split(" ")));
 				playerData.remove(0);
 				String playerName = playerData.get(1);
-				playerData.set(1, playerName.substring(1, playerName.length() - 1));
-				this.playerArray.get(i).addInformation(playerData);
+				playerName = playerName.substring(1, playerName.length() - 1);
+				playerData.set(1, playerName);
+				this.playerHash.get(playerName).addInformation(playerData);
 			}
 		}
 	}

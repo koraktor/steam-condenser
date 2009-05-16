@@ -2,14 +2,14 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 require "steam/packets/steam_packet"
 
 # The S2A_PLAYER_Packet class represents the response to a A2S_PLAYER
 # request send to the server.
 class S2A_PLAYER_Packet < SteamPacket
+
+  attr_reader :player_hash
   
   # Creates a S2A_PLAYER response object based on the data received.
   def initialize(content_data)
@@ -21,17 +21,12 @@ class S2A_PLAYER_Packet < SteamPacket
 
     # Ignore player count
     @content_data.get_byte
-    @player_array = []
+    @player_hash = {}
 
     while @content_data.remaining > 0
       player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_long, @content_data.get_float
-      @player_array << SteamPlayer.new(*player_data[0..3])
+      @player_hash[player_data[1]] = SteamPlayer.new(*player_data[0..3])
     end
   end
-  
-  # Returns the array containing SteamPlayer objects for all players on the
-  # server
-  def get_player_array
-    return @player_array
-  end
+
 end

@@ -48,7 +48,7 @@ class GameServer {
     /**
      * @var SteamPlayer[]
      */
-    protected $playerArray;
+    protected $playerHash;
 
     /**
      * @var mixed[]
@@ -84,10 +84,10 @@ class GameServer {
      * @return An array of SteamPlayers representing all players on this server
      */
     public function getPlayers($rconPassword = null) {
-        if($this->playerArray == null) {
+        if($this->playerHash == null) {
             $this->updatePlayerInfo($rconPassword);
         }
-        return $this->playerArray;
+        return $this->playerHash;
     }
 
     /**
@@ -95,7 +95,7 @@ class GameServer {
      */
     public function getRules() {
         if($this->rulesHash == null) {
-            $this->rulesHash;
+            $this->updateRulesInfo();
         }
         return $this->rulesHash;
     }
@@ -159,7 +159,7 @@ class GameServer {
                     $this->infoHash = $responsePacket->getInfoHash();
                     break;
                 case "S2A_PLAYER_Packet":
-                    $this->playerArray = $responsePacket->getPlayerArray();
+                    $this->playerHash = $responsePacket->getPlayerHash();
                     break;
                 case "S2A_RULES_Packet":
                     $this->rulesHash = $responsePacket->getRulesArray();
@@ -216,17 +216,17 @@ class GameServer {
     public function updatePlayerInfo($rconPassword = null) {
         $this->handleResponseForRequest(self::REQUEST_PLAYER);
 
-        if($rconPassword != null && !empty($this->playerArray)) {
+        if($rconPassword != null && !empty($this->playerHash)) {
             $this->rconAuth($rconPassword);
             $players = explode("\n", $this->rconExec('status'));
             $players = array_slice($players, 7, sizeof($players) - 7);
 
-            for($i = 0; $i < sizeof($players); $i++) {
-                preg_match('%# (\d+) "(.*)" (.*) (.*)%', $players[$i], $playerData);
+            foreach($players as $player) {
+                preg_match('%# (\d+) "(.*)" (.*) (.*)%', $player, $playerData);
                 $morePlayerData = explode(' ', array_pop($playerData));
                 $playerData = array_merge($playerData, $morePlayerData);
                 array_shift($playerData);
-                $this->playerArray[$i]->addInformation($playerData);
+                $this->playerHash[$playerData[1]]->addInformation($playerData);
             }
         }
     }
@@ -269,9 +269,9 @@ class GameServer {
             }
         }
 
-        if($this->playerArray != null) {
+        if($this->playerHash != null) {
             $returnString .= "Players:\n";
-            foreach($this->playerArray as $player) {
+            foreach($this->playerHash as $player) {
                 $returnString .= "  {$player}\n";
             }
         }

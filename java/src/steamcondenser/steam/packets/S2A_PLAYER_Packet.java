@@ -1,22 +1,22 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright 2008-2009, Sebastian Staudt
  */
 
 package steamcondenser.steam.packets;
 
-import java.util.ArrayList;
-
+import java.util.HashMap;
 import steamcondenser.PacketFormatException;
 import steamcondenser.steam.SteamPlayer;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class S2A_PLAYER_Packet extends SteamPacket
 {
-    private ArrayList<SteamPlayer> playerArray;
+    private HashMap<String, SteamPlayer> playerHash;
 
     public S2A_PLAYER_Packet(byte[] dataBytes)
     throws PacketFormatException
@@ -28,21 +28,23 @@ public class S2A_PLAYER_Packet extends SteamPacket
 	    throw new PacketFormatException("Wrong formatted A2A_PLAYER response packet.");
 	}
 
-	this.playerArray = new ArrayList<SteamPlayer>(this.contentData.getByte());
+	this.playerHash = new HashMap<String, SteamPlayer>(this.contentData.getByte());
 
 	while(this.contentData.hasRemaining())
 	{
-	    this.playerArray.add(new SteamPlayer(
-		    this.contentData.getByte(),
-		    this.contentData.getString(),
+		byte playerId = this.contentData.getByte();
+		String playerName = this.contentData.getString();
+	    this.playerHash.put(playerName, new SteamPlayer(
+		    playerId,
+		    playerName,
 		    Integer.reverseBytes(this.contentData.getInt()),
 		    Float.intBitsToFloat(Integer.reverseBytes(this.contentData.getInt()))
 	    ));
 	}
     }
 
-    public ArrayList<SteamPlayer> getPlayerArray()
-    {
-	return this.playerArray;
+    public HashMap<String, SteamPlayer> getPlayerHash()
+	{
+		return this.playerHash;
     }
 }
