@@ -39,8 +39,8 @@ class SteamId
   end
 
   # Creates a new SteamId object for the given SteamID, either numeric or the
-  # custom URL specified by the user. If fetch is true, fetch_data is used to
-  # load data into the object. fetch defaults to true.
+  # custom URL specified by the user. If +fetch+ is +true+ (default), fetch_data
+  # is used to load data into the object.
   def initialize(id, fetch = true)
     if id.is_a? Numeric
       @steam_id64 = id
@@ -137,17 +137,18 @@ class SteamId
     games_data = Hpricot(open(url).read).at('div#mainContents')
 
     games_data.traverse_some_element('h4') do |game|
+      game_name = game.inner_html
       stats = game.next_sibling
       if stats.name == 'br'
-        @games[game.inner_html] = false
+        @games[game_name] = false
       else
         stats = stats.next_sibling if stats.name == 'h5'
         if stats.name == 'br'
-          @games[game.inner_html] = false
+          @games[game_name] = false
         else
           stats = stats.siblings_at(2)[0]
           friendly_name = stats['href'].match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
-          @games[game.inner_html] = friendly_name
+          @games[game_name] = friendly_name.downcase
         end
       end
     end
@@ -162,13 +163,13 @@ class SteamId
   
   # Returns a GameStats object for the given game for the owner of this SteamID
   def game_stats(game_name)
+    game_name.downcase!
+    
     if games.has_value? game_name
       friendly_name = game_name
     elsif games.has_key? game_name
       friendly_name = games[game_name]
-    end
-
-    unless friendly_name
+    else
       raise ArgumentError.new("Stats for game #{game_name} do not exist.")
     end
 
