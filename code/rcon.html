@@ -9,7 +9,7 @@ languages:
     SourceServer server = new SourceServer(serverIp);
     try {
       server.rconAuth("passw0rd");
-      System.out.println(server.rconExec("status"));
+      System.out.println(server.rconExec("status");
     }
     catch(RCONNoAuthException e) {
       System.err.println("Could not authenticate with the game server.");
@@ -19,7 +19,7 @@ languages:
     $server = new SourceServer($serverIp);
     try {
       $server->rconAuth('passw0rd');
-      echo $server->rconExec('status'));
+      echo $server->rconExec('status');
     }
     catch(RCONNoAuthException $e) {
       trigger_error('Could not authenticate with the game server.',
