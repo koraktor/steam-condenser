@@ -39,6 +39,7 @@ public class SteamPlayer {
 		this.id = id;
 		this.name = name;
 		this.score = score;
+		this.extended = false;
 	}
 
 	public void addInformation(List<String> playerData)

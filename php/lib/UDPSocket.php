@@ -56,7 +56,7 @@ class UDPSocket extends Socket
 			{
 				throw new Exception("Could not create socket.");
 			}
-			stream_set_blocking($this->socket, $doBlock);
+			stream_set_blocking($this->socket, $this->isBlocking);
 		}
 	}
 }

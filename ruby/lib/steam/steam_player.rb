@@ -17,6 +17,7 @@ class SteamPlayer
     @id = id
     @name = name
     @score = score
+    @extended = false
   end
 
   # Extends this player object with additional information acquired using RCON

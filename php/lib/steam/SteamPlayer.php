@@ -25,6 +25,11 @@ class SteamPlayer
     private $connectTime;
 
     /**
+     * @var boolean
+     */
+    private $extended;
+
+    /**
      * @var int
      */
     private $id;
@@ -92,6 +97,7 @@ class SteamPlayer
         $this->id = $id;
         $this->name = $name;
         $this->score = $score;
+        $this->extended = false;
     }
 
     public function addInformation($playerData) {
@@ -167,7 +173,7 @@ class SteamPlayer
     public function __toString()
     {
         if($this->extended) {
-            return "#{$this->realId} \"{$this->name}\", SteamID: {$this->steamID} Score: {$this->score}, Time: {$this->connectTime}";
+            return "#{$this->realId} \"{$this->name}\", SteamID: {$this->steamId} Score: {$this->score}, Time: {$this->connectTime}";
         }
         else {
             return "#{$this->id} \"{$this->name}\", Score: {$this->score}, Time: {$this->connectTime}";
