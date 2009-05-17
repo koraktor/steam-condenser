@@ -23,7 +23,7 @@ require_once "steam/packets/A2S_SERVERQUERY_GETCHALLENGE_Packet.php";
  * @package    Steam Condenser (PHP)
  * @subpackage GameServer
  */
-class GameServer {
+abstract class GameServer {
 
     const REQUEST_CHALLENGE = 0;
     const REQUEST_INFO      = 1;
@@ -184,6 +184,10 @@ class GameServer {
             trigger_error("Expected {$expectedResponse}, but timed out. The server is probably offline.");
         }
     }
+
+    abstract public function rconAuth($password);
+
+    abstract public function rconExec($command);
 
     /**
      * @param SteamPacket $requestData
