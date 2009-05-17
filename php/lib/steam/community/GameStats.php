@@ -76,7 +76,7 @@ class GameStats {
      * @return GameAchievements[]
      */
     public function getAchievements() {
-        if($this->isPublic()) {
+        if(!$this->isPublic()) {
             return;
         }
 

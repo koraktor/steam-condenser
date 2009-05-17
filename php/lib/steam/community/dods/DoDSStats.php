@@ -33,9 +33,6 @@ class DoDSStats extends GameStats {
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'DoD:S');
-
-        if($this->privacyState == 'public') {
-        }
     }
 
     /**
@@ -45,6 +42,10 @@ class DoDSStats extends GameStats {
      * @return DoDSClass[]
      */
     public function getClassStats() {
+        if(!$this->isPublic()) {
+            return;
+        }
+
         if(empty($this->classStats)) {
             $this->classStats = array();
             foreach($this->xmlData->stats->classes->children() as $classData) {
@@ -62,6 +63,10 @@ class DoDSStats extends GameStats {
      * @return DoDSWeapon[]
      */
     public function getWeaponStats() {
+        if(!$this->isPublic()) {
+            return;
+        }
+        
         if(empty($this->weaponStats)) {
             foreach($this->xmlData->stats->weapons->children() as $classData) {
                 $this->weaponStats[(string) $classData['key']] = new DoDSWeapon($classData);

@@ -34,10 +34,13 @@ class SteamId {
     private $steamId64;
 
     /**
-     *
-     * @param $id
-     * @param $fetch
-     * @return unknown_type
+     * Creates a new SteamId object for the given SteamID, either numeric or the
+     * custom URL specified by the user. If fetch is true, fetch_data is used to
+     * load data into the object. fetch defaults to true.
+     * Due to restrictions in PHP's integer representation you have to use
+     * String representation for numeric IDs also, e.g. '76561197961384956'.
+     * @param String $id
+     * @param boolean $fetch
      */
     public function __construct($id, $fetch = true) {
         if(is_numeric($id)) {
@@ -53,7 +56,8 @@ class SteamId {
     }
 
     /**
-     *
+     * Fetchs data from the Steam Community by querying the XML version of the
+     * profile specified by the ID of this SteamID
      */
     private function fetchData() {
         $url = $this->getBaseUrl() . "?xml=1";

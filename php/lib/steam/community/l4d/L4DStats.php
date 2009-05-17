@@ -46,7 +46,7 @@ class L4DStats extends GameStats {
     public function __construct($steamId) {
         parent::__construct($steamId, 'L4D');
 
-        if($this->privacyState == 'public') {
+        if($this->isPublic()) {
             $this->mostRecentGame['difficulty'] = (string) $this->xmlData->stats->mostrecentgame->difficulty;
             $this->mostRecentGame['escaped']    = (bool)   $this->xmlData->stats->mostrecentgame->escaped;
             $this->mostRecentGame['movie']      = (string) $this->xmlData->stats->mostrecentgame->movie;

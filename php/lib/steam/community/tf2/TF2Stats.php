@@ -30,7 +30,7 @@ class TF2Stats extends GameStats {
     public function __construct($steamId) {
         parent::__construct($steamId, "TF2");
 
-        if($this->privacyState == 'public') {
+        if($this->isPublic()) {
             $this->accumulatedPoints = intval($this->xmlData->stats->accumulatedPoints);
         }
     }
@@ -40,6 +40,10 @@ class TF2Stats extends GameStats {
      * classes. If the classes haven't been parsed already, parsing is done now.
      */
     public function getClassStats() {
+        if(!$this->isPublic()) {
+            return;
+        }
+
         if(empty($this->classStats)) {
             foreach($this->xmlData->stats->classData as $classData) {
                 $this->classStats[$classData->className] = new TF2Class($classData);
