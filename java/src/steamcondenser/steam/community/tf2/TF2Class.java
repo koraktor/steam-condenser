@@ -1,120 +1,88 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
 
 package steamcondenser.steam.community.tf2;
 
 import org.w3c.dom.Element;
+import steamcondenser.steam.community.GameClass;
 
 /**
  * Represents the stats for a Team Fortress 2 class for a specific user
- * @author  Sebastian Staudt
- * @version $Id$
+ * @author Sebastian Staudt
  */
-public class TF2Class
-{
-    protected String className;
+public class TF2Class extends GameClass {
 
-    protected int maxBuildingsDestroyed;
+	protected int maxBuildingsDestroyed;
+	protected int maxCaptures;
+	protected int maxDamage;
+	protected int maxDefenses;
+	protected int maxDominations;
+	protected int maxKillAssists;
+	protected int maxKills;
+	protected int maxRevenges;
+	protected int maxScore;
+	protected int maxTimeAlive;
 
-    protected int maxCaptures;
+	/**
+	 * Creates a new instance of TF2Class based on the assigned XML data
+	 * @param classData
+	 */
+	public TF2Class(Element classData) {
+		this.name                  = classData.getElementsByTagName("className").item(0).getTextContent();
+		this.maxBuildingsDestroyed = Integer.parseInt(classData.getElementsByTagName("ibuildingsdestroyed").item(0).getTextContent());
+		this.maxCaptures           = Integer.parseInt(classData.getElementsByTagName("ipointcaptures").item(0).getTextContent());
+		this.maxDamage             = Integer.parseInt(classData.getElementsByTagName("idamagedealt").item(0).getTextContent());
+		this.maxDefenses           = Integer.parseInt(classData.getElementsByTagName("ipointdefenses").item(0).getTextContent());
+		this.maxDominations        = Integer.parseInt(classData.getElementsByTagName("idominations").item(0).getTextContent());
+		this.maxKillAssists        = Integer.parseInt(classData.getElementsByTagName("ikillassists").item(0).getTextContent());
+		this.maxKills              = Integer.parseInt(classData.getElementsByTagName("inumberofkills").item(0).getTextContent());
+		this.maxRevenges           = Integer.parseInt(classData.getElementsByTagName("irevenge").item(0).getTextContent());
+		this.maxScore              = Integer.parseInt(classData.getElementsByTagName("ipointsscored").item(0).getTextContent());
+		this.maxTimeAlive          = Integer.parseInt(classData.getElementsByTagName("iplaytime").item(0).getTextContent());
+		this.playTime              = Integer.parseInt(classData.getElementsByTagName("playtimeSeconds").item(0).getTextContent());
+	}
 
-    protected int maxDamage;
+	public int getMaxBuildingsDestroyed() {
+		return this.maxBuildingsDestroyed;
+	}
 
-    protected int maxDefenses;
+	public int getMaxCaptures() {
+		return this.maxCaptures;
+	}
 
-    protected int maxDominations;
+	public int getMaxDamage() {
+		return this.maxDamage;
+	}
 
-    protected int maxKillAssists;
+	public int getMaxDefenses() {
+		return this.maxDefenses;
+	}
 
-    protected int maxKills;
+	public int getMaxDominations() {
+		return this.maxDominations;
+	}
 
-    protected int maxRevenges;
+	public int getMaxKillAssists() {
+		return this.maxKillAssists;
+	}
 
-    protected int maxScore;
+	public int getMaxKills() {
+		return this.maxKills;
+	}
 
-    protected int maxTimeAlive;
+	public int getMaxRevenges() {
+		return this.maxRevenges;
+	}
 
-    protected int playTime;
+	public int getMaxScore() {
+		return this.maxScore;
+	}
 
-    /**
-     * Creates a new instance of TF2Class based on the assigned XML data
-     * @param classData
-     */
-    public TF2Class(Element classData)
-    {
-	this.className             = classData.getElementsByTagName("className").item(0).getTextContent();
-	this.maxBuildingsDestroyed = Integer.parseInt(classData.getElementsByTagName("ibuildingsdestroyed").item(0).getTextContent());
-	this.maxCaptures           = Integer.parseInt(classData.getElementsByTagName("ipointcaptures").item(0).getTextContent());
-	this.maxDamage             = Integer.parseInt(classData.getElementsByTagName("idamagedealt").item(0).getTextContent());
-	this.maxDefenses           = Integer.parseInt(classData.getElementsByTagName("ipointdefenses").item(0).getTextContent());
-	this.maxDominations        = Integer.parseInt(classData.getElementsByTagName("idominations").item(0).getTextContent());
-	this.maxKillAssists        = Integer.parseInt(classData.getElementsByTagName("ikillassists").item(0).getTextContent());
-	this.maxKills              = Integer.parseInt(classData.getElementsByTagName("inumberofkills").item(0).getTextContent());
-	this.maxRevenges           = Integer.parseInt(classData.getElementsByTagName("irevenge").item(0).getTextContent());
-	this.maxScore              = Integer.parseInt(classData.getElementsByTagName("ipointsscored").item(0).getTextContent());
-	this.maxTimeAlive          = Integer.parseInt(classData.getElementsByTagName("iplaytime").item(0).getTextContent());
-	this.playTime              = Integer.parseInt(classData.getElementsByTagName("playtimeSeconds").item(0).getTextContent());
-    }
-
-    public String getClassName()
-    {
-	return this.className;
-    }
-
-    public int getMaxBuildingsDestroyed()
-    {
-	return this.maxBuildingsDestroyed;
-    }
-
-    public int getMaxCaptures()
-    {
-	return this.maxCaptures;
-    }
-
-    public int getMaxDamage()
-    {
-	return this.maxDamage;
-    }
-
-    public int getMaxDefenses()
-    {
-	return this.maxDefenses;
-    }
-
-    public int getMaxDominations()
-    {
-	return this.maxDominations;
-    }
-
-    public int getMaxKillAssists()
-    {
-	return this.maxKillAssists;
-    }
-
-    public int getMaxKills()
-    {
-	return this.maxKills;
-    }
-
-    public int getMaxRevenges()
-    {
-	return this.maxRevenges;
-    }
-
-    public int getMaxScore()
-    {
-	return this.maxScore;
-    }
-
-    public int getMaxTimeAlive()
-    {
-	return this.maxTimeAlive;
-    }
-
-    public int getPlayTime()
-    {
-	return this.playTime;
-    }
+	public int getMaxTimeAlive() {
+		return this.maxTimeAlive;
+	}
 }
