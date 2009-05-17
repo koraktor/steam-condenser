@@ -144,9 +144,8 @@ class GameServer
       players = rcon_exec('status').split("\n")[7..-1]
 
       players.each do |player|
-        player_data = player.match(/# (\d+) "(.*)" (.*) (.*)/).to_a[1..-1]
-        player_data[3] = player_data[3].split
-        @player_hash[player_data[1]].add_info(*player_data.flatten)
+        player_data = split_player_status(player)
+        @player_hash[player_data[1]].add_info(*player_data)
       end
     end
   end

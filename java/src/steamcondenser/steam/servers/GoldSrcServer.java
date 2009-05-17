@@ -8,6 +8,8 @@ package steamcondenser.steam.servers;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 import steamcondenser.SteamCondenserException;
@@ -59,5 +61,19 @@ public class GoldSrcServer extends GameServer {
 	public String rconExec(String command)
 			throws IOException, TimeoutException, SteamCondenserException {
 		return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command).trim();
+	}
+
+	/**
+	 * Splits the player status obtained with "rcon status"
+	 * @param playerStatus
+	 * @return
+	 */
+	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
+		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.split(" ")));
+		playerData.remove(0);
+		playerData.set(0, playerData.get(2));
+		playerData.remove(2);
+		playerData.remove(4);
+		return playerData;
 	}
 }

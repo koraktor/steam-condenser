@@ -9,6 +9,7 @@ package steamcondenser.steam.servers;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
@@ -89,5 +90,16 @@ public class SourceServer extends GameServer {
 		}
 
 		return response.trim();
+	}
+
+	/**
+	 * Splits the player status obtained with "rcon status"
+	 * @param playerStatus
+	 * @return
+	 */
+	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
+		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.split(" ")));
+		playerData.remove(0);
+		return playerData;
 	}
 }

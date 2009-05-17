@@ -60,6 +60,8 @@ class GameServer {
      */
     protected $socket;
 
+    abstract public static function splitPlayerStatus($playerStatus);
+
     /**
      * @param InetAddress $serverIP
      * @param int $portNumber The listening port of the server, defaults to 27015
@@ -222,10 +224,7 @@ class GameServer {
             $players = array_slice($players, 7, sizeof($players) - 7);
 
             foreach($players as $player) {
-                preg_match('%# (\d+) "(.*)" (.*) (.*)%', $player, $playerData);
-                $morePlayerData = explode(' ', array_pop($playerData));
-                $playerData = array_merge($playerData, $morePlayerData);
-                array_shift($playerData);
+                $playerData = self::splitPlayerStatus($player);
                 $this->playerHash[$playerData[1]]->addInformation($playerData);
             }
         }

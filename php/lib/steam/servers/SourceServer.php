@@ -33,6 +33,19 @@ class SourceServer extends GameServer {
     private $rconRequestId;
 
     /**
+     * Splits the player status obtained with "rcon status"
+     * @param String $playerStatus
+     * @return String[]
+     */
+    public static function splitPlayerStatus($playerStatus) {
+        preg_match('%# (\d+) "(.*)" (.*)%', $player, $playerData);
+        array_shift($playerData);
+        $morePlayerData = explode(' ', array_pop($playerData));
+        $playerData = array_merge($playerData, $morePlayerData);
+        return $playerData;
+    }
+
+    /**
      * @param InetAddress $serverIP
      * @param int $portNumber The listening port of the server, defaults to 27015
      */

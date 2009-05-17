@@ -212,6 +212,8 @@ abstract public class GameServer {
 		this.socket.send(requestData);
 	}
 
+	abstract protected ArrayList<String> splitPlayerStatus(String playerStatus);
+
 	/**
 	 * Returns a String representation of this server
 	 * @return A human readable version of this server's information
@@ -300,8 +302,7 @@ abstract public class GameServer {
 			players = players.subList(7, players.size());
 
 			for(String player : players) {
-				ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(player.split(" ")));
-				playerData.remove(0);
+				ArrayList<String> playerData = this.splitPlayerStatus(player);
 				String playerName = playerData.get(1);
 				playerName = playerName.substring(1, playerName.length() - 1);
 				playerData.set(1, playerName);
