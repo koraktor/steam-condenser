@@ -17,6 +17,8 @@ class DoDSStats < GameStats
   # Returns a Hash of DoDSClass for this user containing all DoD:S classes.
   # If the classes haven't been parsed already, parsing is done now.
   def class_stats
+    return unless public?
+
     if @class_stats.nil?
       @class_stats = {}
       @xml_data.elements.each('stats/classes/class') do |class_data|
@@ -30,6 +32,8 @@ class DoDSStats < GameStats
   # Returns a Hash of DoDSWeapon for this user containing all DoD:S weapons.
   # If the weapons haven't been parsed already, parsing is done now.
   def weapon_stats
+    return unless public?
+
     if @weapon_stats.nil?
       @weapon_stats = {}
       @xml_data.elements.each('stats/weapons/weapon') do |weapon_data|

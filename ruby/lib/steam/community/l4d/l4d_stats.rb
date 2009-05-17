@@ -17,16 +17,20 @@ class L4DStats < GameStats
   def initialize(steam_id)
     super steam_id, 'L4D'
 
-    @most_recent_game = {}
-    @most_recent_game['difficulty']  = @xml_data.elements['stats/mostrecentgame/difficulty'].text
-    @most_recent_game['escaped']     = (@xml_data.elements['stats/mostrecentgame/bEscaped'].text == 1)
-    @most_recent_game['movie']       = @xml_data.elements['stats/mostrecentgame/movie'].text
-    @most_recent_game['time_played'] = @xml_data.elements['stats/mostrecentgame/time'].text
+    if public?
+      @most_recent_game = {}
+      @most_recent_game['difficulty']  = @xml_data.elements['stats/mostrecentgame/difficulty'].text
+      @most_recent_game['escaped']     = (@xml_data.elements['stats/mostrecentgame/bEscaped'].text == 1)
+      @most_recent_game['movie']       = @xml_data.elements['stats/mostrecentgame/movie'].text
+      @most_recent_game['time_played'] = @xml_data.elements['stats/mostrecentgame/time'].text
+    end
   end
 
   # Returns a Hash of favorites for this user like weapons and character.
   # If the favorites haven't been parsed already, parsing is done now.
   def favorites
+    return unless public?
+
     if @favorites.nil?
       @favorites = {}
       @favorites['campaign']                 = @xml_data.elements['stats/favorites/campaign'].text
@@ -45,6 +49,8 @@ class L4DStats < GameStats
   # Returns a Hash of lifetime statistics for this user like the time played.
   # If the lifetime statistics haven't been parsed already, parsing is done now.
   def lifetime_stats
+    return unless public?
+
     if @lifetime_stats.nil?
       @lifetime_stats = {}
       @lifetime_stats['finales_survived'] = @xml_data.elements['stats/lifetime/finales'].text.to_i
@@ -65,6 +71,8 @@ class L4DStats < GameStats
   # Returns a Hash of Survival statistics for this user like revived teammates.
   # If the Survival statistics haven't been parsed already, parsing is done now.
   def survival_stats
+    return unless public?
+
     if @survival_stats.nil?
       @survival_stats = {}
       @survival_stats['gold_medals']   = @xml_data.elements['stats/survival/goldmedals'].text.to_i
@@ -85,6 +93,8 @@ class L4DStats < GameStats
   # Returns a Hash of teamplay statistics for this user like revived teammates.
   # If the teamplay statistics haven't been parsed already, parsing is done now.
   def teamplay_stats
+    return unless public?
+
     if @teamplay_stats.nil?
       @teamplay_stats = {}
       @teamplay_stats['revived']                       = @xml_data.elements['stats/teamplay/revived'].text.to_i
@@ -107,6 +117,8 @@ class L4DStats < GameStats
   # won. If the Versus statistics haven't been parsed already, parsing is done
   # now.
   def versus_stats
+    return unless public?
+
     if @versus_stats.nil?
       @versus_stats = {}
       @versus_stats['games_played']                = @xml_data.elements['stats/versus/gamesplayed'].text.to_i
@@ -133,6 +145,8 @@ class L4DStats < GameStats
   # Returns a Hash of L4DWeapon for this user containing all Left4Dead weapons.
   # If the weapons haven't been parsed already, parsing is done now.
   def weapon_stats
+    return unless public?
+
     if @weapon_stats.nil?
       @weapon_stats = {}
       @xml_data.elements.each('stats/weapons/*') do |weapon_data|

@@ -10,7 +10,7 @@ class GameWeapon
   
   include AbstractClass
 
-  attr_reader :headshots, :shots, :id
+  attr_reader :kills, :id, :shots
 
   def initialize(weapon_data)
     @kills     = weapon_data.elements['kills'].text.to_i

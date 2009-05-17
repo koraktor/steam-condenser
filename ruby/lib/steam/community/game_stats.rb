@@ -47,7 +47,7 @@ class GameStats
     @xml_data = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@steam_id}/stats/#{game_name}?xml=1", {:proxy => true}).read).elements["playerstats"]
     
     @privacy_state = @xml_data.elements["privacyState"].text
-    if @privacy_state == "public"
+    if public?
       @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([1-9][0-9]+)")[1]
       @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
       @game_name          = @xml_data.elements["game"].elements["gameName"].text
@@ -58,6 +58,8 @@ class GameStats
   # Returns the achievements for this stats' user and game. If the achievements
   # haven't been parsed already, parsing is done now.
   def achievements
+    return unless public?
+
     if @achievements.nil?
       @achievements = Array.new
       @xml_data.elements["achievements"].elements.each("achievement") do |achievement|
@@ -81,6 +83,10 @@ class GameStats
   # this player.
   def achievements_percentage
     achievements_done.to_f / @achievements.size
+  end
+
+  def public?
+    @privacy_state == 'public'
   end
   
 end
