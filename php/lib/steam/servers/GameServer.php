@@ -226,7 +226,7 @@ abstract class GameServer {
             $this->rconAuth($rconPassword);
             $players = explode("\n", $this->rconExec('status'));
             $players = array_slice($players, 7, sizeof($players) - 7);
-            if(get_class() == 'GoldSrcServer') {
+            if(get_class($this) == 'GoldSrcServer') {
                 array_pop($players);
             }
 
