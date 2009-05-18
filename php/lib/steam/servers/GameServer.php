@@ -216,9 +216,9 @@ abstract class GameServer {
         return $this->ping;
     }
 
-	/**
-	 *
-	 */
+    /**
+     *
+     */
     public function updatePlayerInfo($rconPassword = null) {
         $this->handleResponseForRequest(self::REQUEST_PLAYER);
 
@@ -226,6 +226,9 @@ abstract class GameServer {
             $this->rconAuth($rconPassword);
             $players = explode("\n", $this->rconExec('status'));
             $players = array_slice($players, 7, sizeof($players) - 7);
+            if(get_class() == 'GoldSrcServer') {
+                array_pop($players);
+            }
 
             foreach($players as $player) {
                 $playerData = $this->splitPlayerStatus($player);

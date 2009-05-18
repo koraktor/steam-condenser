@@ -142,6 +142,9 @@ class GameServer
     unless rcon_password.nil? or @player_hash.empty?
       rcon_auth(rcon_password)
       players = rcon_exec('status').split("\n")[7..-1]
+      if is_a? GoldSrcServer
+        players.pop
+      end
 
       players.each do |player|
         player_data = split_player_status(player)

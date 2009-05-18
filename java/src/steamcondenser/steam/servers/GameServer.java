@@ -300,6 +300,9 @@ abstract public class GameServer {
 			this.rconAuth(rconPassword);
 			List<String> players = Arrays.asList(this.rconExec("status").split("\n"));
 			players = players.subList(7, players.size());
+			if(this instanceof GoldSrcServer) {
+				players.remove(players.size() - 1);
+			}
 
 			for(String player : players) {
 				ArrayList<String> playerData = this.splitPlayerStatus(player);
