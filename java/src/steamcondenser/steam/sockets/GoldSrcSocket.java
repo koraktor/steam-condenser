@@ -8,7 +8,7 @@ package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
@@ -74,7 +74,7 @@ public class GoldSrcSocket extends QuerySocket
             int packetCount, packetNumber;
             int requestId;
             byte packetNumberAndCount;
-            Vector<byte[]> splitPackets = new Vector<byte[]>();
+            ArrayList<byte[]> splitPackets = new ArrayList<byte[]>();
 
             do {
                 // Parsing of split packet headers
@@ -86,8 +86,8 @@ public class GoldSrcSocket extends QuerySocket
                 // Caching of split packet Data
                 splitData = new byte[this.buffer.remaining()];
                 this.buffer.get(splitData);
-                splitPackets.setSize(packetCount);
-                splitPackets.set(packetNumber - 1, splitData);
+                splitPackets.ensureCapacity(packetCount);
+                splitPackets.add(packetNumber - 1, splitData);
 
                 Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 

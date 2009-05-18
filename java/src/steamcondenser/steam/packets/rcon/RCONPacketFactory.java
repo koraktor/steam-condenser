@@ -11,7 +11,7 @@ public abstract class RCONPacketFactory extends SteamPacketFactory
     {
 	PacketBuffer packetBuffer = new PacketBuffer(rawData);
 
-	int packetSize = Integer.reverseBytes(packetBuffer.getInt());
+	packetBuffer.getInt();
 	int requestId = Integer.reverseBytes(packetBuffer.getInt());
 	int header = Integer.reverseBytes(packetBuffer.getInt());
 	String data = packetBuffer.getString();

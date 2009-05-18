@@ -69,7 +69,17 @@ abstract public class GameServer {
 	}
 
 	/**
-	 * @return An ArrayList of SteamPlayers representing all players on this server
+	 * @return An HashMap of SteamPlayers representing all players on this
+	 *         server
+	 */
+	public HashMap<String, SteamPlayer> getPlayers()
+			throws IOException, SteamCondenserException, TimeoutException {
+		return this.getPlayers(null);
+	}
+
+	/**
+	 * @return An HashMap of SteamPlayers extended with additional information
+	 *         from "rcon status" representing all players on this server
 	 */
 	public HashMap<String, SteamPlayer> getPlayers(String rconPassword)
 			throws IOException, SteamCondenserException, TimeoutException {

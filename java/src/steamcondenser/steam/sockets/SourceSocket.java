@@ -8,7 +8,7 @@ package steamcondenser.steam.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
@@ -19,7 +19,6 @@ import steamcondenser.steam.packets.SteamPacketFactory;
 /**
  * A socket used for connections to Source game servers.
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class SourceSocket extends QuerySocket
 {
@@ -42,7 +41,7 @@ public class SourceSocket extends QuerySocket
             byte[] splitData;
             int packetCount, packetNumber, requestId, splitSize;
             int packetChecksum = 0;
-            Vector<byte[]> splitPackets = new Vector<byte[]>();
+            ArrayList<byte[]> splitPackets = new ArrayList<byte[]>();
 
             do {
                 // Parsing of split packet headers
@@ -62,8 +61,8 @@ public class SourceSocket extends QuerySocket
                 // Caching of split packet Data
                 splitData = new byte[Math.min(splitSize, this.buffer.remaining())];
                 this.buffer.get(splitData);
-                splitPackets.setSize(packetCount);
-                splitPackets.set(packetNumber - 1, splitData);
+                splitPackets.ensureCapacity(packetCount);
+                splitPackets.add(packetNumber - 1, splitData);
 
                 // Receiving the next packet
                 if(splitPackets.size() < packetCount) {
@@ -79,7 +78,7 @@ public class SourceSocket extends QuerySocket
                 }
 
                 Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
-            } while(splitPackets.size() < packetCount && bytesRead > 0 && Integer.reverseBytes(this.buffer.getInt()) == -2);
+            } while(bytesRead > 0 && this.packetIsSplit());
 
             if(isCompressed) {
                 packet = SteamPacketFactory.reassemblePacket(splitPackets, true, splitSize, packetChecksum);

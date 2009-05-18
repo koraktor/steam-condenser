@@ -8,7 +8,7 @@ package steamcondenser.steam.packets;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.zip.CRC32;
 
 import org.apache.tools.bzip2.CBZip2InputStream;
@@ -21,7 +21,6 @@ import steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public abstract class SteamPacketFactory
 {
@@ -79,18 +78,18 @@ public abstract class SteamPacketFactory
         }
     }
 
-    public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets)
+    public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets)
             throws IOException, SteamCondenserException
     {
         return SteamPacketFactory.reassemblePacket(splitPackets, false, 0, 0);
     }
 
-    public static SteamPacket reassemblePacket(Vector<byte[]> splitPackets, boolean isCompressed, int uncompressedSize, int packetChecksum)
+    public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets, boolean isCompressed, int uncompressedSize, int packetChecksum)
             throws IOException, SteamCondenserException
     {
         byte[] packetData, tmpData;
         packetData = new byte[0];
-
+        
         for (byte[] splitPacket : splitPackets) {
             if (splitPacket == null) {
                 throw new UncompletePacketException();
