@@ -39,7 +39,7 @@ public class SteamCommunityTests
 	SteamId steamId = new SteamId("Koraktor");
 	System.out.println(steamId.getSteamId64());
 	TF2Stats tf2Stats = (TF2Stats) steamId.getGameStats("TF2");
-	System.out.println(tf2Stats.getClassStats().get(0).getClassName());
+	System.out.println(tf2Stats.getClassStats().get(0).getName());
     }
 
         /**
@@ -59,6 +59,6 @@ public class SteamCommunityTests
 	SteamId steamId = new SteamId(76561197961384956L);
 	System.out.println(steamId.getSteamId64());
 	TF2Stats tf2Stats = (TF2Stats) steamId.getGameStats("TF2");
-	System.out.println(tf2Stats.getClassStats().get(0).getClassName());
+	System.out.println(tf2Stats.getClassStats().get(0).getName());
     }
 }

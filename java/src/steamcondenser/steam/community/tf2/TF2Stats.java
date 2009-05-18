@@ -73,6 +73,10 @@ public class TF2Stats extends GameStats {
 	 *         Fortress 2 class
 	 */
 	public ArrayList<TF2Class> getClassStats() {
+		if(!this.isPublic()) {
+			return null;
+		}
+
 		if(this.classStats == null) {
 			this.classStats = new ArrayList<TF2Class>();
 			NodeList classes = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("classData");
