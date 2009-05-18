@@ -9,7 +9,7 @@ Currently it is implemented in Java, PHP and Ruby.
 
 * Linux, MacOS X or Windows
 * Ruby 1.8.6 or newer
-* [Ruby BZ2 module](http://raa.ruby-lang.org/project/bz2)
+* [Ruby BZ2 module](http://www.rubyforge.org/projects/bz2)
 
 ## License
 
@@ -24,6 +24,7 @@ file.
 ## See Also
 
 * [Steam Condenser home](http://koraktor.github.com/steam-condenser)
-* [Steam Condenser project page](http://github.com/koraktor/steam-condenser)
-* [Steam Condenser group](http://groups.google.com/group/steam-condenser)
-* [Steam Condenser's Ohloh page](http://www.ohloh.net/projects/steam-condenser)
+* [Documentation](http://www.rdoc.info/projects/koraktor/steam-condenser)
+* [GitHub project page](http://github.com/koraktor/steam-condenser)
+* [Google group](http://groups.google.com/group/steam-condenser)
+* [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
