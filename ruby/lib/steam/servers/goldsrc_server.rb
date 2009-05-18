@@ -10,7 +10,7 @@ class GoldSrcServer < GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(player_status)
-    player_data = player_status.match(/#( \d|\d\d) "(.*)" (\d+) (.*)/).to_a[1..-1]
+    player_data = player_status.match(/#( \d|\d\d) +"(.*)" +(\d+) +(.*)/).to_a[1..-1]
     player_data[3] = player_data[3].split
     player_data.flatten!
     player_data[0] = player_data[2]

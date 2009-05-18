@@ -15,7 +15,7 @@ class SourceServer < GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(player_status)
-    player_data = player_status.match(/#( \d|\d\d) "(.*)" (.*)/).to_a[1..-1]
+    player_data = player_status.match(/#( \d|\d\d) +"(.*)" +(.*)/).to_a[1..-1]
     player_data[2] = player_data[2].split
     player_data.flatten
   end
