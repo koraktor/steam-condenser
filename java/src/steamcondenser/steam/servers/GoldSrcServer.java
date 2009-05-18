@@ -69,8 +69,7 @@ public class GoldSrcServer extends GameServer {
 	 * @return
 	 */
 	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.split(" ")));
-		playerData.remove(0);
+		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split(" ")));
 		playerData.set(0, playerData.get(2));
 		playerData.remove(2);
 		playerData.remove(4);
