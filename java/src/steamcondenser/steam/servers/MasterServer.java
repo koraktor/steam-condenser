@@ -69,7 +69,7 @@ public class MasterServer
                     hostName = serverString.substring(0, serverString.lastIndexOf(":"));
                     portNumber = Integer.valueOf(serverString.substring(serverString.lastIndexOf(":") + 1));
 
-                    if(hostName.equals("0.0.0.0") && portNumber != 0) {
+                    if(!hostName.equals("0.0.0.0") && portNumber != 0) {
                         serverArray.add(new InetSocketAddress(hostName, portNumber));
                     }
                     else {
