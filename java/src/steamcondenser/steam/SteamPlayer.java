@@ -62,6 +62,13 @@ public class SteamPlayer {
 			this.state = playerData.get(5);
 		}
 	}
+	
+	/**
+	 * @return Returns the IP address and port of this player
+	 */
+	public String getAddress() {
+		return this.address;
+	}
 
 	/**
 	 * @return Returns the time this player is connected to the server
@@ -76,6 +83,13 @@ public class SteamPlayer {
 	public int getId() {
 		return this.id;
 	}
+	
+	/**
+	 * @return Returns the packet loss of this player
+	 */
+	public int getLoss() {
+		return this.loss;
+	}
 
 	/**
 	 * @return Returns the nickname of this player
@@ -83,12 +97,26 @@ public class SteamPlayer {
 	public String getName() {
 		return this.name;
 	}
+	
+	/**
+	 * @return Returns the ping of this player
+	 */
+	public int getPing() {
+		return this.ping;
+	}
 
 	/**
 	 * @return Returns the score of this player
 	 */
 	public int getScore() {
 		return this.score;
+	}
+	
+	/**
+	 * @return Returns the state of this player
+	 */
+	public String getState() {
+		return this.state;
 	}
 
 	/**
