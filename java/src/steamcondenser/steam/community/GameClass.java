@@ -11,7 +11,7 @@ package steamcondenser.steam.community;
  * Super class for classes representing player classes
  * @author Sebastian Staudt
  */
-abstract public class GameClass {
+public abstract class GameClass {
 
 	protected String name;
 

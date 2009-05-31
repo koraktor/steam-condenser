@@ -7,15 +7,12 @@
 
 package steamcondenser.steam.community.tf2;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
+import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.community.GameStats;
 
 /**
@@ -37,27 +34,10 @@ public class TF2Stats extends GameStats {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public TF2Stats(String customUrl)
-			throws ParserConfigurationException, SAXException, IOException {
-		super(customUrl, "TF2");
-		this.initialize();
-	}
-
-	/**
-	 * Creates a new object holding Team Fortress 2 statistics for the given
-	 * user
-	 * @param steamId
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	public TF2Stats(long steamId64)
-			throws ParserConfigurationException, SAXException, IOException {
-		super(steamId64, "TF2");
-		this.initialize();
-	}
-
-	private void initialize() {
+	public TF2Stats(Object customUrl)
+			throws SteamCondenserException {
+		super(customUrl, "tf2");
+		
 		if(this.isPublic()) {
 			this.accumulatedPoints = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("accumulatedPoints").item(0).getTextContent());
 		}
