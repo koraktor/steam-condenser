@@ -24,6 +24,8 @@ class DoDSClass extends GameClass {
 
     private $bombsDefused;
 
+    private $bombsPlanted;
+
     private $captures;
 
     private $deaths;

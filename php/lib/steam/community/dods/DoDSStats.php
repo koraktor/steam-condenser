@@ -3,11 +3,12 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2009, Sebastian Staudt
+ *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
  * @subpackage Steam Community
- * @version $Id$
  */
 
 require_once 'steam/community/GameStats.php';

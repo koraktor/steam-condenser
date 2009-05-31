@@ -48,7 +48,7 @@ class L4DStats extends GameStats {
 
         if($this->isPublic()) {
             $this->mostRecentGame['difficulty'] = (string) $this->xmlData->stats->mostrecentgame->difficulty;
-            $this->mostRecentGame['escaped']    = (bool)   $this->xmlData->stats->mostrecentgame->escaped;
+            $this->mostRecentGame['escaped']    = (bool)   $this->xmlData->stats->mostrecentgame->bEscaped;
             $this->mostRecentGame['movie']      = (string) $this->xmlData->stats->mostrecentgame->movie;
             $this->mostRecentGame['timePlayed'] = (string) $this->xmlData->stats->mostrecentgame->time;
         }
@@ -74,7 +74,7 @@ class L4DStats extends GameStats {
         return $this->favorites;
     }
 
-    public function getLifeTimeStats() {
+    public function getLifetimeStats() {
         if(!$this->isPublic()) {
             return;
         }
@@ -90,7 +90,7 @@ class L4DStats extends GameStats {
             $this->lifetimeStats['avgKitsUsed']               = (float)  $this->xmlData->stats->lifetime->kitsused;
             $this->lifetimeStats['avgPillsShared']            = (float)  $this->xmlData->stats->lifetime->pillsshared;
             $this->lifetimeStats['avgPillsUsed']              = (float)  $this->xmlData->stats->lifetime->pillused;
-            $this->lifetimeStats['timePlayed']                = (string) $this->xmlData->stats->lifetime->finales;
+            $this->lifetimeStats['timePlayed']                = (string) $this->xmlData->stats->lifetime->timeplayed;
         }
 
         return $this->lifetimeStats;
@@ -103,11 +103,11 @@ class L4DStats extends GameStats {
 
         if(empty($this->survivalStats)) {
           $this->survivalStats = array();
-          $this->survivalStats['gold_medals']   = (int)   $this->xmlData->stats->survival->goldmedals;
-          $this->survivalStats['silver_medals'] = (int)   $this->xmlData->stats->survival->silvermedals;
-          $this->survivalStats['bronze_medals'] = (int)   $this->xmlData->stats->survival->bronzemedals;
-          $this->survivalStats['rounds_played'] = (int)   $this->xmlData->stats->survival->roundsplayed;
-          $this->survivalStats['best_time']     = (float) $this->xmlData->stats->survival->besttime;
+          $this->survivalStats['goldMedals']   = (int)   $this->xmlData->stats->survival->goldmedals;
+          $this->survivalStats['silverMedals'] = (int)   $this->xmlData->stats->survival->silvermedals;
+          $this->survivalStats['bronzeMedals'] = (int)   $this->xmlData->stats->survival->bronzemedals;
+          $this->survivalStats['roundsPlayed'] = (int)   $this->xmlData->stats->survival->roundsplayed;
+          $this->survivalStats['bestTime']     = (float) $this->xmlData->stats->survival->besttime;
 
           $this->survivalStats['maps'] = array();
           foreach($this->xmlData->stats->survival->maps->children() as $mapData) {
@@ -126,12 +126,12 @@ class L4DStats extends GameStats {
         if(empty($this->teamplayStats)) {
           $this->teamplayStats = array();
           $this->teamplayStats['revived']                    = (int)    $this->xmlData->stats->teamplay->revived;
-          $this->teamplayStats['mostRevived_difficulty']     = (string) $this->xmlData->stats->teamplay->reviveddiff;
-          $this->teamplayStats['revivedAverage']             = (float)  $this->xmlData->stats->teamplay->revivedavg;
+          $this->teamplayStats['mostRevivedDifficulty']      = (string) $this->xmlData->stats->teamplay->reviveddiff;
+          $this->teamplayStats['avgRevived']                 = (float)  $this->xmlData->stats->teamplay->revivedavg;
           $this->teamplayStats['avgWasRevived']              = (float)  $this->xmlData->stats->teamplay->wasrevivedavg;
           $this->teamplayStats['protected']                  = (int)    $this->xmlData->stats->teamplay->protected;
           $this->teamplayStats['mostProtectedDifficulty']    = (string) $this->xmlData->stats->teamplay->protecteddiff;
-          $this->teamplayStats['protectedAverage']           = (float)  $this->xmlData->stats->teamplay->protectedavg;
+          $this->teamplayStats['avgProtected']               = (float)  $this->xmlData->stats->teamplay->protectedavg;
           $this->teamplayStats['avgWasProtected']            = (float)  $this->xmlData->stats->teamplay->wasprotectedavg;
           $this->teamplayStats['friendlyFireDamage']         = (int)    $this->xmlData->stats->teamplay->ffdamage;
           $this->teamplayStats['mostFriendlyFireDifficulty'] = (string) $this->xmlData->stats->teamplay->ffdamagediff;
@@ -148,21 +148,21 @@ class L4DStats extends GameStats {
 
         if(empty($this->versusStats)) {
           $this->versusStats = array();
-          $this->versusStats['games_played']                = (int)    $this->xmlData->stats->versus->gamesplayed;
-          $this->versusStats['games_completed']             = (int)    $this->xmlData->stats->versus->gamescompleted;
-          $this->versusStats['finales_survived']            = (int)    $this->xmlData->stats->versus->finales;
-          $this->versusStats['finales_survived_percentage'] = ($this->versusStats['games_played']) ? $this->versusStats['finales_survived'] / $this->versusStats['games_played'] : 0;
-          $this->versusStats['points']                      = (int)    $this->xmlData->stats->versus->gamesplayed;
-          $this->versusStats['most_points_infected']        = (string) $this->xmlData->stats->versus->gamesplayed;
-          $this->versusStats['gameswon']                    = (int)    $this->xmlData->stats->versus->gameswon;
-          $this->versusStats['gameslost']                   = (int)    $this->xmlData->stats->versus->gameslost;
-          $this->versusStats['highest_survivor_score']      = (int)    $this->xmlData->stats->versus->survivorscore;
+          $this->versusStats['gamesPlayed']               = (int)    $this->xmlData->stats->versus->gamesplayed;
+          $this->versusStats['gamesCompleted']            = (int)    $this->xmlData->stats->versus->gamescompleted;
+          $this->versusStats['finalesSurvived']           = (int)    $this->xmlData->stats->versus->finales;
+          $this->versusStats['finalesSurvivedPercentage'] = ($this->versusStats['games_played']) ? $this->versusStats['finales_survived'] / $this->versusStats['games_played'] : 0;
+          $this->versusStats['points']                    = (int)    $this->xmlData->stats->versus->points;
+          $this->versusStats['mostPointsInfected']        = (string) $this->xmlData->stats->versus->pointas;
+          $this->versusStats['gamesWon']                  = (int)    $this->xmlData->stats->versus->gameswon;
+          $this->versusStats['gamesLost']                 = (int)    $this->xmlData->stats->versus->gameslost;
+          $this->versusStats['highestSurvivorScore']      = (int)    $this->xmlData->stats->versus->survivorscore;
 
           foreach(array('boomer', 'hunter', 'smoker', 'tank') as $infected) {
             $this->versusStats[$infected] = array();
-            $this->versusStats[$infected]['special']      = (int)   $this->xmlData->stats->versus->{$infected . 'special'};
-            $this->versusStats[$infected]['most_damage']  = (int)   $this->xmlData->stats->versus->{$infected . 'dmg'};
-            $this->versusStats[$infected]['avg_lifespan'] = (float) $this->xmlData->stats->versus->{$infected . 'lifespan'};
+            $this->versusStats[$infected]['special']     = (int)   $this->xmlData->stats->versus->{$infected . 'special'};
+            $this->versusStats[$infected]['mostDamage']  = (int)   $this->xmlData->stats->versus->{$infected . 'dmg'};
+            $this->versusStats[$infected]['avgLifespan'] = (float) $this->xmlData->stats->versus->{$infected . 'lifespan'};
           }
         }
 
