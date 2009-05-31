@@ -79,7 +79,7 @@ class ByteBuffer
   end
   
   def get_long
-    return self.get(4).unpack("l")[0]
+    return self.get(4).unpack("V")[0]
   end
 
   def get_short

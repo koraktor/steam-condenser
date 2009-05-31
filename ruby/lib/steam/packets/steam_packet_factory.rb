@@ -1,9 +1,9 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
+
+require 'zlib'
 
 require "abstract_class"
 require "steam/packets/s2a_info_detailed_packet"
@@ -70,9 +70,10 @@ class SteamPacketFactory
     packet_data = split_packets.join ""
     
     if is_compressed
-      if defined? BZ2
+      begin
+        require 'bz2'
         packet_data = BZ2.uncompress(packet_data)
-      else
+      rescue LoadError
         raise SteamCondenserException.new("You need to install the libbzip2 interface for Ruby.")
       end
       

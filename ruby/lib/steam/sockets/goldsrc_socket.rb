@@ -24,7 +24,7 @@ class GoldSrcSocket < SteamSocket
   def get_reply
     bytes_read = self.receive_packet 1400
     
-    if @buffer.get_long == -2
+    if @buffer.get_long == 0xFFFFFFFE
       split_packets = Array.new
       begin
         # Parsing of split packet headers
@@ -48,7 +48,7 @@ class GoldSrcSocket < SteamSocket
         else
           bytes_read = 0
         end
-      end while bytes_read > 0 && @buffer.get_long == -2
+      end while bytes_read > 0 && @buffer.get_long == 0xFFFFFFFE
       
       packet = SteamPacketFactory.reassemble_packet(split_packets)
         
