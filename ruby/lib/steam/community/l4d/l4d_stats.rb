@@ -13,9 +13,9 @@ class L4DStats < GameStats
   attr_reader :xml_data
 
   # Creates a L4DStats object by calling the super constructor with the game
-  # name "L4D"
+  # name "l4d"
   def initialize(steam_id)
-    super steam_id, 'L4D'
+    super steam_id, 'l4d'
 
     if public?
       @most_recent_game = {}
@@ -99,11 +99,11 @@ class L4DStats < GameStats
       @teamplay_stats = {}
       @teamplay_stats['revived']                       = @xml_data.elements['stats/teamplay/revived'].text.to_i
       @teamplay_stats['most_revived_difficulty']       = @xml_data.elements['stats/teamplay/reviveddiff'].text
-      @teamplay_stats['revived_average']               = @xml_data.elements['stats/teamplay/revivedavg'].text.to_f
+      @teamplay_stats['avg_revived']                   = @xml_data.elements['stats/teamplay/revivedavg'].text.to_f
       @teamplay_stats['avg_was_revived']               = @xml_data.elements['stats/teamplay/wasrevivedavg'].text.to_f
       @teamplay_stats['protected']                     = @xml_data.elements['stats/teamplay/protected'].text.to_i
       @teamplay_stats['most_protected_difficulty']     = @xml_data.elements['stats/teamplay/protecteddiff'].text
-      @teamplay_stats['protected_average']             = @xml_data.elements['stats/teamplay/protectedavg'].text.to_f
+      @teamplay_stats['avg_protected']                 = @xml_data.elements['stats/teamplay/protectedavg'].text.to_f
       @teamplay_stats['avg_was_protected']             = @xml_data.elements['stats/teamplay/wasprotectedavg'].text.to_f
       @teamplay_stats['friendly_fire_damage']          = @xml_data.elements['stats/teamplay/ffdamage'].text.to_i
       @teamplay_stats['most_friendly_fire_difficulty'] = @xml_data.elements['stats/teamplay/ffdamagediff'].text
@@ -114,8 +114,8 @@ class L4DStats < GameStats
   end
 
   # Returns a Hash of Versus statistics for this user like percentage of rounds
-  # won. If the Versus statistics haven't been parsed already, parsing is done
-  # now.
+  # won.
+  # If the Versus statistics haven't been parsed already, parsing is done now.
   def versus_stats
     return unless public?
 
@@ -125,10 +125,10 @@ class L4DStats < GameStats
       @versus_stats['games_completed']             = @xml_data.elements['stats/versus/gamescompleted'].text.to_i
       @versus_stats['finales_survived']            = @xml_data.elements['stats/versus/finales'].text.to_i
       @versus_stats['finales_survived_percentage'] = @versus_stats['finales_survived'].to_f / @versus_stats['games_played']
-      @versus_stats['points']                      = @xml_data.elements['stats/versus/gamesplayed'].text.to_i
-      @versus_stats['most_points_infected']        = @xml_data.elements['stats/versus/gamesplayed'].text
-      @versus_stats['gameswon']                    = @xml_data.elements['stats/versus/gameswon'].text.to_i
-      @versus_stats['gameslost']                   = @xml_data.elements['stats/versus/gameslost'].text.to_i
+      @versus_stats['points']                      = @xml_data.elements['stats/versus/points'].text.to_i
+      @versus_stats['most_points_infected']        = @xml_data.elements['stats/versus/pointsas'].text
+      @versus_stats['games_won']                   = @xml_data.elements['stats/versus/gameswon'].text.to_i
+      @versus_stats['games_lost']                  = @xml_data.elements['stats/versus/gameslost'].text.to_i
       @versus_stats['highest_survivor_score']      = @xml_data.elements['stats/versus/survivorscore'].text.to_i
 
       %w(boomer hunter smoker tank).each do |infected|
