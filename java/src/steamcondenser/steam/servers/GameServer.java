@@ -169,7 +169,7 @@ abstract public class GameServer {
 
 			SteamPacket responsePacket = this.getReply();
 
-			if(responsePacket instanceof S2A_INFO_BasePacket) {
+			if(responsePacket.getClass().getSuperclass().equals(S2A_INFO_BasePacket.class)) {
 				this.serverInfo = ((S2A_INFO_BasePacket) responsePacket).getInfoHash();
 			} else if(responsePacket instanceof S2A_PLAYER_Packet) {
 				this.playerHash = ((S2A_PLAYER_Packet) responsePacket).getPlayerHash();
