@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 require "steam/sockets/steam_socket"
 
@@ -12,7 +10,7 @@ class MasterServerSocket < SteamSocket
   def get_reply
     self.receive_packet 1500
     
-    if @buffer.get_long != -1
+    if @buffer.get_long != 0xFFFFFFFF
       raise Exception.new("Master query response has wrong packet header.")
     end
     

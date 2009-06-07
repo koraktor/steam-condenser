@@ -24,7 +24,7 @@ class S2A_PLAYER_Packet < SteamPacket
     @player_hash = {}
 
     while @content_data.remaining > 0
-      player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_long, @content_data.get_float
+      player_data = @content_data.get_byte, @content_data.get_string, @content_data.get_signed_long, @content_data.get_float
       @player_hash[player_data[1]] = SteamPlayer.new(*player_data[0..3])
     end
   end

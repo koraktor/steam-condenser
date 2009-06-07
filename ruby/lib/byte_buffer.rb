@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 require "exceptions/buffer_underflow_exception"
 
@@ -84,6 +82,10 @@ class ByteBuffer
 
   def get_short
     return self.get(2).unpack("v")[0]
+  end
+
+  def get_signed_long
+    return self.get(4).unpack('l')[0]
   end
   
   def get_string
