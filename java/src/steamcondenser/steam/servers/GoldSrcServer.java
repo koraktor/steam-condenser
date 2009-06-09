@@ -16,6 +16,8 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.sockets.GoldSrcSocket;
 
 /**
+ * A GoldSrc game server.
+ * 
  * @author Sebastian Staudt
  */
 public class GoldSrcServer extends GameServer {
@@ -66,7 +68,7 @@ public class GoldSrcServer extends GameServer {
 	/**
 	 * Splits the player status obtained with "rcon status"
 	 * @param playerStatus
-	 * @return
+	 * @return Split player data
 	 */
 	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
 		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split(" ")));

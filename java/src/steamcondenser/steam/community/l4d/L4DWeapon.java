@@ -24,7 +24,7 @@ public class L4DWeapon extends GameWeapon {
 	/**
 	 * Creates a new instance of L4DWeapon based on the assigned XML data
 	 * 
-	 * @param $weaponData
+	 * @param weaponData
 	 */
 	public L4DWeapon(Element weaponData) {
 		super(weaponData);

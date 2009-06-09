@@ -20,8 +20,7 @@ import steamcondenser.steam.community.GameStats;
  * The DoDSStats class represents the game statistics for a single user in Day
  * of Defeat: Source
  * 
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author Sebastian Staudt
  */
 public class DoDSStats extends GameStats {
 

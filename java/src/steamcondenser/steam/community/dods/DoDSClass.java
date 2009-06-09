@@ -43,7 +43,7 @@ public class DoDSClass extends GameClass {
 	/**
 	 * Creates a new instance of DoDSClass based on the assigned XML data
 	 * 
-	 * @param $classData
+	 * @param classData
 	 */
 	public DoDSClass(Element classData) {
 		this.blocks = Integer.parseInt(classData.getElementsByTagName("blocks")

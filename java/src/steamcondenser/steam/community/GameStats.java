@@ -88,10 +88,8 @@ public class GameStats {
 	}
 
 	/**
-	 * Returns the achievements for this stats' user and game. If the
+	 * @return Returns the achievements for this stats' user and game. If the
 	 * achievements haven't been parsed already, parsing is done now.
-	 * 
-	 * @return
 	 */
 	public ArrayList<GameAchievement> getAchievements() {
 		if(this.achievements == null) {

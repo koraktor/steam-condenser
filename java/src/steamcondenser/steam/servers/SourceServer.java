@@ -25,6 +25,7 @@ import steamcondenser.steam.sockets.SourceSocket;
 
 /**
  * A Source game server.
+ * 
  * @author Sebastian Staudt
  */
 public class SourceServer extends GameServer {
@@ -95,10 +96,9 @@ public class SourceServer extends GameServer {
 	/**
 	 * Splits the player status obtained with "rcon status"
 	 * @param playerStatus
-	 * @return
+	 * @return Split player data
 	 */
 	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split(" ")));
-		return playerData;
+		return new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split(" ")));
 	}
 }

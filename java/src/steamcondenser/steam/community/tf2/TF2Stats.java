@@ -34,9 +34,9 @@ public class TF2Stats extends GameStats {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public TF2Stats(Object customUrl)
+	public TF2Stats(Object steamId)
 			throws SteamCondenserException {
-		super(customUrl, "tf2");
+		super(steamId, "tf2");
 		
 		if(this.isPublic()) {
 			this.accumulatedPoints = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("accumulatedPoints").item(0).getTextContent());
