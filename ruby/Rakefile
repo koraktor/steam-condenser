@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |s|
   s.homepage = 'http://github.com/koraktor/steam-condenser'
   
   s.files = %w(README.md Rakefile LICENSE) + src_files + test_files
+  s.rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 end
 
 # Create a rake task +:rdoc+ to build the documentation
