@@ -2,19 +2,20 @@
 
 Gem::Specification.new do |s|
   s.name = %q{steam-condenser}
-  s.version = "0.7.0"
+  s.version = "0.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sebastian Staudt"]
-  s.date = %q{2009-04-20}
+  s.date = %q{2009-06-10}
   s.description = %q{A multi-language library for querying Source, GoldSrc servers and Steam master servers}
   s.email = %q{koraktor@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
-    "Rakefile"
+    "README.md"
   ]
   s.files = [
     "LICENSE",
+    "README.md",
     "Rakefile",
     "lib/abstract_class.rb",
     "lib/byte_buffer.rb",
@@ -25,8 +26,17 @@ Gem::Specification.new do |s|
     "lib/exceptions/steam_condenser_exception.rb",
     "lib/exceptions/timeout_exception.rb",
     "lib/socket_channel.rb",
+    "lib/steam/community/dods/dods_class.rb",
+    "lib/steam/community/dods/dods_stats.rb",
+    "lib/steam/community/dods/dods_weapon.rb",
     "lib/steam/community/game_achievement.rb",
+    "lib/steam/community/game_class.rb",
     "lib/steam/community/game_stats.rb",
+    "lib/steam/community/game_weapon.rb",
+    "lib/steam/community/l4d/l4d_explosive.rb",
+    "lib/steam/community/l4d/l4d_map.rb",
+    "lib/steam/community/l4d/l4d_stats.rb",
+    "lib/steam/community/l4d/l4d_weapon.rb",
     "lib/steam/community/steam_group.rb",
     "lib/steam/community/steam_id.rb",
     "lib/steam/community/tf2/tf2_class.rb",
