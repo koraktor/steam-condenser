@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+This code is free software; you can redistribute it and/or modify it under the
+terms of the new BSD License.
+
+Copyright (c) 2009, Sebastian Staudt
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:annotation>
+		<xsd:documentation>
+			The element gameFriendlyName is only used in "playerstats/game" and
+			does not have to exist in other structures.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="gameType">
+		<xsd:sequence>
+			<xsd:element name="gameFriendlyName" type="xsd:string"
+				minOccurs="0"/>
+			<xsd:element name="gameName" type="xsd:string" />
+			<xsd:element name="gameLink" type="xsd:anyURI" />
+			<xsd:element name="gameIcon" type="xsd:anyURI" />
+			<xsd:element name="gameLogo" type="xsd:anyURI" />
+			<xsd:element name="gameLogoSmall" type="xsd:anyURI" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="privacyStateType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="friend" />
+			<xsd:enumeration value="private" />
+			<xsd:enumeration value="public" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+</xsd:schema>
