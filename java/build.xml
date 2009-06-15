@@ -14,7 +14,12 @@
     <property name="test.path" location="test" />
     <property name="test-build.path" location="test-build" />
 
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar" />
+    </path>
+
     <path id="classpath.test">
+        <path refid="classpath" />
         <pathelement path="${build.path}" />
         <pathelement path="${test-build.path}" />
     </path>
@@ -25,14 +30,12 @@
 
     <target name="compile" depends="init" description="Compile sources">
         <mkdir dir="${build.path}" />
-        <javac srcdir="${src.path}" destdir="${build.path}" />
+        <javac srcdir="${src.path}" classpathref="classpath" destdir="${build.path}" />
     </target>
 
     <target name="compile-tests" depends="compile" description="Compile test classes">
         <mkdir dir="${test-build.path}" />
-        <javac srcdir="${test.path}" destdir="${test-build.path}">
-            <classpath refid="classpath.test" />
-        </javac>
+        <javac srcdir="${test.path}" classpathref="classpath.test" destdir="${test-build.path}" />
     </target>
 
     <target name="dist" depends="compile, doc, vcs-info" description="Generate JAR file">
