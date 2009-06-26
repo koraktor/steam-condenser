@@ -128,6 +128,20 @@ div.code-sample a.language-selected {
   color:        #215373;
 }
 
+div.download a {
+  font-weight: bold;
+}
+
+div.download h3 {
+  border-bottom: 1px solid #215373;
+}
+
+div.download pre {
+  color:   #808080;
+  display: block;
+  margin: 5px;
+}
+
 div.highlight {
   background: #eeeeff;
   border:     1px solid #215373;
