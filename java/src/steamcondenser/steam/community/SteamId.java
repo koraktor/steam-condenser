@@ -1,4 +1,3 @@
-
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
@@ -10,7 +9,6 @@ package steamcondenser.steam.community;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
@@ -162,13 +160,6 @@ public class SteamId {
 			throws SteamCondenserException {
 		try {
 			String url = this.getBaseUrl() + "?xml=1";
-
-			HttpURLConnection.setFollowRedirects(false);
-			HttpURLConnection connection = (HttpURLConnection) (new URL(url)).openConnection();
-			if(connection.getHeaderField("Location") != null) {
-				url = connection.getHeaderField("Location") + "?xml=1";
-			}
-
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Element profile = parser.parse(url).getDocumentElement();
 

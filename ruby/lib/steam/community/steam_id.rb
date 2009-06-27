@@ -67,13 +67,7 @@ class SteamId
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
   def fetch_data
-    url = base_url << '?xml=1'
-
-    profile_url = open(url, {:proxy => true})
-    if profile_url.base_uri.to_s != url
-      profile_url = open(profile_url.base_uri.to_s + "?xml=1", {:proxy => true})
-    end
-    
+    profile_url = open(base_url + '?xml=1', {:proxy => true})
     profile = REXML::Document.new(profile_url.read).elements["profile"]
       
     @image_url        = profile.elements["avatarIcon"].text[0..-5]

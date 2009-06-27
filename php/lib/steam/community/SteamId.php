@@ -61,12 +61,6 @@ class SteamId {
      */
     private function fetchData() {
         $url = $this->getBaseUrl() . "?xml=1";
-
-        $headers = get_headers($url, true);
-        if(!empty($headers['Location']) && $headers["Location"] != $url) {
-            $url = $headers["Location"] . "?xml=1";
-        }
-
         $profile = new SimpleXMLElement(file_get_contents($url));
 
         $this->imageUrl = (string) $profile->avatarIcon;
