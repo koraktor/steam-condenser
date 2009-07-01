@@ -19,13 +19,13 @@ def build_gem
   $stdout.flush
   output = `rake build 2>&1`
   if $?.exitstatus != 0
-    puts ' failed!'
+    puts " \033[0;31mfailed!\033[0;0m"
     puts 'Output was:', output
     @@exit_code = $?.exitstatus
     FileUtils.cd('../..')
     cleanup
   end
-  puts ' OK!'
+  puts " \033[1;32mOK!\033[0;0m"
   puts 'Moving Gem to temporary directory...'
   FileUtils.mv("pkg/steam-condenser-#{RELEASE_VERSION}.gem", '..')
   FileUtils.cd('../..')
@@ -38,13 +38,13 @@ def build_jar
   $stdout.flush
   output = `ant -Drelease.version=#{RELEASE_VERSION} 2>&1`
   if $?.exitstatus != 0
-    puts ' failed!'
+    puts " \033[0;31mfailed!\033[0;0m"
     puts 'Output was:', output
     @@exit_code = $?.exitstatus
     FileUtils.cd('../..')
     cleanup
   end
-  puts ' OK!'
+  puts " \033[1;32mOK!\033[0;0m"
   puts 'Moving JAR to temporary directory...'
   FileUtils.mv("dist/steam-condenser-#{RELEASE_VERSION}.jar", '..')
   FileUtils.cd('../..')
@@ -52,7 +52,7 @@ end
 
 # This function is a wrapper for building the Ruby Gem and Java JAR
 def build_packages
-  puts "Now building release packages for Steam Condenser version #{RELEASE_VERSION}."
+  puts "Now building release packages for Steam Condenser version \033[1;37m#{RELEASE_VERSION}\033[0;0m."
   build_gem
   build_jar
 end
@@ -103,7 +103,7 @@ def check_version
   else
     git_tags = `git tag`.split
     unless git_tags.include? RELEASE_VERSION
-      puts "The Git repository doesn't contain a tag named \"#{RELEASE_VERSION}\"."
+      puts "The Git repository doesn't contain a tag named \033[1;37m#{RELEASE_VERSION}\033[0;0m."
       $stdout << 'Do you want to create it now? [n]: '
       if $stdin.readchar.chr == 'y'
         puts 'Creating Git tag...'
@@ -119,7 +119,7 @@ end
 # selected version string
 def checkout_tmp
   FileUtils.mkdir('tmp')
-  puts "Checking out contents of tag \"#{RELEASE_VERSION}\" to tmp/"
+  puts "Checking out contents of tag \033[1;37m#{RELEASE_VERSION}\033[0;0m to tmp/"
   `git archive #{RELEASE_VERSION} | tar xC tmp`
   return $?.exitstatus == 0
 end
@@ -147,9 +147,9 @@ def checksums
   end
 
   @@checksums.each do |file, checksum|
-    puts "    #{file}:"
-    puts "\tMD5:  #{checksum[:md5]}"
-    puts "\tSHA1: #{checksum[:sha1]}"
+    puts "    \033[1;37m#{file}\033[0;0m:"
+    puts "\t\033[1;30mMD5:  \033[1;32m#{checksum[:md5]}\033[0;0m"
+    puts "\t\033[1;30mSHA1: \033[1;32m#{checksum[:sha1]}\033[0;0m"
   end
 
   FileUtils.cd('..')
@@ -194,3 +194,4 @@ build_src_archives unless $*.include? '--no-archives'
 checksums
 move_to_target_dir
 cleanup unless $*.include? '--no-cleanup'
+puts "\033[1;32mdone.\033[0;0m"
