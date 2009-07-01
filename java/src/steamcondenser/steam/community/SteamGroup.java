@@ -31,11 +31,11 @@ public class SteamGroup {
 	private ArrayList<SteamId> members;
 
 	public SteamGroup(long id) {
-		this(id, false);
+		this(id, true);
 	}
 	
 	public SteamGroup(String id) {
-		this(id, false);
+		this(id, true);
 	}
 
 	public SteamGroup(long id, boolean fetch) {

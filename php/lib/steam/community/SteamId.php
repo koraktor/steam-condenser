@@ -94,7 +94,7 @@ class SteamId {
         }
 
         foreach($profile->groups->group as $group) {
-            $this->groups[] = new SteamGroup((string) $group->groupID64);
+            $this->groups[] = new SteamGroup((string) $group->groupID64, false);
         }
 
         foreach($profile->weblinks->weblink as $link) {

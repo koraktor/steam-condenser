@@ -38,7 +38,7 @@ class SteamGroup {
      * @param String $id
      * @param boolean $fetch
      */
-    public function __construct($id, $fetch = false) {
+    public function __construct($id, $fetch = true) {
         if(is_numeric($id)) {
             $this->groupId64 = $id;
         }

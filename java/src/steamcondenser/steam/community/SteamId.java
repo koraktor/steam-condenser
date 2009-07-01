@@ -4,6 +4,7 @@
  *
  * Copyright (c) 2008-2009, Sebastian Staudt
  */
+
 package steamcondenser.steam.community;
 
 import java.io.ByteArrayInputStream;
@@ -214,7 +215,7 @@ public class SteamId {
 					this.groups = new SteamGroup[groupsNodeList.getLength()];
 					for(int i = 0; i < groupsNodeList.getLength(); i++) {
 						Element group = (Element) groupsNodeList.item(i);
-						this.groups[i] = new SteamGroup(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()));
+						this.groups[i] = new SteamGroup(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()), false);
 					}
 				}
 			}

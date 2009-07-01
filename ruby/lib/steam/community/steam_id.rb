@@ -150,7 +150,7 @@ class SteamId
       
       @groups = Array.new
       profile.elements['groups'].elements.each('group') do |group|
-        @groups << SteamGroup.new(group.elements['groupID64'].text.to_i)
+        @groups << SteamGroup.new(group.elements['groupID64'].text.to_i, false)
       end
       
       @links = Hash.new

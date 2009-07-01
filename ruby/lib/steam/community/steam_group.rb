@@ -40,7 +40,7 @@ class SteamGroup
   end
 
   # Creates a SteamGroup object with the given group ID
-  def initialize(id, fetch = false)
+  def initialize(id, fetch = true)
     if id.is_a? Numeric
       @group_id64 = id
     else
