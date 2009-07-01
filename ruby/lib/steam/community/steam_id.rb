@@ -58,7 +58,9 @@ class SteamId
   # Overrides the default constructor.
   def self.new(id, fetch = true)
     if cached?(id)
-      @@steam_ids[id]
+      steam_id = @@steam_ids[id]
+      steam_id.fetch_data if fetch and !steam_id.fetched?
+      steam_id
     else
       super(id, fetch)
     end
@@ -73,6 +75,8 @@ class SteamId
     else
       @custom_url = id.downcase
     end
+
+    @fetched = false
 
     begin
       self.fetch_data if fetch
@@ -159,7 +163,7 @@ class SteamId
       end
     end
 
-    true
+    @fetched = true
   end
 
   # Fetches the games this user owns
@@ -190,6 +194,11 @@ class SteamId
     end
 
     true
+  end
+
+  # Returns whether the data for this SteamID has already been fetched
+  def fetched?
+    @fetched
   end
   
   # Returns the URL of the full version of this user's avatar

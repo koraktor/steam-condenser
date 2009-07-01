@@ -33,7 +33,9 @@ class SteamGroup
   # Overrides the default constructor.
   def self.new(id, fetch = true)
     if cached?(id)
-      @@steam_groups[id]
+      group = @@steam_groups[id]
+      group.fetch_members if fetch and !group.fetched?
+      group
     else
       super(id, fetch)
     end
@@ -46,6 +48,8 @@ class SteamGroup
     else
       @custom_url = id
     end
+
+    @fetched = false
 
     begin
       fetch_members if fetch
@@ -97,7 +101,12 @@ class SteamGroup
       end
     end while page < total_pages
 
-    true
+    @fetched = true
+  end
+
+  # Returns whether the data for this group has already been fetched
+  def fetched?
+    @fetched
   end
 
   # Returns the number of members this group has.
