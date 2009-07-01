@@ -15,7 +15,8 @@ test_files = Dir.glob(File.join("test", "**", "*.rb"))
 Jeweler::Tasks.new do |s|
   s.name = "steam-condenser"
   s.date = Time.now
-  s.description = s.summary = 'A multi-language library for querying Source, GoldSrc servers and Steam master servers'
+  s.summary = 'Steam Condenser - A Steam query library'
+  s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
   s.authors = ['Sebastian Staudt']
   s.email = 'koraktor@gmail.com'
   s.homepage = 'http://github.com/koraktor/steam-condenser'
