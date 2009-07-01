@@ -11,6 +11,8 @@ require 'steam/community/steam_id'
 # The SteamGroup class represents a group in the Steam Community
 class SteamGroup
 
+  attr_reader :custom_url, :group_id64
+
   # Creates a SteamGroup object with the given group ID
   def initialize(id, fetch = false)
     if id.is_a? Numeric

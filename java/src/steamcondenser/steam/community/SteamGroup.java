@@ -81,6 +81,20 @@ public class SteamGroup {
 		
 		return true;
 	}
+
+        /**
+         * Returns the custom URL of this group
+         */
+        public String getCustomUrl() {
+            return this.customUrl;
+        }
+
+        /**
+         * Returns the 64bit group ID
+         */
+        public long getGroupId64() {
+            return this.groupId64;
+        }
 	
 	public String getBaseUrl() {
 		if(this.customUrl == null) {

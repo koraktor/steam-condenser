@@ -85,6 +85,22 @@ class SteamGroup {
     }
 
     /**
+     * Returns the custom URL of this group
+     * @return String
+     */
+    public function getCustomUrl() {
+        return $this->customUrl;
+    }
+
+    /**
+     * Returns the 64bit group ID
+     * @return int
+     */
+    public function getGroupId64() {
+        return $this->groupId64;
+    }
+
+    /**
      * Returns the number of members this group has.
      * If the members have already been fetched with +fetch_members+ the size of
      * the member array is returned. Otherwise the group size is separately
