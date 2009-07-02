@@ -31,8 +31,8 @@ class SteamGroup
   # This checks the cache for an existing group. If it exists it is returned.
   # Otherwise a new SteamGroup object is created.
   # Overrides the default constructor.
-  def self.new(id, fetch = true)
-    if cached?(id)
+  def self.new(id, fetch = true, bypass_cache = false)
+    if cached?(id) and !bypass_cache
       group = @@steam_groups[id]
       group.fetch_members if fetch and !group.fetched?
       group

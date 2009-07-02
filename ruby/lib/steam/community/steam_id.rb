@@ -56,8 +56,8 @@ class SteamId
   # This checks the cache for an existing SteamID. If it exists it is returned.
   # Otherwise a new SteamID is created.
   # Overrides the default constructor.
-  def self.new(id, fetch = true)
-    if cached?(id)
+  def self.new(id, fetch = true, bypass_cache = false)
+    if cached?(id) and !bypass_cache
       steam_id = @@steam_ids[id]
       steam_id.fetch_data if fetch and !steam_id.fetched?
       steam_id
