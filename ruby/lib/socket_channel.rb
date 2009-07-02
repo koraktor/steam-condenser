@@ -1,11 +1,10 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
-require "byte_buffer"
+require 'byte_buffer'
+require 'timeout'
 
 class SocketChannel
   
@@ -16,8 +15,10 @@ class SocketChannel
   end
   
   def connect(*args)
-    @socket = TCPSocket.new args[0][0][3], args[0][0][1]
-    @connected = true
+    timeout(1) do
+      @socket = TCPSocket.new args[0][0][3], args[0][0][1]
+      @connected = true
+    end
     
     return self
   end
