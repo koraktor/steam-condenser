@@ -32,7 +32,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include ["lib/**/*.rb", "test/**/*.rb", "LICENSE", "README.md"]
   rdoc.main = "README.md"
   rdoc.rdoc_dir = "rdoc"
-  rdoc.options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
+  rdoc.options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/blob/master/ruby/%s"]
 end
 
 # Task for cleaning documentation and package directories
