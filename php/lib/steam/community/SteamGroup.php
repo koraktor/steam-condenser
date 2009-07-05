@@ -134,7 +134,7 @@ class SteamGroup {
             $totalPages = (int) $memberData->totalPages;
 
             foreach($memberData->members as $member) {
-                array_push($this->members, new SteamId($member->steamID64, false));
+                array_push($this->members, SteamId::create($member->steamID64, false));
             }
         } while($page <= $totalPages);
 

@@ -180,11 +180,11 @@ class SteamId {
         }
 
         foreach($profile->friends->friend as $friend) {
-            $this->friends[] = new SteamId((string) $friend->steamID64, false);
+            $this->friends[] = SteamId.create((string) $friend->steamID64, false);
         }
 
         foreach($profile->groups->group as $group) {
-            $this->groups[] = new SteamGroup((string) $group->groupID64, false);
+            $this->groups[] = SteamGroup::create((string) $group->groupID64, false);
         }
 
         foreach($profile->weblinks->weblink as $link) {
