@@ -11,6 +11,10 @@ require 'steam/community/steam_id'
 # The SteamGroup class represents a group in the Steam Community
 class SteamGroup
 
+  class << self
+    alias_method :create, :new
+  end
+
   attr_reader :custom_url, :fetch_time, :group_id64
   
   @@steam_groups = {}

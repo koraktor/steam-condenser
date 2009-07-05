@@ -12,6 +12,10 @@ require 'steam/community/steam_group'
 
 # The SteamId class represents a Steam Community profile (also called Steam ID)
 class SteamId
+
+  class << self
+    alias_method :create, :new
+  end
   
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
               :fetch_time, :friends, :groups, :head_line, :hours_played,
