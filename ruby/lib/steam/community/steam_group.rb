@@ -11,7 +11,7 @@ require 'steam/community/steam_id'
 # The SteamGroup class represents a group in the Steam Community
 class SteamGroup
 
-  attr_reader :custom_url, :group_id64
+  attr_reader :custom_url, :fetch_time, :group_id64
   
   @@steam_groups = {}
 
@@ -48,8 +48,6 @@ class SteamGroup
     else
       @custom_url = id
     end
-
-    @fetched = false
 
     begin
       fetch_members if fetch
@@ -101,12 +99,12 @@ class SteamGroup
       end
     end while page < total_pages
 
-    @fetched = true
+    @fetch_time = Time.now
   end
 
   # Returns whether the data for this group has already been fetched
   def fetched?
-    @fetched
+    !@fetch_time.nil?
   end
 
   # Returns the number of members this group has.

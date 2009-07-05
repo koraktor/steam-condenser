@@ -14,14 +14,14 @@ require 'steam/community/steam_group'
 class SteamId
   
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
-              :friends, :groups, :head_line, :hours_played, :image_url, :links,
-              :location, :member_since, :most_played_games, :privacy_state,
-              :real_name, :state_message, :steam_rating, :steam_rating_text,
-              :summary, :vac_banned, :visibility_state
+              :fetch_time, :friends, :groups, :head_line, :hours_played,
+              :image_url, :links, :location, :member_since, :most_played_games,
+              :privacy_state, :real_name, :state_message, :steam_rating,
+              :steam_rating_text, :summary, :vac_banned, :visibility_state
 
   @@steam_ids = {}
 
-  # Returns whether the requested SteamID is already cached
+  # Returns whether the requested SteamID +id+ is already cached
   def self.cached?(id)
     unless id.is_a? Numeric
       id.downcase!
@@ -34,21 +34,22 @@ class SteamId
     @@steam_ids = {}
   end
 
-  # Converts a SteamID as reported by game servers to a 64bit SteamID
+  # Converts the SteamID +steam_id+ as reported by game servers to a 64bit
+  # SteamID
   def self.convert_steam_id_to_community_id(steam_id)
-    if steam_id == 'STEAM_ID_LAN'
-      raise SteamCondenserException.new('Cannot convert SteamID "STEAM_ID_LAN" to a community ID.')
-    elsif steam_id.match(/STEAM_[0-1]:[0-1]:[0-9]+/).nil?
+    if steam_id == 'STEAM_ID_LAN' or steam_id == 'BOT'
+      raise SteamCondenserException.new("Cannot convert SteamID \"#{steam_id}\" to a community ID.")
+    elsif steam_id.match(/^STEAM_[0-1]:[0-1]:[0-9]+$/).nil?
       raise SteamCondenserException.new("SteamID \"#{steam_id}\" doesn't have the correct format.")
     end
     
     steam_id = steam_id[6..-1].split(':').map!{|s| s.to_i}
     
-    steam_id[1] + 76561197960265728 + steam_id[2] * 2
+    steam_id[1] + steam_id[2] * 2 + 76561197960265728
   end
 
-  # Creates a new SteamId object using a SteamID64 converted from a server
-  # SteamID
+  # Creates a new SteamId object using the SteamID64 converted from a server
+  # SteamID given by +steam_id+
   def self.get_from_steam_id(steam_id)
     self.new(self.convert_steam_id_to_community_id(steam_id))
   end
@@ -66,17 +67,15 @@ class SteamId
     end
   end
 
-  # Creates a new SteamId object for the given SteamID, either numeric or the
-  # custom URL specified by the user. If +fetch+ is +true+ (default), fetch_data
-  # is used to load data into the object.
+  # Creates a new SteamId object for the given SteamID +id+, either numeric or
+  # the custom URL specified by the user. If +fetch+ is +true+ (default),
+  # fetch_data is used to load data into the object.
   def initialize(id, fetch = true)
     if id.is_a? Numeric
       @steam_id64 = id
     else
       @custom_url = id.downcase
     end
-
-    @fetched = false
 
     begin
       self.fetch_data if fetch
@@ -163,7 +162,7 @@ class SteamId
       end
     end
 
-    @fetched = true
+    @fetch_time = Time.now
   end
 
   # Fetches the games this user owns
@@ -198,10 +197,10 @@ class SteamId
 
   # Returns whether the data for this SteamID has already been fetched
   def fetched?
-    @fetched
+    !@fetch_time.nil?
   end
   
-  # Returns the URL of the full version of this user's avatar
+  # Returns the URL of the full-sized version of this user's avatar
   def full_avatar_url
     "#{@image_url}_full.jpg"
   end
@@ -249,7 +248,7 @@ class SteamId
     @online_state != 'offline'
   end
   
-  # Returns the URL of the medium version of this user's avatar
+  # Returns the URL of the medium-sized version of this user's avatar
   def medium_avatar_url
     "#{@image_url}_medium.jpg"
   end
