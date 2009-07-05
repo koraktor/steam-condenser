@@ -22,16 +22,91 @@ require_once 'steam/community/SteamGroup.php';
 class SteamId {
 
     /**
+     * @var array
+     */
+    public static $steamIds = array();
+
+    /**
      * @var String
      */
     private $customUrl;
 
+    /**
+     * @var int
+     */
+    private $fetchTime;
+
+    /**
+     * @var array
+     */
     private $games;
 
     /**
      * @var String
      */
     private $steamId64;
+
+    /**
+     * Returns whether the requested SteamID is already cached
+     * @param String id
+     */
+    public static function isCached($id) {
+        return array_key_exists(strtolower($id), self::$steamIds);
+    }
+
+    /**
+     * Clears the group cache
+     */
+    public static function clearCache() {
+        self::$steamIds = array();
+    }
+
+    /**
+     * Converts the SteamID as reported by game servers to a 64bit SteamID
+     * @return String
+     */
+    public static function convertSteamIdToCommunityId($steamId) {
+        if($steamId == 'STEAM_ID_LAN' || $steamId == 'BOT') {
+            throw new SteamCondenserException("Cannot convert SteamID \"$steamId\" to a community ID.");
+        }
+        if(preg_match('/^STEAM_[0-1]:[0-1]:[0-9]+$/', $steamId) == 0) {
+            throw new SteamCondenserException("SteamID \"$steamId\" doesn't have the correct format.");
+        }
+
+        $steamId = explode(':', substr($steamId, 6));
+        $steamId = $steamId[1] + $steamId[2] * 2 + 76561197960265728;
+
+        return number_format($steamId, 0, '', '');
+    }
+
+    /**
+     * This checks the cache for an existing SteamID. If it exists it is returned.
+     * Otherwise a new SteamID is created.
+     * @param String $id
+     * @param boolean $fetch
+     * @param boolean $bypassCache
+     * @return SteamId
+     */
+    public static function create($id, $fetch = true, $bypassCache = false) {
+        $id = strtolower($id);
+        if(self::isCached($id) && !$bypassCache) {
+            $steamId = self::$steamIds[$id];
+            if($fetch && !$steamId->isFetched()) {
+                $steamId->fetchMembers();
+            }
+            return $steamId;
+        } else {
+            return new SteamId($id, $fetch);
+        }
+    }
+
+    /**
+     * Creates a new SteamId object using the SteamID64 converted from a server
+     * SteamID given by +steam_id+
+     */
+    public static function getFromSteamId($steamId) {
+        return new SteamId(self::convertSteamIdToCommunityId($steamId));
+    }
 
     /**
      * Creates a new SteamId object for the given SteamID, either numeric or the
@@ -47,11 +122,26 @@ class SteamId {
             $this->steamId64 = $id;
         }
         else {
-            $this->customUrl = $id;
+            $this->customUrl = strtolower($id);
         }
 
         if($fetch) {
             $this->fetchData();
+        }
+
+        $this->cache();
+    }
+
+    /**
+     * Saves this SteamID in the cache
+     */
+    public function cache() {
+        if(!array_key_exists($this->steamId64, self::$steamIds)) {
+            self::$steamIds[$this->steamId64] = $this;
+            if(!empty($this->customUrl) &&
+               !array_key_exists($this->customUrl, self::$steamIds)) {
+               self::$steamIds[$this->customUrl] = $this;
+            }
         }
     }
 
@@ -73,7 +163,7 @@ class SteamId {
         $this->visibilityState = (int) $profile->visibilityState;
 
         if($this->privacyState == "public") {
-            $this->customUrl = (string) $profile->customURL;
+            $this->customUrl = strtolower((string) $profile->customURL);
             $this->favoriteGame = (string) $profile->favoriteGame->name;
             $this->favoriteGameHoursPlayed = (string) $profile->favoriteGame->hoursPlayed2wk;
             $this->headLine = (string) $profile->headline;
@@ -100,6 +190,8 @@ class SteamId {
         foreach($profile->weblinks->weblink as $link) {
             $this->links[(string) $link->title] = (string) $link->link;
         }
+
+        $this->fetchTime = time();
     }
 
     /**
@@ -147,6 +239,14 @@ class SteamId {
         else {
             return "http://steamcommunity.com/id/{$this->customUrl}";
         }
+    }
+
+    /**
+     * Return the time the data of this SteamId has been fetched
+     * @return int
+     */
+    public function getFetchTime() {
+        return $this->fetchTime;
     }
 
     /**
@@ -219,6 +319,14 @@ class SteamId {
      */
     public function isBanned() {
         return $this->vacBanned;
+    }
+
+    /**
+     * Returns whether the data for this SteamID has already been fetched
+     * @return boolean
+     */
+    public function isFetched() {
+        return !empty($this->fetchTime);
     }
 
     /**

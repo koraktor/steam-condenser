@@ -11,6 +11,8 @@
  * @subpackage Steam Community
  */
 
+require_once 'steam/community/SteamId.php';
+
 /**
  * The SteamGroup class represents a group in the Steam Community
  * @package Steam Condenser (PHP)
@@ -19,9 +21,19 @@
 class SteamGroup {
 
     /**
+     * @var array
+     */
+    private static $steamGroups = array();
+
+    /**
      * @var String
      */
     private $customUrl;
+
+    /**
+     * @var int
+     */
+    private $fetchTime;
 
     /**
      * @var int
@@ -32,6 +44,42 @@ class SteamGroup {
      * @var array
      */
     private $members;
+
+    /**
+     * Returns whether the requested group is already cached
+     * @param String id
+     */
+    public static function isCached($id) {
+        return array_key_exists(strtolower($id), self::$steamGroups);
+    }
+
+    /**
+     * Clears the group cache
+     */
+    public static function clearCache() {
+        self::$steamGroups = array();
+    }
+
+    /**
+     * This checks the cache for an existing group. If it exists it is returned.
+     * Otherwise a new SteamGroup object is created.
+     * @param String $id
+     * @param boolean $fetch
+     * @param boolean $bypassCache
+     * @return SteamGroup
+     */
+    public static function create($id, $fetch = true, $bypassCache = false) {
+        $id = strtolower($id);
+        if(self::isCached($id) && !$bypassCache) {
+            $group = self::$steamGroups[$id];
+            if($fetch && !$group->isFetched()) {
+                $group->fetchMembers();
+            }
+            return $group;
+        } else {
+            return new SteamGroup($id, $fetch);
+        }
+    }
 
     /**
      * Creates a SteamGroup object with the given group ID
@@ -46,8 +94,25 @@ class SteamGroup {
             $this->customUrl = $id;
         }
 
+        $this->fetched = false;
+
         if($fetch) {
             $this->fetchMembers();
+        }
+
+        $this->cache();
+    }
+
+    /**
+     * Saves this SteamGroup in the cache
+     */
+    public function cache() {
+        if(!array_key_exists($this->groupId64, self::$steamGroups)) {
+            self::$steamGroups[$this->groupId64] = $this;
+            if(!empty($this->customUrl) &&
+               !array_key_exists($this->customUrl, self::$steamGroups)) {
+               self::$steamGroups[$this->customUrl] = $this;
+            }
         }
     }
 
@@ -56,20 +121,24 @@ class SteamGroup {
      */
     public function fetchMembers() {
         $this->members = array();
-        $page = 1;
+        $page = 0;
 
         do {
             $page++;
             $url = "{$this->getBaseUrl()}/memberslistxml?p=$page";
-            var_dump($url);
             $memberData = new SimpleXMLElement(file_get_contents($url));
 
+            if($page == 1) {
+                $this->groupId64 = (string) $memberData->groupID64;
+            }
             $totalPages = (int) $memberData->totalPages;
 
             foreach($memberData->members as $member) {
                 array_push($this->members, new SteamId($member->steamID64, false));
             }
         } while($page <= $totalPages);
+
+        $this->fetchTime = time();
     }
 
     /**
@@ -90,6 +159,13 @@ class SteamGroup {
      */
     public function getCustomUrl() {
         return $this->customUrl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFetchTime() {
+        return $this->fetchTime;
     }
 
     /**
@@ -127,6 +203,14 @@ class SteamGroup {
             $this->fetchMembers();
         }
         return $this->members;
+    }
+
+    /**
+     * Returns whether the data for this group has already been fetched
+     * @return boolean
+     */
+    public function isFetched() {
+        return !empty($this->fetchTime);
     }
 }
 ?>
