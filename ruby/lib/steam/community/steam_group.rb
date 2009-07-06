@@ -6,72 +6,30 @@
 require 'open-uri'
 require 'rexml/document'
 
+require 'steam/community/cacheable'
 require 'steam/community/steam_id'
 
 # The SteamGroup class represents a group in the Steam Community
 class SteamGroup
 
-  class << self
-    alias_method :create, :new
-  end
+  include Cacheable
+  cacheable_with_ids :custom_url, :group_id64
 
-  attr_reader :custom_url, :fetch_time, :group_id64
-  
-  @@steam_groups = {}
-
-  # Returns whether the requested group is already cached
-  def self.cached?(id)
-    unless id.is_a? Numeric
-      id.downcase!
-    end
-    @@steam_groups.key?(id)
-  end
-
-  # Clears the group cache
-  def self.clear_cache
-    @@steam_groups = {}
-  end
-
-  # This checks the cache for an existing group. If it exists it is returned.
-  # Otherwise a new SteamGroup object is created.
-  # Overrides the default constructor.
-  def self.new(id, fetch = true, bypass_cache = false)
-    if cached?(id) and !bypass_cache
-      group = @@steam_groups[id]
-      group.fetch_members if fetch and !group.fetched?
-      group
-    else
-      super(id, fetch)
-    end
-  end
+  attr_reader :custom_url, :group_id64
 
   # Creates a SteamGroup object with the given group ID
   def initialize(id, fetch = true)
-    if id.is_a? Numeric
-      @group_id64 = id
-    else
-      @custom_url = id
-    end
-
     begin
-      fetch_members if fetch
-    rescue REXML::ParseException
-      raise SteamCondenserException.new('SteamID could not be loaded.')
-    end
-
-    cache
-  end
-
-  # Saves this group in the cache
-  def cache
-    unless @@steam_groups.key?(@group_id64)
-      @@steam_groups[@group_id64] = self
-      unless @custom_url.nil? or @@steam_groups.key?(@custom_url)
-        @@steam_groups[@custom_url] = self
+      if id.is_a? Numeric
+        @group_id64 = id
+      else
+        @custom_url = id.downcase
       end
-    end
 
-    true
+      super(fetch)
+    rescue REXML::ParseException
+      raise SteamCondenserException.new('Group could not be loaded.')
+    end
   end
 
   # Returns the URL to the group's Steam Community page
@@ -84,7 +42,7 @@ class SteamGroup
   end
 
   # Parses the data about this groups members
-  def fetch_members
+  def fetch
     @members = []
     page = 0
 
@@ -103,12 +61,7 @@ class SteamGroup
       end
     end while page < total_pages
 
-    @fetch_time = Time.now
-  end
-
-  # Returns whether the data for this group has already been fetched
-  def fetched?
-    !@fetch_time.nil?
+    super
   end
 
   # Returns the number of members this group has.

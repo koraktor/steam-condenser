@@ -7,36 +7,21 @@ require 'open-uri'
 require 'rexml/document'
 
 require 'exceptions/steam_condenser_exception'
+require 'steam/community/cacheable'
 require 'steam/community/game_stats'
 require 'steam/community/steam_group'
 
 # The SteamId class represents a Steam Community profile (also called Steam ID)
 class SteamId
 
-  class << self
-    alias_method :create, :new
-  end
+  include Cacheable
+  cacheable_with_ids :custom_url, :steam_id64
   
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
-              :fetch_time, :friends, :groups, :head_line, :hours_played,
-              :image_url, :links, :location, :member_since, :most_played_games,
-              :privacy_state, :real_name, :state_message, :steam_rating,
+              :friends, :groups, :head_line, :hours_played, :image_url, :links,
+              :location, :member_since, :most_played_games, :privacy_state,
+              :real_name, :state_message, :steam_id64, :steam_rating,
               :steam_rating_text, :summary, :vac_banned, :visibility_state
-
-  @@steam_ids = {}
-
-  # Returns whether the requested SteamID +id+ is already cached
-  def self.cached?(id)
-    unless id.is_a? Numeric
-      id.downcase!
-    end
-    @@steam_ids.key?(id)
-  end
-
-  # Clears the SteamID cache
-  def self.clear_cache
-    @@steam_ids = {}
-  end
 
   # Converts the SteamID +steam_id+ as reported by game servers to a 64bit
   # SteamID
@@ -58,36 +43,21 @@ class SteamId
     self.new(self.convert_steam_id_to_community_id(steam_id))
   end
 
-  # This checks the cache for an existing SteamID. If it exists it is returned.
-  # Otherwise a new SteamID is created.
-  # Overrides the default constructor.
-  def self.new(id, fetch = true, bypass_cache = false)
-    if cached?(id) and !bypass_cache
-      steam_id = @@steam_ids[id]
-      steam_id.fetch_data if fetch and !steam_id.fetched?
-      steam_id
-    else
-      super(id, fetch)
-    end
-  end
-
   # Creates a new SteamId object for the given SteamID +id+, either numeric or
   # the custom URL specified by the user. If +fetch+ is +true+ (default),
   # fetch_data is used to load data into the object.
   def initialize(id, fetch = true)
-    if id.is_a? Numeric
-      @steam_id64 = id
-    else
-      @custom_url = id.downcase
-    end
-
     begin
-      self.fetch_data if fetch
+      if id.is_a? Numeric
+        @steam_id64 = id
+      else
+        @custom_url = id.downcase
+      end
+
+      super(fetch)
     rescue REXML::ParseException
       raise SteamCondenserException.new('SteamID could not be loaded.')
     end
-
-    cache
   end
 
   # Returns the base URL for this SteamID
@@ -98,22 +68,10 @@ class SteamId
       "http://steamcommunity.com/id/#{@custom_url}"
     end
   end
-
-  # Saves this SteamID in the cache
-  def cache
-    unless @@steam_ids.key?(@steam_id64)
-      @@steam_ids[@steam_id64] = self
-      unless @custom_url.nil? or @@steam_ids.key?(@custom_url)
-        @@steam_ids[@custom_url] = self
-      end
-    end
-
-    true
-  end
   
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
-  def fetch_data
+  def fetch
     profile_url = open(base_url + '?xml=1', {:proxy => true})
     profile = REXML::Document.new(profile_url.read).root
       
@@ -166,7 +124,7 @@ class SteamId
       end
     end
 
-    @fetch_time = Time.now
+    super
   end
 
   # Fetches the games this user owns
@@ -199,11 +157,6 @@ class SteamId
     true
   end
 
-  # Returns whether the data for this SteamID has already been fetched
-  def fetched?
-    !@fetch_time.nil?
-  end
-  
   # Returns the URL of the full-sized version of this user's avatar
   def full_avatar_url
     "#{@image_url}_full.jpg"
