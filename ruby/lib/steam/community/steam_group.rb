@@ -49,14 +49,14 @@ class SteamGroup
     begin
       page += 1
       url = open("#{base_url}/memberslistxml?p=#{page}", {:proxy => true})
-      @member_data = REXML::Document.new(url.read).root
+      member_data = REXML::Document.new(url.read).root
 
       if page == 1
-        @group_id64 = @member_data.elements['groupID64'].text.to_i
+        @group_id64 = member_data.elements['groupID64'].text.to_i
       end
-      total_pages = @member_data.elements['totalPages'].text.to_i
+      total_pages = member_data.elements['totalPages'].text.to_i
     
-      @member_data.elements['members'].elements.each do |member|
+      member_data.elements['members'].elements.each do |member|
         @members << SteamId.new(member.text.to_i, false)
       end
     end while page < total_pages
