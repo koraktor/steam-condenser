@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2009, Sebastian Staudt
 
-$:.push File.join(File.dirname(__FILE__), '..', 'lib')
+$:.push File.join(File.dirname(__FILE__), '..', '..', '..', 'lib')
 
 require "steam/community/steam_id"
 require "test/unit"
