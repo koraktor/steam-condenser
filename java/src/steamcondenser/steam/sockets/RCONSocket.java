@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.TimeoutException;
 
+import steamcondenser.RCONBanException;
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.packets.rcon.RCONPacket;
 import steamcondenser.steam.packets.rcon.RCONPacketFactory;
@@ -45,7 +46,9 @@ public class RCONSocket extends SteamSocket
     public RCONPacket getReply()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        this.receivePacket(1440);
+        if(this.receivePacket(1440) <= 0) {
+            throw new RCONBanException();
+        }
         String packetData = new String(this.buffer.array()).substring(0, this.buffer.limit());
         int packetSize = Integer.reverseBytes(this.buffer.getInt()) + 4;
 

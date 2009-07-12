@@ -99,8 +99,10 @@ abstract public class SteamSocket
         }
 
         bytesRead = ((ReadableByteChannel) this.channel).read(this.buffer);
-        this.buffer.rewind();
-        this.buffer.limit(bytesRead);
+        if(bytesRead > 0) {
+            this.buffer.rewind();
+            this.buffer.limit(bytesRead);
+        }
 
         selector.close();
 

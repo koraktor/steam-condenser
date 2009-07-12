@@ -1,14 +1,13 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
-require "socket_channel"
-require "steam/packets/rcon/rcon_packet"
-require "steam/packets/rcon/rcon_packet_factory"
-require "steam/sockets/steam_socket"
+require 'socket_channel'
+require 'exceptions/rcon_ban_exception'
+require 'steam/packets/rcon/rcon_packet'
+require 'steam/packets/rcon/rcon_packet_factory'
+require 'steam/sockets/steam_socket'
 
 class RCONSocket < SteamSocket
   
@@ -27,7 +26,9 @@ class RCONSocket < SteamSocket
   end
   
   def get_reply
-    self.receive_packet 1440
+    if self.receive_packet(1440) == 0
+      raise RCONBanException
+    end
     packet_data = @buffer.array[0..@buffer.limit]
     packet_size = @buffer.get_long + 4
     

@@ -1,9 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
+# Copyright (c) 2008-2009, Sebastian Staudt
 
 require "abstract_class"
 require "byte_buffer"
@@ -41,19 +39,18 @@ class SteamSocket
       @buffer = ByteBuffer.allocate buffer_length
     end
     
-    @channel.read @buffer
-    bytes_read = @buffer.position
+    bytes_read = @channel.read(@buffer)
     @buffer.rewind
     @buffer.limit = bytes_read
     
-    return bytes_read
+    bytes_read
   end
   
   def send(data_packet)
     warn "Sending data packet of type \"#{data_packet.class.to_s}\"."
     
-    @buffer = ByteBuffer.wrap data_packet.to_s
-    @channel.write @buffer
+    @buffer = ByteBuffer.wrap(data_packet.to_s)
+    @channel.write(@buffer)
   end
   
   def finalize
