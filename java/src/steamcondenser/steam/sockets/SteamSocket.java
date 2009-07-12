@@ -102,6 +102,8 @@ abstract public class SteamSocket
         this.buffer.rewind();
         this.buffer.limit(bytesRead);
 
+        selector.close();
+
         return bytesRead;
     }
 
