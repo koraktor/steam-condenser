@@ -96,30 +96,30 @@ class SteamId
       @head_line                        = profile.elements['headline'].text
       @hours_played                     = profile.elements['hoursPlayed2Wk'].text.to_f
       @location                         = profile.elements['location'].text
-      @member_since                     = Time.parse profile.elements['memberSince'].text
+      @member_since                     = Time.parse(profile.elements['memberSince'].text)
       @real_name                        = profile.elements['realname'].text
       @steam_rating                     = profile.elements['steamRating'].text.to_f
       @summary                          = profile.elements['summary'].text
 
       unless REXML::XPath.first(profile, 'mostPlayedGames').nil?
         @most_played_games = Hash.new
-        profile.elements['mostPlayedGames'].elements.each('mostPlayedGame') do |most_played_game|
+        profile.elements.each('mostPlayedGames/mostPlayedGame') do |most_played_game|
           @most_played_games[most_played_game.elements['gameName'].text] = most_played_game.elements['hoursPlayed'].text.to_f
         end
       end
       
       @friends = Array.new
-      profile.elements['friends'].elements.each('friend') do |friend|
+      profile.elements.each('friends/friend') do |friend|
         @friends << SteamId.new(friend.elements['steamID64'].text.to_i, false)
       end
       
       @groups = Array.new
-      profile.elements['groups'].elements.each('group') do |group|
+      profile.elements.each('groups/group') do |group|
         @groups << SteamGroup.new(group.elements['groupID64'].text.to_i, false)
       end
       
       @links = Hash.new
-      profile.elements['weblinks'].elements.each('weblink') do |link|
+      profile.elements.each('weblinks/weblink') do |link|
         @links[link.elements['title'].text] = link.elements['link'].text
       end
     end

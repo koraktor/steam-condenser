@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2009, Sebastian Staudt
 
+# This module implements caching functionality to be used in any object using a
+# +fetch+ method to fetch data, e.g. using a HTTP download.
 module Cacheable
 
   def self.included(base) #:nodoc:
@@ -20,6 +22,8 @@ module Cacheable
   module ClassMethods
 
     # Defines wich instance variables should be used to index the cached objects
+    # A call to this method is needed, if you want a class including this module
+    # to really use the cache.
     def cacheable_with_ids(*ids)
       class_variable_set(:@@cache_ids, ids)
     end
@@ -57,7 +61,8 @@ module Cacheable
   # Creates a new object for the given +id+, either numeric or
   # the custom URL specified by the user. If +fetch+ is +true+ (default),
   # fetch is used to load data into the object.
-  def initialize(fetch = true)
+  # This method is overridden by Cacheable::ClassMethods#new.
+  def initialize(fetch = true) #:notnew:
     self.fetch if fetch
     cache
   end
@@ -77,6 +82,7 @@ module Cacheable
     true
   end
 
+  # Sets the time this object has been fetched the last time
   def fetch
     @fetch_time = Time.now
   end

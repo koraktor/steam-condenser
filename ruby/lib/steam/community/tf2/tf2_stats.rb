@@ -12,12 +12,12 @@ class TF2Stats < GameStats
   attr_reader :accumulated_points
   
   # Creates a TF2Stats object by calling the super constructor with the game
-  # name "TF2"
+  # name "tf2"
   def initialize(steam_id)
-    super steam_id, "TF2"
+    super steam_id, 'tf2'
 
     if public?
-      @accumulated_points = @xml_data.elements["stats"].elements["accumulatedPoints"].text.to_i
+      @accumulated_points = @xml_data.elements['stats/accumulatedPoints'].text.to_i
     end
   end
   
@@ -28,8 +28,8 @@ class TF2Stats < GameStats
 
     if @class_stats.nil?
       @class_stats = Hash.new
-      @xml_data.elements["stats"].elements.each("classData") do |class_data|
-        @class_stats[class_data.elements["className"].text] = TF2Class.new class_data
+      @xml_data.elements.each('stats/classData') do |class_data|
+        @class_stats[class_data.elements['className'].text] = TF2Class.new(class_data)
       end
     end
     

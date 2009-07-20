@@ -11,8 +11,9 @@ require "steam/community/game_achievement"
 class GameStats
 end
 
-require "steam/community/l4d/l4d_stats"
+require 'steam/community/defense_grid/defense_grid_stats'
 require "steam/community/dods/dods_stats"
+require "steam/community/l4d/l4d_stats"
 require "steam/community/tf2/tf2_stats"
 
 # The GameStats class represents the game statistics for a single user and a
@@ -21,13 +22,15 @@ class GameStats
   
   protected :initialize
 
-  attr_reader :app_id, :game_friendly_name, :game_name, :hours_played,
-              :privacy_state, :steam_id
+  attr_reader :app_id, :custom_url, :game_friendly_name, :game_name,
+              :hours_played, :privacy_state, :steam_id64
 
   # Creates a GameStats (or one of its subclasses) object for the given user
   # depending on the game selected
   def self.create_game_stats(steam_id, game_name)
     case game_name
+      when "defensegrid:awakening"
+        DefenseGridStats.new(steam_id)
       when "DoD:S":
         DoDSStats.new(steam_id)
       when "L4D":
@@ -41,17 +44,23 @@ class GameStats
   
   # Creates a GameStats object and fetchs data from Steam Community for the
   # given user and game
-  def initialize(steam_id, game_name)
-    @steam_id = steam_id
+  def initialize(id, game_name)
+    if id.is_a? Numeric
+      @steam_id64 = id
+    else
+      @custom_url = id.downcase
+    end
+    @game_friendly_name = game_name
+
+    url = base_url + '?xml=1'
+    @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
     
-    @xml_data = REXML::Document.new(open("http://www.steamcommunity.com/id/#{@steam_id}/stats/#{game_name}?xml=1", {:proxy => true}).read).elements["playerstats"]
-    
-    @privacy_state = @xml_data.elements["privacyState"].text
+    @privacy_state = @xml_data.elements['privacyState'].text
     if public?
-      @app_id             = @xml_data.elements["game"].elements["gameLink"].text.match("http://store.steampowered.com/app/([1-9][0-9]+)")[1]
-      @game_friendly_name = @xml_data.elements["game"].elements["gameFriendlyName"].text
-      @game_name          = @xml_data.elements["game"].elements["gameName"].text
-      @hours_played       = @xml_data.elements["stats"].elements["hoursPlayed"].text
+      @app_id             = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
+      @game_friendly_name = @xml_data.elements['game/gameFriendlyName'].text
+      @game_name          = @xml_data.elements['game/gameName'].text
+      @hours_played       = @xml_data.elements['stats/hoursPlayed'].text
     end
   end
   
@@ -62,14 +71,14 @@ class GameStats
 
     if @achievements.nil?
       @achievements = Array.new
-      @xml_data.elements["achievements"].elements.each("achievement") do |achievement|
-        @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements["name"].text, (achievement.attributes["closed"].to_i == 1))
+      @xml_data.elements.each('achievements/achievement') do |achievement|
+        @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements['name'].text, (achievement.attributes['closed'].to_i == 1))
       end
 
       @achievements_done = @achievements.reject{ |a| !a.done? }.size
     end
     
-    return @achievements
+    @achievements
   end
   
   # Returns the count of achievements done by this player. If achievements
@@ -83,6 +92,15 @@ class GameStats
   # this player.
   def achievements_percentage
     achievements_done.to_f / @achievements.size
+  end
+
+  # Returns the base URL for this Steam Communtiy object
+  def base_url
+    if @custom_url.nil?
+      "http://steamcommunity.com/profiles/#{@steam_id64}/stats/#{@game_friendly_name}"
+    else
+      "http://steamcommunity.com/id/#{@custom_url}/stats/#{@game_friendly_name}"
+    end
   end
 
   def public?
