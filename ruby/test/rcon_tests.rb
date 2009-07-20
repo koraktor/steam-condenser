@@ -2,10 +2,8 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
-$:.push File.join(File.dirname(__FILE__), "../lib")
+$:.push File.join(File.dirname(__FILE__), '..', 'lib')
 
 require "ipaddr"
 require "steam/servers/goldsrc_server"

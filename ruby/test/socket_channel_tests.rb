@@ -23,7 +23,6 @@ class SocketChannelTests < Test::Unit::TestCase
     socket= server.accept
 
     string = 'test'
-    sent = ''
     
     buffer = ByteBuffer.wrap(string)
     channel.write(buffer)
@@ -31,6 +30,9 @@ class SocketChannelTests < Test::Unit::TestCase
     socket.send(string, 0)
     buffer = ByteBuffer.allocate(4)
     channel.read(buffer)
+
+    channel.close
+    socket.close
 
     received = buffer.array
 

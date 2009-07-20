@@ -22,7 +22,6 @@ class DatagramChannelTests < Test::Unit::TestCase
     channel.connect('localhost', port)
 
     string = 'test'
-    sent = ''
     
     buffer = ByteBuffer.wrap(string)
     channel.write(buffer)
@@ -30,6 +29,9 @@ class DatagramChannelTests < Test::Unit::TestCase
     socket.send(string, 0, 'localhost', socket_addr[1])
     buffer = ByteBuffer.allocate(4)
     channel.read(buffer)
+
+    channel.close
+    socket.close
 
     received = buffer.array
 
