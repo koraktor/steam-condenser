@@ -23,6 +23,15 @@ require_once "PHPUnit/Framework.php";
  */
 class SteamGroupTests extends PHPUnit_Framework_TestCase {
 
+    public function testBypassCache() {
+        SteamGroup::clearCache();
+        $group = SteamGroup::create('valve');
+        $fetchTime = $group->getFetchTime();
+        sleep(1);
+        $group = SteamGroup::create('valve', true, true);
+        $this->assertGreaterThan($fetchTime, $group->getFetchTime());
+    }
+
     public function testCache() {
         SteamGroup::clearCache();
         $group = SteamGroup::create('valve');
@@ -38,18 +47,9 @@ class SteamGroupTests extends PHPUnit_Framework_TestCase {
         $group = SteamGroup::create('valve', false);
         $group2 = SteamGroup::create('Valve', false);
         $group3 = SteamGroup::create('VALVE', false, true);
-        $this->assertTrue(SteamGroup::isCached('VALVE'));
+        $this->assertTrue(SteamGroup::isCached('valve'));
         $this->assertEquals($group, $group2);
         $this->assertEquals($group, $group3);
-    }
-
-    public function testBypassCache() {
-        SteamGroup::clearCache();
-        $group = SteamGroup::create('valve');
-        $fetchTime = $group->getFetchTime();
-        sleep(1);
-        $group = SteamGroup::create('valve', true, true);
-        $this->assertGreaterThan($fetchTime, $group->getFetchTime());
     }
 }
 ?>

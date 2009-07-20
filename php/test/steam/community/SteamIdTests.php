@@ -23,11 +23,13 @@ require_once "PHPUnit/Framework.php";
  */
 class SteamIdTests extends PHPUnit_Framework_TestCase {
 
-    public function testConvertSteamIdToCommunityId() {
-        $steamId64 = SteamId::convertSteamIdToCommunityId('STEAM_0:0:12345');
-        $this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_STRING,
-            $steamId64);
-        $this->assertEquals('76561197960290418', $steamId64);
+    public function testBypassCache() {
+        SteamId::clearCache();
+        $steamId = SteamId::create('koraktor');
+        $fetchTime = $steamId->getFetchTime();
+        sleep(1);
+        $steamId = SteamId::create('koraktor', true, true);
+        $this->assertGreaterThan($fetchTime, $steamId->getFetchTime());
     }
 
     public function testCache() {
@@ -36,6 +38,7 @@ class SteamIdTests extends PHPUnit_Framework_TestCase {
         $fetchTime = $steamId->getFetchTime();
         $this->assertTrue(SteamId::isCached('76561197961384956'));
         $this->assertTrue(SteamId::isCached('koraktor'));
+        sleep(1);
         $steamId = SteamId::create('koraktor');
         $this->assertEquals($fetchTime, $steamId->getFetchTime());
     }
@@ -45,18 +48,16 @@ class SteamIdTests extends PHPUnit_Framework_TestCase {
         $steamId = SteamId::create('koraktor', false);
         $steamId2 = SteamId::create('Koraktor', false);
         $steamId3 = SteamId::create('KORAKTOR', false, true);
-        $this->assertTrue(SteamId::isCached('KORAKTOR'));
+        $this->assertTrue(SteamId::isCached('koraktor'));
         $this->assertEquals($steamId, $steamId2);
         $this->assertEquals($steamId, $steamId3);
     }
 
-    public function testBypassCache() {
-        SteamId::clearCache();
-        $steamId = SteamId::create('koraktor');
-        $fetchTime = $steamId->getFetchTime();
-        sleep(1);
-        $steamId = SteamId::create('koraktor', true, true);
-        $this->assertGreaterThan($fetchTime, $steamId->getFetchTime());
+    public function testConvertSteamIdToCommunityId() {
+        $steamId64 = SteamId::convertSteamIdToCommunityId('STEAM_0:0:12345');
+        $this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_STRING,
+            $steamId64);
+        $this->assertEquals('76561197960290418', $steamId64);
     }
 }
 ?>
