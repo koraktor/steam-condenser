@@ -131,7 +131,7 @@ public class SteamId {
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 */
-	public SteamId(Object id, boolean fetchData)
+	private SteamId(Object id, boolean fetchData)
 			throws SteamCondenserException {
 		if(id instanceof String) {
 			this.customUrl = (String) id;
