@@ -3,8 +3,11 @@
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
 
-require 'byte_buffer'
+require 'ipaddr'
+require 'socket'
 require 'timeout'
+
+require 'byte_buffer'
 
 class SocketChannel
   
