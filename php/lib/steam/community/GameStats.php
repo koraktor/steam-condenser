@@ -3,17 +3,15 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2009, Sebastian Staudt
+ *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
  * @subpackage Steam Community
- * @version $Id$
  */
 
 require_once "steam/community/GameAchievement.php";
-require_once "steam/community/dods/DoDSStats.php";
-require_once "steam/community/l4d/L4DStats.php";
-require_once "steam/community/tf2/TF2Stats.php";
 
 /**
  * The GameStats class represents the game statistics for a single user and a
@@ -37,6 +35,10 @@ class GameStats {
      * depending on the game selected
      */
     public static function createGameStats($steamId, $gameName) {
+        require_once "steam/community/dods/DoDSStats.php";
+        require_once "steam/community/l4d/L4DStats.php";
+        require_once "steam/community/tf2/TF2Stats.php";
+
         switch($gameName) {
             case 'dod:s':
                 return new DoDSStats($steamId);
