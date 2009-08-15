@@ -232,7 +232,9 @@ abstract class GameServer {
 
             foreach($players as $player) {
                 $playerData = $this->splitPlayerStatus($player);
-                $this->playerHash[$playerData[1]]->addInformation($playerData);
+                if(array_key_exists($playerData[1], $this->playerHash)) {
+                    $this->playerHash[$playerData[1]]->addInformation($playerData);
+                }
             }
         }
     }
