@@ -14,6 +14,7 @@ public class RCONExecResponsePacket extends RCONPacket
 
     public String getResponse()
     {
-	return new String(this.contentData.array());
+        String response = new String(this.contentData.array());
+	return response.substring(0, response.length() - 2);
     }
 }

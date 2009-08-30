@@ -21,7 +21,8 @@ class RCONExecResponse extends RCONPacket
 
 	public function getResponse()
 	{
-		return $this->contentData->_array();
+		$response = $this->contentData->_array();
+		return substr($response, 0, strlen($response) - 2);
 	}
 }
 ?>
