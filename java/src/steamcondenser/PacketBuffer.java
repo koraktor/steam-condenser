@@ -1,6 +1,8 @@
 /** 
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
+ *
+ * Copyright (c) 2008-2009, Sebastian Staudt
  */
 
 package steamcondenser;
@@ -12,7 +14,6 @@ import java.nio.ByteOrder;
  * A convenience class wrapping around ByteBuffer, for easily retrieving
  * String values 
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class PacketBuffer
 {
@@ -84,12 +85,16 @@ public class PacketBuffer
 	this.byteBuffer.slice().get(remainingBytes);
 	String dataString = new String(remainingBytes);
 	int stringEnd = dataString.indexOf(0);
-	dataString = dataString.substring(0, stringEnd);
 
-	// Setting new position by byte length of the string for compatibility with multi-byte characters
-	this.byteBuffer.position(this.byteBuffer.position() + dataString.getBytes().length + 1);
-
-	return dataString;
+        if(stringEnd == -1) {
+            return null;
+        } else {
+            dataString = dataString.substring(0, stringEnd);
+            // Setting new position by byte length of the string for compatibility with multi-byte characters
+            this.byteBuffer.position(this.byteBuffer.position() + dataString.getBytes().length + 1);
+        
+            return dataString;
+        }
     }
 
     public PacketBuffer order(ByteOrder byteOrder)
