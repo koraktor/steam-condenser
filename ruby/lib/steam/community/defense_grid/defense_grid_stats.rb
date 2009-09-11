@@ -44,7 +44,7 @@ class DefenseGridStats < GameStats
       @damage                  = general_data.elements['tower_damage_total/value'].text.to_f
       @damage_campaign         = general_data.elements['tower_damage_total_campaign/value'].text.to_f
       @damage_challenge        = general_data.elements['tower_damage_total_challenge/value'].text.to_f
-      @orbital_laser_fired     = @xml_data.elements['stats/orbitallaser/fired/value'].text.to_f
+      @orbital_laser_fired     = @xml_data.elements['stats/orbitallaser/fired/value'].text.to_i
       @orbital_laser_damage    = @xml_data.elements['stats/orbitallaser/damage/value'].text.to_f
     end
   end

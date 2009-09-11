@@ -2,7 +2,7 @@
 /**
  * This code is free software; you can redistribute it and/or modify it under the
  * terms of the new BSD License.
- * 
+ *
  * Copyright (c) 2009, Sebastian Staudt
  *
  * @author Sebastian Staudt
@@ -29,9 +29,9 @@ class DefenseGridStats extends GameStats {
      * @var array
      */
     public $alienStats;
-    
+
     /**
-     * @var int 
+     * @var int
      */
     public $goldMedals;
 
@@ -50,7 +50,7 @@ class DefenseGridStats extends GameStats {
     /**
      * Creates a DefenseGridStats object by calling the super constructor with
      * the game name "defensegrid:awakening"
-     * 
+     *
      * @param String $steamId
      */
     public function __construct($steamId) {
@@ -79,7 +79,7 @@ class DefenseGridStats extends GameStats {
             $this->damage                = (float) $generalData->tower_damage_total->value;
             $this->damageCampaign        = (float) $generalData->tower_damage_total_campaign->value;
             $this->damageChallenge       = (float) $generalData->tower_damage_total_challenge->value;
-            $this->orbitalLaserFired     = (float) $this->xmlData->stats->orbitallaser->fired->value;
+            $this->orbitalLaserFired     = (int) $this->xmlData->stats->orbitallaser->fired->value;
             $this->orbitalLaserDamage    = (float) $this->xmlData->stats->orbitallaser->damage->value;
         }
     }
@@ -126,7 +126,7 @@ class DefenseGridStats extends GameStats {
      *
      * The Command tower uses the resources gained as second element.
      * The Temporal tower doesn't have a second element.
-     * 
+     *
      * @return array
      */
     public function getTowerStats() {
