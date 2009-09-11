@@ -10,7 +10,7 @@ class GoldSrcServer < GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(player_status)
-    player_data = player_status.match(/#( \d|\d\d) +"(.*)" +(\d+) +(.*)/).to_a[1..-1]
+    player_data = player_status.match(/# *(\d+) +"(.*)" +(\d+) +(.*)/).to_a[1..-1]
     player_data[3] = player_data[3].split
     player_data.flatten!
     player_data[0] = player_data[2]
@@ -23,14 +23,14 @@ class GoldSrcServer < GameServer
     super port_number
     @socket = GoldSrcSocket.new ip_address, port_number, is_hltv
   end
-  
+
   def rcon_auth(password)
     @rcon_password = password
     return true
   end
-  
+
   def rcon_exec(command)
     return @socket.rcon_exec(@rcon_password, command).strip
   end
-  
+
 end
