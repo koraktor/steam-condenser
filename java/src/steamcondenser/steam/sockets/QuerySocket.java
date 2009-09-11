@@ -30,7 +30,7 @@ public abstract class QuerySocket extends SteamSocket
      */
     protected boolean packetIsSplit()
     {
-        return (Integer.reverseBytes(this.buffer.getInt()) == -2);
+        return (Integer.reverseBytes(this.buffer.getInt()) == 0xFFFFFFFE);
     }
 
     /**

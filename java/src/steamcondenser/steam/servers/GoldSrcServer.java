@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -17,7 +17,7 @@ import steamcondenser.steam.sockets.GoldSrcSocket;
 
 /**
  * A GoldSrc game server.
- * 
+ *
  * @author Sebastian Staudt
  */
 public class GoldSrcServer extends GameServer {

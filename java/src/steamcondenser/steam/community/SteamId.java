@@ -183,8 +183,11 @@ public class SteamId {
 
 			if(this.privacyState.compareTo("public") == 0) {
 				this.customUrl = profile.getElementsByTagName("customURL").item(0).getTextContent();
-				this.favoriteGame = ((Element) profile.getElementsByTagName("favoriteGame").item(0)).getElementsByTagName("name").item(0).getTextContent();
-				this.favoriteGameHoursPlayed = Float.parseFloat(((Element) profile.getElementsByTagName("favoriteGame").item(0)).getElementsByTagName("hoursPlayed2wk").item(0).getTextContent());
+				Element favoriteGame = (Element) profile.getElementsByTagName("favoriteGame").item(0);
+				if(favoriteGame != null) {
+					this.favoriteGame = favoriteGame.getElementsByTagName("name").item(0).getTextContent();
+					this.favoriteGameHoursPlayed = Float.parseFloat(favoriteGame.getElementsByTagName("hoursPlayed2wk").item(0).getTextContent());
+				}
 				this.headLine = profile.getElementsByTagName("headline").item(0).getTextContent();
 				this.hoursPlayed = Float.parseFloat(profile.getElementsByTagName("hoursPlayed2Wk").item(0).getTextContent());
 				this.location = profile.getElementsByTagName("location").item(0).getTextContent();

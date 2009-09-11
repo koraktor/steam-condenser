@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -25,7 +25,7 @@ import steamcondenser.steam.sockets.SourceSocket;
 
 /**
  * A Source game server.
- * 
+ *
  * @author Sebastian Staudt
  */
 public class SourceServer extends GameServer {

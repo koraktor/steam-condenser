@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -319,9 +319,9 @@ abstract public class GameServer {
 				String playerName = playerData.get(1);
 				playerName = playerName.substring(1, playerName.length() - 1);
 				playerData.set(1, playerName);
-                                if(this.playerHash.containsKey(playerName)) {
-                                    this.playerHash.get(playerName).addInformation(playerData);
-                                }
+                if(this.playerHash.containsKey(playerName)) {
+                    this.playerHash.get(playerName).addInformation(playerData);
+                }
 			}
 		}
 	}
