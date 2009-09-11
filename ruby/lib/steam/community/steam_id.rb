@@ -16,11 +16,11 @@ class SteamId
 
   include Cacheable
   cacheable_with_ids :custom_url, :steam_id64
-  
+
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
-              :friends, :groups, :head_line, :hours_played, :image_url, :links,
-              :location, :member_since, :most_played_games, :privacy_state,
-              :real_name, :state_message, :steam_id64, :steam_rating,
+              :groups, :head_line, :hours_played, :image_url, :links, :location,
+              :member_since, :most_played_games, :privacy_state, :real_name,
+              :state_message, :steam_id, :steam_id64, :steam_rating,
               :steam_rating_text, :summary, :vac_banned, :visibility_state
 
   # Converts the SteamID +steam_id+ as reported by game servers to a 64bit
@@ -31,9 +31,9 @@ class SteamId
     elsif steam_id.match(/^STEAM_[0-1]:[0-1]:[0-9]+$/).nil?
       raise SteamCondenserException.new("SteamID \"#{steam_id}\" doesn't have the correct format.")
     end
-    
+
     steam_id = steam_id[6..-1].split(':').map!{|s| s.to_i}
-    
+
     steam_id[1] + steam_id[2] * 2 + 76561197960265728
   end
 
@@ -68,13 +68,17 @@ class SteamId
       "http://steamcommunity.com/id/#{@custom_url}"
     end
   end
-  
+
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this SteamID
   def fetch
     profile_url = open(base_url + '?xml=1', {:proxy => true})
     profile = REXML::Document.new(profile_url.read).root
-      
+
+    unless REXML::XPath.first(profile, 'error').nil?
+      raise SteamCondenserException.new(profile.elements['error'].text)
+    end
+
     @image_url        = profile.elements['avatarIcon'].text[0..-5]
     @online_state     = profile.elements['onlineState'].text
     @privacy_state    = profile.elements['privacyState'].text
@@ -83,14 +87,16 @@ class SteamId
     @steam_id64       = profile.elements['steamID64'].text.to_i
     @vac_banned       = (profile.elements['vacBanned'].text == 1)
     @visibility_state = profile.elements['visibilityState'].text.to_i
-    
+
     # Only public profiles can be scanned for further information
     if @privacy_state == 'public'
       @custom_url                       = profile.elements['customURL'].text.downcase
 
+      # The favorite game cannot be set since 10/10/2008, but old profiles
+      # still have this. May be removed in a future version.
       unless REXML::XPath.first(profile, 'favoriteGame').nil?
-        @favorite_game                    = profile.elements['favoriteGame/name'].text
-        @favorite_game_hours_played       = profile.elements['favoriteGame/hoursPlayed2wk'].text
+        @favorite_game                  = profile.elements['favoriteGame/name'].text
+        @favorite_game_hours_played     = profile.elements['favoriteGame/hoursPlayed2wk'].text
       end
 
       @head_line                        = profile.elements['headline'].text
@@ -101,30 +107,42 @@ class SteamId
       @steam_rating                     = profile.elements['steamRating'].text.to_f
       @summary                          = profile.elements['summary'].text
 
+      # The most played games only exist if a user played at least one game in
+      # the last two weeks
+      @most_played_games = {}
       unless REXML::XPath.first(profile, 'mostPlayedGames').nil?
-        @most_played_games = Hash.new
         profile.elements.each('mostPlayedGames/mostPlayedGame') do |most_played_game|
           @most_played_games[most_played_game.elements['gameName'].text] = most_played_game.elements['hoursPlayed'].text.to_f
         end
       end
-      
-      @friends = Array.new
-      profile.elements.each('friends/friend') do |friend|
-        @friends << SteamId.new(friend.elements['steamID64'].text.to_i, false)
+
+      @groups = []
+      unless REXML::XPath.first(profile, 'groups').nil?
+        profile.elements.each('groups/group') do |group|
+          @groups << SteamGroup.new(group.elements['groupID64'].text.to_i, false)
+        end
       end
-      
-      @groups = Array.new
-      profile.elements.each('groups/group') do |group|
-        @groups << SteamGroup.new(group.elements['groupID64'].text.to_i, false)
-      end
-      
-      @links = Hash.new
-      profile.elements.each('weblinks/weblink') do |link|
-        @links[link.elements['title'].text] = link.elements['link'].text
+
+      @links = {}
+      unless REXML::XPath.first(profile, 'mostPlayedGames').nil?
+        profile.elements.each('weblinks/weblink') do |link|
+          @links[link.elements['title'].text] = link.elements['link'].text
+        end
       end
     end
 
     super
+  end
+
+  # Fetches the friends of this user
+  def fetch_friends
+    url = "#{base_url}/friends?xml=1"
+
+    @friends = []
+    friends_data = REXML::Document.new(open(url, {:proxy => true}).read).root
+    friends_data.elements.each('friends/friend') do |friend|
+      @friends << SteamId.new(friend.text.to_i, false)
+    end
   end
 
   # Fetches the games this user owns
@@ -132,10 +150,10 @@ class SteamId
     require 'rubygems'
     require 'Hpricot'
 
-    url = base_url << '/games'
+    url = "#{base_url}/games"
 
     @games = {}
-    games_data = Hpricot(open(url).read).at('div#mainContents')
+    games_data = Hpricot(open(url, {:proxy => true}).read).at('div#mainContents')
 
     games_data.traverse_some_element('h4') do |game|
       game_name = game.inner_html
@@ -161,11 +179,11 @@ class SteamId
   def full_avatar_url
     "#{@image_url}_full.jpg"
   end
-  
+
   # Returns a GameStats object for the given game for the owner of this SteamID
   def game_stats(game_name)
     game_name.downcase!
-    
+
     if games.has_value? game_name
       friendly_name = game_name
     elsif games.has_key? game_name
@@ -177,6 +195,13 @@ class SteamId
     GameStats.create_game_stats(@custom_url || @steam_id64, friendly_name)
   end
 
+  # Returns an Array of SteamId representing all Steam Community friends of this
+  # user.
+  def friends
+    fetch_friends if @friends.nil?
+    @friends
+  end
+
   # Returns a Hash with the games this user owns. The keys are the games' names
   # and the values are the "friendly names" used for stats or +false+ if the
   # games has no stats.
@@ -184,27 +209,27 @@ class SteamId
     fetch_games if @games.nil?
     @games
   end
-  
+
   # Returns the URL of the icon version of this user's avatar
   def icon_url
     "#{@image_url}.jpg"
   end
-  
+
   # Returns whether the owner of this SteamID is VAC banned
   def is_banned?
-    @vac_banned 
+    @vac_banned
   end
-  
+
   # Returns whether the owner of this SteamId is playing a game
   def is_in_game?
     @online_state == 'in-game'
   end
-  
+
   # Returns whether the owner of this SteamID is currently logged into Steam
   def is_online?
     @online_state != 'offline'
   end
-  
+
   # Returns the URL of the medium-sized version of this user's avatar
   def medium_avatar_url
     "#{@image_url}_medium.jpg"

@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -36,13 +36,13 @@ import steamcondenser.SteamCondenserException;
 
 /**
  * The SteamId class represents a Steam Community profile (also called Steam ID)
- * 
+ *
  * @author Sebastian Staudt
  */
 public class SteamId {
 
 	private static Map<Object, SteamId> steamIds = new HashMap<Object, SteamId>();
-	
+
 	private String customUrl;
 	private String favoriteGame;
 	private float favoriteGameHoursPlayed;
@@ -68,37 +68,37 @@ public class SteamId {
 	private String summary;
 	private boolean vacBanned;
 	private int visibilityState;
-	
+
 	public static SteamId create(long id)
 	 	throws SteamCondenserException {
 		return SteamId.create((Object) id, true, false);
 	}
-	
+
 	public static SteamId create(String id)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, true, false);
 	}
-	
+
 	public static SteamId create(long id, boolean fetch)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, false);
 	}
-	
+
 	public static SteamId create(String id, boolean fetch)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, false);
 	}
-	
+
 	public static SteamId create(long id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, bypassCache);
 	}
-	
+
 	public static SteamId create(String id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, bypassCache);
 	}
-	
+
 	private static SteamId create(Object id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		if(SteamId.isCached(id) && !bypassCache) {
@@ -111,7 +111,7 @@ public class SteamId {
 			return new SteamId(id, fetch);
 		}
 	}
-	
+
 	public static boolean isCached(Object id) {
 		return SteamId.steamIds.containsKey(id);
 	}
@@ -119,7 +119,7 @@ public class SteamId {
 	/**
 	 * Creates a new SteamId object for the given ID and fetches the data if
 	 * fetchData is set to true
-	 * 
+	 *
 	 * @param steamId64
 	 *            The numeric ID of the SteamID
 	 * @param fetchData
@@ -143,7 +143,7 @@ public class SteamId {
 			this.fetchData();
 		}
 	}
-	
+
 	public boolean cache() {
 		if(!SteamId.steamIds.containsKey(this.steamId64)) {
 			SteamId.steamIds.put(this.steamId64, this);
@@ -157,7 +157,7 @@ public class SteamId {
 
 	/**
 	 * This method fetches the data of this person's SteamID
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws DOMException
 	 * @throws ParserConfigurationException
@@ -170,6 +170,10 @@ public class SteamId {
 			String url = this.getBaseUrl() + "?xml=1";
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Element profile = parser.parse(url).getDocumentElement();
+
+			if(profile.getElementsByTagName("error").getLength() > 0) {
+				throw new SteamCondenserException(profile.getElementsByTagName("error").item(0).getTextContent());
+			}
 
 			String avatarIconUrl = profile.getElementsByTagName("avatarIcon").item(0).getTextContent();
 			this.imageUrl = avatarIconUrl.substring(0, avatarIconUrl.length() - 4);
@@ -206,18 +210,6 @@ public class SteamId {
 					}
 				}
 
-				Element friendsNode = (Element) profile.getElementsByTagName(
-						"friends").item(0);
-				if(friendsNode != null) {
-					NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
-					this.friends = new SteamId[friendsNodeList.getLength()];
-					for(int i = 0; i < friendsNodeList.getLength(); i++) {
-						Element friend = (Element) friendsNodeList.item(i);
-						this.friends[i] = SteamId.create(friend.getElementsByTagName(
-								"steamID64").item(0).getTextContent(), false);
-					}
-				}
-
 				Element groupsNode = (Element) profile.getElementsByTagName(
 						"groups").item(0);
 				if(groupsNode != null) {
@@ -228,17 +220,50 @@ public class SteamId {
 						this.groups[i] = SteamGroup.create(Long.parseLong(group.getElementsByTagName("groupID64").item(0).getTextContent()), false);
 					}
 				}
+
+				this.links = new HashMap<String, String>();
+				Element weblinksNode = (Element) profile.getElementsByTagName("weblinks").item(0);
+				if(weblinksNode != null) {
+					NodeList weblinksList = weblinksNode.getElementsByTagName("weblink");
+					for(int i = 0; i < weblinksList.getLength(); i++) {
+						Element weblink = (Element) weblinksList.item(i);
+						this.links.put(weblink.getElementsByTagName("title").item(0).getTextContent(), weblink.getElementsByTagName("link").item(0).getTextContent());
+					}
+				}
 			}
 		} catch(Exception e) {
 			throw new SteamCondenserException("XML data could not be parsed.");
 		}
-		
+
 		this.fetchTime = new Date().getTime();
 	}
 
 	/**
+	 * Fetches the friends of this user
+	 *
+	 * @throws IOException
+	 * @throws DOMException
+	 * @throws ParserConfigurationException
+	 * @throws ParseException
+	 * @throws SAXException
+	 */
+	private void fetchFriends() {
+		String url = this.getBaseUrl() + "/friends?xml=1";
+		DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Element friendsData = parser.parse(url).getDocumentElement();
+
+		Element friendsNode = (Element) friendsData.getElementsByTagName("friends").item(0);
+		NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
+		this.friends = new SteamId[friendsNodeList.getLength()];
+		for(int i = 0; i < friendsNodeList.getLength(); i++) {
+			Element friend = (Element) friendsNodeList.item(i);
+			this.friends[i] = SteamId.create(friend.getTextContent(), false);
+		}
+	}
+
+	/**
 	 * Fetches the games this user owns
-	 * 
+	 *
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
@@ -319,12 +344,15 @@ public class SteamId {
 	public float getFavoriteGameHoursPlayed() {
 		return this.favoriteGameHoursPlayed;
 	}
-	
+
 	public long getFetchTime() {
 		return this.fetchTime;
 	}
 
 	public SteamId[] getFriends() {
+		if(this.friends == null) {
+			this.fetchFriends();
+		}
 		return this.friends;
 	}
 
@@ -381,7 +409,7 @@ public class SteamId {
 	/**
 	 * Returns the date of registration for the Steam account belonging to this
 	 * SteamID
-	 * 
+	 *
 	 * @return The date of the Steam account registration
 	 */
 	public Date getMemberSince() {
@@ -423,14 +451,14 @@ public class SteamId {
 	public int getVisibilityState() {
 		return this.visibilityState;
 	}
-	
+
 	/**
 	 * Returns whether the owner of this SteamID is VAC banned
 	 */
 	public boolean isBanned() {
 		return this.vacBanned;
 	}
-	
+
 	public boolean isFetched() {
 		return this.fetchTime != 0;
 	}
@@ -444,7 +472,7 @@ public class SteamId {
 
 	/**
 	 * Returns whether the owner of this SteamID is currently logged into Steam
-	 * 
+	 *
 	 * @return True if the user is currenly online or false otherwise
 	 */
 	public boolean isOnline() {

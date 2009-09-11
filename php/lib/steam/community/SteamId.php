@@ -39,6 +39,11 @@ class SteamId {
     /**
      * @var array
      */
+    private $friends;
+
+    /**
+     * @var array
+     */
     private $games;
 
     /**
@@ -153,6 +158,10 @@ class SteamId {
         $url = $this->getBaseUrl() . "?xml=1";
         $profile = new SimpleXMLElement(file_get_contents($url));
 
+        if(!empty($profile->error)) {
+            throw new SteamCondenserException((string) $profile->error);
+        }
+
         $this->imageUrl = (string) $profile->avatarIcon;
         $this->onlineState = (string) $profile->onlineState;
         $this->privacyState = (string) $profile->privacyState;
@@ -175,23 +184,38 @@ class SteamId {
             $this->summary = (string) $profile->summary;
         }
 
-        foreach($profile->mostPlayedGames->mostPlayedGame as $mostPlayedGame) {
-            $this->mostPlayedGames[(string) $mostPlayedGame->gameName] = (float) $mostPlayedGame->hoursPlayed;
+        if(!empty($profile->mostPlayedGames)) {
+            foreach($profile->mostPlayedGames->mostPlayedGame as $mostPlayedGame) {
+                $this->mostPlayedGames[(string) $mostPlayedGame->gameName] = (float) $mostPlayedGame->hoursPlayed;
+            }
         }
 
-        foreach($profile->friends->friend as $friend) {
-            $this->friends[] = SteamId.create((string) $friend->steamID64, false);
+        if(!empty($profile->groups)) {
+            foreach($profile->groups->group as $group) {
+                $this->groups[] = SteamGroup::create((string) $group->groupID64, false);
+            }
         }
 
-        foreach($profile->groups->group as $group) {
-            $this->groups[] = SteamGroup::create((string) $group->groupID64, false);
-        }
-
-        foreach($profile->weblinks->weblink as $link) {
-            $this->links[(string) $link->title] = (string) $link->link;
+        if(!empty($profile->weblinks)) {
+            foreach($profile->weblinks->weblink as $link) {
+                $this->links[(string) $link->title] = (string) $link->link;
+            }
         }
 
         $this->fetchTime = time();
+    }
+
+    /**
+     * Fetches the friends of this user
+     */
+    private function fetchFriends() {
+        $url = $this->getBaseUrl() . '/friends?xml=1';
+
+        $this->friends = array();
+        $friendsData =  new SimpleXMLElement(file_get_contents($url));
+        foreach($friendsData->friends->friend as $friend) {
+            $this->friends[] = SteamId::create((string) $friend, true);
+        }
     }
 
     /**
@@ -247,6 +271,18 @@ class SteamId {
      */
     public function getFetchTime() {
         return $this->fetchTime;
+    }
+
+    /**
+     * Returns an array of SteamId representing all Steam Community friends of
+     * this user.
+     * @return array
+     */
+    public function getFriends() {
+        if(empty($this->friends)) {
+            $this->fetchFriends();
+        }
+        return $this->friends;
     }
 
     /**
