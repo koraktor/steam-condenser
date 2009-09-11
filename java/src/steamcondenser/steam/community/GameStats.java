@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import steamcondenser.SteamCondenserException;
+import steamcondenser.steam.community.defense_grid.DefenseGridStats;
 import steamcondenser.steam.community.dods.DoDSStats;
 import steamcondenser.steam.community.l4d.L4DStats;
 import steamcondenser.steam.community.tf2.TF2Stats;
@@ -40,7 +41,9 @@ public class GameStats {
 
 	public static GameStats createGameStats(Object steamId, String gameName)
 			throws SteamCondenserException {
-		if(gameName.equals("dod:s")) {
+		if(gameName.equals("defensegrid:awakening")) {
+			return new DefenseGridStats(steamId);
+		} else if(gameName.equals("dod:s")) {
 			return new DoDSStats(steamId);
 		} else if(gameName.equals("l4d")) {
 			return new L4DStats(steamId);
@@ -95,11 +98,11 @@ public class GameStats {
 		if(this.achievements == null) {
 			this.achievements = new ArrayList<GameAchievement>();
 
-			NodeList achievementsNode = this.xmlData.getElementsByTagName("achievements").item(0).getChildNodes();
-			for(int i = 0; i < achievementsNode.getLength(); i++) {
-				Element achievement = (Element) achievementsNode.item(i);
+			NodeList achievementsList = ((Element) this.xmlData.getElementsByTagName("achievements").item(0)).getElementsByTagName("achievement");
+			for(int i = 0; i < achievementsList.getLength(); i++) {
+				Element achievement = (Element) achievementsList.item(i);
 				String achievementName = achievement.getElementsByTagName("name").item(0).getTextContent();
-				boolean achievementDone = achievement.getElementsByTagName("closed").item(0).getTextContent().equals("1");
+				boolean achievementDone = achievement.getAttribute("closed").equals("1");
 				this.achievements.add(new GameAchievement(this.appId, achievementName, achievementDone));
 			}
 		}
