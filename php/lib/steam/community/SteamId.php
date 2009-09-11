@@ -49,6 +49,11 @@ class SteamId {
     /**
      * @var String
      */
+    private $nickname;
+
+    /**
+     * @var String
+     */
     private $steamId64;
 
     /**
@@ -166,7 +171,7 @@ class SteamId {
         $this->onlineState = (string) $profile->onlineState;
         $this->privacyState = (string) $profile->privacyState;
         $this->stateMessage = (string) $profile->stateMessage;
-        $this->steamId = (string) $profile->steamID;
+        $this->nickname  = (string) $profile->steamID;
         $this->steamId64 = (string) $profile->steamID64;
         $this->vacBanned = (bool) $profile->vacBanned;
         $this->visibilityState = (int) $profile->visibilityState;
@@ -347,6 +352,13 @@ class SteamId {
      */
     public function getMediumAvatarUrl() {
         return $this->imageUrl . "_medium.jpg";
+    }
+
+    /**
+     * @return String
+     */
+    public function getNickname() {
+        return this.nickname;
     }
 
     /**

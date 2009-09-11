@@ -61,7 +61,7 @@ public class SteamId {
 	private String privacyState;
 	private String realName;
 	private String stateMessage;
-	private String steamId;
+	private String nickname;
 	private long steamId64;
 	private float steamRating;
 	private String steamRatingText;
@@ -180,7 +180,7 @@ public class SteamId {
 			this.onlineState = profile.getElementsByTagName("onlineState").item(0).getTextContent();
 			this.privacyState = profile.getElementsByTagName("privacyState").item(0).getTextContent();
 			this.stateMessage = profile.getElementsByTagName("stateMessage").item(0).getTextContent();
-			this.steamId = profile.getElementsByTagName("steamID").item(0).getTextContent();
+			this.nickname  = profile.getElementsByTagName("steamID").item(0).getTextContent();
 			this.steamId64 = Long.parseLong(profile.getElementsByTagName("steamID64").item(0).getTextContent());
 			this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent().equals("1"));
 			this.visibilityState = Integer.parseInt(profile.getElementsByTagName("visibilityState").item(0).getTextContent());
@@ -416,16 +416,16 @@ public class SteamId {
 		return this.memberSince;
 	}
 
+	public String getNickname() {
+		return this.nickname;
+	}
+
 	public String getRealName() {
 		return this.realName;
 	}
 
 	public String getStateMessage() {
 		return this.stateMessage;
-	}
-
-	public String getSteamId() {
-		return this.steamId;
 	}
 
 	public long getSteamId64() {

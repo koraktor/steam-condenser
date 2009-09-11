@@ -19,8 +19,8 @@ class SteamId
 
   attr_reader :custom_url, :favorite_game, :favorite_game_hours_played,
               :groups, :head_line, :hours_played, :image_url, :links, :location,
-              :member_since, :most_played_games, :privacy_state, :real_name,
-              :state_message, :steam_id, :steam_id64, :steam_rating,
+              :member_since, :most_played_games, :nickname, :privacy_state,
+              :real_name, :state_message, :steam_id64, :steam_rating,
               :steam_rating_text, :summary, :vac_banned, :visibility_state
 
   # Converts the SteamID +steam_id+ as reported by game servers to a 64bit
@@ -83,7 +83,7 @@ class SteamId
     @online_state     = profile.elements['onlineState'].text
     @privacy_state    = profile.elements['privacyState'].text
     @state_message    = profile.elements['stateMessage'].text
-    @steam_id         = profile.elements['steamID'].text
+    @nickname         = profile.elements['steamID'].text
     @steam_id64       = profile.elements['steamID64'].text.to_i
     @vac_banned       = (profile.elements['vacBanned'].text == 1)
     @visibility_state = profile.elements['visibilityState'].text.to_i
