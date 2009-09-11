@@ -49,7 +49,7 @@ class RCONSocket extends SteamSocket {
         $packetSize = $this->buffer->getLong() + 4;
 
         if($packetSize > 1440) {
-            $remainingBytes = $packetSize - 1440;
+            $remainingBytes = $packetSize - $this->buffer->limit();
             do {
                 if($remainingBytes < 1440) {
                     $this->receivePacket($remainingBytes);

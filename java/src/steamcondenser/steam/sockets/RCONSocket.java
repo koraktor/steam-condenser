@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -53,7 +53,7 @@ public class RCONSocket extends SteamSocket
         int packetSize = Integer.reverseBytes(this.buffer.getInt()) + 4;
 
         if(packetSize > 1440) {
-            int remainingBytes = packetSize - 1440;
+            int remainingBytes = packetSize - this.buffer.limit();
             do {
                 if(remainingBytes < 1440) {
                     this.receivePacket(remainingBytes);
