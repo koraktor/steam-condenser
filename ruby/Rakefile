@@ -13,14 +13,14 @@ test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
 # Gem specification
 Jeweler::Tasks.new do |s|
-  s.name = "steam-condenser"
-  s.date = Time.now
-  s.summary = 'Steam Condenser - A Steam query library'
-  s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
   s.authors = ['Sebastian Staudt']
   s.email = 'koraktor@gmail.com'
-  s.homepage = 'http://github.com/koraktor/steam-condenser'
-  
+  s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
+  s.date = Time.now
+  s.homepage = 'http://koraktor.github.com/steam-condenser'
+  s.name = s.rubyforge_project = "steam-condenser"
+  s.summary = 'Steam Condenser - A Steam query library'
+
   s.files = %w(README.md Rakefile LICENSE) + src_files + test_files
   s.rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 end
