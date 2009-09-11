@@ -20,6 +20,11 @@ require_once 'exceptions/SteamCondenserException.php';
 class SteamPlayer
 {
     /**
+     * @var int
+     */
+    private $clientPort;
+
+    /**
      * @var float
      */
     private $connectTime;
@@ -35,6 +40,11 @@ class SteamPlayer
     private $id;
 
     /**
+     * @var String
+     */
+    private $ipAddress;
+
+    /**
      * @var int
      */
     private $loss;
@@ -48,6 +58,11 @@ class SteamPlayer
      * @var int
      */
     private $ping;
+
+    /**
+     * @var int
+     */
+    private $realId;
 
     /**
      * @var int
@@ -103,7 +118,7 @@ class SteamPlayer
     public function addInformation($playerData) {
         $this->extended = true;
 
-        $this->realId  = $playerData[0];
+        $this->realId  = intval($playerData[0]);
         $this->steamId = $playerData[2];
 
         if($playerData[1] != $this->name) {
@@ -114,11 +129,22 @@ class SteamPlayer
             $this->state = $playerData[3];
         }
         else {
-            $this->address = $playerData[6];
-            $this->loss    = $playerData[4];
-            $this->ping    = $playerData[3];
-            $this->state   = $playerData[5];
+            $address = explode(':', $playerData[6]);
+            $this->ipAddress  = $address[0];
+            $this->clientPort = intval($address[1]);
+            $this->loss       = intval($playerData[4]);
+            $this->ping       = intval($playerData[3]);
+            $this->state      = $playerData[5];
         }
+    }
+
+    /**
+     * Returns the client port of this player
+     * @return int
+     */
+    public function getClientPort()
+    {
+        return $this->clientPort;
     }
 
     /**
@@ -140,12 +166,39 @@ class SteamPlayer
     }
 
     /**
+     * Returns the IP address of this player
+     * @return String
+     */
+    public function getIpAddress()
+    {
+        return $this->ipAddress;
+    }
+
+    /**
      * Returns the nickname of this player
      * @return String
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the ping of this player
+     * @return int
+     */
+    public function getPing()
+    {
+        return $this->ping;
+    }
+
+    /**
+     * Returns the real ID (as used on the server) of this player
+     * @return int
+     */
+    public function getRealId()
+    {
+        return $this->realId;
     }
 
     /**
@@ -158,12 +211,31 @@ class SteamPlayer
     }
 
     /**
+     * Returns the connection state of this player
+     * @return String
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
      * Returns the SteamID of this player
      * @return String
      */
     public function getSteamId()
     {
         return $this->steamId;
+    }
+
+    /**
+     * Returns whether this player object has extended information gathered
+     * using RCON
+     * @return boolean
+     */
+    public function isExtended()
+    {
+        return $this->extended;
     }
 
     /**

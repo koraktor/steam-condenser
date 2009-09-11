@@ -8,9 +8,9 @@ require 'exceptions/steam_condenser_exception'
 # The SteamPlayer class represents a player connected to a server
 class SteamPlayer
 
-  attr_reader :connect_time, :id, :name, :loss, :ping, :real_id, :score, :state,
-              :steam_id
-  
+  attr_reader :client_port, :connect_time, :id, :ip_address, :name, :loss,
+              :ping, :real_id, :score, :state, :steam_id
+
   # Creates a new SteamPlayer object based on the given information
   def initialize(id, name, score, connect_time)
     @connect_time = connect_time
@@ -32,7 +32,7 @@ class SteamPlayer
     if steam_id == 'BOT'
       @state = player_data[0]
     else
-      @addr  = player_data[4]
+      @ip_address, @client_port  = player_data[4].split(':')
       @loss  = player_data[2]
       @ping  = player_data[1]
       @state = player_data[3]
@@ -47,5 +47,5 @@ class SteamPlayer
       "\##{@id} \"#{@name}\", Score: #{@score}, Time: #{@connect_time}"
     end
   end
-  
+
 end
