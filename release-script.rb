@@ -62,9 +62,11 @@ end
 def build_src_archives
   FileUtils.cd('tmp')
   %w(java php ruby).each do |l|
-    puts "Creating source archives for #{l}..."
+    $stdout << "Creating source archives for \033[1;37m#{l}\033[0;0m..."
+    $stdout.flush
     `tar czf steam-condenser-#{RELEASE_VERSION}-#{l}.tar.gz -C #{l} .`
     `tar cjf steam-condenser-#{RELEASE_VERSION}-#{l}.tar.bz2 -C #{l} .`
+    puts " \033[1;32mOK!\033[0;0m"
   end
   FileUtils.cd('..')
 end
@@ -119,7 +121,7 @@ end
 # selected version string
 def checkout_tmp
   FileUtils.mkdir('tmp')
-  puts "Checking out contents of tag \033[1;37m#{RELEASE_VERSION}\033[0;0m to tmp/"
+  puts "Checking out contents of Git tag \033[1;37m#{RELEASE_VERSION}\033[0;0m to \033[1;32mtmp/\033[0;0m..."
   `git archive #{RELEASE_VERSION} | tar xC tmp`
   return $?.exitstatus == 0
 end
@@ -132,40 +134,41 @@ def checksums
   @@checksums = {}
   files = Dir.glob('steam-condenser-*')
   files.each { |file| @@checksums[file] = {} }
-  files = files.join(' ')
 
-  md5 = `openssl md5 #{files}`.split("\n")
+  md5 = `openssl md5 #{files.join(' ')}`.split("\n")
   md5.each do |hash|
     hash.match(/MD5\((.*)\)= ([a-f0-9]{32})/)
     @@checksums[$1][:md5] = $2
   end
-  
-  sha1 = `openssl sha1 #{files}`.split("\n")
+
+  sha1 = `openssl sha1 #{files.join(' ')}`.split("\n")
   sha1.each do |hash|
     hash.match(/SHA1\((.*)\)= ([a-f0-9]{40})/)
     @@checksums[$1][:sha1] = $2
   end
 
-  @@checksums.each do |file, checksum|
+  files.sort.each do |file|
     puts "    \033[1;37m#{file}\033[0;0m:"
-    puts "\t\033[1;30mMD5:  \033[1;32m#{checksum[:md5]}\033[0;0m"
-    puts "\t\033[1;30mSHA1: \033[1;32m#{checksum[:sha1]}\033[0;0m"
+    puts "\t\033[0;37mMD5\033[0;0m : \033[1;32m#{@@checksums[file][:md5]}\033[0;0m"
+    puts "\t\033[0;37mSHA1\033[0;0m: \033[1;32m#{@@checksums[file][:sha1]}\033[0;0m"
   end
 
   FileUtils.cd('..')
 end
 
-# This function deletes the temporary directory and exits the script
+# This function deletes the temporary directory
 def cleanup
-  puts 'Cleaning up...'
+  puts
+  $stdout << 'Cleaning up...'
+  $stdout.flush
   FileUtils.rm_r('tmp')
-  exit(@@exit_code)
 end
 
 # This functions moves the created files from the temporary directory to the
 # given target directory
 def move_to_target_dir
-  puts "Moving files to #{TARGET_DIR}/ ..."
+  $stdout << "Moving files to \033[1;32m#{TARGET_DIR}/\033[0;0m..."
+  $stdout.flush
   files = Dir.glob('tmp/steam-condenser-*')
   FileUtils.mv(files, TARGET_DIR)
 end
@@ -175,7 +178,8 @@ def print_help
   puts "Usage: #{$0} [options] version [target]\n\n"
   puts "  version\t\tA string of three integers separated by dots"
   puts "\t\t\tIf this is a tag in the Git repository, the code will be"
-  puts "\t\t\texported to the temporary directory. Otherwise ..."
+  puts "\t\t\texported to the temporary directory. Otherwise the tag"
+  puts "\t\t\tcan be created by the script."
   puts "  target\t\tThe directory the created files should be saved to\n\n"
   puts "  --help\t\tShows this help"
   puts "  --no-archives\t\tDo not create source archives."
@@ -194,4 +198,5 @@ build_src_archives unless $*.include? '--no-archives'
 checksums
 move_to_target_dir
 cleanup unless $*.include? '--no-cleanup'
-puts "\033[1;32mdone.\033[0;0m"
+puts " \033[1;32mdone.\033[0;0m"
+exit(@@exit_code)
