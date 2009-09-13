@@ -99,6 +99,6 @@ public class SourceServer extends GameServer {
 	 * @return Split player data
 	 */
 	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-		return new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split(" ")));
+		return new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split("\\s+")));
 	}
 }

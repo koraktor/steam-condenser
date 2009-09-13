@@ -29,7 +29,7 @@ class GoldSrcServer extends GameServer {
     public function splitPlayerStatus($playerStatus) {
         preg_match('%# *(\d+) +"(.*)" +(\d+) +(.*)%', $playerStatus, $playerData);
         array_shift($playerData);
-        $morePlayerData = explode(' ', array_pop($playerData));
+        $morePlayerData = preg_split('/\s+/', array_pop($playerData));
         $playerData = array_merge($playerData, $morePlayerData);
         $playerData[0] = $playerData[2];
         unset($playerData[2]);

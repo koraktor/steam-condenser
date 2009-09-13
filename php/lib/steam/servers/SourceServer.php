@@ -40,7 +40,7 @@ class SourceServer extends GameServer {
     public function splitPlayerStatus($playerStatus) {
         preg_match('%# *(\d+) +"(.*)" +(.*)%', $playerStatus, $playerData);
         array_shift($playerData);
-        $morePlayerData = explode(' ', array_pop($playerData));
+        $morePlayerData = preg_split('/\s+/', array_pop($playerData));
         $playerData = array_merge($playerData, $morePlayerData);
         return $playerData;
     }
