@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 require "steam/packets/steam_packet"
 
@@ -26,6 +24,10 @@ class S2A_RULES_Packet < SteamPacket
     rules_count.times do
       rule  = @content_data.get_string
       value = @content_data.get_string
+
+      # This is a workaround for servers sending corrupt replies
+      break if rule.empty? or value.empty?
+
       @rules_hash[rule] = value
       puts "#{rule} = #{value}"
     end

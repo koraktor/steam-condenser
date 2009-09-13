@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -27,8 +27,19 @@ public class S2A_RULES_Packet extends SteamPacket
 
         int rulesCount = Short.reverseBytes(this.contentData.getShort());
         this.rulesHash = new HashMap<String, String>(rulesCount);
+
+        String rule;
+        String value;
         for (int i = 0; i < rulesCount; i++) {
-            this.rulesHash.put(this.contentData.getString(), this.contentData.getString());
+            rule = this.contentData.getString();
+            value = this.contentData.getString();
+
+            // This is a workaround for servers sending corrupt replies
+            if(rule.equals("") || value.equals("")) {
+                break;
+            }
+
+            this.rulesHash.put(rule, value);
         }
     }
 
