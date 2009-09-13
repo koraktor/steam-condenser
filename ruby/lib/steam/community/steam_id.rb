@@ -148,7 +148,7 @@ class SteamId
   # Fetches the games this user owns
   def fetch_games
     require 'rubygems'
-    require 'Hpricot'
+    require 'hpricot'
 
     url = "#{base_url}/games"
 
