@@ -266,9 +266,9 @@ abstract class GameServer {
             $returnString .= "Info:\n";
             foreach($this->infoHash as $key => $value) {
                 if(is_array($value)) {
-                    $returnString .= "  {$key}:";
+                    $returnString .= "  {$key}:\n";
                     foreach($value as $subKey => $subValue) {
-                        $returnString .= " {$subKey} = {$subValue}";
+                        $returnString .= "    {$subKey} = {$subValue}\n";
                     }
                 }
                 else {
