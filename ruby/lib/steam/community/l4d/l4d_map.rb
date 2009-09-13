@@ -20,11 +20,11 @@ class L4DMap
     @times_played = map_data.elements['timesplayed'].text.to_i
 
     case map_data.elements['medal'].text
-      when 'gold':
+      when 'gold'
         @medal = L4DMap::GOLD
-      when 'silver':
+      when 'silver'
         @medal = L4DMap::SILVER
-      when 'bronze':
+      when 'bronze'
         @medal = L4DMap::BRONZE
       else
         @medal = L4DMap::NONE

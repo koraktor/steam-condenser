@@ -10,48 +10,52 @@ require 'timeout'
 require 'byte_buffer'
 
 class SocketChannel
-  
+
   attr_reader :socket
-  
+
   def self.open
     return SocketChannel.new
   end
-  
+
+  def close
+    @socket.close
+  end
+
   def connect(*args)
     timeout(1) do
       @socket = TCPSocket.new args[0][0][3], args[0][0][1]
       @connected = true
     end
-    
+
     return self
   end
-  
+
   def initialize
     @connected = false
   end
-  
+
   def connected?
     return @connected
   end
-  
+
   def read(destination_buffer)
     if !destination_buffer.is_a? ByteBuffer
       raise ArgumentError
     end
-    
+
     length = destination_buffer.remaining
     data = @socket.recv length
     destination_buffer.put data
-    
+
     return data.length
   end
-  
+
   def write(source_buffer)
     if !source_buffer.is_a? ByteBuffer
       raise ArgumentError
     end
-    
+
     return @socket.send(source_buffer.get, 0)
   end
-  
+
 end

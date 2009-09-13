@@ -19,7 +19,7 @@ require "steam/community/tf2/tf2_stats"
 # The GameStats class represents the game statistics for a single user and a
 # specific game
 class GameStats
-  
+
   protected :initialize
 
   attr_reader :app_id, :custom_url, :game_friendly_name, :game_name,
@@ -29,19 +29,19 @@ class GameStats
   # depending on the game selected
   def self.create_game_stats(steam_id, game_name)
     case game_name
-      when "defensegrid:awakening"
+      when 'defensegrid:awakening'
         DefenseGridStats.new(steam_id)
-      when "DoD:S":
+      when 'dod:s'
         DoDSStats.new(steam_id)
-      when "L4D":
+      when 'l4d'
         L4DStats.new(steam_id)
-      when "TF2":
+      when 'tf2'
         TF2Stats.new(steam_id)
       else
         new(steam_id, game_name)
     end
   end
-  
+
   # Creates a GameStats object and fetchs data from Steam Community for the
   # given user and game
   def initialize(id, game_name)
@@ -54,7 +54,7 @@ class GameStats
 
     url = base_url + '?xml=1'
     @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
-    
+
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?
       @app_id             = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
@@ -63,7 +63,7 @@ class GameStats
       @hours_played       = @xml_data.elements['stats/hoursPlayed'].text
     end
   end
-  
+
   # Returns the achievements for this stats' user and game. If the achievements
   # haven't been parsed already, parsing is done now.
   def achievements
@@ -77,10 +77,10 @@ class GameStats
 
       @achievements_done = @achievements.reject{ |a| !a.done? }.size
     end
-    
+
     @achievements
   end
-  
+
   # Returns the count of achievements done by this player. If achievements
   # haven't been parsed yet, parsing is done now.
   def achievements_done
@@ -106,5 +106,5 @@ class GameStats
   def public?
     @privacy_state == 'public'
   end
-  
+
 end
