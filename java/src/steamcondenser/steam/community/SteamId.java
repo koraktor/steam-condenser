@@ -120,16 +120,12 @@ public class SteamId {
 	 * Creates a new SteamId object for the given ID and fetches the data if
 	 * fetchData is set to true
 	 *
-	 * @param steamId64
-	 *            The numeric ID of the SteamID
+	 * @param id
+	 *            Either the custom URL or numeric ID of the SteamID
 	 * @param fetchData
 	 *            If set to true, the data of this SteamID will be fetched from
 	 *            Steam Community
-	 * @throws IOException
-	 * @throws DOMException
-	 * @throws ParseException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
+	 * @throws SteamCondenserException
 	 */
 	private SteamId(Object id, boolean fetchData)
 			throws SteamCondenserException {
@@ -158,11 +154,7 @@ public class SteamId {
 	/**
 	 * This method fetches the data of this person's SteamID
 	 *
-	 * @throws IOException
-	 * @throws DOMException
-	 * @throws ParserConfigurationException
-	 * @throws ParseException
-	 * @throws SAXException
+	 * @throws SteamCondenserException
 	 */
 	private void fetchData()
 			throws SteamCondenserException {
@@ -241,33 +233,31 @@ public class SteamId {
 	/**
 	 * Fetches the friends of this user
 	 *
-	 * @throws IOException
-	 * @throws DOMException
-	 * @throws ParserConfigurationException
-	 * @throws ParseException
-	 * @throws SAXException
+	 * @throws SteamCondenserException
 	 */
-	private void fetchFriends() {
-		String url = this.getBaseUrl() + "/friends?xml=1";
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Element friendsData = parser.parse(url).getDocumentElement();
+	private void fetchFriends()
+			throws SteamCondenserException {
+		try {
+			String url = this.getBaseUrl() + "/friends?xml=1";
+			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Element friendsData = parser.parse(url).getDocumentElement();
 
-		Element friendsNode = (Element) friendsData.getElementsByTagName("friends").item(0);
-		NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
-		this.friends = new SteamId[friendsNodeList.getLength()];
-		for(int i = 0; i < friendsNodeList.getLength(); i++) {
-			Element friend = (Element) friendsNodeList.item(i);
-			this.friends[i] = SteamId.create(friend.getTextContent(), false);
+			Element friendsNode = (Element) friendsData.getElementsByTagName("friends").item(0);
+			NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
+			this.friends = new SteamId[friendsNodeList.getLength()];
+			for(int i = 0; i < friendsNodeList.getLength(); i++) {
+				Element friend = (Element) friendsNodeList.item(i);
+				this.friends[i] = SteamId.create(friend.getTextContent(), false);
+			}
+		} catch(Exception e) {
+			throw new SteamCondenserException("XML data could not be parsed.");
 		}
 	}
 
 	/**
 	 * Fetches the games this user owns
 	 *
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws XPathExpressionException
+	 * @throws SteamCondenserException
 	 */
 	private void fetchGames()
 			throws SteamCondenserException {
@@ -349,7 +339,8 @@ public class SteamId {
 		return this.fetchTime;
 	}
 
-	public SteamId[] getFriends() {
+	public SteamId[] getFriends()
+			throws SteamCondenserException {
 		if(this.friends == null) {
 			this.fetchFriends();
 		}
