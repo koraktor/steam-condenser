@@ -29,7 +29,7 @@ class L4DStats extends GameStats {
     private $lifetimeStats;
 
     private $mostRecentGame;
-    
+
     private $survivalStats;
 
     private $teamplayStats;
@@ -122,7 +122,7 @@ class L4DStats extends GameStats {
         if(!$this->isPublic()) {
             return;
         }
-        
+
         if(empty($this->teamplayStats)) {
           $this->teamplayStats = array();
           $this->teamplayStats['revived']                    = (int)    $this->xmlData->stats->teamplay->revived;
@@ -140,7 +140,7 @@ class L4DStats extends GameStats {
 
         return $this->teamplayStats;
     }
-    
+
     public function getVersusStats() {
         if(!$this->isPublic()) {
             return;
@@ -151,7 +151,7 @@ class L4DStats extends GameStats {
           $this->versusStats['gamesPlayed']               = (int)    $this->xmlData->stats->versus->gamesplayed;
           $this->versusStats['gamesCompleted']            = (int)    $this->xmlData->stats->versus->gamescompleted;
           $this->versusStats['finalesSurvived']           = (int)    $this->xmlData->stats->versus->finales;
-          $this->versusStats['finalesSurvivedPercentage'] = ($this->versusStats['games_played']) ? $this->versusStats['finales_survived'] / $this->versusStats['games_played'] : 0;
+          $this->versusStats['finalesSurvivedPercentage'] = ($this->versusStats['gamesPlayed']) ? $this->versusStats['finalesSurvived'] / $this->versusStats['gamesPlayed'] : 0;
           $this->versusStats['points']                    = (int)    $this->xmlData->stats->versus->points;
           $this->versusStats['mostPointsInfected']        = (string) $this->xmlData->stats->versus->pointas;
           $this->versusStats['gamesWon']                  = (int)    $this->xmlData->stats->versus->gameswon;
