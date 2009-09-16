@@ -5,3 +5,10 @@
 
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+
+module SteamCondenser
+
+  version = YAML.load_file(File.join(File.dirname(__FILE__), '..', 'VERSION.yml'))
+  VERSION = "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
+
+end

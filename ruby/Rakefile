@@ -21,7 +21,7 @@ Jeweler::Tasks.new do |s|
   s.name = s.rubyforge_project = "steam-condenser"
   s.summary = 'Steam Condenser - A Steam query library'
 
-  s.files = %w(README.md Rakefile LICENSE) + src_files + test_files
+  s.files = %w(README.md Rakefile LICENSE VERSION.yml) + src_files + test_files
   s.rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
 end
 
