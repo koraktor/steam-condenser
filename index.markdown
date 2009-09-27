@@ -19,15 +19,19 @@ progress.
 - Server queries
   - Query Steam's master servers to receive a list of available game servers
   - Query game servers based on Valve's GoldSrc and Source engines for
-    information 
+    information
 - Use RCON to control game servers
 - Acquire information from the Steam Community about players and their game
   statistics
+  - This features achievement statistics for *every* game supporting
+    achievements
+  - Additional, more detailed statistics for *Day of Defeat: Source*,
+    *Left4Dead* and *Team Fortress 2* as well as *Defense Grid: The Awakening*
 
 ## Requirements
 - Java 1.4 or newer
 - PHP 5 or newer
-- Ruby 1.8.6 or newer 
+- Ruby 1.8.6 or newer
   - The Ruby [BZ2 module][1] is needed if you want to query Source servers
     sending compressed packets.
   - [Hpricot][5] is needed if you want to query games from the Steam Community.
@@ -42,12 +46,12 @@ progress.
   find one, feel free to create your own.
 
 {% include google_adsense %}
-  
+
 ## License
 Steam Condenser is free software; you can redistribute it and/or modify it
 under the terms of the new BSD License. A copy of this license can be found
 [here][2].
-    
+
   [1]: http://rubyforge.org/projects/bz2
   [2]: license.html
   [3]: http://github.com/koraktor/steam-condenser/issues
