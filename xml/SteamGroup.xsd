@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This code is free software; you can redistribute it and/or modify it under the
+terms of the new BSD License.
+
+Copyright (c) 2009, Sebastian Staudt
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="memberList">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="groupID64" type="xsd:unsignedLong" />
+                <xsd:element name="memberCount" type="xsd:unsignedInt" />
+                <xsd:element name="totalPages" type="xsd:unsignedInt" />
+                <xsd:element name="currentPage" type="xsd:unsignedInt"/>
+                <xsd:element name="startingMember" type="xsd:unsignedInt" />
+                <xsd:element name="nextPageLink" type="xsd:anyURI"
+                    minOccurs="0" />
+                <xsd:choice>
+                    <xsd:element name="members">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="steamID64"
+                                    type="xsd:unsignedLong" minOccurs="0"
+                                    maxOccurs="unbounded" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="error" type="xsd:string" />
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
