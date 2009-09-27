@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- 
+<!--
 This code is free software; you can redistribute it and/or modify it under the
 terms of the new BSD License.
 
@@ -8,111 +8,65 @@ Copyright (c) 2009, Sebastian Staudt
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<!-- targetNamespace="http://www.steamcommunity.com" 
-	xmlns="http://www.steamcommunity.com"> -->
-	
-	<xsd:redefine schemaLocation="./GameStats.xsd">
-	
-		<xsd:complexType name="statsType">
-			<xsd:complexContent>
-				<xsd:extension base="statsType">
-					<xsd:sequence>
-						<xsd:element name="accumulatedPoints" type="xsd:unsignedInt" />
-						<xsd:element name="classData"
-							type="classDataType" minOccurs="2" maxOccurs="2" />
-						<xsd:element name="classData"
-							type="medicClassDataType" />
-						<xsd:element name="classData"
-							type="classDataType" minOccurs="2" maxOccurs="2" />
-						<xsd:element name="classData"
-							type="engineerClassDataType" />
-						<xsd:element name="classData"
-							type="sniperClassDataType" />
-						<xsd:element name="classData"
-							type="classDataType" />
-						<xsd:element name="classData"
-							type="spyClassDataType" />
-					</xsd:sequence>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
-	
-	</xsd:redefine>
-	
-		<xsd:annotation>
-		<xsd:documentation>
-			The elemenet isentrykills is specific to the class Engineer, but
-			is placed between other general elements and can therefore not
-			be validated with XML Schema 1.0.
-		</xsd:documentation>
-	</xsd:annotation>
-	<xsd:complexType name="classDataType">
-		<xsd:sequence>
-			<xsd:element name="className" type="xsd:string" />
-			<xsd:element name="classIcon" type="xsd:anyURI" />
-			<xsd:element name="playtimeSeconds" type="xsd:unsignedInt" />
-			<xsd:element name="ipointsscored" type="xsd:unsignedInt" />
-			<xsd:element name="inumberofkills" type="xsd:unsignedInt" />
-			<xsd:element name="isentrykills" type="xsd:unsignedInt"
-				minOccurs="0" />
-			<xsd:element name="ikillassists" type="xsd:unsignedInt" />
-			<xsd:element name="ipointcaptures" type="xsd:unsignedInt" />
-			<xsd:element name="ipointdefenses" type="xsd:unsignedInt" />
-			<xsd:element name="idamagedealt" type="xsd:unsignedInt" />
-			<xsd:element name="ibuildingsdestroyed"
-				type="xsd:unsignedInt" />
-			<xsd:element name="idominations" type="xsd:unsignedInt" />
-			<xsd:element name="irevenge" type="xsd:unsignedInt" />
-			<xsd:element name="inuminvulnerable"
-				type="xsd:unsignedInt" />
-			<xsd:element name="iplaytime" type="xsd:unsignedInt" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="engineerClassDataType">
-		<xsd:complexContent>
-			<xsd:extension base="classDataType">
-				<xsd:sequence>
-					<xsd:element name="ibuildingsbuilt"
-						type="xsd:unsignedInt" />
-					<xsd:element name="inumteleports"
-						type="xsd:unsignedInt" />
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="medicClassDataType">
-		<xsd:complexContent>
-			<xsd:extension base="classDataType">
-				<xsd:sequence>
-					<xsd:element name="ihealthpointshealed"
-						type="xsd:unsignedInt" />
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="sniperClassDataType">
-		<xsd:complexContent>
-			<xsd:extension base="classDataType">
-				<xsd:sequence>
-					<xsd:element name="iheadshots" type="xsd:unsignedInt" />
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="spyClassDataType">
-		<xsd:complexContent>
-			<xsd:extension base="classDataType">
-				<xsd:sequence>
-					<xsd:element name="ibackstabs" type="xsd:unsignedInt" />
-					<xsd:element name="ihealthpointsleached"
-						type="xsd:unsignedInt" />
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
+    <!-- targetNamespace="http://www.steamcommunity.com"
+    xmlns="http://www.steamcommunity.com"> -->
+
+    <xsd:redefine schemaLocation="./GameStats.xsd">
+
+        <xsd:complexType name="statsType">
+            <xsd:complexContent>
+                <xsd:extension base="statsType">
+                    <xsd:sequence>
+                        <xsd:element name="accumulatedPoints" type="xsd:unsignedInt" />
+                        <xsd:element name="classData" type="classDataType"
+                            minOccurs="9" maxOccurs="9" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+    </xsd:redefine>
+
+        <xsd:annotation>
+        <xsd:documentation>
+            The elemenet isentrykills is specific to the class Engineer, but
+            is placed between other general elements and can therefore not
+            be validated with XML Schema 1.0.
+        </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType name="classDataType">
+        <xsd:sequence>
+            <xsd:element name="className" type="xsd:string" />
+            <xsd:element name="classIcon" type="xsd:anyURI" />
+            <xsd:element name="playtimeSeconds" type="xsd:unsignedInt" />
+            <xsd:element name="ipointsscored" type="xsd:unsignedInt" />
+            <xsd:element name="inumberofkills" type="xsd:unsignedInt" />
+            <xsd:element name="isentrykills" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="ikillassists" type="xsd:unsignedInt" />
+            <xsd:element name="ipointcaptures" type="xsd:unsignedInt" />
+            <xsd:element name="ipointdefenses" type="xsd:unsignedInt" />
+            <xsd:element name="idamagedealt" type="xsd:unsignedInt" />
+            <xsd:element name="ibuildingsdestroyed"
+                type="xsd:unsignedInt" />
+            <xsd:element name="idominations" type="xsd:unsignedInt" />
+            <xsd:element name="irevenge" type="xsd:unsignedInt" />
+            <xsd:element name="inuminvulnerable"
+                type="xsd:unsignedInt" />
+            <xsd:element name="iplaytime" type="xsd:unsignedInt" />
+            <xsd:element name="ibackstabs" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="ibuildingsbuilt" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="iheadshots" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="ihealthpointshealed" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="ihealthpointsleached" type="xsd:unsignedInt"
+                minOccurs="0" />
+            <xsd:element name="inumteleports" type="xsd:unsignedInt"
+                minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
 </xsd:schema>
