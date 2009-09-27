@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+This code is free software; you can redistribute it and/or modify it under the
+terms of the new BSD License.
+
+Copyright (c) 2009, Sebastian Staudt
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:include schemaLocation="./BasicTypes.xsd" />
+
+    <xsd:element name="friendsList">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="steamID64" type="xsd:unsignedLong" />
+                <xsd:element name="steamID" type="xsd:string" />
+                <xsd:choice>
+                    <xsd:element name="friends">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="friend"
+                                    type="xsd:unsignedLong" minOccurs="0"
+                                    maxOccurs="unbounded" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="error" type="xsd:string" />
+                </xsd:choice>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="response" type="errorType" />
+
+</xsd:schema>
