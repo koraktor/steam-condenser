@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- 
+<!--
 This code is free software; you can redistribute it and/or modify it under the
 terms of the new BSD License.
 
@@ -8,148 +8,148 @@ Copyright (c) 2009, Sebastian Staudt
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	
-	<xsd:include schemaLocation="./BasicTypes.xsd" />
+
+    <xsd:include schemaLocation="./BasicTypes.xsd" />
 
     <xsd:element name="profile">
-    	<xsd:complexType>
-	    	<xsd:sequence>
-	    		<xsd:element name="steamID64" type="xsd:unsignedLong" />
-				<xsd:element name="steamID" type="xsd:string" />
-				<xsd:element name="onlineState" type="onlineStateType" />
-				<xsd:element name="stateMessage" type="xsd:string" />
-				<xsd:element name="privacyState" type="privacyStateType" />
-				<xsd:element name="visibilityState" type="xsd:unsignedInt" />
-				<xsd:element name="avatarIcon" type="xsd:anyURI" />
-				<xsd:element name="avatarMedium" type="xsd:anyURI" />
-				<xsd:element name="avatarFull" type="xsd:anyURI" />
-				<xsd:element name="vacBanned" type="xsd:boolean" />
-				<xsd:element name="customURL" type="xsd:string" />
-				<xsd:element name="inGameInfo" type="inGameInfoType"
-					minOccurs="0" />
-				<xsd:element name="memberSince" type="xsd:string" />
-				<xsd:element name="steamRating" type="xsd:string" />
-				<xsd:element name="hoursPlayed2Wk" type="xsd:string" />
-				<xsd:element name="headline" type="xsd:string" />
-				<xsd:element name="location" type="xsd:string" />
-				<xsd:element name="realname" type="xsd:string" />
-				<xsd:element name="summary" type="xsd:string" />
-				<xsd:element name="mostPlayedGames" type="mostPlayedGamesType"
-					minOccurs="0" />
-				<xsd:element name="friends" type="friendsType" minOccurs="0" />
-				<xsd:element name="weblinks" type="weblinksType"
-					minOccurs="0" />
-				<xsd:element name="groups" type="groupsType" minOccurs="0" />
-				<xsd:element name="favoriteGame" type="favoriteGameType"
-					minOccurs="0" />
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:element>
-	
-	<xsd:complexType name="favoriteGameType">
-		<xsd:sequence>
-			<xsd:element name="link" type="xsd:anyURI" />
-			<xsd:element name="logo" type="xsd:anyURI" />
-			<xsd:element name="name" type="xsd:string" />
-			<xsd:element name="hoursPlayed2wk" type="xsd:decimal" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="friendType">
-		<xsd:sequence>
-			<xsd:element name="steamID64" type="xsd:unsignedLong" />
-			<xsd:element name="steamID" type="xsd:string" />
-			<xsd:element name="customURL" type="xsd:string" />
-			<xsd:element name="onlineState" type="onlineStateType" />
-			<xsd:element name="stateMessage" type="xsd:string" />
-			<xsd:element name="avatarIcon" type="xsd:anyURI" />
-			<xsd:element name="avatarMedium" type="xsd:anyURI" />
-			<xsd:element name="avatarFull" type="xsd:anyURI" />
-			<xsd:element name="friendsSince" type="xsd:integer" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="friendsType">
-		<xsd:sequence>
-			<xsd:element name="friend" type="friendType" minOccurs="0"
-				maxOccurs="6" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="groupType">
-		<xsd:sequence>
-			<xsd:element name="groupID64" type="xsd:unsignedLong" />
-			<xsd:element name="groupName" type="xsd:string" />
-			<xsd:element name="groupURL" type="xsd:string" />
-			<xsd:element name="headline" type="xsd:string" />
-			<xsd:element name="summary" type="xsd:string" />
-			<xsd:element name="avatarIcon" type="xsd:anyURI" />
-			<xsd:element name="avatarMedium" type="xsd:anyURI" />
-			<xsd:element name="avatarFull" type="xsd:anyURI" />
-			<xsd:element name="memberCount" type="xsd:integer" />
-			<xsd:element name="membersInChat" type="xsd:integer" />
-			<xsd:element name="membersInGame" type="xsd:integer" />
-			<xsd:element name="membersOnline" type="xsd:integer" />
-		</xsd:sequence>
-		<xsd:attribute name="isPrimary" type="xsd:boolean" />
-	</xsd:complexType>
-	
-	<xsd:complexType name="groupsType">
-		<xsd:sequence>
-			<xsd:element name="group" type="groupType" minOccurs="0"
-				maxOccurs="unbounded" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="inGameInfoType">
-		<xsd:complexContent>
-			<xsd:extension base="gameType">
-				<xsd:sequence>
-					<xsd:element name="gameJoinLink" type="xsd:anyURI" />
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="mostPlayedGameType">
-		<xsd:complexContent>
-			<xsd:extension base="gameType">
-				<xsd:sequence>
-					<xsd:element name="hoursPlayed" type="xsd:decimal" />
-					<xsd:element name="statsName" type="xsd:string"
-						minOccurs="0" />
-					</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="mostPlayedGamesType">
-		<xsd:sequence>
-			<xsd:element name="mostPlayedGame" type="mostPlayedGameType"
-				minOccurs="0" maxOccurs="3" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:simpleType name="onlineStateType">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="in-game" />
-			<xsd:enumeration value="offline" />
-			<xsd:enumeration value="online" />
-		</xsd:restriction>
-	</xsd:simpleType>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="steamID64" type="xsd:unsignedLong" />
+                <xsd:element name="steamID" type="xsd:string" />
+                <xsd:element name="onlineState" type="onlineStateType" />
+                <xsd:element name="stateMessage" type="xsd:string" />
+                <xsd:element name="privacyState" type="privacyStateType" />
+                <xsd:element name="visibilityState" type="xsd:unsignedInt" />
+                <xsd:element name="avatarIcon" type="xsd:anyURI" />
+                <xsd:element name="avatarMedium" type="xsd:anyURI" />
+                <xsd:element name="avatarFull" type="xsd:anyURI" />
+                <xsd:element name="vacBanned" type="xsd:boolean" />
+                <xsd:element name="customURL" type="xsd:string" />
+                <xsd:element name="inGameInfo" type="inGameInfoType"
+                    minOccurs="0" />
+                <xsd:element name="memberSince" type="xsd:string" />
+                <xsd:element name="steamRating" type="xsd:string" />
+                <xsd:element name="hoursPlayed2Wk" type="xsd:string" />
+                <xsd:element name="headline" type="xsd:string" />
+                <xsd:element name="location" type="xsd:string" />
+                <xsd:element name="realname" type="xsd:string" />
+                <xsd:element name="summary" type="xsd:string" />
+                <xsd:element name="mostPlayedGames" type="mostPlayedGamesType"
+                    minOccurs="0" />
+                <xsd:element name="friends" type="friendsType" minOccurs="0" />
+                <xsd:element name="weblinks" type="weblinksType"
+                    minOccurs="0" />
+                <xsd:element name="groups" type="groupsType" minOccurs="0" />
+                <xsd:element name="favoriteGame" type="favoriteGameType"
+                    minOccurs="0" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
 
-	<xsd:complexType name="weblinkType">
-		<xsd:sequence>
-			<xsd:element name="link" type="xsd:anyURI" />
-			<xsd:element name="title" type="xsd:string" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="weblinksType">
-		<xsd:sequence>
-			<xsd:element name="weblink" type="weblinkType" minOccurs="0"
-				maxOccurs="3" />
-		</xsd:sequence>
-	</xsd:complexType>
+    <xsd:complexType name="favoriteGameType">
+        <xsd:sequence>
+            <xsd:element name="link" type="xsd:anyURI" />
+            <xsd:element name="logo" type="xsd:anyURI" />
+            <xsd:element name="name" type="xsd:string" />
+            <xsd:element name="hoursPlayed2wk" type="xsd:decimal" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="friendType">
+        <xsd:sequence>
+            <xsd:element name="steamID64" type="xsd:unsignedLong" />
+            <xsd:element name="steamID" type="xsd:string" />
+            <xsd:element name="customURL" type="xsd:string" />
+            <xsd:element name="onlineState" type="onlineStateType" />
+            <xsd:element name="stateMessage" type="xsd:string" />
+            <xsd:element name="avatarIcon" type="xsd:anyURI" />
+            <xsd:element name="avatarMedium" type="xsd:anyURI" />
+            <xsd:element name="avatarFull" type="xsd:anyURI" />
+            <xsd:element name="friendsSince" type="xsd:integer" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="friendsType">
+        <xsd:sequence>
+            <xsd:element name="friend" type="friendType" minOccurs="0"
+                maxOccurs="6" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="groupType">
+        <xsd:sequence>
+            <xsd:element name="groupID64" type="xsd:unsignedLong" />
+            <xsd:element name="groupName" type="xsd:string" />
+            <xsd:element name="groupURL" type="xsd:string" />
+            <xsd:element name="headline" type="xsd:string" />
+            <xsd:element name="summary" type="xsd:string" />
+            <xsd:element name="avatarIcon" type="xsd:anyURI" />
+            <xsd:element name="avatarMedium" type="xsd:anyURI" />
+            <xsd:element name="avatarFull" type="xsd:anyURI" />
+            <xsd:element name="memberCount" type="xsd:integer" />
+            <xsd:element name="membersInChat" type="xsd:integer" />
+            <xsd:element name="membersInGame" type="xsd:integer" />
+            <xsd:element name="membersOnline" type="xsd:integer" />
+        </xsd:sequence>
+        <xsd:attribute name="isPrimary" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="groupsType">
+        <xsd:sequence>
+            <xsd:element name="group" type="groupType" minOccurs="0"
+                maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="inGameInfoType">
+        <xsd:complexContent>
+            <xsd:extension base="gameType">
+                <xsd:sequence>
+                    <xsd:element name="gameJoinLink" type="xsd:anyURI" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mostPlayedGameType">
+        <xsd:complexContent>
+            <xsd:extension base="gameType">
+                <xsd:sequence>
+                    <xsd:element name="hoursPlayed" type="xsd:decimal" />
+                    <xsd:element name="statsName" type="xsd:string"
+                        minOccurs="0" />
+                    </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="mostPlayedGamesType">
+        <xsd:sequence>
+            <xsd:element name="mostPlayedGame" type="mostPlayedGameType"
+                minOccurs="0" maxOccurs="3" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="onlineStateType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="in-game" />
+            <xsd:enumeration value="offline" />
+            <xsd:enumeration value="online" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="weblinkType">
+        <xsd:sequence>
+            <xsd:element name="link" type="xsd:anyURI" />
+            <xsd:element name="title" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="weblinksType">
+        <xsd:sequence>
+            <xsd:element name="weblink" type="weblinkType" minOccurs="0"
+                maxOccurs="3" />
+        </xsd:sequence>
+    </xsd:complexType>
 
 </xsd:schema>

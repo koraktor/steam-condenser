@@ -9,183 +9,183 @@ Copyright (c) 2009, Sebastian Staudt
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-	<xsd:redefine schemaLocation="./GameStats.xsd">
+    <xsd:redefine schemaLocation="./GameStats.xsd">
 
-		<xsd:complexType name="statsType">
-			<xsd:complexContent>
-				<xsd:extension base="statsType">
-					<xsd:sequence>
-						<xsd:element name="mostrecentgame"
-							type="mostRecentGameType" />
-						<xsd:element name="favorites" type="favoritesType" />
-						<xsd:element name="lifetime" type="lifetimeType" />
-						<xsd:element name="teamplay" type="teamplayType" />
-						<xsd:element name="weapons" type="weaponsType" />
-						<xsd:element name="versus" type="versusType" />
-						<xsd:element name="survival" type="survivalType" />
-					</xsd:sequence>
-				</xsd:extension>
-			</xsd:complexContent>
-		</xsd:complexType>
+        <xsd:complexType name="statsType">
+            <xsd:complexContent>
+                <xsd:extension base="statsType">
+                    <xsd:sequence>
+                        <xsd:element name="mostrecentgame"
+                            type="mostRecentGameType" />
+                        <xsd:element name="favorites" type="favoritesType" />
+                        <xsd:element name="lifetime" type="lifetimeType" />
+                        <xsd:element name="teamplay" type="teamplayType" />
+                        <xsd:element name="weapons" type="weaponsType" />
+                        <xsd:element name="versus" type="versusType" />
+                        <xsd:element name="survival" type="survivalType" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
 
-	</xsd:redefine>
-	
-	<xsd:complexType name="mostRecentGameType">
-		<xsd:sequence>
-			<xsd:element name="movie" type="xsd:string" />
-			<xsd:element name="movieimg" type="xsd:string" />
-			<xsd:element name="bEscaped" type="xsd:boolean" />
-			<xsd:element name="difficulty" type="xsd:string" />
-			<xsd:element name="time" type="xsd:string" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="favoritesType">
-		<xsd:sequence>
-			<xsd:element name="campaign" type="xsd:string" />
-			<xsd:element name="campaignimg" type="xsd:string" />
-			<xsd:element name="campaignpct" type="xsd:decimal" />
-			<xsd:element name="character" type="xsd:string" />
-			<xsd:element name="characterpct" type="xsd:decimal" />
-			<xsd:element name="weapon1" type="xsd:string" />
-			<xsd:element name="weapon1img" type="xsd:string" />
-			<xsd:element name="weapon1pct" type="xsd:decimal" />
-			<xsd:element name="weapon2" type="xsd:string" />
-			<xsd:element name="weapon2img" type="xsd:string" />
-			<xsd:element name="weapon2pct" type="xsd:decimal" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="lifetimeType">
-		<xsd:sequence>
-			<xsd:element name="timeplayed" type="xsd:string" />
-			<xsd:element name="gamesplayed" type="xsd:decimal" />
-			<xsd:element name="finales" type="xsd:decimal" />
-			<xsd:element name="finalespct" type="xsd:decimal" />
-			<xsd:element name="infectedkilled" type="xsd:decimal" />
-			<xsd:element name="killsperhour" type="xsd:decimal" />
-			<xsd:element name="pillsused" type="xsd:decimal" />
-			<xsd:element name="pillsshared" type="xsd:decimal" />
-			<xsd:element name="kitsused" type="xsd:decimal" />
-			<xsd:element name="kitsshared" type="xsd:decimal" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="teamplayType">
-		<xsd:sequence>
-			<xsd:element name="revived" type="xsd:decimal" />
-			<xsd:element name="reviveddiff" type="xsd:string" />
-			<xsd:element name="revivedavg" type="xsd:decimal" />
-			<xsd:element name="wasrevivedavg" type="xsd:decimal" />
-			<xsd:element name="protected" type="xsd:decimal" />
-			<xsd:element name="protecteddiff" type="xsd:string" />
-			<xsd:element name="protectedavg" type="xsd:decimal" />
-			<xsd:element name="wasprotectedavg" type="xsd:decimal" />
-			<xsd:element name="ffdamage" type="xsd:decimal" />
-			<xsd:element name="ffdamagediff" type="xsd:string" />
-			<xsd:element name="ffdamageavg" type="xsd:decimal" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="weaponsType">
-		<xsd:sequence>
-			<xsd:element name="pistol" type="weaponType" />
-			<xsd:element name="smg" type="weaponType" />
-			<xsd:element name="shotgun" type="weaponType" />
-			<xsd:element name="autoshotgun" type="weaponType" />
-			<xsd:element name="rifle" type="weaponType" />
-			<xsd:element name="sniper" type="weaponType" />
-			<xsd:element name="minigun" type="weaponType" />
-			<xsd:element name="molotov" type="explosiveType" />
-			<xsd:element name="pipes" type="explosiveType" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="weaponType">
-		<xsd:sequence>
-			<xsd:element name="shots" type="xsd:decimal" />
-			<xsd:element name="kills" type="xsd:decimal" />
-			<xsd:element name="killpct" type="xsd:string" />
-			<xsd:element name="accuracy" type="xsd:string" />
-			<xsd:element name="headshots" type="xsd:string" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="explosiveType">
-		<xsd:sequence>
-			<xsd:element name="thrown" type="xsd:decimal" />
-			<xsd:element name="kills" type="xsd:decimal" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="versusType">
-		<xsd:sequence>
-			<xsd:element name="gamesplayed" type="xsd:decimal" />
-			<xsd:element name="gamescompleted" type="xsd:decimal" />
-			<xsd:element name="finales" type="xsd:decimal" />
-			<xsd:element name="finalespct" type="xsd:decimal" />
-			<xsd:element name="points" type="xsd:decimal" />
-			<xsd:element name="pointsas" type="xsd:string" />
-			<xsd:element name="gameswon" type="xsd:decimal" />
-			<xsd:element name="gameslost" type="xsd:decimal" />
-			<xsd:element name="winpct" type="xsd:decimal" />
-			<xsd:element name="losspct" type="xsd:decimal" />
-			<xsd:element name="survivorscore" type="xsd:decimal" />
-			<xsd:element name="hunterspecial" type="xsd:decimal" />
-			<xsd:element name="hunterdmg" type="xsd:decimal" />
-			<xsd:element name="hunterlifespan" type="xsd:string" />
-			<xsd:element name="boomerspecial" type="xsd:decimal" />
-			<xsd:element name="boomerdmg" type="xsd:decimal" />
-			<xsd:element name="boomerlifespan" type="xsd:string" />
-			<xsd:element name="smokerspecial" type="xsd:decimal" />
-			<xsd:element name="smokerdmg" type="xsd:decimal" />
-			<xsd:element name="smokerlifespan" type="xsd:string" />
-			<xsd:element name="tankspecial" type="xsd:decimal" />
-			<xsd:element name="tankdmg" type="xsd:decimal" />
-			<xsd:element name="tanklifespan" type="xsd:string" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="survivalType">
-		<xsd:sequence>
-			<xsd:element name="goldmedals" type="xsd:decimal" />
-			<xsd:element name="silvermedals" type="xsd:decimal" />
-			<xsd:element name="bronzemedals" type="xsd:decimal" />
-			<xsd:element name="roundsplayed" type="xsd:decimal" />
-			<xsd:element name="besttime" type="xsd:decimal" />
-			<xsd:element name="maps" type="mapsType" />
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="mapsType">
-		<xsd:all>
-			<xsd:element name="l4d_airport02_offices" type="mapType" />
-			<xsd:element name="l4d_hospital04_interior" type="mapType" />
-			<xsd:element name="l4d_hospital03_sewers" type="mapType" />
-			<xsd:element name="l4d_smalltown03_ranchhouse" type="mapType" />
-			<xsd:element name="l4d_vs_hospital05_rooftop" type="mapType" />
-			<xsd:element name="l4d_hospital02_subway" type="mapType" />
-			<xsd:element name="l4d_sv_lighthouse" type="mapType" />
-			<xsd:element name="l4d_airport04_terminal" type="mapType" />
-			<xsd:element name="l4d_vs_farm05_cornfield" type="mapType" />
-			<xsd:element name="l4d_vs_airport05_runway" type="mapType" />
-			<xsd:element name="l4d_vs_smalltown05_houseboat" type="mapType" />
-			<xsd:element name="l4d_smalltown02_drainage" type="mapType" />
-			<xsd:element name="l4d_farm02_traintunnel" type="mapType" />
-			<xsd:element name="l4d_farm03_bridge" type="mapType" />
-			<xsd:element name="l4d_airport03_garage" type="mapType" />
-			<xsd:element name="l4d_smalltown04_mainstreet" type="mapType" />
-		</xsd:all>
-	</xsd:complexType>
-	
-	<xsd:complexType name="mapType">
-		<xsd:sequence>
-			<xsd:element name="name" type="xsd:string" />
-			<xsd:element name="timesplayed" type="xsd:decimal" />
-			<xsd:element name="besttimeseconds" type="xsd:decimal" />
-			<xsd:element name="medal" type="xsd:string" />
-			<xsd:element name="img" type="xsd:anyURI" />
-		</xsd:sequence>
-	</xsd:complexType>
+    </xsd:redefine>
+
+    <xsd:complexType name="mostRecentGameType">
+        <xsd:sequence>
+            <xsd:element name="movie" type="xsd:string" />
+            <xsd:element name="movieimg" type="xsd:string" />
+            <xsd:element name="bEscaped" type="xsd:boolean" />
+            <xsd:element name="difficulty" type="xsd:string" />
+            <xsd:element name="time" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="favoritesType">
+        <xsd:sequence>
+            <xsd:element name="campaign" type="xsd:string" />
+            <xsd:element name="campaignimg" type="xsd:string" />
+            <xsd:element name="campaignpct" type="xsd:decimal" />
+            <xsd:element name="character" type="xsd:string" />
+            <xsd:element name="characterpct" type="xsd:decimal" />
+            <xsd:element name="weapon1" type="xsd:string" />
+            <xsd:element name="weapon1img" type="xsd:string" />
+            <xsd:element name="weapon1pct" type="xsd:decimal" />
+            <xsd:element name="weapon2" type="xsd:string" />
+            <xsd:element name="weapon2img" type="xsd:string" />
+            <xsd:element name="weapon2pct" type="xsd:decimal" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="lifetimeType">
+        <xsd:sequence>
+            <xsd:element name="timeplayed" type="xsd:string" />
+            <xsd:element name="gamesplayed" type="xsd:decimal" />
+            <xsd:element name="finales" type="xsd:decimal" />
+            <xsd:element name="finalespct" type="xsd:decimal" />
+            <xsd:element name="infectedkilled" type="xsd:decimal" />
+            <xsd:element name="killsperhour" type="xsd:decimal" />
+            <xsd:element name="pillsused" type="xsd:decimal" />
+            <xsd:element name="pillsshared" type="xsd:decimal" />
+            <xsd:element name="kitsused" type="xsd:decimal" />
+            <xsd:element name="kitsshared" type="xsd:decimal" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="teamplayType">
+        <xsd:sequence>
+            <xsd:element name="revived" type="xsd:decimal" />
+            <xsd:element name="reviveddiff" type="xsd:string" />
+            <xsd:element name="revivedavg" type="xsd:decimal" />
+            <xsd:element name="wasrevivedavg" type="xsd:decimal" />
+            <xsd:element name="protected" type="xsd:decimal" />
+            <xsd:element name="protecteddiff" type="xsd:string" />
+            <xsd:element name="protectedavg" type="xsd:decimal" />
+            <xsd:element name="wasprotectedavg" type="xsd:decimal" />
+            <xsd:element name="ffdamage" type="xsd:decimal" />
+            <xsd:element name="ffdamagediff" type="xsd:string" />
+            <xsd:element name="ffdamageavg" type="xsd:decimal" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="weaponsType">
+        <xsd:sequence>
+            <xsd:element name="pistol" type="weaponType" />
+            <xsd:element name="smg" type="weaponType" />
+            <xsd:element name="shotgun" type="weaponType" />
+            <xsd:element name="autoshotgun" type="weaponType" />
+            <xsd:element name="rifle" type="weaponType" />
+            <xsd:element name="sniper" type="weaponType" />
+            <xsd:element name="minigun" type="weaponType" />
+            <xsd:element name="molotov" type="explosiveType" />
+            <xsd:element name="pipes" type="explosiveType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="weaponType">
+        <xsd:sequence>
+            <xsd:element name="shots" type="xsd:decimal" />
+            <xsd:element name="kills" type="xsd:decimal" />
+            <xsd:element name="killpct" type="xsd:string" />
+            <xsd:element name="accuracy" type="xsd:string" />
+            <xsd:element name="headshots" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="explosiveType">
+        <xsd:sequence>
+            <xsd:element name="thrown" type="xsd:decimal" />
+            <xsd:element name="kills" type="xsd:decimal" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="versusType">
+        <xsd:sequence>
+            <xsd:element name="gamesplayed" type="xsd:decimal" />
+            <xsd:element name="gamescompleted" type="xsd:decimal" />
+            <xsd:element name="finales" type="xsd:decimal" />
+            <xsd:element name="finalespct" type="xsd:decimal" />
+            <xsd:element name="points" type="xsd:decimal" />
+            <xsd:element name="pointsas" type="xsd:string" />
+            <xsd:element name="gameswon" type="xsd:decimal" />
+            <xsd:element name="gameslost" type="xsd:decimal" />
+            <xsd:element name="winpct" type="xsd:decimal" />
+            <xsd:element name="losspct" type="xsd:decimal" />
+            <xsd:element name="survivorscore" type="xsd:decimal" />
+            <xsd:element name="hunterspecial" type="xsd:decimal" />
+            <xsd:element name="hunterdmg" type="xsd:decimal" />
+            <xsd:element name="hunterlifespan" type="xsd:string" />
+            <xsd:element name="boomerspecial" type="xsd:decimal" />
+            <xsd:element name="boomerdmg" type="xsd:decimal" />
+            <xsd:element name="boomerlifespan" type="xsd:string" />
+            <xsd:element name="smokerspecial" type="xsd:decimal" />
+            <xsd:element name="smokerdmg" type="xsd:decimal" />
+            <xsd:element name="smokerlifespan" type="xsd:string" />
+            <xsd:element name="tankspecial" type="xsd:decimal" />
+            <xsd:element name="tankdmg" type="xsd:decimal" />
+            <xsd:element name="tanklifespan" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="survivalType">
+        <xsd:sequence>
+            <xsd:element name="goldmedals" type="xsd:decimal" />
+            <xsd:element name="silvermedals" type="xsd:decimal" />
+            <xsd:element name="bronzemedals" type="xsd:decimal" />
+            <xsd:element name="roundsplayed" type="xsd:decimal" />
+            <xsd:element name="besttime" type="xsd:decimal" />
+            <xsd:element name="maps" type="mapsType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="mapsType">
+        <xsd:all>
+            <xsd:element name="l4d_airport02_offices" type="mapType" />
+            <xsd:element name="l4d_hospital04_interior" type="mapType" />
+            <xsd:element name="l4d_hospital03_sewers" type="mapType" />
+            <xsd:element name="l4d_smalltown03_ranchhouse" type="mapType" />
+            <xsd:element name="l4d_vs_hospital05_rooftop" type="mapType" />
+            <xsd:element name="l4d_hospital02_subway" type="mapType" />
+            <xsd:element name="l4d_sv_lighthouse" type="mapType" />
+            <xsd:element name="l4d_airport04_terminal" type="mapType" />
+            <xsd:element name="l4d_vs_farm05_cornfield" type="mapType" />
+            <xsd:element name="l4d_vs_airport05_runway" type="mapType" />
+            <xsd:element name="l4d_vs_smalltown05_houseboat" type="mapType" />
+            <xsd:element name="l4d_smalltown02_drainage" type="mapType" />
+            <xsd:element name="l4d_farm02_traintunnel" type="mapType" />
+            <xsd:element name="l4d_farm03_bridge" type="mapType" />
+            <xsd:element name="l4d_airport03_garage" type="mapType" />
+            <xsd:element name="l4d_smalltown04_mainstreet" type="mapType" />
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="mapType">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string" />
+            <xsd:element name="timesplayed" type="xsd:decimal" />
+            <xsd:element name="besttimeseconds" type="xsd:decimal" />
+            <xsd:element name="medal" type="xsd:string" />
+            <xsd:element name="img" type="xsd:anyURI" />
+        </xsd:sequence>
+    </xsd:complexType>
 
 </xsd:schema>
