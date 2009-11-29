@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  */
@@ -42,7 +42,7 @@ abstract public class SteamSocket
     {
         this.buffer = ByteBuffer.allocate(1400);
         this.buffer.order(ByteOrder.LITTLE_ENDIAN);
-        
+
         this.remoteSocket = new InetSocketAddress(ipAddress, portNumber);
     }
 
@@ -87,6 +87,7 @@ abstract public class SteamSocket
         this.channel.register(selector, SelectionKey.OP_READ);
 
         if (selector.select(1000) == 0) {
+            selector.close();
             throw new TimeoutException();
         }
 
