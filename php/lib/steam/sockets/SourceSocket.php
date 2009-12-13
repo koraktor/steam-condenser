@@ -39,7 +39,7 @@ class SourceSocket extends SteamSocket
 
                 if($isCompressed) {
                     $splitSize = $this->buffer->getLong();
-                    $packetChecksum = $this->buffer->getLong();
+                    $packetChecksum = $this->buffer->getUnsignedLong();
                 }
                 else {
                     $splitSize = $this->buffer->getShort();
@@ -64,7 +64,7 @@ class SourceSocket extends SteamSocket
                 }
             }
             while($bytesRead > 0 && $this->buffer->getLong() == -2);
-			 
+
             if($isCompressed) {
                 $packet = SteamPacketFactory::reassemblePacket($splitPackets, true, $packetChecksum);
             }

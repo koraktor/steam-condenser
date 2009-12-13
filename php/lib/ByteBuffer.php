@@ -4,7 +4,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD Lic$
  * @package Steam Condenser (PHP)
  * @subpackage ByteBuffer
- * @version $Id$
  */
 
 require_once "exceptions/BufferUnderflowException.php";
@@ -97,7 +96,7 @@ class ByteBuffer
 		{
 			throw new BufferUnderFlowException();
 		}
-		 
+
 		$data = substr($this->byteArray, $this->position, $length);
 		$this->position += $length;
 
@@ -132,7 +131,7 @@ class ByteBuffer
 	 */
 	public function getLong()
 	{
-		$data = unpack("V", $this->get(4));
+		$data = unpack("l", $this->get(4));
 		return $data[1];
 	}
 
@@ -163,6 +162,15 @@ class ByteBuffer
 		}
 	}
 
+	/**
+	 * @return long
+	 */
+	public function getUnsignedLong()
+	{
+		$data = unpack("V", $this->get(4));
+		return $data[1];
+	}
+
 	public function limit($newLimit = null)
 	{
 		if($newLimit == null)
@@ -185,7 +193,7 @@ class ByteBuffer
 		$newPosition = min($this->remaining(), strlen($sourceByteArray));
 		$this->byteArray = substr_replace($this->byteArray, $sourceByteArray, $this->position, $newPosition);
 		$this->position = $newPosition;
-		 
+
 		return $this;
 	}
 
@@ -198,7 +206,7 @@ class ByteBuffer
 	{
 		$this->mark = -1;
 		$this->position = 0;
-		 
+
 		return $this;
 	}
 }
