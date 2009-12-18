@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 require "exceptions/steam_condenser_exception"
 

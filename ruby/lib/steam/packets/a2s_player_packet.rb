@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 require "steam/packets/request_with_challenge"
 require "steam/packets/steam_packet"

@@ -9,7 +9,6 @@ import steamcondenser.PacketFormatException;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class A2A_ACK_Packet extends SteamPacket
 {

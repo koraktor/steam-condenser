@@ -7,7 +7,6 @@ package steamcondenser.steam.packets;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 {

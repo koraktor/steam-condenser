@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 # This class represents a packet used by the Source query protocol
 class SteamPacket

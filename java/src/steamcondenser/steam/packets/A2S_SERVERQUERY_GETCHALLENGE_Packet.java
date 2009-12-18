@@ -7,7 +7,6 @@ package steamcondenser.steam.packets;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket
 {

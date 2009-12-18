@@ -10,7 +10,6 @@ import org.w3c.dom.Element;
  * The TF2ClassFactory is used to created instances of TF2Class based on the
  * XML input data
  * @author  Sebastian Staudt
- * @version $Id$
  */
 abstract class TF2ClassFactory
 {

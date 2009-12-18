@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 require "steam/packets/a2m_get_servers_batch2_packet"
 require "steam/sockets/master_server_socket"

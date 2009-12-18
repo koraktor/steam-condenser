@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 # This module implements a to_s method for request packets which send a challenge number
 module RequestWithChallenge

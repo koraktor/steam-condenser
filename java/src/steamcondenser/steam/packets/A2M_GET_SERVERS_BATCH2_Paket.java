@@ -28,7 +28,6 @@ import steamcondenser.steam.servers.MasterServer;
  *  <li>\proxy\1: Request only spectator proxy servers</li>
  * </ul>
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
 {

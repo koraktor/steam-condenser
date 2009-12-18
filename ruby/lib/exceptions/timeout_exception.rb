@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 class TimeoutException < StandardError
   

@@ -20,7 +20,6 @@ import steamcondenser.steam.servers.SourceServer;
 
 /**
  * @author  Sebastian Staudt
- * @version $Id$
  */
 public class QueryTests
 {

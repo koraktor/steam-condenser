@@ -7,7 +7,6 @@ package steamcondenser;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class SteamCondenserException extends Exception
 {

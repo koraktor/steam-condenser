@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008, Sebastian Staudt
-#
-# $Id$
 
 # This module is used to mimic the behavior of abstract classes known from other
 # object-oriented programming languages

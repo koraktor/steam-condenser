@@ -9,7 +9,6 @@ import steamcondenser.PacketBuffer;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 abstract public class SteamPacket
 {

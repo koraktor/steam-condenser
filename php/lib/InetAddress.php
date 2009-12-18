@@ -4,7 +4,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Source Condenser (PHP)
  * @subpackage InetAddress
- * @version $Id$
  */
 
 /**

@@ -19,7 +19,6 @@ import steamcondenser.steam.packets.rcon.RCONPacketFactory;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class RCONSocket extends SteamSocket
 {

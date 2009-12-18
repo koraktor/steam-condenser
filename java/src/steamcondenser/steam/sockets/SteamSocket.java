@@ -24,7 +24,6 @@ import steamcondenser.steam.packets.SteamPacketFactory;
  * Defines common methods for sockets used to connect to game and master
  * servers.
  * @author Sebastian Staudt
- * @version $Id$
  */
 abstract public class SteamSocket
 {

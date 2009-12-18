@@ -11,7 +11,6 @@ import org.w3c.dom.Element;
  * Represents the stats for the Team Fortress 2 engineer class for a specific
  * user
  * @author  Sebastian Staudt
- * @version $Id$
  */
 public class TF2Engineer extends TF2Class
 {

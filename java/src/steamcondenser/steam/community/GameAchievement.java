@@ -8,7 +8,6 @@ package steamcondenser.steam.community;
  * The GameAchievement class represents a specific achievement for a single game
  * and for a single user
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class GameAchievement
 {

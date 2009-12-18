@@ -9,7 +9,6 @@ import steamcondenser.Helper;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class A2S_RULES_Packet extends SteamPacket
 {

@@ -10,7 +10,6 @@ import org.w3c.dom.Element;
 /**
  * Represents the stats for the Team Fortress 2 medic class for a specific user
  * @author  Sebastian Staudt
- * @version $Id$
  */
 public class TF2Medic extends TF2Class
 {

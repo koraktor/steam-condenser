@@ -16,7 +16,6 @@ import steamcondenser.steam.packets.SteamPacket;
 /**
  * A socket used for connections to Steam master servers.
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class MasterServerSocket extends QuerySocket
 {

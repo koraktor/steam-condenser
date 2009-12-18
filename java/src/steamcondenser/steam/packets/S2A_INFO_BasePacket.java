@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public abstract class S2A_INFO_BasePacket extends SteamPacket
 {

@@ -9,7 +9,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package Steam Condenser (PHP)
  * @subpackage SteamSocket
- * @version $Id$
  */
 
 require_once "InetAddress.php";

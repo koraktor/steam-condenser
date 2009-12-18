@@ -12,7 +12,6 @@ import steamcondenser.PacketFormatException;
 /**
  * Represents a response of a master server.
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class M2A_SERVER_BATCH_Paket extends SteamPacket
 {

@@ -2,8 +2,6 @@
 # terms of the new BSD License.
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
-#
-# $Id$
 
 require "steam/packets/steam_packet"
 require "steam/servers/master_server"

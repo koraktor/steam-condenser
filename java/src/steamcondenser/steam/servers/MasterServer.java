@@ -20,7 +20,6 @@ import steamcondenser.steam.sockets.MasterServerSocket;
 /**
  * A Steam master server
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class MasterServer
 {

@@ -9,7 +9,6 @@ import steamcondenser.Helper;
 
 /**
  * @author Sebastian Staudt
- * @version $Id$
  */
 public class A2S_PLAYER_Packet extends SteamPacket
 {
