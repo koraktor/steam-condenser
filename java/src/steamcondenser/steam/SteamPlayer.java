@@ -4,6 +4,7 @@
  *
  * Copyright (c) 2008-2009, Sebastian Staudt
  */
+
 package steamcondenser.steam;
 
 import java.util.List;
