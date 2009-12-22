@@ -23,8 +23,6 @@ Jeweler::Tasks.new do |s|
 
   s.files = %w(README.md Rakefile LICENSE VERSION.yml) + src_files + test_files
   s.rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
-
-  s.add_dependency('hpricot', '>= 0.6')
 end
 
 # Create a rake task +:rdoc+ to build the documentation
