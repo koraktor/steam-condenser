@@ -58,7 +58,7 @@
 
     <target name="doc" description="Generate documentation">
         <mkdir dir="${doc.path}" />
-        <javadoc destdir="${doc.path}" doctitle="Steam Condenser" sourcepath="${src.path}" private="true" classpath="lib/org.apache.tools.bzip2.jar:lib/tagsoup-1.2.jar" />
+        <javadoc destdir="${doc.path}" doctitle="Steam Condenser" sourcepath="${src.path}" private="true" classpath="lib/org.apache.tools.bzip2.jar" />
     </target>
 
     <target name="clean" description="Clean build and dist directories">
