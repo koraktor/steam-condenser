@@ -7,10 +7,6 @@
 
 package steamcondenser.steam.community;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,15 +18,9 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.ccil.cowan.tagsoup.Parser;
-import org.ccil.cowan.tagsoup.XMLWriter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import steamcondenser.SteamCondenserException;
 
@@ -262,44 +252,30 @@ public class SteamId {
 	private void fetchGames()
 			throws SteamCondenserException {
 		try {
-			this.games = new HashMap<String, String>();
-
-			String url = this.getBaseUrl() + "/games";
-			Parser htmlParser = new Parser();
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			XMLWriter writer = new XMLWriter(new OutputStreamWriter(out));
-			writer.setOutputProperty(XMLWriter.METHOD, "xml");
-			writer.setOutputProperty(XMLWriter.OMIT_XML_DECLARATION, "yes");
-			htmlParser.setContentHandler(writer);
-			htmlParser.parse(new InputSource(new URL(url).openStream()));
-
+			String url = this.getBaseUrl() + "/games?xml=1";
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Element gamesData = parser.parse(new ByteArrayInputStream(out.toByteArray())).getDocumentElement();
+			Element gamesData = parser.parse(url).getDocumentElement();
 
-			NodeList gameNodes = (NodeList) XPathFactory.newInstance().newXPath().compile("//div[@id='mainContents']/h4").evaluate(gamesData,XPathConstants.NODESET);
-			for(int i = 0; i < gameNodes.getLength(); i++) {
-				Node game = gameNodes.item(i);
-				String gameName = game.getTextContent();
-				Node stats = game.getNextSibling().getNextSibling();
-
-				if(stats.getNodeName().equals("h5")) {
-					stats = stats.getNextSibling().getNextSibling();
-				}
-
-				if(stats.getNodeName().equals("br")) {
-					this.games.put(gameName, null);
-				} else {
-					stats = stats.getNextSibling().getNextSibling().getNextSibling();
-					String friendlyName = stats.getAttributes().getNamedItem("href").getTextContent();
+			Element gamesNode = (Element) gamesData.getElementsByTagName("games").item(0);
+			NodeList gamesNodeList = ((Element) gamesNode).getElementsByTagName("game");
+			this.games = new HashMap<String, String>();
+			for(int i = 0; i < gamesNodeList.getLength(); i++) {
+				Element game = (Element) gamesNodeList.item(i);
+				String gameName = game.getElementsByTagName("name").item(0).getTextContent();
+				Node globalStatsLinkNode = game.getElementsByTagName("globalStatsLink").item(0);
+				if(globalStatsLinkNode != null) {
+                    String friendlyName = globalStatsLinkNode.getTextContent();
 					Pattern regex = Pattern.compile("http://steamcommunity.com/stats/([0-9a-zA-Z:]+)/achievements/");
 					Matcher matcher = regex.matcher(friendlyName);
 					matcher.find(0);
 					friendlyName = matcher.group(1).toLowerCase();
-					this.games.put(gameName, friendlyName);
+                    this.games.put(gameName, friendlyName);
+				} else {
+					this.games.put(gameName, null);
 				}
 			}
 		} catch(Exception e) {
-			throw new SteamCondenserException("HTML data could not be parsed.");
+			throw new SteamCondenserException("XML data could not be parsed.");
 		}
 	}
 

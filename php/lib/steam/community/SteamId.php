@@ -229,31 +229,16 @@ class SteamId {
     private function fetchGames() {
         $this->games = array();
 
-        $dom = new DOMDocument();
-        $dom->recover = true;
-        $dom->strictErrorChecking = false;
-        @$dom->loadHTML(file_get_contents($this->getBaseUrl() . "/games"));
+        $url = $this->getBaseUrl() . "/games?xml=1";
+        $gamesData = new SimpleXMLElement(file_get_contents($url));
 
-        foreach($dom->getElementsByTagName('h4') as $game) {
-            $gameName = $game->nodeValue;
-            $stats = $game->nextSibling->nextSibling;
-
-            if($stats->nodeName == 'br') {
+        foreach($gamesData->games->game as $game) {
+            $gameName = (string) $game->name;
+            if($game->globalStatsLink != null) {
+                preg_match('#http://steamcommunity.com/stats/([0-9a-zA-Z:]+)/achievements/#', (string) $game->globalStatsLink, $friendlyName);
+                $this->games[$gameName] = strtolower($friendlyName[1]);
+            } else {
                 $this->games[$gameName] = false;
-            }
-            else {
-                if($stats->nodeName == 'h5') {
-                    $stats = $stats->nextSibling->nextSibling;
-                }
-
-                if($stats->nodeName == 'br') {
-                    $this->games[$gameName] = false;
-                }
-                else {
-                    $stats = $stats->nextSibling->nextSibling;
-                    preg_match('#http://steamcommunity.com/stats/([0-9a-zA-Z:]+)/achievements/#', $stats->getAttribute('href'), $friendlyName);
-                    $this->games[$gameName] = strtolower($friendlyName[1]);
-                }
             }
         }
     }

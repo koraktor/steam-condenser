@@ -147,28 +147,17 @@ class SteamId
 
   # Fetches the games this user owns
   def fetch_games
-    require 'rubygems'
-    require 'hpricot'
-
-    url = "#{base_url}/games"
+    url = "#{base_url}/games?xml=1"
 
     @games = {}
-    games_data = Hpricot(open(url, {:proxy => true}).read).at('div#mainContents')
-
-    games_data.traverse_some_element('h4') do |game|
-      game_name = game.inner_html
-      stats = game.next_sibling
-      if stats.name == 'br'
+    games_data = REXML::Document.new(open(url, {:proxy => true}).read).root
+    games_data.elements.each('games/game') do |game|
+      game_name = game.elements['name'].text
+      if game.elements['globalStatsLink'].nil?
         @games[game_name] = false
       else
-        stats = stats.next_sibling if stats.name == 'h5'
-        if stats.name == 'br'
-          @games[game_name] = false
-        else
-          stats = stats.siblings_at(2)[0]
-          friendly_name = stats['href'].match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
-          @games[game_name] = friendly_name.downcase
-        end
+        friendly_name = game.elements['globalStatsLink'].text.match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
+        @games[game_name] = friendly_name.downcase
       end
     end
 
