@@ -14,6 +14,7 @@ end
 require 'steam/community/defense_grid/defense_grid_stats'
 require "steam/community/dods/dods_stats"
 require "steam/community/l4d/l4d_stats"
+require "steam/community/l4d/l4d2_stats"
 require "steam/community/tf2/tf2_stats"
 
 # The GameStats class represents the game statistics for a single user and a
@@ -35,6 +36,8 @@ class GameStats
         DoDSStats.new(steam_id)
       when 'l4d'
         L4DStats.new(steam_id)
+      when 'l4d2'
+        L4D2Stats.new(steam_id)
       when 'tf2'
         TF2Stats.new(steam_id)
       else
@@ -42,8 +45,8 @@ class GameStats
     end
   end
 
-  # Creates a GameStats object and fetchs data from Steam Community for the
-  # given user and game
+  # Creates a GameStats object and fetches data from the Steam Community for
+  # the given user and game
   def initialize(id, game_name)
     if id.is_a? Numeric
       @steam_id64 = id
@@ -58,7 +61,6 @@ class GameStats
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?
       @app_id             = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
-      @game_friendly_name = @xml_data.elements['game/gameFriendlyName'].text
       @game_name          = @xml_data.elements['game/gameName'].text
       @hours_played       = @xml_data.elements['stats/hoursPlayed'].text
     end

@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2009, Sebastian Staudt
 
+# L4DMap holds statistical information about maps played by a player in
+# Survival mode of Left4Dead.
 class L4DMap
 
   attr_reader :best_time, :id, :medal, :name, :times_played

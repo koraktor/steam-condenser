@@ -3,9 +3,9 @@
 #
 # Copyright (c) 2009, Sebastian Staudt
 
-require 'steam/community/game_weapon'
+require 'steam/community/l4d/abstract_l4d_weapon'
 
-class L4DWeapon < GameWeapon
+class L4DWeapon < AbstractL4DWeapon
 
   attr_reader :accuracy, :headshots_percentage, :kill_percentage
 
@@ -13,11 +13,7 @@ class L4DWeapon < GameWeapon
   def initialize(weapon_data)
     super weapon_data
 
-    @accuracy             = weapon_data.elements['accuracy'].text
-    @headshots_percentage = weapon_data.elements['headshots'].text
-    @id                   = weapon_data.name
-    @kill_percentage      = weapon_data.elements['killpct'].text
-    @shots                = weapon_data.elements['shots'].text.to_i
+    @kill_percentage = weapon_data.elements['killpct'].text
   end
 
 end
