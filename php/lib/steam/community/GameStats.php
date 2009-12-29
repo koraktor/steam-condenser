@@ -37,6 +37,7 @@ class GameStats {
     public static function createGameStats($steamId, $gameName) {
         require_once "steam/community/dods/DoDSStats.php";
         require_once "steam/community/l4d/L4DStats.php";
+        require_once "steam/community/l4d/L4D2Stats.php";
         require_once "steam/community/tf2/TF2Stats.php";
 
         switch($gameName) {
@@ -44,6 +45,8 @@ class GameStats {
                 return new DoDSStats($steamId);
             case 'l4d':
                 return new L4DStats($steamId);
+            case 'l4d2':
+                return new L4D2Stats($steamId);
             case 'tf2':
                 return new TF2Stats($steamId);
             default:

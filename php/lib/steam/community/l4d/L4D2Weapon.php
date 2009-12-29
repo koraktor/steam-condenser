@@ -17,16 +17,31 @@ require_once 'steam/community/l4d/AbstractL4DWeapon.php';
  * @package Steam Condenser (PHP)
  * @subpackage Steam Community
  */
-class L4DWeapon extends AbstractL4DWeapon {
+class L4D2Weapon extends AbstractL4DWeapon {
+
+    private $damage;
+
+    private $weaponGroup;
 
     /**
-     * Creates a new instance of L4DWeapon based on the assigned XML data
+     * Creates a new instance of L4D2Weapon based on the assigned XML data
      * @param $weaponData
      */
     public function __construct($weaponData) {
         parent::__construct($weaponData);
 
-        $this->killPercentage      = (string) $weaponData->killpct;
+        $this->damage         = (int)    $weaponData->damage;
+        $this->killPercentage = (string) $weaponData->pctkills;
+        $this->weaponGroup    = $weaponGroup['group'];
+
+    }
+
+    public function getDamage() {
+        return $this->damage;
+    }
+
+    public function getWeaponGroup() {
+        return $this->weaponGroup;
     }
 }
 ?>

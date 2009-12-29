@@ -12,6 +12,9 @@
  */
 
 /**
+ * L4DMap holds statistical information about maps played by a player in
+ * Survival mode of Left4Dead.
+ *
  * @package Steam Condenser (PHP)
  * @subpackage Steam Community
  */
@@ -25,18 +28,19 @@ class L4DMap {
 
     const NONE   = 0;
 
-    private $bestTime;
+    protected $bestTime;
 
-    private $id;
+    protected $id;
 
-    private $medal;
-    
-    private $name;
+    protected $medal;
+
+    protected $name;
 
     private $timesPlayed;
 
     /**
      * Creates a new instance of L4DMap based on the assigned XML data
+     *
      * @param $mapData
      */
     public function __construct($mapData) {
@@ -58,6 +62,26 @@ class L4DMap {
             default:
                 $this->medal = self::NONE;
         }
+    }
+
+    public function getBestTime() {
+        return $this->bestTime;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getMedal() {
+        return $this->medal;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getTimesPlayed() {
+        return $this->timesPlayed;
     }
 
 }
