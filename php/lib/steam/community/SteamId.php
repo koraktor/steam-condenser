@@ -84,9 +84,9 @@ class SteamId {
         }
 
         $steamId = explode(':', substr($steamId, 6));
-        $steamId = $steamId[1] + $steamId[2] * 2 + 76561197960265728;
+        $steamId = $steamId[1] + $steamId[2] * 2 + 1197960265728;
 
-        return number_format($steamId, 0, '', '');
+        return '7656' . $steamId;
     }
 
     /**
