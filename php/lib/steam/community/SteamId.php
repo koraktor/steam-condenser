@@ -167,7 +167,7 @@ class SteamId {
             throw new SteamCondenserException((string) $profile->error);
         }
 
-        $this->imageUrl = (string) $profile->avatarIcon;
+        $this->imageUrl = substr((string) $profile->avatarIcon, 0, -4);
         $this->onlineState = (string) $profile->onlineState;
         $this->privacyState = (string) $profile->privacyState;
         $this->stateMessage = (string) $profile->stateMessage;
@@ -328,7 +328,7 @@ class SteamId {
      * @return String
      */
     public function getIconAvatarUrl() {
-        return $this->imageUrl . "_.jpg";
+        return $this->imageUrl . ".jpg";
     }
 
     /**
