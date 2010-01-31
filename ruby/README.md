@@ -28,3 +28,5 @@ file.
 * [GitHub project page](http://github.com/koraktor/steam-condenser)
 * [Google group](http://groups.google.com/group/steam-condenser)
 * [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
+
+Follow Steam Condenser on Twitter [@steamcondenser](http://twitter.com/steamcondenser).
