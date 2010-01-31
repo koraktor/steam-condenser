@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.community.l4d;
@@ -17,17 +17,19 @@ public class L4DMap {
 	public static int SILVER = 2;
 	public static int BRONZE = 3;
 	public static int NONE   = 0;
-	
-	private float bestTime;
-	
-	private String id;
-	
-	private int medal;
-	
-	private String name;
-	
+
+	protected float bestTime;
+
+	protected String id;
+
+	protected int medal;
+
+	protected String name;
+
 	private int timesPlayed;
-	
+
+    public L4DMap() {}
+
 	public L4DMap(Element mapData) {
 		this.bestTime    = Float.parseFloat(mapData.getElementsByTagName("besttimeseconds").item(0).getTextContent());
         this.id          = mapData.getNodeName();
@@ -45,23 +47,23 @@ public class L4DMap {
             this.medal = NONE;
         }
 	}
-	
+
 	public float getBestTime() {
 		return this.bestTime;
 	}
-	
+
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public int getMedal() {
 		return this.medal;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public int getTimesPlayed() {
 		return this.timesPlayed;
 	}

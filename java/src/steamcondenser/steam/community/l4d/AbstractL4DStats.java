@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009-2010, Sebastian Staudt
+ * Copyright (c) 2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.community.l4d;
@@ -14,22 +14,38 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import steamcondenser.SteamCondenserException;
+import steamcondenser.steam.community.GameStats;
 import steamcondenser.steam.community.GameWeapon;
 
-public class L4DStats extends AbstractL4DStats {
-	
+public abstract class AbstractL4DStats extends GameStats {
+
+	protected HashMap<String, Object> favorites;
+
+	protected HashMap<String, Object> lifetimeStats;
+
+	protected HashMap<String, Object> mostRecentGame;
+
+	protected HashMap<String, Object> survivalStats;
+
+	protected HashMap<String, Object> teamplayStats;
+
+	protected HashMap<String, Object> versusStats;
+
+	protected HashMap<String, GameWeapon> weaponStats;
+
 	/**
-	 * Creates a L4DStats object by calling the super constructor with the game
-	 * name "L4D"
+	 * AbstractL4DStats is an abstract base class for statistics for Left4Dead
+     * and Left4Dead 2. As both games have more or less the same statistics
+     * available in the Steam Community the code for both is pretty much the
+     * same.
+     *
 	 * @param steamId The custom URL or the 64bit Steam ID of the user
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws SteamCondenserException
 	 */
-	public L4DStats(Object steamId)
+	public AbstractL4DStats(Object steamId, String gameName)
 			throws SteamCondenserException {
-		super(steamId, "l4d");
-		
+		super(steamId, gameName);
+
 		if(this.isPublic()) {
 			Element mostRecentGameNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("mostRecentGame").item(0);
 			this.mostRecentGame = new HashMap<String, Object>();
@@ -48,7 +64,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.favorites == null) {
 			Element favoritesNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("favorites").item(0);
 			this.favorites = new HashMap<String, Object>();
@@ -61,10 +77,10 @@ public class L4DStats extends AbstractL4DStats {
 			this.favorites.put("level2Weapon", favoritesNode.getElementsByTagName("weapon2").item(0).getTextContent());
 			this.favorites.put("level2WeaponPercentage", Integer.parseInt(favoritesNode.getElementsByTagName("weapon2pct").item(0).getTextContent()));
 		}
-		
+
 		return this.favorites;
 	}
-	
+
 	/**
 	 * @return A HashMap of lifetime statistics for this user like the time
 	 * played.
@@ -75,7 +91,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.lifetimeStats == null) {
 			Element lifetimeStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("lifetime").item(0);
 			this.lifetimeStats = new HashMap<String, Object>();
@@ -90,21 +106,22 @@ public class L4DStats extends AbstractL4DStats {
 			this.lifetimeStats.put("avgPillsUsed", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("pillsused").item(0).getTextContent()));
 			this.lifetimeStats.put("timePlayed", lifetimeStatsElement.getElementsByTagName("timeplayed").item(0).getTextContent());
 		}
-		
+
 		return this.lifetimeStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of Survival statistics for this user like revived
 	 * teammates.
 	 * If the Survival statistics haven't been parsed already, parsing is done
 	 * now.
 	 */
-	public HashMap<String, Object> getSurvivalStats() {
+	public HashMap<String, Object> getSurvivalStats()
+            throws SteamCondenserException {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.survivalStats == null) {
 			Element survivalStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("survival").item(0);
 			this.survivalStats = new HashMap<String, Object>();
@@ -113,7 +130,7 @@ public class L4DStats extends AbstractL4DStats {
 			this.survivalStats.put("bronzeMedals", Integer.parseInt(survivalStatsElement.getElementsByTagName("bronzemedals").item(0).getTextContent()));
 			this.survivalStats.put("roundsPlayed", Integer.parseInt(survivalStatsElement.getElementsByTagName("roundsplayed").item(0).getTextContent()));
 			this.survivalStats.put("bestTime", Float.parseFloat(survivalStatsElement.getElementsByTagName("besttime").item(0).getTextContent()));
-			
+
 			HashMap<String, L4DMap> mapsHash = new HashMap<String, L4DMap>();
 			NodeList mapNodes = survivalStatsElement.getElementsByTagName("maps").item(0).getChildNodes();
 			for(int i = 0; i < mapNodes.getLength(); i++) {
@@ -122,10 +139,10 @@ public class L4DStats extends AbstractL4DStats {
 			}
 			this.survivalStats.put("maps", mapsHash);
 		}
-		
+
 		return this.survivalStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of teamplay statistics for this user like revived
 	 * teammates.
@@ -136,7 +153,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.teamplayStats == null) {
 			Element teamplayStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("teamplay").item(0);
 			this.teamplayStats = new HashMap<String, Object>();
@@ -152,10 +169,10 @@ public class L4DStats extends AbstractL4DStats {
 			this.teamplayStats.put("mostFriendlyFireDamageDifficulty", teamplayStatsElement.getElementsByTagName("ffdamagediff").item(0).getTextContent());
 			this.teamplayStats.put("avgFriendlyFireDamage", Float.parseFloat(teamplayStatsElement.getElementsByTagName("ffdamageavg").item(0).getTextContent()));
 		}
-		
+
 		return this.teamplayStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of Versus statistics for this user like percentage of
 	 * rounds won.
@@ -166,7 +183,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.versusStats == null) {
 			Element versusStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("versus").item(0);
 			this.versusStats = new HashMap<String, Object>();
@@ -179,7 +196,7 @@ public class L4DStats extends AbstractL4DStats {
 			this.versusStats.put("gamesWon", Integer.parseInt(versusStatsElement.getElementsByTagName("gameswon").item(0).getTextContent()));
 			this.versusStats.put("gamesLost", Integer.parseInt(versusStatsElement.getElementsByTagName("gameslost").item(0).getTextContent()));
 			this.versusStats.put("highesSurvivorScore", Integer.parseInt(versusStatsElement.getElementsByTagName("survivorscore").item(0).getTextContent()));
-			
+
 			ArrayList<String> infectedArray = new ArrayList<String>();
 			infectedArray.add("boomer");
 			infectedArray.add("hunter");
@@ -193,10 +210,10 @@ public class L4DStats extends AbstractL4DStats {
 				this.versusStats.put(infected, infectedStats);
 			}
 		}
-		
+
 		return this.versusStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of L4DWeapon for this user containing all Left4Dead
 	 * weapons.
@@ -206,7 +223,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.weaponStats == null) {
 			Element weaponStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
 			this.weaponStats = new HashMap<String, GameWeapon>();
@@ -224,7 +241,7 @@ public class L4DStats extends AbstractL4DStats {
 				this.weaponStats.put(weaponName, weapon);
 			}
 		}
-		
+
 		return this.weaponStats;
 	}
 }

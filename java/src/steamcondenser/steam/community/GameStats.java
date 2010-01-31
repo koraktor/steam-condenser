@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.community;
@@ -19,6 +19,7 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.community.defense_grid.DefenseGridStats;
 import steamcondenser.steam.community.dods.DoDSStats;
 import steamcondenser.steam.community.l4d.L4DStats;
+import steamcondenser.steam.community.l4d.L4D2Stats;
 import steamcondenser.steam.community.tf2.TF2Stats;
 
 /**
@@ -47,6 +48,8 @@ public class GameStats {
 			return new DoDSStats(steamId);
 		} else if(gameName.equals("l4d")) {
 			return new L4DStats(steamId);
+        } else if(gameName.equals("l4d2")) {
+            return new L4D2Stats(steamId);
 		} else if(gameName.equals("tf2")) {
 			return new TF2Stats(steamId);
 		} else {
