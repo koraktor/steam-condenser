@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d2_map'
@@ -11,7 +11,7 @@ class L4D2Stats < AbstractL4DStats
 
   SPECIAL_INFECTED = SPECIAL_INFECTED + %w{charger jockey spitter}
 
-  # Creates a L4DStats object by calling the super constructor with the game
+  # Creates a L4D2Stats object by calling the super constructor with the game
   # name "l4d2"
   def initialize(steam_id)
     super steam_id, 'l4d2'

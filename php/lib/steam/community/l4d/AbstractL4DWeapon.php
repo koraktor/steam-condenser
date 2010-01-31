@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2010, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -26,7 +26,9 @@ abstract class AbstractL4DWeapon extends GameWeapon {
     protected $killPercentage;
 
     /**
-     * Creates a new instance of L4DWeapon based on the assigned XML data
+     * Abstract base constructor which parses common data for both, L4DWeapon
+     * and L4D2Weapon
+     *
      * @param $weaponData
      */
     public function __construct($weaponData) {

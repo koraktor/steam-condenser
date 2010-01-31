@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'abstract_class'
 require 'steam/community/game_weapon'
@@ -12,7 +12,8 @@ class AbstractL4DWeapon < GameWeapon
 
   attr_reader :accuracy, :headshots_percentage, :kill_percentage
 
-  # Creates a new instance of L4DWeapon based on the assigned XML data
+  # Abstract base constructor which parses common data for both, L4DWeapon and
+  # L4D2Weapon
   def initialize(weapon_data)
     super weapon_data
 

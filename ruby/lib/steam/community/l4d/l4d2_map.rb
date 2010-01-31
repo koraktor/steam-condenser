@@ -1,8 +1,9 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
+require 'steam/community/steam_id'
 require 'steam/community/l4d/l4d_map'
 
 # L4D2Map holds statistical information about maps played by a player in
@@ -13,8 +14,8 @@ class L4D2Map < L4DMap
 
   attr_reader :items, :kills, :teammates
 
-  ITEMS    = %w{adrenaline defibs medkits pills}
   INFECTED = %w{boomer charger common hunter jockey smoker spitter tank}
+  ITEMS    = %w{adrenaline defibs medkits pills}
 
   # Creates a new instance of L4D2Map based on the assigned XML data
   #
