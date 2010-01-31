@@ -79,6 +79,10 @@ class SteamId
       raise SteamCondenserException.new(profile.elements['error'].text)
     end
 
+    unless REXML::XPath.first(profile, 'privacyMessage').nil?
+      raise SteamCondenserException.new(profile.elements['privacyMessage'].text)
+    end
+
     @image_url        = profile.elements['avatarIcon'].text[0..-5]
     @online_state     = profile.elements['onlineState'].text
     @privacy_state    = profile.elements['privacyState'].text

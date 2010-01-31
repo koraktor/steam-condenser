@@ -157,6 +157,10 @@ public class SteamId {
 				throw new SteamCondenserException(profile.getElementsByTagName("error").item(0).getTextContent());
 			}
 
+            if(profile.getElementsByTagName("privacyMessage").getLength() > 0) {
+                throw new SteamCondenserException(profile.getElementsByTagName("privacyMessage").item(0).getTextContent());
+            }
+
 			String avatarIconUrl = profile.getElementsByTagName("avatarIcon").item(0).getTextContent();
 			this.imageUrl = avatarIconUrl.substring(0, avatarIconUrl.length() - 4);
 			this.onlineState = profile.getElementsByTagName("onlineState").item(0).getTextContent();

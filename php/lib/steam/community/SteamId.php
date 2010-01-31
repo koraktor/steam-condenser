@@ -167,6 +167,10 @@ class SteamId {
             throw new SteamCondenserException((string) $profile->error);
         }
 
+        if(!empty($profile->privacyMessage) {
+            throw new SteamCondenserException((string) $profile->privacyMessage);
+        }
+
         $this->imageUrl = substr((string) $profile->avatarIcon, 0, -4);
         $this->onlineState = (string) $profile->onlineState;
         $this->privacyState = (string) $profile->privacyState;
