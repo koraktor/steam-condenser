@@ -347,7 +347,7 @@ class SteamId {
      * @return String
      */
     public function getNickname() {
-        return this.nickname;
+        return $this->nickname;
     }
 
     /**
