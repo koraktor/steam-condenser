@@ -133,8 +133,8 @@ class SteamGroup {
             }
             $totalPages = (int) $memberData->totalPages;
 
-            foreach($memberData->members as $member) {
-                array_push($this->members, SteamId::create($member->steamID64, false));
+            foreach($memberData->members->steamID64 as $member) {
+                array_push($this->members, SteamId::create($member, false));
             }
         } while($page <= $totalPages);
 
@@ -199,7 +199,7 @@ class SteamGroup {
      * @return Array
      */
     public function getMembers() {
-        if(empty($this->members) || empty($this->members[0])) {
+        if(empty($this->members) || empty($this->members[0])) {
             $this->fetchMembers();
         }
         return $this->members;
