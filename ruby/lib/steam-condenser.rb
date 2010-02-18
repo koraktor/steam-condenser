@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2009, Sebastian Staudt
 
+require 'yaml'
+
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
