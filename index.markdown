@@ -51,7 +51,7 @@ Steam Condenser is free software; you can redistribute it and/or modify it
 under the terms of the new BSD License. A copy of this license can be found
 [here][2].
 
-  [1]: http://rubyforge.org/projects/bz2
+  [1]: http://github.com/trans/bz2
   [2]: license.html
   [3]: http://github.com/koraktor/steam-condenser/issues
   [4]: http://groups.google.com/group/steam-condenser
