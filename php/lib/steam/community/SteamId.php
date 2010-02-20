@@ -167,7 +167,7 @@ class SteamId {
             throw new SteamCondenserException((string) $profile->error);
         }
 
-        if(!empty($profile->privacyMessage) {
+        if(!empty($profile->privacyMessage)) {
             throw new SteamCondenserException((string) $profile->privacyMessage);
         }
 
