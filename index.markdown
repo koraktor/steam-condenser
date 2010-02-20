@@ -29,7 +29,8 @@ Twitter][5].
   - This features achievement statistics for *every* game supporting
     achievements
   - Additional, more detailed statistics for *Day of Defeat: Source*,
-    *Left4Dead* and *Team Fortress 2* as well as *Defense Grid: The Awakening*
+    *Left4Dead*, *Left4Dead 2* and *Team Fortress 2* as well as *Defense Grid:
+    The Awakening*
 
 ## Requirements
 - Java 1.4 or newer
