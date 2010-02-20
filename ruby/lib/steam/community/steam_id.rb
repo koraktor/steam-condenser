@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
 require 'open-uri'
 require 'rexml/document'
@@ -22,6 +22,21 @@ class SteamId
               :member_since, :most_played_games, :nickname, :privacy_state,
               :real_name, :state_message, :steam_id64, :steam_rating,
               :steam_rating_text, :summary, :vac_banned, :visibility_state
+
+  # Converts the 64bit SteamID +community_id+ as used and reported by the Steam
+  # Community to a SteamID reported by game servers
+  def self.convert_community_id_to_steam_id(community_id)
+    steam_id1 = community_id % 2
+    steam_id2 = community_id - 76561197960265728
+
+    unless steam_id2 > 0
+      raise SteamCondenserException.new("SteamID #{community_id} is too small.")
+    end
+
+    steam_id2 = (steam_id2 - steam_id1) / 2
+
+    "STEAM_0:#{steam_id1}:#{steam_id2}"
+  end
 
   # Converts the SteamID +steam_id+ as reported by game servers to a 64bit
   # SteamID

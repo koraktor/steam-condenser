@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.community;
@@ -58,6 +58,41 @@ public class SteamId {
 	private String summary;
 	private boolean vacBanned;
 	private int visibilityState;
+
+    /**
+     * Converts the 64bit SteamID as used and reported by the Steam Community
+     * to a SteamID reported by game servers
+     */
+    public static String convertCommunityIdToSteamId(long communityId)
+            throws SteamCondenserException {
+        long steamId1 = communityId % 2;
+        long steamId2 = communityId - 76561197960265728L;
+
+        if(steamId2 <= 0) {
+            throw new SteamCondenserException("SteamID " + communityId + " is too small.");
+        }
+
+        steamId2 = (steamId2 - steamId1) / 2;
+
+        return "STEAM_0:" + steamId1 + ":" + steamId2;
+    }
+
+    /**
+     * Converts the SteamID as reported by game servers to a 64bit SteamID
+     */
+    public static long convertSteamIdToCommunityId(String steamId)
+            throws SteamCondenserException {
+        if(steamId.equals("STEAM_ID_LAN") || steamId.equals("BOT")) {
+            throw new SteamCondenserException("Cannot convert SteamID \"" + steamId + "\" to a community ID.");
+        }
+        if(!steamId.matches("^STEAM_[0-1]:[0-1]:[0-9]+$")) {
+            throw new SteamCondenserException("SteamID \"" + steamId + "\" doesn't have the correct format.");
+        }
+
+        String[] tmpId = steamId.substring(6).split(":");
+
+        return Long.valueOf(tmpId[1]) + Long.valueOf(tmpId[2]) * 2 + 76561197960265728L;
+    }
 
 	public static SteamId create(long id)
 	 	throws SteamCondenserException {

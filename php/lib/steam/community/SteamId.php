@@ -72,6 +72,24 @@ class SteamId {
     }
 
     /**
+     * Converts the 64bit SteamID as used and reported by the Steam Community
+     * to a SteamID reported by game servers
+     * @return String
+     */
+    public static function convertCommunityIdToSteamId($communityId) {
+        $steamId1  = substr($communityId, -1) % 2;
+        $steamId2a = intval(substr($communityId, 0, 4)) - 7656;
+        $steamId2b = substr($communityId, 4) - 1197960265728;
+        $steamId2b = $steamId2b - $steamId1;
+
+        if($steamId2a <= 0 && $steamId2b <= 0) {
+            throw new SteamCondenserException("SteamID $communityId is too small.");
+        }
+
+        return "STEAM_0:$steamId1:" . (($steamId2a + $steamId2b) / 2);
+    }
+
+    /**
      * Converts the SteamID as reported by game servers to a 64bit SteamID
      * @return String
      */
