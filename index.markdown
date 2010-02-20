@@ -34,7 +34,6 @@ progress.
 - Ruby 1.8.6 or newer
   - The Ruby [BZ2 module][1] is needed if you want to query Source servers
     sending compressed packets.
-  - [Hpricot][5] is needed if you want to query games from the Steam Community.
 
 ## Problems?
 
@@ -56,4 +55,3 @@ under the terms of the new BSD License. A copy of this license can be found
   [2]: license.html
   [3]: http://github.com/koraktor/steam-condenser/issues
   [4]: http://groups.google.com/group/steam-condenser
-  [5]: http://wiki.github.com/why/hpricot
