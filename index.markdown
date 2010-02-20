@@ -47,6 +47,8 @@ Twitter][5].
 - If you have a problem with using Steam Condenser or a question, please have
   a look at the [Steam Condenser group][4] for a related topic. If you can't
   find one, feel free to create your own.
+- Additionally you're welcome to ask for support by messaging to [me
+  (koraktor)][6] at GitHub or [@steamcondenser][5] at Twitter.
 
 {% include google_adsense %}
 
@@ -60,3 +62,4 @@ under the terms of the new BSD License. A copy of this license can be found
   [3]: http://github.com/koraktor/steam-condenser/issues
   [4]: http://groups.google.com/group/steam-condenser
   [5]: http://twitter.com/steamcondenser
+  [6]: http://github.com/koraktor
