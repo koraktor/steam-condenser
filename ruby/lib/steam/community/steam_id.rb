@@ -95,6 +95,7 @@ class SteamId
     # Only public profiles can be scanned for further information
     if @privacy_state == 'public'
       @custom_url                       = profile.elements['customURL'].text.downcase
+      @custom_url                       = nil if @custom_url.empty?
 
       # The favorite game cannot be set since 10/10/2008, but old profiles
       # still have this. May be removed in a future version.

@@ -173,6 +173,10 @@ public class SteamId {
 
 			if(this.privacyState.compareTo("public") == 0) {
 				this.customUrl = profile.getElementsByTagName("customURL").item(0).getTextContent();
+                if(this.customUrl.isEmpty()) {
+                    this.customUrl = null;
+                }
+
 				Element favoriteGame = (Element) profile.getElementsByTagName("favoriteGame").item(0);
 				if(favoriteGame != null) {
 					this.favoriteGame = favoriteGame.getElementsByTagName("name").item(0).getTextContent();
