@@ -5,7 +5,7 @@ title:  License
 License
 =======
 
-Copyright (c) 2008-2009, Sebastian Staudt
+Copyright (c) 2008-2010, Sebastian Staudt
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
