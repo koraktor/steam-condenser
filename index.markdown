@@ -15,6 +15,9 @@ Community, Source and GoldSrc game servers as well as the Steam master servers.
 Currently it is implemented in Java, PHP and Ruby - a C# implementation is in
 progress.
 
+If you want to keep up with the latest development, [follow Steam Condenser on
+Twitter][5].
+
 ## Features
 - Server queries
   - Query Steam's master servers to receive a list of available game servers
@@ -55,3 +58,4 @@ under the terms of the new BSD License. A copy of this license can be found
   [2]: license.html
   [3]: http://github.com/koraktor/steam-condenser/issues
   [4]: http://groups.google.com/group/steam-condenser
+  [5]: http://twitter.com/steamcondenser
