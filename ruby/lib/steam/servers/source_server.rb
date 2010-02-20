@@ -17,7 +17,9 @@ class SourceServer < GameServer
   def self.split_player_status(player_status)
     player_data = player_status.match(/# *(\d+) +"(.*)" +(.*)/).to_a[1..-1]
     player_data[2] = player_data[2].split
-    player_data.flatten
+    player_data.flatten!
+    player_data.delete_at(3)
+    player_data
   end
 
   def initialize(ip_address, port_number = 27015)

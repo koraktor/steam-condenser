@@ -42,7 +42,8 @@ class SourceServer extends GameServer {
         array_shift($playerData);
         $morePlayerData = preg_split('/\s+/', array_pop($playerData));
         $playerData = array_merge($playerData, $morePlayerData);
-        return $playerData;
+        unset($playerData[3]);
+        return array_values($playerData);
     }
 
     /**
