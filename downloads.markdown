@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.9.0
+version: 0.10.0
 ---
 Downloads
 =========
@@ -17,17 +17,17 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.gem">steam-condenser-{{page.version}}.gem</a>
   <br />
   <pre>
-  SHA1: dde304494934d7b3e18e2771fa4cf93e6ea277f7
-  MD5:  3c733ddd7f70af2f851bb5bba0f0596d</pre>
+  SHA1: 16591ca29f921332463affc1498800f907c33aed
+  MD5:  df503a1b0c9e5a81fcee7f4c94379f79</pre>
 </div>
 
 <div class="download">
   <h3>PHP</h3>
-  <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.tar.bz2">steam-condenser-{{page.version}}.tar.bz2</a>
+  <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: be33429bd21edcb952cc3156a924757a5a536d32
-  MD5:  5e08c04bbc3ee1b54abb6cb11fc3bb69</pre>
+  SHA1: 74ebf2953e0829e88ef238655a7a09eb6e5bbf84
+  MD5:  12d20e573ee98d560180e46126e4d22e</pre>
 </div>
 
 <div class="download">
@@ -35,8 +35,8 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: 2108298d43c98b2129aeebe15c17901237e57c08
-  MD5:  58fe8fed7267dd61d81628f98c18fe75</pre>
+  SHA1: d1fe6df397b589311fd9f934ec17f5add41a4356
+  MD5:  ff0d52bcfd7d0081933c5be1995bcf98</pre>
 </div>
 
 ## Source archives
@@ -48,19 +48,11 @@ in the *master* branch, please clone the Git repository.
 <div class="download">
   <h3>Gzip compressed Tar</h3>
   <a href="http://github.com/koraktor/steam-condenser/tarball/{{page.version}}">steam-condenser-{{page.version}}.tar.gz</a>
-  <br />
-  <pre>
-  SHA1: 4d1017a68013653242686687d5d07d09f038c88a
-  MD5:  196b0c8b7fc57346aed250bb32a27432</pre>
 </div>
 
 <div class="download">
   <h3>Zip archive</h3>
   <a href="http://github.com/koraktor/steam-condenser/zipball/{{page.version}}">steam-condenser-{{page.version}}.zip</a>
-  <br />
-  <pre>
-  SHA1: 7e0b7970bcfc83617fce0cdc8d86a88f9550cc15
-  MD5:  f65c4f5ea6178e2f601d79d541613b31</pre>
 </div>
 
 <br /><br />
