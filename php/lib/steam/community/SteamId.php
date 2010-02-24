@@ -241,7 +241,7 @@ class SteamId {
         $this->friends = array();
         $friendsData =  new SimpleXMLElement(file_get_contents($url));
         foreach($friendsData->friends->friend as $friend) {
-            $this->friends[] = SteamId::create((string) $friend, true);
+            $this->friends[] = SteamId::create((string) $friend, false);
         }
     }
 
