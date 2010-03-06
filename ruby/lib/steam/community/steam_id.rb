@@ -88,7 +88,7 @@ class SteamId
   # profile specified by the ID of this SteamID
   def fetch
     profile_url = open(base_url + '?xml=1', {:proxy => true})
-    profile = REXML::Document.new(profile_url.read.unpack("C*").pack("U*")).root
+    profile = REXML::Document.new(profile_url.read).root
 
     unless REXML::XPath.first(profile, 'error').nil?
       raise SteamCondenserException.new(profile.elements['error'].text)
@@ -159,7 +159,7 @@ class SteamId
     url = "#{base_url}/friends?xml=1"
 
     @friends = []
-    friends_data = REXML::Document.new(open(url, {:proxy => true}).read.unpack("C*").pack("U*")).root
+    friends_data = REXML::Document.new(open(url, {:proxy => true}).read).root
     friends_data.elements.each('friends/friend') do |friend|
       @friends << SteamId.new(friend.text.to_i, false)
     end
@@ -170,7 +170,7 @@ class SteamId
     url = "#{base_url}/games?xml=1"
 
     @games = {}
-    games_data = REXML::Document.new(open(url, {:proxy => true}).read.unpack("C*").pack("U*")).root
+    games_data = REXML::Document.new(open(url, {:proxy => true}).read).root
     games_data.elements.each('games/game') do |game|
       game_name = game.elements['name'].text
       if game.elements['globalStatsLink'].nil?

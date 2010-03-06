@@ -7,9 +7,6 @@
 
 package steamcondenser.steam.community;
 
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.community.defense_grid.DefenseGridStats;
@@ -83,10 +79,7 @@ public class GameStats {
 			}
 
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            URL urlObject = new URL(url);
-            URLConnection urlConnection = urlObject.openConnection();
-            InputStreamReader inputReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
-            this.xmlData = parser.parse(new InputSource(inputReader)).getDocumentElement();
+			this.xmlData = parser.parse(url).getDocumentElement();
 
 			this.privacyState = this.xmlData.getElementsByTagName("privacyState").item(0).getTextContent();
 			if(this.isPublic()) {

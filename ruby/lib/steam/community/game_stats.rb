@@ -56,7 +56,7 @@ class GameStats
     @game_friendly_name = game_name
 
     url = base_url + '?xml=1'
-    @xml_data = REXML::Document.new(open(url, {:proxy => true}).read.unpack("C*").pack("U*")).root
+    @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
 
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?

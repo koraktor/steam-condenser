@@ -63,7 +63,7 @@ class GameStats {
     protected function __construct($steamId, $gameName) {
         $this->steamId = $steamId;
 
-        $this->xmlData = new SimpleXMLElement(utf8_encode(file_get_contents("http://www.steamcommunity.com/id/{$this->steamId}/stats/{$gameName}?xml=1")));
+        $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/{$this->steamId}/stats/{$gameName}?xml=1"));
 
         $this->privacyState = (string) $this->xmlData->privacyState;
         if($this->isPublic()) {
