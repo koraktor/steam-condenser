@@ -280,7 +280,10 @@ public class SteamId {
 		try {
 			String url = this.getBaseUrl() + "/friends?xml=1";
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Element friendsData = parser.parse(url).getDocumentElement();
+            URL urlObject = new URL(url);
+            URLConnection urlConnection = urlObject.openConnection();
+            InputStreamReader inputReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+            Element friendsData = parser.parse(new InputSource(inputReader)).getDocumentElement();
 
 			Element friendsNode = (Element) friendsData.getElementsByTagName("friends").item(0);
 			NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
@@ -304,7 +307,10 @@ public class SteamId {
 		try {
 			String url = this.getBaseUrl() + "/games?xml=1";
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Element gamesData = parser.parse(url).getDocumentElement();
+            URL urlObject = new URL(url);
+            URLConnection urlConnection = urlObject.openConnection();
+            InputStreamReader inputReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+            Element gamesData = parser.parse(new InputSource(inputReader)).getDocumentElement();
 
 			Element gamesNode = (Element) gamesData.getElementsByTagName("games").item(0);
 			NodeList gamesNodeList = ((Element) gamesNode).getElementsByTagName("game");

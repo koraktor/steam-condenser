@@ -239,7 +239,7 @@ class SteamId {
         $url = $this->getBaseUrl() . '/friends?xml=1';
 
         $this->friends = array();
-        $friendsData =  new SimpleXMLElement(file_get_contents($url));
+        $friendsData =  new SimpleXMLElement(utf8_encode(file_get_contents($url)));
         foreach($friendsData->friends->friend as $friend) {
             $this->friends[] = SteamId::create((string) $friend, false);
         }
@@ -252,7 +252,7 @@ class SteamId {
         $this->games = array();
 
         $url = $this->getBaseUrl() . "/games?xml=1";
-        $gamesData = new SimpleXMLElement(file_get_contents($url));
+        $gamesData = new SimpleXMLElement(utf8_encode(file_get_contents($url)));
 
         foreach($gamesData->games->game as $game) {
             $gameName = (string) $game->name;

@@ -159,7 +159,7 @@ class SteamId
     url = "#{base_url}/friends?xml=1"
 
     @friends = []
-    friends_data = REXML::Document.new(open(url, {:proxy => true}).read).root
+    friends_data = REXML::Document.new(open(url, {:proxy => true}).read.unpack("C*").pack("U*")).root
     friends_data.elements.each('friends/friend') do |friend|
       @friends << SteamId.new(friend.text.to_i, false)
     end
@@ -170,7 +170,7 @@ class SteamId
     url = "#{base_url}/games?xml=1"
 
     @games = {}
-    games_data = REXML::Document.new(open(url, {:proxy => true}).read).root
+    games_data = REXML::Document.new(open(url, {:proxy => true}).read.unpack("C*").pack("U*")).root
     games_data.elements.each('games/game') do |game|
       game_name = game.elements['name'].text
       if game.elements['globalStatsLink'].nil?
