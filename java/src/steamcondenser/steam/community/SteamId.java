@@ -7,6 +7,9 @@
 
 package steamcondenser.steam.community;
 
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import steamcondenser.SteamCondenserException;
 
@@ -186,7 +190,10 @@ public class SteamId {
 		try {
 			String url = this.getBaseUrl() + "?xml=1";
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Element profile = parser.parse(url).getDocumentElement();
+            URL urlObject = new URL(url);
+            URLConnection urlConnection = urlObject.openConnection();
+            InputStreamReader inputReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+            Element profile = parser.parse(new InputSource(inputReader)).getDocumentElement();
 
 			if(profile.getElementsByTagName("error").getLength() > 0) {
 				throw new SteamCondenserException(profile.getElementsByTagName("error").item(0).getTextContent());

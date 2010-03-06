@@ -179,7 +179,7 @@ class SteamId {
      */
     private function fetchData() {
         $url = $this->getBaseUrl() . "?xml=1";
-        $profile = new SimpleXMLElement(file_get_contents($url));
+        $profile = new SimpleXMLElement(utf8_encode(file_get_contents($url)));
 
         if(!empty($profile->error)) {
             throw new SteamCondenserException((string) $profile->error);

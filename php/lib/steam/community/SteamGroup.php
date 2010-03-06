@@ -126,7 +126,7 @@ class SteamGroup {
         do {
             $page++;
             $url = "{$this->getBaseUrl()}/memberslistxml?p=$page";
-            $memberData = new SimpleXMLElement(file_get_contents($url));
+            $memberData = new SimpleXMLElement(utf8_encode(file_get_contents($url)));
 
             if($page == 1) {
                 $this->groupId64 = (string) $memberData->groupID64;

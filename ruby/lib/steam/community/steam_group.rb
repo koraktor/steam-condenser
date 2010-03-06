@@ -49,7 +49,7 @@ class SteamGroup
     begin
       page += 1
       url = open("#{base_url}/memberslistxml?p=#{page}", {:proxy => true})
-      member_data = REXML::Document.new(url.read).root
+      member_data = REXML::Document.new(url.read.unpack("C*").pack("U*")).root
 
       if page == 1
         @group_id64 = member_data.elements['groupID64'].text.to_i

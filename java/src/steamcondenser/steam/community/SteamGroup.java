@@ -8,6 +8,9 @@
 package steamcondenser.steam.community;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -111,8 +115,11 @@ public class SteamGroup {
 			do {
 				page ++;
 				url = this.getBaseUrl() + "/memberslistxml?p=" + page;
-				Element memberData = parser.parse(url).getDocumentElement();
-				
+            URL urlObject = new URL(url);
+            URLConnection urlConnection = urlObject.openConnection();
+            InputStreamReader inputReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+            Element memberData = parser.parse(new InputSource(inputReader)).getDocumentElement();
+
 				totalPages = Integer.parseInt(memberData.getElementsByTagName("totalPages").item(0).getTextContent());
 				
 				NodeList membersList = ((Element) memberData.getElementsByTagName("members").item(0)).getElementsByTagName("steamID64");

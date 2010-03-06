@@ -88,7 +88,7 @@ class SteamId
   # profile specified by the ID of this SteamID
   def fetch
     profile_url = open(base_url + '?xml=1', {:proxy => true})
-    profile = REXML::Document.new(profile_url.read).root
+    profile = REXML::Document.new(profile_url.read.unpack("C*").pack("U*")).root
 
     unless REXML::XPath.first(profile, 'error').nil?
       raise SteamCondenserException.new(profile.elements['error'].text)
