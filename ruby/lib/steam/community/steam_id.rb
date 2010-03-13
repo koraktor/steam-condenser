@@ -94,6 +94,10 @@ class SteamId
       raise SteamCondenserException.new(profile.elements['error'].text)
     end
 
+    @nickname         = profile.elements['steamID'].text
+    @steam_id64       = profile.elements['steamID64'].text.to_i
+    @vac_banned       = (profile.elements['vacBanned'].text == 1)
+
     unless REXML::XPath.first(profile, 'privacyMessage').nil?
       raise SteamCondenserException.new(profile.elements['privacyMessage'].text)
     end
@@ -102,9 +106,6 @@ class SteamId
     @online_state     = profile.elements['onlineState'].text
     @privacy_state    = profile.elements['privacyState'].text
     @state_message    = profile.elements['stateMessage'].text
-    @nickname         = profile.elements['steamID'].text
-    @steam_id64       = profile.elements['steamID64'].text.to_i
-    @vac_banned       = (profile.elements['vacBanned'].text == 1)
     @visibility_state = profile.elements['visibilityState'].text.to_i
 
     # Only public profiles can be scanned for further information

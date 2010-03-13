@@ -192,6 +192,10 @@ public class SteamId {
 				throw new SteamCondenserException(profile.getElementsByTagName("error").item(0).getTextContent());
 			}
 
+            this.nickname  = profile.getElementsByTagName("steamID").item(0).getTextContent();
+            this.steamId64 = Long.parseLong(profile.getElementsByTagName("steamID64").item(0).getTextContent());
+            this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent().equals("1"));
+
             if(profile.getElementsByTagName("privacyMessage").getLength() > 0) {
                 throw new SteamCondenserException(profile.getElementsByTagName("privacyMessage").item(0).getTextContent());
             }
@@ -201,9 +205,6 @@ public class SteamId {
 			this.onlineState = profile.getElementsByTagName("onlineState").item(0).getTextContent();
 			this.privacyState = profile.getElementsByTagName("privacyState").item(0).getTextContent();
 			this.stateMessage = profile.getElementsByTagName("stateMessage").item(0).getTextContent();
-			this.nickname  = profile.getElementsByTagName("steamID").item(0).getTextContent();
-			this.steamId64 = Long.parseLong(profile.getElementsByTagName("steamID64").item(0).getTextContent());
-			this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent().equals("1"));
 			this.visibilityState = Integer.parseInt(profile.getElementsByTagName("visibilityState").item(0).getTextContent());
 
 			if(this.privacyState.compareTo("public") == 0) {

@@ -185,6 +185,10 @@ class SteamId {
             throw new SteamCondenserException((string) $profile->error);
         }
 
+        $this->nickname  = (string) $profile->steamID;
+        $this->steamId64 = (string) $profile->steamID64;
+        $this->vacBanned = (bool) $profile->vacBanned;
+
         if(!empty($profile->privacyMessage)) {
             throw new SteamCondenserException((string) $profile->privacyMessage);
         }
@@ -193,9 +197,6 @@ class SteamId {
         $this->onlineState = (string) $profile->onlineState;
         $this->privacyState = (string) $profile->privacyState;
         $this->stateMessage = (string) $profile->stateMessage;
-        $this->nickname  = (string) $profile->steamID;
-        $this->steamId64 = (string) $profile->steamID64;
-        $this->vacBanned = (bool) $profile->vacBanned;
         $this->visibilityState = (int) $profile->visibilityState;
 
         if($this->privacyState == "public") {
