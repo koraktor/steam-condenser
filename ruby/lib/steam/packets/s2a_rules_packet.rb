@@ -29,7 +29,6 @@ class S2A_RULES_Packet < SteamPacket
       break if rule.empty? or value.empty?
 
       @rules_hash[rule] = value
-      puts "#{rule} = #{value}"
     end
   end
 
