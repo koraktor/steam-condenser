@@ -36,8 +36,8 @@ class SourceSocket < SteamSocket
 
         # Caching of split packet data
         split_packets[packet_number - 1] = @buffer.get
-        
-        warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
+
+        puts "Received packet #{packet_number} of #{packet_count} for request ##{request_id}" if $DEBUG
 
         # Receiving the next packet
         if split_packets.size < packet_count
@@ -61,9 +61,9 @@ class SourceSocket < SteamSocket
     end
 
     if is_compressed
-      warn "Got compressed reply of type \"#{packet.class.to_s}\"."
+      puts "Got compressed reply of type \"#{packet.class.to_s}\"." if $DEBUG
     else
-      warn "Got reply of type \"#{packet.class.to_s}\"."
+      puts "Got reply of type \"#{packet.class.to_s}\"." if $DEBUG
     end
     
     return packet

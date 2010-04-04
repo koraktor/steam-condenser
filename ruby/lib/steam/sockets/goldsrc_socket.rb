@@ -35,9 +35,9 @@ class GoldSrcSocket < SteamSocket
         
         # Caching of split packet data
         split_packets[packet_number - 1] = @buffer.get
-        
-        warn "Received packet #{packet_number} of #{packet_count} for request ##{request_id}"
-        
+
+        puts "Received packet #{packet_number} of #{packet_count} for request ##{request_id}" if $DEBUG
+
         # Receiving the next packet
         if split_packets.size < packet_count
           begin
@@ -55,9 +55,9 @@ class GoldSrcSocket < SteamSocket
     else
       packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
     end
-    
-    warn "Got reply of type \"#{packet.class.to_s}\"."
-    
+
+    puts "Got reply of type \"#{packet.class.to_s}\"." if $DEBUG
+
     return packet
   end
   

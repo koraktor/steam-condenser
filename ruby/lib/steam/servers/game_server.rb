@@ -122,11 +122,11 @@ class GameServer
       end
       
       unless response_packet.kind_of? expected_response
-        warn "Expected #{expected_response}, got #{response_packet.class}."
+        puts "Expected #{expected_response}, got #{response_packet.class}." if $DEBUG
         self.handle_response_for_request(request_type, false) if repeat_on_failure
       end
     rescue TimeoutException
-      warn "Expected #{expected_response}, but timed out."
+      puts "Expected #{expected_response}, but timed out." if $DEBUG
     end
   end
   

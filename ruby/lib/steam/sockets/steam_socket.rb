@@ -47,8 +47,8 @@ class SteamSocket
   end
   
   def send(data_packet)
-    warn "Sending data packet of type \"#{data_packet.class.to_s}\"."
-    
+    puts "Sending data packet of type \"#{data_packet.class.to_s}\"." if $DEBUG
+
     @buffer = ByteBuffer.wrap(data_packet.to_s)
     @channel.write(@buffer)
   end
