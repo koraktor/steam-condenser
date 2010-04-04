@@ -28,17 +28,17 @@ class S2A_INFO2_Packet < S2A_INFO_BasePacket
     @secure = @content_data.get_byte == 1
     @game_version = @content_data.get_string
     extra_data_flag = @content_data.get_byte
-    
-    if extra_data_flag & 0x80
+
+    unless extra_data_flag & 0x80 == 0
       @server_port = @content_data.get_short
     end
-    
-    if extra_data_flag & 0x40
+
+    unless extra_data_flag & 0x40 == 0
       @tv_port = @content_data.get_short
       @tv_name = @content_data.get_string
-    end   
-    
-    if extra_data_flag & 0x20
+    end
+
+    unless extra_data_flag & 0x20 == 0
       @server_tags = @content_data.get_string
     end
   end
