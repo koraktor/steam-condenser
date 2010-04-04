@@ -193,7 +193,7 @@ class GameServer
     
     if @player_hash != nil
       return_string << "Players:\n"
-      @player_hash.each do |player|
+      @player_hash.each_value do |player|
         return_string << "  #{player}\n"
       end
     end
