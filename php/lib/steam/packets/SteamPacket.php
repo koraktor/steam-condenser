@@ -75,21 +75,10 @@ abstract class SteamPacket
 
 	/**
 	 * @return String
-	 * @todo Automatically split packets based on size
 	 */
 	public function __toString()
 	{
-		$packetData = pack("ccc", 0xFF, 0xFF, 0xFF);
-
-		/*if($this->splitPacket)
-		 {
-		 $packetData .= pack("c", 0xFE);
-		 }
-		 else*/
-		{
-			$packetData .= pack("c", 0xFF);
-		}
-
+		$packetData = pack("cccc", 0xFF, 0xFF, 0xFF, 0xFF);
 		$packetData .= pack("ca*", $this->headerData, $this->contentData->_array());
 
 		return $packetData;

@@ -31,16 +31,8 @@ class SteamPacket
   end
 
   # Returns a packed string representing the packet's data
-  #
-  # TODO Has to automatically split packets greater than 1400 bytes
   def to_s
-    packet_data = [0xFF, 0xFF, 0xFF].pack("ccc")
-
-    unless @split_packet
-      packet_data << [0xFF].pack("c")
-    else
-      packet_data << [0xFE].pack("c")
-    end
+    packet_data = [0xFF, 0xFF, 0xFF, 0xFF].pack("cccc")
 
     return packet_data << [@header_data, @content_data.array].pack("ca*")
   end
