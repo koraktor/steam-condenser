@@ -42,18 +42,18 @@ public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 	{
 	    byte extraDataFlag = this.contentData.getByte();
 
-	    if((extraDataFlag & 0x80) == 1)
+	    if((extraDataFlag & 0x80) != 0)
 	    {
 		this.serverPort = Short.reverseBytes(this.contentData.getShort());
 	    }
 
-	    if((extraDataFlag & 0x40) == 1)
+	    if((extraDataFlag & 0x40) != 0)
 	    {
 		this.tvPort = Short.reverseBytes(this.contentData.getShort());
 		this.tvName = this.contentData.getString();
 	    }
 
-	    if((extraDataFlag & 0x20) == 1)
+	    if((extraDataFlag & 0x20) != 0)
 	    {
 		this.serverTags = this.contentData.getString();
 	    }
