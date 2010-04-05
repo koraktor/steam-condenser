@@ -33,6 +33,10 @@ class S2A_INFO2_Packet < S2A_INFO_BasePacket
       @server_port = @content_data.get_short
     end
 
+    unless extra_data_flag & 0x10 == 0
+      @server_id =  @content_data.get_long | (@content_data.get_long << 32)
+    end
+
     unless extra_data_flag & 0x40 == 0
       @tv_port = @content_data.get_short
       @tv_name = @content_data.get_string

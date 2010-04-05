@@ -14,6 +14,7 @@ public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 {
     protected short appId;
     protected String gameVersion;
+    protected long serverId;
     protected short serverPort;
     protected String serverTags;
     protected String tvName;
@@ -46,6 +47,10 @@ public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 	    {
 		this.serverPort = Short.reverseBytes(this.contentData.getShort());
 	    }
+
+        if((extraDataFlag & 0x10) != 0) {
+            this.serverId = Long.reverseBytes((this.contentData.getInt() << 32) | this.contentData.getInt());
+        }
 
 	    if((extraDataFlag & 0x40) != 0)
 	    {
