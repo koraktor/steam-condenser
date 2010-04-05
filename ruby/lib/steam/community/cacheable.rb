@@ -45,9 +45,9 @@ module Cacheable
     # Otherwise a new object is created.
     # Overrides the default constructor.
     def new(id, fetch = true, bypass_cache = false)
-      if cached?(id) and !bypass_cache
+      if cached?(id) && !bypass_cache
         object = class_variable_get(:@@cache)[id]
-        object.fetch_data if fetch and !object.fetched?
+        object.fetch if fetch && !object.fetched?
         object
       else
         super(id, fetch)
