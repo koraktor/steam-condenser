@@ -55,7 +55,7 @@ class SteamGroup
         @group_id64 = member_data.elements['groupID64'].text.to_i
       end
       total_pages = member_data.elements['totalPages'].text.to_i
-    
+
       member_data.elements['members'].elements.each do |member|
         @members << SteamId.new(member.text.to_i, false)
       end
@@ -78,10 +78,10 @@ class SteamGroup
   end
 
   # Returns the members of this group
-  # Calls +fetch_members+ if the members haven't been fetched already.
+  # Calls +fetch+ if the members haven't been fetched already.
   def members
-    fetch_members if @members.nil? or @members[0].nil?
+    fetch if @members.nil? || @members[0].nil?
     @members
   end
-  
+
 end
