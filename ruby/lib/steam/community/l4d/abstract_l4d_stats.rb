@@ -58,7 +58,6 @@ class AbstractL4DStats < GameStats
       @lifetime_stats = {}
       @lifetime_stats['finales_survived'] = @xml_data.elements['stats/lifetime/finales'].text.to_i
       @lifetime_stats['games_played']     = @xml_data.elements['stats/lifetime/gamesplayed'].text.to_i
-      @lifetime_stats['finales_survived_percentage'] = @lifetime_stats['finales_survived'].to_f / @lifetime_stats['games_played']
       @lifetime_stats['infected_killed']  = @xml_data.elements['stats/lifetime/infectedkilled'].text.to_i
       @lifetime_stats['kills_per_hour']   = @xml_data.elements['stats/lifetime/killsperhour'].text.to_f
       @lifetime_stats['avg_kits_shared']  = @xml_data.elements['stats/lifetime/kitsshared'].text.to_f
@@ -66,6 +65,8 @@ class AbstractL4DStats < GameStats
       @lifetime_stats['avg_pills_shared'] = @xml_data.elements['stats/lifetime/pillsshared'].text.to_f
       @lifetime_stats['avg_pills_used']   = @xml_data.elements['stats/lifetime/pillsused'].text.to_f
       @lifetime_stats['time_played']      = @xml_data.elements['stats/lifetime/timeplayed'].text
+
+      @lifetime_stats['finales_survived_percentage'] = @lifetime_stats['finales_survived'].to_f / @lifetime_stats['games_played']
     end
 
     @lifetime_stats
@@ -122,12 +123,13 @@ class AbstractL4DStats < GameStats
       @versus_stats['games_played']                = @xml_data.elements['stats/versus/gamesplayed'].text.to_i
       @versus_stats['games_completed']             = @xml_data.elements['stats/versus/gamescompleted'].text.to_i
       @versus_stats['finales_survived']            = @xml_data.elements['stats/versus/finales'].text.to_i
-      @versus_stats['finales_survived_percentage'] = @versus_stats['finales_survived'].to_f / @versus_stats['games_played']
       @versus_stats['points']                      = @xml_data.elements['stats/versus/points'].text.to_i
       @versus_stats['most_points_infected']        = @xml_data.elements['stats/versus/pointsas'].text
       @versus_stats['games_won']                   = @xml_data.elements['stats/versus/gameswon'].text.to_i
       @versus_stats['games_lost']                  = @xml_data.elements['stats/versus/gameslost'].text.to_i
       @versus_stats['highest_survivor_score']      = @xml_data.elements['stats/versus/survivorscore'].text.to_i
+
+      @versus_stats['finales_survived_percentage'] = @versus_stats['finales_survived'].to_f / @versus_stats['games_played']      
 
       self.class.const_get(:SPECIAL_INFECTED).each do |infected|
         @versus_stats[infected] = {}

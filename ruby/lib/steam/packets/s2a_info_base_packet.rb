@@ -1,31 +1,26 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
-require "abstract_class"
-require "steam/packets/steam_packet"
+require 'abstract_class'
+require 'steam/packets/steam_packet'
 
 # The S2A_INFO_BasePacket class represents the response to a A2S_INFO
 # request send to the server.
 class S2A_INFO_BasePacket < SteamPacket
-  
+
   include AbstractClass
-  
-  # Creates a S2A_INFO[...] response object based on the data received.
-  def initialize(header, data)
-    super header, data
-  end
-  
+
+  attr_reader :info_hash
+
   # Returns the hash containing information on the server
-  public
-  def get_info_hash
-    return Hash[
+  def generate_info_hash
+    @info_hash = Hash[
       *instance_variables.map { |var|
-        if var != "@content_data" && var != "@header_data"
-          [var[1..-1], instance_variable_get(var)]
-        end
+        [var[1..-1], instance_variable_get(var)] if var != '@content_data' && var != '@header_data'
       }.compact.flatten
     ]
   end
+
 end

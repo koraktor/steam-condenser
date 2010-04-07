@@ -11,8 +11,8 @@ class L4DExplosive < GameWeapon
   def initialize(weapon_data)
     super weapon_data
 
-    @id                   = weapon_data.name
-    @shots                = weapon_data.elements['thrown'].text.to_i
+    @id    = weapon_data.name
+    @shots = weapon_data.elements['thrown'].text.to_i
   end
 
   # Returns the average number of kills for one shot of this explosive.

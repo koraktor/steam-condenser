@@ -1,10 +1,10 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
-require "byte_buffer"
-require "steam/sockets/steam_socket"
+require 'stringio_additions'
+require 'steam/sockets/steam_socket'
 
 # The SourceSocket class is a sub class of SteamSocket respecting the
 # specifications of the Source query protocol.
@@ -14,24 +14,24 @@ class SourceSocket < SteamSocket
   # maximum packet size of 1400 byte. Greater packets will be split over several
   # UDP packets. This method reassembles split packets into single packet
   # objects.
-  def get_reply
-    bytes_read = self.receive_packet 1400
+  def reply
+    bytes_read = receive_packet 1400
     is_compressed = false
 
-    if @buffer.get_long == 0xFFFFFFFE
-      split_packets = Array.new
+    if @buffer.long == 0xFFFFFFFE
+      split_packets = []
       begin
         # Parsing of split packet headers
-        request_id = @buffer.get_long
+        request_id = @buffer.long
         is_compressed = ((request_id & 0x80000000) != 0)
-        packet_count = @buffer.get_byte.to_i
-        packet_number = @buffer.get_byte.to_i + 1
-        
+        packet_count = @buffer.byte.to_i
+        packet_number = @buffer.byte.to_i + 1
+
         if is_compressed
-          split_size = @buffer.get_long
-          packet_checksum = @buffer.get_long
+          @buffer.long
+          packet_checksum = @buffer.long
         else
-          split_size = @buffer.get_short
+          @buffer.short
         end
 
         # Caching of split packet data
@@ -42,22 +42,22 @@ class SourceSocket < SteamSocket
         # Receiving the next packet
         if split_packets.size < packet_count
           begin
-            bytes_read = self.receive_packet
+            bytes_read = receive_packet
           rescue TimeoutException
             bytes_read = 0
           end
         else
           bytes_read = 0
         end
-      end while bytes_read > 0 && @buffer.get_long == 0xFFFFFFFE
-      
+      end while bytes_read > 0 && @buffer.long == 0xFFFFFFFE
+
       if is_compressed
         packet = SteamPacketFactory.reassemble_packet(split_packets, true, packet_checksum)
       else
         packet = SteamPacketFactory.reassemble_packet(split_packets)
       end
     else
-      packet = SteamPacketFactory.get_packet_from_data(@buffer.get)
+      packet = SteamPacketFactory.packet_from_data(@buffer.get)
     end
 
     if is_compressed
@@ -65,8 +65,8 @@ class SourceSocket < SteamSocket
     else
       puts "Got reply of type \"#{packet.class.to_s}\"." if $DEBUG
     end
-    
-    return packet
+
+    packet
   end
-  
+
 end

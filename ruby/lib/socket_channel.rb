@@ -1,20 +1,20 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
 require 'ipaddr'
 require 'socket'
 require 'timeout'
 
-require 'byte_buffer'
+require 'stringio_additions'
 
 class SocketChannel
 
   attr_reader :socket
 
   def self.open
-    return SocketChannel.new
+    SocketChannel.new
   end
 
   def close
@@ -27,7 +27,7 @@ class SocketChannel
       @connected = true
     end
 
-    return self
+    self
   end
 
   def initialize
@@ -35,27 +35,21 @@ class SocketChannel
   end
 
   def connected?
-    return @connected
+    @connected
   end
 
   def read(destination_buffer)
-    if !destination_buffer.is_a? ByteBuffer
-      raise ArgumentError
-    end
+    raise ArgumentError unless destination_buffer.is_a? StringIO
 
-    length = destination_buffer.remaining
-    data = @socket.recv length
-    destination_buffer.put data
-
-    return data.length
+    data = @socket.recv destination_buffer.remaining
+    length = destination_buffer.write data
+    destination_buffer.truncate length
   end
 
   def write(source_buffer)
-    if !source_buffer.is_a? ByteBuffer
-      raise ArgumentError
-    end
+    raise ArgumentError unless source_buffer.is_a? StringIO
 
-    return @socket.send(source_buffer.get, 0)
+    @socket.send(source_buffer.get, 0)
   end
 
 end

@@ -1,35 +1,33 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
-require "steam/packets/steam_packet"
+require 'steam/packets/steam_packet'
 
 class M2A_SERVER_BATCH_Packet < SteamPacket
-  
+
+  attr_reader :servers
+
   def initialize(data)
     super SteamPacket::M2A_SERVER_BATCH_HEADER, data
-    
-    if(@content_data.get_byte != 0x0A)
-      raise PacketFormatException.new("Master query response is missing additional 0x0A byte.")
+
+    unless @content_data.byte == 0x0A
+      raise PacketFormatException.new('Master query response is missing additional 0x0A byte.')
     end
-    
-    @server_array = Array.new
-    
+
+    @servers = []
+
     begin
-      first_octet = @content_data.get_byte
-      second_octet = @content_data.get_byte
-      third_octet = @content_data.get_byte
-      fourth_octet = @content_data.get_byte
-      port_number = @content_data.get_short
+      first_octet = @content_data.byte
+      second_octet = @content_data.byte
+      third_octet = @content_data.byte
+      fourth_octet = @content_data.byte
+      port_number = @content_data.short
       port_number = ((port_number & 0xFF) << 8) + (port_number >> 8)
-      
-      @server_array << "#{first_octet}.#{second_octet}.#{third_octet}.#{fourth_octet}:#{port_number}"
+
+      @servers << "#{first_octet}.#{second_octet}.#{third_octet}.#{fourth_octet}:#{port_number}"
     end while @content_data.remaining > 0
   end
-  
-  def get_servers
-    return @server_array
-  end
-  
+
 end

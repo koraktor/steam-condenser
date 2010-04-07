@@ -54,8 +54,8 @@ class SteamId
 
   # Creates a new SteamId object using the SteamID64 converted from a server
   # SteamID given by +steam_id+
-  def self.get_from_steam_id(steam_id)
-    self.new(self.convert_steam_id_to_community_id(steam_id))
+  def self.from_steam_id(steam_id)
+    new(convert_steam_id_to_community_id(steam_id))
   end
 
   # Creates a new SteamId object for the given SteamID +id+, either numeric or

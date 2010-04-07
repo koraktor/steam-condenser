@@ -1,16 +1,17 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
+
+require 'ipaddr'
+require 'test/unit'
 
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 
-require "exceptions/timeout_exception"
-require "ipaddr"
-require "steam/servers/goldsrc_server"
-require "steam/servers/master_server"
-require "steam/servers/source_server"
-require "test/unit"
+require 'exceptions/timeout_exception'
+require 'steam/servers/goldsrc_server'
+require 'steam/servers/master_server'
+require 'steam/servers/source_server'
 
 class QueryTests < Test::Unit::TestCase
 
@@ -18,7 +19,7 @@ class QueryTests < Test::Unit::TestCase
   def test_invalid_goldsrc_server
     assert_raise TimeoutException do
       invalid_server = GoldSrcServer.new IPAddr.new("1.0.0.0")
-      invalid_server.get_ping
+      invalid_server.ping
     end
   end
 
@@ -26,16 +27,16 @@ class QueryTests < Test::Unit::TestCase
   def test_invalid_source_server
     assert_raise TimeoutException do
       invalid_server = SourceServer.new IPAddr.new("1.0.0.0")
-      invalid_server.get_ping
+      invalid_server.ping
     end
   end
-  
+
   # This test gets a random GoldSrc server from the master server and does a
   # full query on it
   def test_random_goldsrc_server
     assert_nothing_raised do
       master_server = MasterServer.new(*MasterServer::GOLDSRC_MASTER_SERVER)
-      servers = master_server.get_servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve"
+      servers = master_server.servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve"
 
       assert !servers.empty?, "Got no servers from master server."
 
@@ -47,13 +48,13 @@ class QueryTests < Test::Unit::TestCase
       print server.to_s
     end
   end
-  
+
   # This test gets a random Source server from the master server and does a
   # full query on it
   def test_random_source_server
     assert_nothing_raised do
       master_server = MasterServer.new(*MasterServer::SOURCE_MASTER_SERVER)
-      servers = master_server.get_servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf"
+      servers = master_server.servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf"
 
       assert !servers.empty?, "Got no servers from master server."
 
@@ -65,5 +66,5 @@ class QueryTests < Test::Unit::TestCase
       print server.to_s
     end
   end
-  
+
 end

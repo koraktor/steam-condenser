@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
 require 'socket_channel'
 require 'exceptions/rcon_ban_exception'
@@ -17,35 +17,33 @@ class RCONSocket < SteamSocket
   end
 
   def send(data_packet)
-    if !@channel.connected?
-      @channel.connect @remote_socket
-    end
+    @channel.connect @remote_socket unless @channel.connected?
 
-    @buffer = ByteBuffer.wrap data_packet.get_bytes
+    @buffer = StringIO.new data_packet.bytes
     @channel.write @buffer
   end
 
-  def get_reply
-    if self.receive_packet(1440) == 0
-      raise RCONBanException
-    end
-    packet_data = @buffer.array[0..@buffer.limit]
-    packet_size = @buffer.get_long + 4
+  def reply
+    raise RCONBanException if receive_packet(1440) == 0
+
+    packet_data = @buffer.get
+    packet_size = @buffer.long + 4
+    @buffer.rewind
 
     if packet_size > 1440
-      remaining_bytes = packet_size - @buffer.limit
+      remaining_bytes = packet_size - @buffer.size
       begin
         if remaining_bytes < 1440
-          self.receive_packet remaining_bytes
+          receive_packet remaining_bytes
         else
-          self.receive_packet 1440
+          receive_packet 1440
         end
-        packet_data << @buffer.array[0..@buffer.limit]
-        remaining_bytes -= @buffer.limit
+        packet_data << @buffer.get
+        remaining_bytes -= @buffer.size
       end while remaining_bytes > 0
     end
 
-    return RCONPacketFactory.get_packet_from_data(packet_data)
+    RCONPacketFactory.packet_from_data(packet_data)
   end
 
 end

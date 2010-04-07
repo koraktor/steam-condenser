@@ -30,9 +30,7 @@ module Cacheable
 
     # Returns whether the requested object +id+ is already cached
     def cached?(id)
-      if id.is_a? String
-        id.downcase!
-      end
+      id.downcase! if id.is_a? String
       class_variable_get(:@@cache).key?(id)
     end
 
@@ -59,11 +57,11 @@ module Cacheable
   attr_reader :fetch_time
 
   # Creates a new object for the given +id+, either numeric or
-  # the custom URL specified by the user. If +fetch+ is +true+ (default),
+  # the custom URL specified by the user. If +fetch_now+ is +true+ (default),
   # fetch is used to load data into the object.
   # This method is overridden by Cacheable::ClassMethods#new.
-  def initialize(fetch = true) #:notnew:
-    self.fetch if fetch
+  def initialize(fetch_now = true) #:notnew:
+    fetch if fetch_now
     cache
   end
 
@@ -91,5 +89,5 @@ module Cacheable
   def fetched?
     !@fetch_time.nil?
   end
-    
+
 end

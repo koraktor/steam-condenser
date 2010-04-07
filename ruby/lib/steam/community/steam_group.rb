@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
 require 'open-uri'
 require 'rexml/document'
@@ -51,9 +51,7 @@ class SteamGroup
       url = open("#{base_url}/memberslistxml?p=#{page}", {:proxy => true})
       member_data = REXML::Document.new(url.read).root
 
-      if page == 1
-        @group_id64 = member_data.elements['groupID64'].text.to_i
-      end
+      @group_id64 = member_data.elements['groupID64'].text.to_i if page == 1
       total_pages = member_data.elements['totalPages'].text.to_i
 
       member_data.elements['members'].elements.each do |member|

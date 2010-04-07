@@ -1,13 +1,13 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'test/unit'
 
-require 'byte_buffer'
+require 'stringio_additions'
 require 'socket_channel'
 
 class SocketChannelTests < Test::Unit::TestCase
@@ -19,22 +19,22 @@ class SocketChannelTests < Test::Unit::TestCase
 
     channel = SocketChannel.open
     channel.connect Socket.getaddrinfo('localhost', port)
-    
+
     socket= server.accept
 
     string = 'test'
-    
-    buffer = ByteBuffer.wrap(string)
+
+    buffer = StringIO.new string
     channel.write(buffer)
     sent, socket_addr = socket.recvfrom(4)
     socket.send(string, 0)
-    buffer = ByteBuffer.allocate(4)
+    buffer = StringIO.allocate 4
     channel.read(buffer)
 
     channel.close
     socket.close
 
-    received = buffer.array
+    received = buffer.data
 
     assert_equal(string, sent)
     assert_equal(string, received)

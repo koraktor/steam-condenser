@@ -1,40 +1,41 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
 require 'zlib'
 
-require "abstract_class"
-require "steam/packets/s2a_info_detailed_packet"
-require "steam/packets/a2s_info_packet"
-require "steam/packets/s2a_info2_packet"
-require "steam/packets/a2a_ping_packet"
-require "steam/packets/a2a_ack_packet"
-require "steam/packets/a2s_player_packet"
-require "steam/packets/s2a_player_packet"
-require "steam/packets/a2s_rules_packet"
-require "steam/packets/s2a_rules_packet"
-require "steam/packets/a2s_serverquery_getchallenge_packet"
-require "steam/packets/s2c_challenge_packet"
-require "steam/packets/a2m_get_servers_batch2_packet"
-require "steam/packets/m2a_server_batch_packet"
-require "steam/packets/rcon/rcon_goldsrc_response"
+require 'abstract_class'
+require 'exceptions/steam_condenser_exception'
+require 'steam/packets/s2a_info_detailed_packet'
+require 'steam/packets/a2s_info_packet'
+require 'steam/packets/s2a_info2_packet'
+require 'steam/packets/a2a_ping_packet'
+require 'steam/packets/a2a_ack_packet'
+require 'steam/packets/a2s_player_packet'
+require 'steam/packets/s2a_player_packet'
+require 'steam/packets/a2s_rules_packet'
+require 'steam/packets/s2a_rules_packet'
+require 'steam/packets/a2s_serverquery_getchallenge_packet'
+require 'steam/packets/s2c_challenge_packet'
+require 'steam/packets/a2m_get_servers_batch2_packet'
+require 'steam/packets/m2a_server_batch_packet'
+require 'steam/packets/rcon/rcon_goldsrc_response'
 
 class SteamPacketFactory
-  
+
   include AbstractClass
-  
+
   # Creates a new packet object based on the header byte of the given raw data
-  def self.get_packet_from_data(raw_data)
-    header = raw_data[0].to_i;
-    data = raw_data[1..-1];
-    
+  def self.packet_from_data(raw_data)
+    header = raw_data[0].to_i
+    data = raw_data[1..-1]
+
     case header
       when SteamPacket::S2A_INFO_DETAILED_HEADER
         return S2A_INFO_DETAILED_Packet.new(data)
       when SteamPacket::A2S_INFO_HEADER
-        return A2S_INFO_Packet.new;
+        return A2S_INFO_Packet.new
       when SteamPacket::S2A_INFO2_HEADER
         return S2A_INFO2_Packet.new(data)
       when SteamPacket::A2A_PING_HEADER
@@ -54,7 +55,7 @@ class SteamPacketFactory
       when SteamPacket::S2C_CHALLENGE_HEADER
         return S2C_CHALLENGE_Packet.new(data)
       when SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER
-        return A2M_GET_SERVERS_BATCH2.new(data)
+        return A2M_GET_SERVERS_BATCH2_Packet.new(data)
       when SteamPacket::M2A_SERVER_BATCH_HEADER
         return M2A_SERVER_BATCH_Packet.new(data)
       when SteamPacket::RCON_GOLDSRC_CHALLENGE_HEADER,
@@ -62,29 +63,27 @@ class SteamPacketFactory
            SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
         return RCONGoldSrcResponse.new(data)
       else
-        raise Exception.new("Unknown packet with header 0x#{header.to_s 16} received.")
+        raise SteamCondenserException.new("Unknown packet with header 0x#{header.to_s(16)} received.")
     end
   end
-  
+
   def self.reassemble_packet(split_packets, is_compressed = false, packet_checksum = 0)
-    packet_data = split_packets.join ""
-    
+    packet_data = split_packets.join ''
+
     if is_compressed
       begin
         require 'bz2'
         packet_data = BZ2.uncompress(packet_data)
       rescue LoadError
-        raise SteamCondenserException.new("You need to install the libbzip2 interface for Ruby.")
+        raise SteamCondenserException.new('You need to install the libbzip2 interface for Ruby.')
       end
-      
-      if Zlib.crc32(packet_data) != packet_checksum
-        raise PacketFormatException.new("CRC32 checksum mismatch of uncompressed packet data.")
+
+      unless Zlib.crc32(packet_data) == packet_checksum
+        raise PacketFormatException.new('CRC32 checksum mismatch of uncompressed packet data.')
       end
     end
-    
-    packet_data = packet_data[4..-1]
-    
-    return self.get_packet_from_data(packet_data)
+
+    packet_from_data packet_data[4..-1]
   end
-  
+
 end

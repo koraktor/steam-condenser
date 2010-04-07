@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/dods/dods_weapon'
 require 'steam/community/game_stats'
@@ -22,7 +22,7 @@ class DoDSStats < GameStats
     if @class_stats.nil?
       @class_stats = {}
       @xml_data.elements.each('stats/classes/class') do |class_data|
-        @class_stats[class_data.attributes["key"]] = DoDSClass.new class_data
+        @class_stats[class_data.attributes['key']] = DoDSClass.new class_data
       end
     end
 
@@ -43,5 +43,5 @@ class DoDSStats < GameStats
 
     @weapon_stats
   end
-  
+
 end

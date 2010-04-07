@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
+require 'stringio_additions'
+
 # This class represents a packet used by the Source query protocol
 class SteamPacket
 
@@ -25,15 +27,14 @@ class SteamPacket
   S2C_CHALLENGE_HEADER = 0x41
 
   # Creates a new SteamPacket object with given header and content data
-  def initialize(header_data, content_data = "")
-    @content_data = ByteBuffer.new content_data
-    @header_data = header_data
+  def initialize(header_data, content_data = '')
+    @content_data = StringIO.new content_data.to_s
+    @header_data  = header_data
   end
 
   # Returns a packed string representing the packet's data
   def to_s
-    packet_data = [0xFF, 0xFF, 0xFF, 0xFF].pack("cccc")
-
-    return packet_data << [@header_data, @content_data.array].pack("ca*")
+    [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.data].pack('c5a*')
   end
+
 end

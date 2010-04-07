@@ -3,10 +3,11 @@
 #
 # Copyright (c) 2008-2009, Sebastian Staudt
 
+require 'test/unit'
+
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 
-require "steam/community/steam_id"
-require "test/unit"
+require 'steam/community/steam_id'
 
 class SteamCommunityTests < Test::Unit::TestCase
 
@@ -40,5 +41,5 @@ class SteamCommunityTests < Test::Unit::TestCase
       p steam_id.game_stats('tf2')
     end
   end
-  
+
 end

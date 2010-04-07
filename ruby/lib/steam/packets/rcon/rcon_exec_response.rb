@@ -11,8 +11,8 @@ class RCONExecResponse < RCONPacket
     super request_id, RCONPacket::SERVERDATA_RESPONSE_VALUE, command_response
   end
 
-  def get_response
-    @content_data.array[0..-3]
+  def response
+    @content_data.data[0..-3]
   end
 
 end

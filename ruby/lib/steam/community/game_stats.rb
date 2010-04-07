@@ -1,21 +1,21 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
-require "open-uri"
-require "rexml/document"
+require 'open-uri'
+require 'rexml/document'
 
-require "steam/community/game_achievement"
+require 'steam/community/game_achievement'
 
 class GameStats
 end
 
 require 'steam/community/defense_grid/defense_grid_stats'
-require "steam/community/dods/dods_stats"
-require "steam/community/l4d/l4d_stats"
-require "steam/community/l4d/l4d2_stats"
-require "steam/community/tf2/tf2_stats"
+require 'steam/community/dods/dods_stats'
+require 'steam/community/l4d/l4d_stats'
+require 'steam/community/l4d/l4d2_stats'
+require 'steam/community/tf2/tf2_stats'
 
 # The GameStats class represents the game statistics for a single user and a
 # specific game

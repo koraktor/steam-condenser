@@ -1,10 +1,10 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2010, Sebastian Staudt
 
-require "steam/servers/game_server"
-require "steam/sockets/goldsrc_socket"
+require 'steam/servers/game_server'
+require 'steam/sockets/goldsrc_socket'
 
 class GoldSrcServer < GameServer
 
@@ -26,11 +26,11 @@ class GoldSrcServer < GameServer
 
   def rcon_auth(password)
     @rcon_password = password
-    return true
+    true
   end
 
   def rcon_exec(command)
-    return @socket.rcon_exec(@rcon_password, command).strip
+    @socket.rcon_exec(@rcon_password, command).strip
   end
 
 end

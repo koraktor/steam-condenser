@@ -25,7 +25,9 @@ class SteamPlayer
   def add_info(real_id, name, steam_id, *player_data)
     @extended = true
 
-    raise SteamCondenserException.new('Information to add belongs to a different player.') unless name == @name
+    unless name == @name
+      raise SteamCondenserException.new('Information to add belongs to a different player.')
+    end
 
     @real_id  = real_id
     @steam_id = steam_id
