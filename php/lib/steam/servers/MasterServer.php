@@ -21,7 +21,7 @@ require_once "steam/sockets/MasterServerSocket.php";
  */
 class MasterServer
 {
-	const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+	const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27013";
 	const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
         const REGION_US_EAST_COAST = 0x00;
