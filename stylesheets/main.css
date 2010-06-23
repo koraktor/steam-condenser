@@ -4,16 +4,17 @@ body {
   font-family: Sans-Serif;
   font-size:   12pt;
   height:      100%;
-  margin:      0px auto;
+  margin:      0 auto;
   width:       700px;
 }
 
 a {
+  font-weight:     bold;
   text-decoration: none;
 }
 
 a:link:hover, a:visited:hover {
-  color: #5050cc;
+  color: #505070;
 }
 
 a:link {
@@ -26,7 +27,7 @@ a:visited {
 
 div#adsense {
   height: 65px;
-  margin: 0px auto;
+  margin: 0 auto;
   width:  468px;
 }
 
@@ -44,12 +45,12 @@ div#content {
 }
 
 div#footer {
-  background: #215373;
+  background:  #215373;
   border-left: 5px solid #215373;
-  color:      #ffffff;
-  margin:     0px auto;
-  padding:    0px 20px;
-  text-align: center;
+  color:       #ffffff;
+  margin:      0 auto;
+  padding:     0 20px;
+  text-align:  center;
 }
 
 div#logo {
@@ -66,14 +67,14 @@ div#menu {
   color:         #000040;
   font-weight:   bold;
   line-height:   30px;
-  margin:        0px auto;
+  margin:        0 auto;
   padding:       10px 20px;
 }
 
 div#menu a {
-  background: #215373;
-  color:      #999999;
-  padding:    5px;
+  background:  #215373;
+  color:       #dddddd;
+  text-shadow: 1px 1px #000000;
 }
 
 div#menu a:hover {
@@ -82,10 +83,18 @@ div#menu a:hover {
 }
 
 div#menu .menu-active {
-  background: #eeeeff;
+  background: #99c9ff;
   color:      #215373;
   cursor:     default;
+  text-shadow: 1px 1px #000000;
+}
+
+div#menu a, div#menu .menu-active {
+  border-radius: 5px;
   padding:    5px;
+
+  -moz-border-radius:    5px;
+  -webkit-border-radius: 5px;
 }
 
 div#pledgie {
@@ -103,7 +112,7 @@ div.code-description {
 }
 
 div.code-sample {
-  margin: 10px 0px;
+  margin: 10px 0;
 }
 
 div.code-sample a {
@@ -111,7 +120,7 @@ div.code-sample a {
   color:      #999999;
   cursor:     pointer;
   font-size:  8pt;
-  margin:     0px;
+  margin:     0;
   padding:    3px;
 }
 
@@ -121,7 +130,7 @@ div.code-sample a:hover {
 }
 
 div.code-sample a.language-selected {
-  background:   #eeeeff;
+  background:   #99c9ff;
   border-left:  1px solid #215373;
   border-right: 1px solid #215373;
   border-top:   1px solid #215373;
@@ -152,7 +161,7 @@ div.highlight {
 }
 
 div.highlight pre {
-  margin: 0px;
+  margin: 0;
 }
 
 div.text {
@@ -160,13 +169,15 @@ div.text {
 }
 
 h1 {
-  color:      #215373;
-  margin-top: 0px;
+  color:       #215373;
+  margin-top:  0;
+  text-shadow: 2px 2px #000000;
 }
 
 h2 {
   border-bottom: 2px solid #215373;
   color:         #505070;
+  text-shadow:   1px 1px #000000;
 }
 
 ul {
