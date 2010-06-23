@@ -36,7 +36,7 @@ public class MasterServer
     public static final byte REGION_MIDDLE_EAST = 0x06;
     public static final byte REGION_AFRICA = 0x07;
     public static final byte REGION_ALL = (byte)0xFF;
-    
+
     private MasterServerSocket socket;
 
     public MasterServer(InetSocketAddress masterServer)
@@ -54,9 +54,10 @@ public class MasterServer
     public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
             throws IOException, SteamCondenserException, TimeoutException
     {
+        int failCount    = 0;
         boolean finished = false;
-        int portNumber = 0;
-        String hostName = "0.0.0.0";
+        int portNumber   = 0;
+        String hostName  = "0.0.0.0";
         Vector<String> serverStringArray;
         Vector<InetSocketAddress> serverArray = new Vector<InetSocketAddress>();
 
@@ -76,8 +77,14 @@ public class MasterServer
                         finished = true;
                     }
                 }
+                failCount = 0;
             }
-            catch(TimeoutException e) {}
+            catch(TimeoutException e) {
+                failCount ++;
+                if(failCount == 3) {
+                    throw e;
+                }
+            }
         } while( ! finished);
 
         return serverArray;

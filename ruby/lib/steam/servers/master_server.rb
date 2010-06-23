@@ -32,7 +32,8 @@ class MasterServer
   end
 
   def update_servers(region_code, filters)
-    finished = false
+    fail_count     = 0
+    finished       = false
     current_server = '0.0.0.0:0'
 
     begin
@@ -47,7 +48,9 @@ class MasterServer
             @server_array << server.split(':')
           end
         end
+        fail_count = 0
       rescue TimeoutException
+        raise $! if (fail_count += 1) == 3
       end
     end while !finished
   end

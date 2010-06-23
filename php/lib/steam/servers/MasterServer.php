@@ -48,22 +48,23 @@ class MasterServer
 
 	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
 	{
-		$finished = false;
+		$failCount  = 0;
+		$finished   = false;
 		$portNumber = 0;
-		$hostName = "0.0.0.0";
+		$hostName   = "0.0.0.0";
 
 		do
 		{
 			$this->socket->send(new A2M_GET_SERVERS_BATCH2_Packet($regionCode, "$hostName:$portNumber", $filter));
 			try {
 				$serverStringArray = $this->socket->getReply()->getServers();
-			 
+
 				foreach($serverStringArray as $serverString)
 				{
 					$serverString = explode(":", $serverString);
 					$hostName = $serverString[0];
 					$portNumber = $serverString[1];
-	
+
 					if($hostName != "0.0.0.0" && $portNumber != 0)
 					{
 						$serverArray[] = array($hostName, $portNumber);
@@ -73,8 +74,14 @@ class MasterServer
 						$finished = true;
 					}
 				}
+				$failCount = 0;
 			}
-			catch(TimeoutException $e) {}
+			catch(TimeoutException $e) {
+				$failCount ++;
+				if(failCount == 4) {
+			    		throw $e;
+				}
+			}
 		}
 		while(!$finished);
 
