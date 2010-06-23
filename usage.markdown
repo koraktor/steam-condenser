@@ -6,20 +6,25 @@ title:       Usage
   var languages = ['java', 'php', 'ruby'];
 
   function displayCode(codeBlock, codeLanguage) {
-    languages.each(function f(language) {
-      codeBlockId = codeBlock + '-' + language;
-      codeBlockLinkId = codeBlock + '-' + language + '-link';
+    $.each(languages, function f(i, language) {
+      var codeBlockId = '#' + codeBlock + '-' + language;
+      var codeBlockLinkId = '#'  + codeBlock + '-' + language + '-link';
       if(language == codeLanguage) {
         $(codeBlockId).show();
-        $(codeBlockLinkId).addClassName('language-selected');
-      }
-      else {
+        $(codeBlockLinkId).addClass('language-selected');
+      } else {
         $(codeBlockId).hide();
-        $(codeBlockLinkId).removeClassName('language-selected');
+        $(codeBlockLinkId).removeClass('language-selected');
       }
-      new Effect.Highlight($(codeBlockId), { endcolor: '#eeeeff', restorecolor: '#eeeeff', startcolor: '#215373' });
+      $(codeBlockId + ' > div').effect('highlight', { color: '#99c9ff' }, 2000);
     });
   }
+
+  $(function() {
+    $('#simple-query').load('code/simple-query.html');
+    $('#master-query').load('code/master-query.html');
+    $('#rcon').load('code/rcon.html');
+  });
 </script>
 
 ## Querying game servers
@@ -30,9 +35,3 @@ title:       Usage
 
 ## Controlling game servers using RCON
 <div id="rcon"></div>
-
-<script type="text/javascript">
-  new Ajax.Updater('simple-query', 'code/simple-query.html', { method: 'get' });
-  new Ajax.Updater('master-query', 'code/master-query.html', { method: 'get' });
-  new Ajax.Updater('rcon', 'code/rcon.html', { method: 'get' });
-</script>
