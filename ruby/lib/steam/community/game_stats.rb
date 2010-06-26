@@ -11,6 +11,7 @@ require 'steam/community/game_achievement'
 class GameStats
 end
 
+require 'steam/community/css/css_stats'
 require 'steam/community/defense_grid/defense_grid_stats'
 require 'steam/community/dods/dods_stats'
 require 'steam/community/l4d/l4d_stats'
@@ -30,6 +31,8 @@ class GameStats
   # depending on the game selected
   def self.create_game_stats(steam_id, game_name)
     case game_name
+      when 'cs:s'
+        CSSStats.new(steam_id)
       when 'defensegrid:awakening'
         DefenseGridStats.new(steam_id)
       when 'dod:s'
