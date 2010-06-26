@@ -61,17 +61,17 @@ class GameStats {
      * @param $gameName
      */
     protected function __construct($steamId, $gameName) {
-        $this->steamId = $steamId;
-
-        $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/{$this->steamId}/stats/{$gameName}?xml=1"));
+        $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/$steamId/stats/$gameName?xml=1"));
 
         $this->privacyState = (string) $this->xmlData->privacyState;
         if($this->isPublic()) {
             preg_match('#http://store.steampowered.com/app/([1-9][0-9]*)#', (string) $this->xmlData->game->gameLink, $appId);
             $this->appId = (int) $appId[1];
+            $this->customUrl = (string) $this->xmlData->player->customURL;
             $this->gameFriendlyName = (string) $this->xmlData->game->gameFriendlyName;
             $this->gameName = (string) $this->xmlData->game->gameName;
             $this->hoursPlayed = (string) $this->xmlData->stats->hoursPlayed;
+            $this->steamId64 = (string) $this->xmlData->player->steamID64;
         }
     }
 

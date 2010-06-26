@@ -37,7 +37,7 @@ public class GameStats {
 	protected String gameName;
 	protected float hoursPlayed;
 	protected String privacyState;
-	protected long steamId64;
+	protected Long steamId64;
 	protected Element xmlData;
 
 	public static GameStats createGameStats(Object steamId, String gameName)
@@ -87,6 +87,13 @@ public class GameStats {
 				this.gameFriendlyName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameFriendlyName").item(0).getTextContent();
 				this.gameName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameName").item(0).getTextContent();
 				this.hoursPlayed = Float.parseFloat(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0).getTextContent());
+
+                if(this.customUrl == null) {
+                    this.customUrl = ((Element) this.xmlData.getElementsByTagName("player").item(0)).getElementsByTagName("customURL").item(0).getTextContent();
+                }
+                if(this.steamId64 == null) {
+                    this.steamId64 = Long.parseLong(((Element) this.xmlData.getElementsByTagName("player").item(0)).getElementsByTagName("steamID64").item(0).getTextContent());
+                }
 			}
 		} catch(Exception e) {
 			throw new SteamCondenserException("XML data could not be parsed.");
