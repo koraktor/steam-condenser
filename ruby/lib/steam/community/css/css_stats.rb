@@ -90,30 +90,35 @@ class CSSStats < GameStats
     end
   end
 
+  # Returns a Hash of CSSMap for this user containing all Counter-Strike:
+  # Source maps. If the maps haven't been parsed already, parsing is done now.
   def map_stats
     return unless public?
 
     if @map_stats.nil?
-      @map_stats = []
+      @map_stats = {}
       maps_data = @xml_data.elements['stats/maps']
 
       MAPS.each do |map_name|
-        @map_stats << CSSMap.new(maps_data, map_name)
+        @map_stats[map_name] = CSSMap.new(maps_data, map_name)
       end
     end
 
     @map_stats
   end
 
+  # Returns a Hash of CSSWeapon for this user containing all Counter-Strike:
+  # Source weapons. If the weapons haven't been parsed already, parsing is done
+  # now.
   def weapon_stats
     return unless public?
 
     if @weapon_stats.nil?
-      @weapon_stats = []
+      @weapon_stats = {}
       weapons_data = @xml_data.elements['stats/weapons']
 
       WEAPONS.each do |weapon_name|
-        @weapon_stats << CSSWeapon.new(weapons_data, weapon_name)
+        @weapon_stats[weapon_name] = CSSWeapon.new(weapons_data, weapon_name)
       end
     end
 
