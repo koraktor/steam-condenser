@@ -17,19 +17,17 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.community.GameWeapon;
 
 public class L4DStats extends AbstractL4DStats {
-	
+
 	/**
 	 * Creates a L4DStats object by calling the super constructor with the game
-	 * name "L4D"
+	 * name "l4d"
 	 * @param steamId The custom URL or the 64bit Steam ID of the user
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
+     * @throws SteamCondenserException If an error occurs
 	 */
 	public L4DStats(Object steamId)
 			throws SteamCondenserException {
 		super(steamId, "l4d");
-		
+
 		if(this.isPublic()) {
 			Element mostRecentGameNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("mostRecentGame").item(0);
 			this.mostRecentGame = new HashMap<String, Object>();
@@ -48,7 +46,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.favorites == null) {
 			Element favoritesNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("favorites").item(0);
 			this.favorites = new HashMap<String, Object>();
@@ -61,10 +59,10 @@ public class L4DStats extends AbstractL4DStats {
 			this.favorites.put("level2Weapon", favoritesNode.getElementsByTagName("weapon2").item(0).getTextContent());
 			this.favorites.put("level2WeaponPercentage", Integer.parseInt(favoritesNode.getElementsByTagName("weapon2pct").item(0).getTextContent()));
 		}
-		
+
 		return this.favorites;
 	}
-	
+
 	/**
 	 * @return A HashMap of lifetime statistics for this user like the time
 	 * played.
@@ -75,7 +73,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.lifetimeStats == null) {
 			Element lifetimeStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("lifetime").item(0);
 			this.lifetimeStats = new HashMap<String, Object>();
@@ -90,10 +88,10 @@ public class L4DStats extends AbstractL4DStats {
 			this.lifetimeStats.put("avgPillsUsed", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("pillsused").item(0).getTextContent()));
 			this.lifetimeStats.put("timePlayed", lifetimeStatsElement.getElementsByTagName("timeplayed").item(0).getTextContent());
 		}
-		
+
 		return this.lifetimeStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of Survival statistics for this user like revived
 	 * teammates.
@@ -104,7 +102,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.survivalStats == null) {
 			Element survivalStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("survival").item(0);
 			this.survivalStats = new HashMap<String, Object>();
@@ -113,7 +111,7 @@ public class L4DStats extends AbstractL4DStats {
 			this.survivalStats.put("bronzeMedals", Integer.parseInt(survivalStatsElement.getElementsByTagName("bronzemedals").item(0).getTextContent()));
 			this.survivalStats.put("roundsPlayed", Integer.parseInt(survivalStatsElement.getElementsByTagName("roundsplayed").item(0).getTextContent()));
 			this.survivalStats.put("bestTime", Float.parseFloat(survivalStatsElement.getElementsByTagName("besttime").item(0).getTextContent()));
-			
+
 			HashMap<String, L4DMap> mapsHash = new HashMap<String, L4DMap>();
 			NodeList mapNodes = survivalStatsElement.getElementsByTagName("maps").item(0).getChildNodes();
 			for(int i = 0; i < mapNodes.getLength(); i++) {
@@ -122,10 +120,10 @@ public class L4DStats extends AbstractL4DStats {
 			}
 			this.survivalStats.put("maps", mapsHash);
 		}
-		
+
 		return this.survivalStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of teamplay statistics for this user like revived
 	 * teammates.
@@ -136,7 +134,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.teamplayStats == null) {
 			Element teamplayStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("teamplay").item(0);
 			this.teamplayStats = new HashMap<String, Object>();
@@ -152,10 +150,10 @@ public class L4DStats extends AbstractL4DStats {
 			this.teamplayStats.put("mostFriendlyFireDamageDifficulty", teamplayStatsElement.getElementsByTagName("ffdamagediff").item(0).getTextContent());
 			this.teamplayStats.put("avgFriendlyFireDamage", Float.parseFloat(teamplayStatsElement.getElementsByTagName("ffdamageavg").item(0).getTextContent()));
 		}
-		
+
 		return this.teamplayStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of Versus statistics for this user like percentage of
 	 * rounds won.
@@ -166,7 +164,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.versusStats == null) {
 			Element versusStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("versus").item(0);
 			this.versusStats = new HashMap<String, Object>();
@@ -179,7 +177,7 @@ public class L4DStats extends AbstractL4DStats {
 			this.versusStats.put("gamesWon", Integer.parseInt(versusStatsElement.getElementsByTagName("gameswon").item(0).getTextContent()));
 			this.versusStats.put("gamesLost", Integer.parseInt(versusStatsElement.getElementsByTagName("gameslost").item(0).getTextContent()));
 			this.versusStats.put("highesSurvivorScore", Integer.parseInt(versusStatsElement.getElementsByTagName("survivorscore").item(0).getTextContent()));
-			
+
 			ArrayList<String> infectedArray = new ArrayList<String>();
 			infectedArray.add("boomer");
 			infectedArray.add("hunter");
@@ -193,10 +191,10 @@ public class L4DStats extends AbstractL4DStats {
 				this.versusStats.put(infected, infectedStats);
 			}
 		}
-		
+
 		return this.versusStats;
 	}
-	
+
 	/**
 	 * @return A HashMap of L4DWeapon for this user containing all Left4Dead
 	 * weapons.
@@ -206,7 +204,7 @@ public class L4DStats extends AbstractL4DStats {
 		if(!this.isPublic()) {
 			return null;
 		}
-		
+
 		if(this.weaponStats == null) {
 			Element weaponStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
 			this.weaponStats = new HashMap<String, GameWeapon>();
@@ -224,7 +222,7 @@ public class L4DStats extends AbstractL4DStats {
 				this.weaponStats.put(weaponName, weapon);
 			}
 		}
-		
+
 		return this.weaponStats;
 	}
 }

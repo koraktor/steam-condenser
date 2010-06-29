@@ -17,6 +17,11 @@ import steamcondenser.SteamCondenserException;
 import steamcondenser.steam.community.GameStats;
 import steamcondenser.steam.community.GameWeapon;
 
+/**
+ * AbstractL4DStats is an abstract base class for statistics for Left4Dead and
+ * Left4Dead 2. As both games have more or less the same statistics available
+ * in the Steam Community the code for both is pretty much the same.
+ */
 public abstract class AbstractL4DStats extends GameStats {
 
 	protected HashMap<String, Object> favorites;
