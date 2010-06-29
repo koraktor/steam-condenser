@@ -9,11 +9,12 @@ class CSSWeapon
 
   attr_reader :accuracy, :hits, :name, :kills, :ksratio, :shots
 
-  # Creates a new instance of CSSWeapon based on the assigned XML data
-  def initialize(weapons_data, weapon_name)
+  # Creates a new instance of CSSWeapon based on the assigned weapon name and
+  # XML data
+  def initialize(weapon_name, weapons_data)
     @name     = weapon_name
 
-    @favorite = (weapons_data.elements['favorite'].text == weapon_name)
+    @favorite = (weapons_data.elements['favorite'].text == @name)
     @kills    = weapons_data.elements["#{@name}_kills"].text.to_i
 
     if @name != 'grenade' && @name != 'knife'
