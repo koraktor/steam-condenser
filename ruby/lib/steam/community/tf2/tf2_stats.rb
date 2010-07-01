@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'steam/community/tf2/tf2_class'
+require 'steam/community/tf2/tf2_class_factory'
 
 # The TF2Stats class represents the game statistics for a single user in Team
 # Fortress 2
@@ -29,7 +29,7 @@ class TF2Stats < GameStats
     if @class_stats.nil?
       @class_stats = Hash.new
       @xml_data.elements.each('stats/classData') do |class_data|
-        @class_stats[class_data.elements['className'].text] = TF2Class.new(class_data)
+        @class_stats[class_data.elements['className'].text] = TF2ClassFactory.tf2_class(class_data)
       end
     end
 

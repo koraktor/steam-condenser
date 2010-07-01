@@ -12,7 +12,7 @@
  */
 
 require_once "steam/community/GameStats.php";
-require_once "steam/community/tf2/TF2Class.php";
+require_once "steam/community/tf2/TF2ClassFactory.php";
 
 /**
  * The TF2Stats class represents the game statistics for a single user in Team
@@ -46,7 +46,7 @@ class TF2Stats extends GameStats {
 
         if(empty($this->classStats)) {
             foreach($this->xmlData->stats->classData as $classData) {
-                $this->classStats[$classData->className] = new TF2Class($classData);
+                $this->classStats[$classData->className] = TF2ClassFactory::getTF2Class($classData);
             }
         }
 
