@@ -28,6 +28,7 @@ pages:
             type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"
             type="text/javascript"></script>
+    <script src="http://widgets.twimg.com/j/2/widget.js"></script>
 
     {% include google_analytics %}
   </head>
@@ -48,6 +49,38 @@ pages:
       <strong>{{ site.time | date: "%Y" }}</strong> &mdash; Sebastian Staudt
     </div>
     {% include pledgie %}
+    <div id="twitter">
+      <script>
+        new TWTR.Widget({
+          version: 2,
+          type: 'profile',
+          rpp: 4,
+          interval: 6000,
+          width: 250,
+          height: 300,
+          theme: {
+            shell: {
+              background: '#215473',
+              color: '#ffffff',
+            },
+            tweets: {
+              background: '#bdcbd5',
+              color: '#222222',
+              links: '#215473'
+            }
+          },
+          features: {
+            scrollbar: true,
+            loop: false,
+            live: true,
+            hashtags: true,
+            timestamp: true,
+            avatars: false,
+            behavior: 'all'
+          }
+        }).render().setUser('steamcondenser').start();
+      </script>
+    </div>
   </body>
 </html>
 
