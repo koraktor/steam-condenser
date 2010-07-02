@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.10.1
+version: 0.11.0
 ---
 Downloads
 =========
@@ -17,8 +17,8 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.gem">steam-condenser-{{page.version}}.gem</a>
   <br />
   <pre>
-  SHA1: d43d9b5720ddd38a87c0d86fda38856a92c851a7
-  MD5:  4e3aa7c0e0d40f90c9b31685331a839f</pre>
+  SHA1: eba7444e9a9fdb847b124937c1fab89b13da4d98
+  MD5:  4f1694fb9122100fc18cd97aa18631c6</pre>
 </div>
 
 <div class="download">
@@ -26,8 +26,8 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: 9b720aea5601c609a024f3482614fab82212dd52
-  MD5:  3f7e83e29dac6fe25389af4ac2c1b625</pre>
+  SHA1: f07fefe66b250ab3f5c62e6337998be2eddf3157
+  MD5:  6c77888c4ea6674805eefa9c1dc7c578</pre>
 </div>
 
 <div class="download">
@@ -35,8 +35,8 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: c7f19a611552c9446e7b7b9d98b76a31e74c1842
-  MD5:  6d73b161faa24d479cfbf848625fb210</pre>
+  SHA1: dac3a4f60b967882809b6fbd88f6456e5b4a82a8
+  MD5:  18025a8709512ad22cf31414c9ff8159</pre>
 </div>
 
 ## Source archives
