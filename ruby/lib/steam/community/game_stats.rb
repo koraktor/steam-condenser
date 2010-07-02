@@ -8,16 +8,6 @@ require 'rexml/document'
 
 require 'steam/community/game_achievement'
 
-class GameStats
-end
-
-require 'steam/community/css/css_stats'
-require 'steam/community/defense_grid/defense_grid_stats'
-require 'steam/community/dods/dods_stats'
-require 'steam/community/l4d/l4d_stats'
-require 'steam/community/l4d/l4d2_stats'
-require 'steam/community/tf2/tf2_stats'
-
 # The GameStats class represents the game statistics for a single user and a
 # specific game
 class GameStats
@@ -32,16 +22,22 @@ class GameStats
   def self.create_game_stats(steam_id, game_name)
     case game_name
       when 'cs:s'
+        require 'steam/community/css/css_stats'
         CSSStats.new(steam_id)
       when 'defensegrid:awakening'
+        require 'steam/community/defense_grid/defense_grid_stats'
         DefenseGridStats.new(steam_id)
       when 'dod:s'
+        require 'steam/community/dods/dods_stats'
         DoDSStats.new(steam_id)
       when 'l4d'
+        require 'steam/community/l4d/l4d_stats'
         L4DStats.new(steam_id)
       when 'l4d2'
+        require 'steam/community/l4d/l4d2_stats'
         L4D2Stats.new(steam_id)
       when 'tf2'
+        require 'steam/community/tf2/tf2_stats'
         TF2Stats.new(steam_id)
       else
         new(steam_id, game_name)

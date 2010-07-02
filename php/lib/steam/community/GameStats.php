@@ -35,25 +35,24 @@ class GameStats {
      * depending on the game selected
      */
     public static function createGameStats($steamId, $gameName) {
-        require_once "steam/community/css/CSSStats.php";
-        require_once "steam/community/defense_grid/DefenseGridStats.php";
-        require_once "steam/community/dods/DoDSStats.php";
-        require_once "steam/community/l4d/L4DStats.php";
-        require_once "steam/community/l4d/L4D2Stats.php";
-        require_once "steam/community/tf2/TF2Stats.php";
-
         switch($gameName) {
             case 'cs:s':
+                require_once 'steam/community/css/CSSStats.php';
                 return new CSSStats($steamId);
             case 'defensegrid:awakening':
+                require_once 'steam/community/defense_grid/DefenseGridStats.php';
                 return new DefenseGridStats($steamId);
             case 'dod:s':
+                require_once 'steam/community/dods/DoDSStats.php';
                 return new DoDSStats($steamId);
             case 'l4d':
+                require_once 'steam/community/l4d/L4DStats.php';
                 return new L4DStats($steamId);
             case 'l4d2':
+                require_once 'steam/community/l4d/L4D2Stats.php';
                 return new L4D2Stats($steamId);
             case 'tf2':
+                require_once 'steam/community/tf2/TF2Stats.php';
                 return new TF2Stats($steamId);
             default:
                 return new GameStats($steamId, $gameName);
