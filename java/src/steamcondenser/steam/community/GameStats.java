@@ -1,4 +1,4 @@
-/** 
+/**
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import steamcondenser.SteamCondenserException;
+import steamcondenser.steam.community.css.CSSStats;
 import steamcondenser.steam.community.defense_grid.DefenseGridStats;
 import steamcondenser.steam.community.dods.DoDSStats;
 import steamcondenser.steam.community.l4d.L4DStats;
@@ -25,7 +26,7 @@ import steamcondenser.steam.community.tf2.TF2Stats;
 /**
  * The GameStats class represents the game statistics for a single user and a
  * specific game
- * 
+ *
  * @author Sebastian Staudt
  */
 public class GameStats {
@@ -35,14 +36,16 @@ public class GameStats {
 	protected String customUrl;
 	protected String gameFriendlyName;
 	protected String gameName;
-	protected float hoursPlayed;
+	protected String hoursPlayed;
 	protected String privacyState;
 	protected Long steamId64;
 	protected Element xmlData;
 
 	public static GameStats createGameStats(Object steamId, String gameName)
 			throws SteamCondenserException {
-		if(gameName.equals("defensegrid:awakening")) {
+        if(gameName.equals("cs:s")) {
+            return new CSSStats(steamId);
+        } else if(gameName.equals("defensegrid:awakening")) {
 			return new DefenseGridStats(steamId);
 		} else if(gameName.equals("dod:s")) {
 			return new DoDSStats(steamId);
@@ -86,7 +89,7 @@ public class GameStats {
 				this.appId = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameLink").item(0).getTextContent().replace("http://store.steampowered.com/app/", ""));
 				this.gameFriendlyName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameFriendlyName").item(0).getTextContent();
 				this.gameName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameName").item(0).getTextContent();
-				this.hoursPlayed = Float.parseFloat(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0).getTextContent());
+				this.hoursPlayed = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0).getTextContent();
 
                 if(this.customUrl == null) {
                     this.customUrl = ((Element) this.xmlData.getElementsByTagName("player").item(0)).getElementsByTagName("customURL").item(0).getTextContent();
@@ -128,7 +131,7 @@ public class GameStats {
 		return this.gameName;
 	}
 
-	public float getHoursPlayed() {
+	public String getHoursPlayed() {
 		return this.hoursPlayed;
 	}
 
