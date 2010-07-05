@@ -143,18 +143,25 @@ div.code-sample a.language-selected {
   color:        #215373;
 }
 
-div.download a {
-  font-weight: bold;
+div.command h3 ,div.download h3 {
+  border-bottom: 1px solid #215373;
 }
 
-div.download h3 {
-  border-bottom: 1px solid #215373;
+div.command pre {
+  background:  #eeeeff;
+  color:       #215373;
+  font-weight: bold;
+  padding:     5px;
+}
+
+div.download a {
+  font-weight: bold;
 }
 
 div.download pre {
   color:   #808080;
   display: block;
-  margin: 5px;
+  margin:  5px;
 }
 
 div.highlight {

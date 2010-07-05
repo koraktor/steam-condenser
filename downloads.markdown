@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.11.0
+version: 0.11.1
 ---
 Downloads
 =========
@@ -11,14 +11,12 @@ The latest stable release of Steam Condenser is version **{{page.version}}**.
 ## Packages
 These files contain complete, ready-for-use packages for their specific
 programming language. Right now there are releases for Java, PHP and Ruby.
+Packages for PHP and Java have to be downloaded manually, the Ruby gem can be
+installed using one simple command.
 
-<div class="download">
+<div class="command">
   <h3>Ruby</h3>
-  <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.gem">steam-condenser-{{page.version}}.gem</a>
-  <br />
-  <pre>
-  SHA1: eba7444e9a9fdb847b124937c1fab89b13da4d98
-  MD5:  4f1694fb9122100fc18cd97aa18631c6</pre>
+  <pre>gem install steam-condenser</pre>
 </div>
 
 <div class="download">
@@ -26,8 +24,8 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: f07fefe66b250ab3f5c62e6337998be2eddf3157
-  MD5:  6c77888c4ea6674805eefa9c1dc7c578</pre>
+  SHA1: 3f9a68b10e16b3139bb24eca9eae8289e8687d43
+  MD5:  e4800f434790fde815665e4be598171c</pre>
 </div>
 
 <div class="download">
@@ -35,8 +33,17 @@ programming language. Right now there are releases for Java, PHP and Ruby.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: dac3a4f60b967882809b6fbd88f6456e5b4a82a8
-  MD5:  18025a8709512ad22cf31414c9ff8159</pre>
+  SHA1: bc9a406382facbbb0f18b9efd04ae2b8be30906e
+  MD5:  a6fac3280042756e9cd9a73842072f29</pre>
+</div>
+
+## Git repository
+If you want to contribute, cloning the Git repository is the best way to get
+started:
+
+<div class="command">
+  <h3>Git repository</h3>
+  <pre>git clone git://github.com/koraktor/steam-condenser.git</pre>
 </div>
 
 ## Source archives
