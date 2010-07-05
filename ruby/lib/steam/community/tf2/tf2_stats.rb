@@ -5,6 +5,7 @@
 
 require 'steam/community/game_stats'
 require 'steam/community/tf2/tf2_class_factory'
+require 'steam/community/tf2/tf2_inventory'
 
 # The TF2Stats class represents the game statistics for a single user in Team
 # Fortress 2
@@ -20,6 +21,16 @@ class TF2Stats < GameStats
     if public?
       @accumulated_points = @xml_data.elements['stats/accumulatedPoints'].text.to_i
     end
+  end
+
+  # Returns the current Team Fortress 2 inventory (a.k.a. backpack) of this
+  # player
+  def inventory
+    if @inventory.nil?
+      @inventory = TF2Inventory.new(steam_id64)
+    end
+
+    @inventory
   end
 
   # Returns a Hash of TF2Class for this user containing all Team Fortress 2
