@@ -43,7 +43,7 @@ class RCONTests extends PHPUnit_Framework_TestCase
         $rconReply = $server->rconExec("cvarlist");
         echo "$rconReply\n";
         $this->assertTrue(
-            strpos($rconReply, "total convars/concommands"),
+            strpos($rconReply, "total convars/concommands") !== false,
             "Did not receive complete cvarlist.");
     }
 
