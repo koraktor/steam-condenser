@@ -27,8 +27,8 @@ class RCONSocket < SteamSocket
     raise RCONBanException if receive_packet(1440) == 0
 
     packet_data = @buffer.get
-    packet_size = @buffer.long + 4
     @buffer.rewind
+    packet_size = @buffer.long + 4
 
     if packet_size > 1440
       remaining_bytes = packet_size - @buffer.size

@@ -13,24 +13,24 @@ import steamcondenser.steam.packets.SteamPacketFactory;
 
 public abstract class RCONPacketFactory extends SteamPacketFactory
 {
-    public static RCONPacket getPacketFromData(byte[] rawData) 
-    	throws PacketFormatException
+    public static RCONPacket getPacketFromData(byte[] rawData)
+        throws PacketFormatException
     {
-	PacketBuffer packetBuffer = new PacketBuffer(rawData);
+        PacketBuffer packetBuffer = new PacketBuffer(rawData);
 
-	packetBuffer.getInt();
-	int requestId = Integer.reverseBytes(packetBuffer.getInt());
-	int header = Integer.reverseBytes(packetBuffer.getInt());
-	String data = packetBuffer.getString();
+        packetBuffer.getInt();
+        int requestId = Integer.reverseBytes(packetBuffer.getInt());
+        int header = Integer.reverseBytes(packetBuffer.getInt());
+        String data = packetBuffer.getString();
 
-	switch(header)
-	{
-	case RCONPacket.SERVERDATA_AUTH_RESPONSE:
-	    return new RCONAuthResponse(requestId);
-	case RCONPacket.SERVERDATA_RESPONSE_VALUE:
-	    return new RCONExecResponsePacket(requestId, data);
-	default:
-	    throw new PacketFormatException("Unknown packet with header " + Integer.reverseBytes(header) + " received.");
-	}
+        switch(header)
+        {
+            case RCONPacket.SERVERDATA_AUTH_RESPONSE:
+                return new RCONAuthResponse(requestId);
+            case RCONPacket.SERVERDATA_RESPONSE_VALUE:
+                return new RCONExecResponsePacket(requestId, data);
+            default:
+                throw new PacketFormatException("Unknown packet with header " + header + " received.");
+        }
     }
 }

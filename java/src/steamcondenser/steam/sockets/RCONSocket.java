@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import steamcondenser.RCONBanException;
@@ -49,7 +53,13 @@ public class RCONSocket extends SteamSocket
         if(this.receivePacket(1440) <= 0) {
             throw new RCONBanException();
         }
-        String packetData = new String(this.buffer.array()).substring(0, this.buffer.limit());
+
+        byte[] packetData = this.buffer.array();
+        List<Byte> packetDataList = new ArrayList<Byte>();
+        for(int i = 0; i < this.buffer.limit(); i ++){
+            packetDataList.add(packetData[i]);
+        }
+
         int packetSize = Integer.reverseBytes(this.buffer.getInt()) + 4;
 
         if(packetSize > 1440) {
@@ -61,11 +71,20 @@ public class RCONSocket extends SteamSocket
                 else {
                     this.receivePacket(1440);
                 }
-                packetData += new String(this.buffer.array()).substring(0, this.buffer.limit());
+
+                packetData = this.buffer.array();
+                for(int i = 0; i < this.buffer.limit(); i ++){
+                    packetDataList.add(packetData[i]);
+                }
                 remainingBytes -= this.buffer.limit();
             } while(remainingBytes > 0);
         }
 
-        return RCONPacketFactory.getPacketFromData(packetData.getBytes());
+        packetData = new byte[packetDataList.size()];
+        for(int i = 0; i < packetData.length; i ++) {
+            packetData[i] = packetDataList.get(i);
+        }
+
+        return RCONPacketFactory.getPacketFromData(packetData);
     }
 }
