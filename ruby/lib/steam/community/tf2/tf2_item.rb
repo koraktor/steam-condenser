@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
-require 'json'
-
 require 'steam/community/web_api'
 
 # Represents a Team Fortress 2 item
@@ -90,7 +88,7 @@ class TF2Item
   def update_schema
     params = nil
     params = "language=#{@@schema_language}" unless @@schema_language.nil?
-    result = JSON.parse(json('ITFItems_440', 'GetSchema', 1, params), { :symbolize_names => true })[:result]
+    result = json!('ITFItems_440', 'GetSchema', 1, params)[:result]
     if result[:status] != 1
       raise SteamCondenserException.new("Failed to retrieve the item schema (status: #{result[:status]}).")
     end

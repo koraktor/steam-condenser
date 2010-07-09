@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
+require 'json'
 require 'open-uri'
 
 require 'exceptions/steam_condenser_exception'
@@ -29,9 +30,20 @@ module WebApi
   end
 
   # Fetches JSON data from Steam Web API using the specified interface, method
-  # and version. Additional parameters are supplied via HTTP GET.
+  # and version. Additional parameters are supplied via HTTP GET..
+  # Data is returned as a JSON-encoded string.
   def json(interface, method, version, params = nil)
     fetch(:json, interface, method, version, params)
+  end
+
+  # Fetches JSON data from Steam Web API using the specified interface, method
+  # and version. Additional parameters are supplied via HTTP GET.
+  # Data is returned as a Hash containing the JSON data.
+  def json!(interface, method, version, params = nil)
+    JSON.parse(
+      json(interface, method, version, params),
+      { :symbolize_names => true }
+    )
   end
 
   # Fetches data from Steam Web API using the specified interface, method and

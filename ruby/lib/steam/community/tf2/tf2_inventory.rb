@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
-require 'json'
-
 require 'steam/community/tf2/tf2_item'
 require 'steam/community/web_api'
 
@@ -17,7 +15,7 @@ class TF2Inventory
 
   # Creates a new inventory object for the given SteamID64
   def initialize(steam_id)
-    result = JSON.parse(json('ITFItems_440', 'GetPlayerItems', 1, "SteamID=#{steam_id}"), { :symbolize_names => true })[:result]
+    result = json!('ITFItems_440', 'GetPlayerItems', 1, "SteamID=#{steam_id}")[:result]
     if result[:status] != 1
       raise SteamCondenserException.new("Failed to retrieve the player's inventory (status: #{result[:status]}).")
     end
