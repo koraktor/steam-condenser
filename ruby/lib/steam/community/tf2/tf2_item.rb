@@ -86,8 +86,8 @@ class TF2Item
   # Updates the item schema (this includes attributes and qualities) using the
   # +GetSchema+ method of interface +ITFItems_440+
   def update_schema
-    params = nil
-    params = "language=#{@@schema_language}" unless @@schema_language.nil?
+    params = {}
+    params[:language] = @@schema_language unless @@schema_language.nil?
     result = json!('ITFItems_440', 'GetSchema', 1, params)[:result]
     if result[:status] != 1
       raise SteamCondenserException.new("Failed to retrieve the item schema (status: #{result[:status]}).")

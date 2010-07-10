@@ -51,8 +51,14 @@ module WebApi
   # Data returned has the given format (which may be 'json', 'vdf', 'xml').
   def fetch(format, interface, method, version, params = nil)
     version = version.to_s.rjust(4, '0')
-    url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/?key=#{WebApi.api_key}&format=#{format}"
-    url += "&#{params}" unless params.nil?
+    url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"
+    params[:format] = format
+    params[:key] = WebApi.api_key
+
+    unless params.nil? && params.empty?
+      url += '?' + params.map { |k,v| "#{k}=#{v}" }.join('&')
+    end
+
     open(url, { :proxy => true }).read
   end
 
