@@ -15,10 +15,7 @@ class TF2Inventory
 
   # Creates a new inventory object for the given SteamID64
   def initialize(steam_id)
-    result = json!('ITFItems_440', 'GetPlayerItems', 1, { :SteamID => @steam_id64 })[:result]
-    if result[:status] != 1
-      raise SteamCondenserException.new("Failed to retrieve the player's inventory (status: #{result[:status]}).")
-    end
+    result = json!('ITFItems_440', 'GetPlayerItems', 1, { :SteamID => @steam_id64 })
 
     @items = []
     result[:items][:item].each do |item_data|

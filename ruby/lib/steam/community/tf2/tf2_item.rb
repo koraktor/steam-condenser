@@ -10,8 +10,7 @@ class TF2Item
 
   include WebApi
 
-  CLASSES = [ :scout, :sniper, :soldier, :demoman, :medic, :heavy,
-                     :pyro, :spy ]
+  CLASSES = [ :scout, :sniper, :soldier, :demoman, :medic, :heavy, :pyro, :spy ]
 
   attr_reader :attributes, :backpack_position, :class, :count, :defindex, :id,
               :level, :name, :quality, :slot, :type
@@ -88,10 +87,7 @@ class TF2Item
   def update_schema
     params = {}
     params[:language] = @@schema_language unless @@schema_language.nil?
-    result = json!('ITFItems_440', 'GetSchema', 1, params)[:result]
-    if result[:status] != 1
-      raise SteamCondenserException.new("Failed to retrieve the item schema (status: #{result[:status]}).")
-    end
+    result = json!('ITFItems_440', 'GetSchema', 1, params)
 
     @@attribute_schema = {}
     result[:attributes][:attribute].each do |attribute_data|

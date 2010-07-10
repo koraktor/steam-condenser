@@ -6,7 +6,7 @@
 require 'json'
 require 'open-uri'
 
-require 'exceptions/steam_condenser_exception'
+require 'exceptions/web_api_exception'
 
 # This adds support for Steam Web API to classes needing this functionality.
 # The Web API requires you to register a domain with your Steam account to
@@ -23,7 +23,7 @@ module WebApi
   # Sets the Steam Web API key.
   def self.api_key=(api_key)
     unless api_key.nil? || api_key.match(/[0-9A-F]{32}/)
-      raise SteamCondenserException.new('This is not a valid Steam Web API key.')
+      raise WebApiException.new(:invalid_key)
     end
 
     @@api_key = api_key
@@ -33,23 +33,27 @@ module WebApi
   # and version. Additional parameters are supplied via HTTP GET..
   # Data is returned as a JSON-encoded string.
   def json(interface, method, version, params = nil)
-    fetch(:json, interface, method, version, params)
+    load(:json, interface, method, version, params)
   end
 
   # Fetches JSON data from Steam Web API using the specified interface, method
   # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a Hash containing the JSON data.
   def json!(interface, method, version, params = nil)
-    JSON.parse(
-      json(interface, method, version, params),
-      { :symbolize_names => true }
-    )
+    data = json(interface, method, version, params)
+    result = JSON.parse(data, { :symbolize_names => true })[:result]
+
+    if result[:status] != 1
+      raise WebApiException.new(:status_bad, result[:status], result[:statusDetail])
+    end
+
+    result
   end
 
   # Fetches data from Steam Web API using the specified interface, method and
   # version. Additional parameters are supplied via HTTP GET.
   # Data returned has the given format (which may be 'json', 'vdf', 'xml').
-  def fetch(format, interface, method, version, params = nil)
+  def load(format, interface, method, version, params = nil)
     version = version.to_s.rjust(4, '0')
     url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"
     params[:format] = format
@@ -59,7 +63,13 @@ module WebApi
       url += '?' + params.map { |k,v| "#{k}=#{v}" }.join('&')
     end
 
-    open(url, { :proxy => true }).read
+    begin
+      open(url, { :proxy => true }).read
+    rescue OpenURI::HTTPError
+      if $!.io.status[0].to_i == 401
+        raise WebApiException.new(:unauthorized)
+      end
+    end
   end
 
 end
