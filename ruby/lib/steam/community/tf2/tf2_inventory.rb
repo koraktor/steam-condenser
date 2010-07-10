@@ -22,8 +22,10 @@ class TF2Inventory
 
     @items = []
     result[:items][:item].each do |item_data|
-      item = TF2Item.new(item_data)
-      @items[item.backpack_position - 1] = item
+      unless item_data.nil?
+        item = TF2Item.new(item_data)
+        @items[item.backpack_position - 1] = item
+      end
     end
   end
 
