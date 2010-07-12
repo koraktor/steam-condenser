@@ -33,7 +33,7 @@ Twitter][5].
     The Awakening*
 
 ## Requirements
-- Java 1.4 or newer
+- Java 1.5 or newer
 - PHP 5 or newer
 - Ruby 1.8.6 or newer
   - The Ruby [BZ2 module][1] is needed if you want to query Source servers
