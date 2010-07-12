@@ -63,7 +63,7 @@ public class L4D2Map extends L4DMap {
             this.medal = GOLD;
         } else if(medal.equals("silver")) {
             this.medal = SILVER;
-        } else if(medal.equals("silver")) {
+        } else if(medal.equals("bronze")) {
             this.medal = BRONZE;
         } else {
             this.medal = NONE;
