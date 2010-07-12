@@ -22,7 +22,7 @@ module WebApi
 
   # Sets the Steam Web API key.
   def self.api_key=(api_key)
-    unless api_key.nil? || api_key.match(/[0-9A-F]{32}/)
+    unless api_key.nil? || api_key.match(/^[0-9A-F]{32}$/)
       raise WebApiException.new(:invalid_key)
     end
 
@@ -30,7 +30,7 @@ module WebApi
   end
 
   # Fetches JSON data from Steam Web API using the specified interface, method
-  # and version. Additional parameters are supplied via HTTP GET..
+  # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a JSON-encoded string.
   def json(interface, method, version, params = nil)
     load(:json, interface, method, version, params)
@@ -52,10 +52,12 @@ module WebApi
 
   # Fetches data from Steam Web API using the specified interface, method and
   # version. Additional parameters are supplied via HTTP GET.
-  # Data returned has the given format (which may be 'json', 'vdf', 'xml').
+  # Data is returned as a String in the given format (which may be 'json',
+  # 'vdf', or 'xml').
   def load(format, interface, method, version, params = nil)
     version = version.to_s.rjust(4, '0')
     url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"
+    params = {} unless params.is_a?(Hash)
     params[:format] = format
     params[:key] = WebApi.api_key
 
@@ -69,6 +71,8 @@ module WebApi
       if $!.io.status[0].to_i == 401
         raise WebApiException.new(:unauthorized)
       end
+
+      raise WebApiException.new(:http_error, $!.io.status[0].to_i, $!.io.status[1])
     end
   end
 
