@@ -1,6 +1,4 @@
-*/nbproject
-java/build
 java/doc
-java/dist
+java/target
 ruby/pkg
 ruby/rdoc
