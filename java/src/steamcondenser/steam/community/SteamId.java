@@ -281,7 +281,7 @@ public class SteamId {
 			this.friends = new SteamId[friendsNodeList.getLength()];
 			for(int i = 0; i < friendsNodeList.getLength(); i++) {
 				Element friend = (Element) friendsNodeList.item(i);
-				this.friends[i] = SteamId.create(friend.getTextContent(), false);
+				this.friends[i] = SteamId.create(Long.parseLong(friend.getTextContent()), false);
 			}
 		} catch(Exception e) {
 			throw new SteamCondenserException("XML data could not be parsed.");
