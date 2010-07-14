@@ -177,7 +177,7 @@ class SteamId {
      * Fetchs data from the Steam Community by querying the XML version of the
      * profile specified by the ID of this SteamID
      */
-    private function fetchData() {
+    public function fetchData() {
         $url = $this->getBaseUrl() . "?xml=1";
         $profile = new SimpleXMLElement(file_get_contents($url));
 

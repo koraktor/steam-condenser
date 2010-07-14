@@ -181,7 +181,7 @@ public class SteamId {
 	 *
 	 * @throws SteamCondenserException
 	 */
-	private void fetchData()
+	public void fetchData()
 			throws SteamCondenserException {
 		try {
 			String url = this.getBaseUrl() + "?xml=1";
