@@ -36,7 +36,7 @@ def build_jar
   FileUtils.cd('tmp/java')
   $stdout << 'Building Java JAR...'
   $stdout.flush
-  output = `ant -Drelease.version=#{RELEASE_VERSION} 2>&1`
+  output = `mvn package 2>&1`
   if $?.exitstatus != 0
     puts " \033[0;31mfailed!\033[0;0m"
     puts 'Output was:', output
@@ -46,7 +46,7 @@ def build_jar
   end
   puts " \033[1;32mOK!\033[0;0m"
   puts 'Moving JAR to temporary directory...'
-  FileUtils.mv("dist/steam-condenser-#{RELEASE_VERSION}.jar", '..')
+  FileUtils.mv("target/steam-condenser-#{RELEASE_VERSION}.jar", '..')
   FileUtils.cd('../..')
 end
 
