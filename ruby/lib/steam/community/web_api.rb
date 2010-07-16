@@ -32,14 +32,14 @@ module WebApi
   # Fetches JSON data from Steam Web API using the specified interface, method
   # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a JSON-encoded string.
-  def json(interface, method, version, params = nil)
+  def json(interface, method, version = 1, params = nil)
     load(:json, interface, method, version, params)
   end
 
   # Fetches JSON data from Steam Web API using the specified interface, method
   # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a Hash containing the JSON data.
-  def json!(interface, method, version, params = nil)
+  def json!(interface, method, version = 1, params = nil)
     data = json(interface, method, version, params)
     result = JSON.parse(data, { :symbolize_names => true })[:result]
 
@@ -54,7 +54,7 @@ module WebApi
   # version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a String in the given format (which may be 'json',
   # 'vdf', or 'xml').
-  def load(format, interface, method, version, params = nil)
+  def load(format, interface, method, version = 1, params = nil)
     version = version.to_s.rjust(4, '0')
     url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"
     params = {} unless params.is_a?(Hash)

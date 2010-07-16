@@ -23,6 +23,9 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/WebApiException.php';
  */
 abstract class WebApi {
 
+    /**
+     * @var array
+     */
     private static $apiKey = null;
 
     /**
@@ -48,7 +51,7 @@ abstract class WebApi {
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a JSON-encoded string.
      */
-    public static function getJSON($interface, $method, $version, $params = null) {
+    public static function getJSON($interface, $method, $version = 1, $params = null) {
         return self::load('json', $interface, $method, $version, $params);
     }
 
@@ -57,7 +60,7 @@ abstract class WebApi {
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a Hash containing the JSON data.
      */
-    public static function getJSONData($interface, $method, $version, $params = null) {
+    public static function getJSONData($interface, $method, $version = 1, $params = null) {
         $data = self::getJSON($interface, $method, $version, $params);
         $result = json_decode($data)->result;
 
@@ -74,7 +77,7 @@ abstract class WebApi {
      * Data is returned as a String in the given format (which may be 'json',
      * 'vdf', or 'xml').
      */
-    public static function load($format, $interface, $method, $version, $params = null) {
+    public static function load($format, $interface, $method, $version = 1, $params = null) {
         $version = str_pad($version, 4, '0', STR_PAD_LEFT);
         $url = "http://api.steampowered.com/$interface/$method/v$version/";
 
@@ -88,7 +91,6 @@ abstract class WebApi {
             }
             $url .= join('&', $url_params);
         }
-
 
         $data = @file_get_contents($url);
 
