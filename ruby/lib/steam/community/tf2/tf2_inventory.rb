@@ -13,8 +13,6 @@ class TF2Inventory
   include Cacheable
   cacheable_with_ids :steam_id64
 
-  include WebApi
-
   attr_reader :items, :steam_id64
 
   # Creates a new inventory object for the given SteamID64. This calls update
@@ -34,7 +32,7 @@ class TF2Inventory
 
   # Updates the contents of the backpack using Steam Web API
   def fetch
-    result = json!('ITFItems_440', 'GetPlayerItems', 1, { :SteamID => @steam_id64 })
+    result = WebApi.json!('ITFItems_440', 'GetPlayerItems', 1, { :SteamID => @steam_id64 })
 
     @items = []
     result[:items][:item].each do |item_data|

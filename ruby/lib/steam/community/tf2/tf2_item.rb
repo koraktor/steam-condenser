@@ -8,8 +8,6 @@ require 'steam/community/web_api'
 # Represents a Team Fortress 2 item
 class TF2Item
 
-  include WebApi
-
   CLASSES = [ :scout, :sniper, :soldier, :demoman, :medic, :heavy, :pyro, :spy ]
 
   attr_reader :attributes, :backpack_position, :class, :count, :defindex, :id,
@@ -87,7 +85,7 @@ class TF2Item
   def update_schema
     params = {}
     params[:language] = @@schema_language unless @@schema_language.nil?
-    result = json!('ITFItems_440', 'GetSchema', 1, params)
+    result = WebApi.json!('ITFItems_440', 'GetSchema', 1, params)
 
     @@attribute_schema = {}
     result[:attributes][:attribute].each do |attribute_data|
