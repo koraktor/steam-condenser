@@ -11,7 +11,8 @@ Currently it is implemented in Java, PHP and Ruby.
 * Ruby 1.8.6 or newer
 
   The following gems are required:
-  * `bzip2-ruby` (for Source servers sending compressed responses)
+  * `bzip2-ruby (for Source servers sending compressed responses)
+  * `json` (for the Web API features)
 
 ## License
 

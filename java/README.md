@@ -10,6 +10,14 @@ Currently it is implemented in Java, PHP and Ruby.
 * Linux, MacOS X or Windows
 * Java 1.5 or newer
 
+  The following libraries are required:
+  * Apache Commons Compress (for Source servers sending compressed responses)
+  * Jakarta Commons HTTPClient (for the Web API features)
+  * JSON (for the Web API features)
+  * JUnit (for testing)
+
+  Maven will install these for you.
+
 ## License
 
 This code is free software; you can redistribute it and/or modify it under the

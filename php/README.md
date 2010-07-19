@@ -12,6 +12,7 @@ Currently it is implemented in Java, PHP and Ruby.
 
   The following extensions are required:
    * `bz2` (for Source servers sending compressed responses)
+   * `json` (for the Web API features)
    * `simplexml` (for the Steam Community features)
    * `sockets` (for all server queries)
 
