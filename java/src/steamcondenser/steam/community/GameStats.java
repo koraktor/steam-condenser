@@ -31,17 +31,27 @@ import steamcondenser.steam.community.tf2.TF2Stats;
  */
 public class GameStats {
 
-	protected ArrayList<GameAchievement> achievements;
-	protected int appId;
-	protected String customUrl;
-	protected String gameFriendlyName;
-	protected String gameName;
-	protected String hoursPlayed;
-	protected String privacyState;
-	protected Long steamId64;
-	protected Element xmlData;
+    protected ArrayList<GameAchievement> achievements;
 
-	public static GameStats createGameStats(Object steamId, String gameName)
+    protected int achievementsDone;
+
+    protected int appId;
+
+    protected String customUrl;
+
+    protected String gameFriendlyName;
+
+    protected String gameName;
+
+    protected String hoursPlayed;
+
+    protected String privacyState;
+
+    protected Long steamId64;
+
+    protected Element xmlData;
+
+    public static GameStats createGameStats(Object steamId, String gameName)
 			throws SteamCondenserException {
         if(gameName.equals("cs:s")) {
             return new CSSStats(steamId);
@@ -110,18 +120,46 @@ public class GameStats {
 	public ArrayList<GameAchievement> getAchievements() {
 		if(this.achievements == null) {
 			this.achievements = new ArrayList<GameAchievement>();
+            this.achievementsDone = 0;
 
 			NodeList achievementsList = ((Element) this.xmlData.getElementsByTagName("achievements").item(0)).getElementsByTagName("achievement");
 			for(int i = 0; i < achievementsList.getLength(); i++) {
-				Element achievement = (Element) achievementsList.item(i);
-				String achievementName = achievement.getElementsByTagName("name").item(0).getTextContent();
-				boolean achievementDone = achievement.getAttribute("closed").equals("1");
-				this.achievements.add(new GameAchievement(this.appId, achievementName, achievementDone));
+                Element achievementData = (Element) achievementsList.item(i);
+                GameAchievement achievement = new GameAchievement(this.steamId64, this.appId, achievementData);
+                if(achievement.isUnlocked()) {
+                    this.achievementsDone += 1;
+                }
+                this.achievements.add(achievement);
 			}
 		}
 
 		return achievements;
 	}
+
+    /**
+     * Returns the count of achievements done by this player. If achievements
+     * haven't been parsed yet, parsing is done now.
+     *
+     * @return The number of unlocked achievements
+     */
+    public int getAchievementsDone() {
+        if(this.achievements == null) {
+            this.getAchievements();
+        }
+
+        return this.achievementsDone;
+    }
+
+    /**
+     * Returns a float value representing the percentage of achievements done by
+     * this player. If achievements haven't been parsed yet, parsing is done
+     * now.
+     *
+     * @return The percentage of unlocked achievements
+     */
+    public float getAchievementsPercentage() {
+        return (float) this.getAchievementsDone() / this.achievements.size();
+    }
 
 	public String getGameFriendlyName() {
 		return this.gameFriendlyName;

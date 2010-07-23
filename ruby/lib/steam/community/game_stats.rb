@@ -59,11 +59,11 @@ class GameStats
 
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?
-      @app_id             = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
-      @custom_url         = @xml_data.elements['player/customURL'].text if @custom_url.nil?
-      @game_name          = @xml_data.elements['game/gameName'].text
-      @hours_played       = @xml_data.elements['stats/hoursPlayed'].text
-      @steam_id64         = @xml_data.elements['player/steamID64'].text.to_i if @steam_id64.nil?
+      @app_id       = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
+      @custom_url   = @xml_data.elements['player/customURL'].text if @custom_url.nil?
+      @game_name    = @xml_data.elements['game/gameName'].text
+      @hours_played = @xml_data.elements['stats/hoursPlayed'].text
+      @steam_id64   = @xml_data.elements['player/steamID64'].text.to_i if @steam_id64.nil?
     end
   end
 
@@ -74,11 +74,11 @@ class GameStats
 
     if @achievements.nil?
       @achievements = Array.new
-      @xml_data.elements.each('achievements/achievement') do |achievement|
-        @achievements << GameAchievement.new(@steam_id, @app_id, achievement.elements['name'].text, (achievement.attributes['closed'].to_i == 1))
+      @xml_data.elements.each('achievements/achievement') do |achievement_data|
+        @achievements << GameAchievement.new(@steam_id64, @app_id, achievement_data)
       end
 
-      @achievements_done = @achievements.reject{ |a| !a.done? }.size
+      @achievements_done = @achievements.reject{ |a| !a.unlocked? }.size
     end
 
     @achievements
@@ -92,7 +92,7 @@ class GameStats
   end
 
   # Returns a float value representing the percentage of achievements done by
-  # this player.
+  # this player. If achievements haven't been parsed yet, parsing is done now.
   def achievements_percentage
     achievements_done.to_f / @achievements.size
   end

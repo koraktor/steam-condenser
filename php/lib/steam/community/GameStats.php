@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -22,6 +22,8 @@ require_once "steam/community/GameAchievement.php";
 class GameStats {
 
     protected $achievements;
+
+    protected $achievementsDone;
 
     /**
      * Used to cache the XML data of the statistics for this game and this
@@ -83,6 +85,7 @@ class GameStats {
     /**
      * Returns the achievements for this stats' user and game. If the achievements
      * haven't been parsed already, parsing is done now.
+     *
      * @return GameAchievements[]
      */
     public function getAchievements() {
@@ -92,15 +95,40 @@ class GameStats {
 
         if(empty($this->achievements)) {
             $this->achievementsDone = 0;
-            foreach($this->xmlData->achievements->children() as $achievement) {
-                $this->achievements[] = new GameAchievement($this->steamId, $this->appId, (string) $achievement->name, (bool) $achievement->closed);
-                if((bool) $achievement->closed) {
+            foreach($this->xmlData->achievements->children() as $achievementData) {
+                $this->achievements[] = new GameAchievement($this->steamId64, $this->appId, $achievementData);
+                if((bool) $achievementData->closed) {
                     $this->achievementsDone += 1;
                 }
             }
         }
 
         return $this->achievements;
+    }
+
+    /**
+     * Returns the count of achievements done by this player. If achievements
+     * haven't been parsed yet, parsing is done now.
+     *
+     * @return int The number of unlocked achievements
+     */
+    public function getAchievementsDone() {
+        if(empty($this->achievements)) {
+            $this->getAchievements();
+        }
+
+        return $this->achievementsDone;
+    }
+
+    /**
+     * Returns a float value representing the percentage of achievements done by
+     * this player. If achievements haven't been parsed yet, parsing is done
+     * now.
+     *
+     * @return float The percentage of unlocked achievements
+     */
+    public function getAchievementsPercentage() {
+        return $this->getAchievementsDone() / sizeof($this->achievements);
     }
 
     public function isPublic() {

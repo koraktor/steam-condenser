@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -14,28 +14,59 @@
 /**
  * The GameAchievement class represents a specific achievement for a single game
  * and for a single user
+ *
  * @package Steam Condenser (PHP)
  * @subpackage Steam Community
  */
 class GameAchievement {
-    
+
     /**
-     * Creates the achievement with the given name for the given user and game and
-     * marks it as already done if set to true
-     * @param $steamId
-     * @param $appId
-     * @param $name
-     * @param $done
+     * @var int
      */
-    public function __construct($steamId, $appId, $name, $done) {
-        $this->appId   = $appId;
-        $this->done    = $done;
-        $this->name    = $name;
-        $this->steamId = $steamId;
+    private $appId;
+
+    /**
+     * @var String
+     */
+    private $name;
+
+    /**
+     * @var String
+     */
+    private $steamId64;
+
+    /**
+     * @var int
+     */
+    private $timestamp;
+
+    /**
+     * @var bool
+     */
+    private $unlocked;
+
+    /**
+     * Creates the achievement with the given name for the given user and game
+     * and achievement data
+     *
+     * @param String steamId64 The 64bit SteamID of the player
+     * @param int appId The AppID of the game this achievement belongs to
+     * @param SimpleXMLElement achievementData The XML data for this achievement
+     */
+    public function __construct($steamId64, $appId, $achievementData) {
+        $this->appId     = $appId;
+        $this->name      = (string) $achievementData->name;
+        $this->steamId64 = $steamId64;
+        $this->unlocked  = (bool) $achievementData->closed;
+
+        if($this->unlocked && $achievementData->unlockTimestamp != null) {
+            $this->timestamp = (int) $achievementData->unlockTimestamp;
+        }
     }
 
     /**
      * Returns the AppID of the game this achievements belongs to
+     *
      * @return int
      */
     public function getAppId() {
@@ -44,6 +75,7 @@ class GameAchievement {
 
     /**
      * Returns the name of this achievement
+     *
      * @return String
      */
     public function getName() {
@@ -51,19 +83,30 @@ class GameAchievement {
     }
 
     /**
-     * Returns the SteamID this achievement belongs to
+     * Returns the 64bit SteamID of the player this achievement belongs to
+     *
      * @return String
      */
-    public function getSteamId() {
-        return $this->steamId;
+    public function getSteamId64() {
+        return $this->steamId64;
     }
 
     /**
-     * Returns whether this achievement has been done by its owner
+     * Returns the timestamp at which this achievement has been unlocked
+     *
+     * @return int
+     */
+    public function getTimestamp() {
+        return $this->timestamp;
+    }
+
+    /**
+     * Returns whether this achievement has been unlocked by its owner
+     *
      * @return boolean
      */
-    public function isDone() {
-        return $this->done;
+    public function isUnlocked() {
+        return $this->unlocked;
     }
 }
 ?>
