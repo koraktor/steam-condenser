@@ -36,7 +36,10 @@ abstract class WebApi {
     }
 
     /**
-     * Sets the Steam Web API key.
+     * Sets the Steam Web API key
+     *
+     * @param String apiKey The 128bit API key that has to be requested from
+     *                      http://steamcommunity.com/dev
      */
     public static function setApiKey($apiKey) {
         if($apiKey != null && !preg_match('/^[0-9A-F]{32}$/', $apiKey)) {
@@ -49,7 +52,13 @@ abstract class WebApi {
     /**
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
-     * Data is returned as a JSON-encoded string.
+     *
+     * @param String apiInterface The Web API interface to call, e.g.
+     *                            ISteamUser
+     * @param String method The Web API method to call, e.g. GetPlayerSummaries
+     * @param array params Additional parameters to supply via HTTP GET
+     * @param int version The API method version to use
+     * @return String Data is returned as a JSON-encoded string.
      */
     public static function getJSON($interface, $method, $version = 1, $params = null) {
         return self::load('json', $interface, $method, $version, $params);
@@ -58,7 +67,13 @@ abstract class WebApi {
     /**
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
-     * Data is returned as a Hash containing the JSON data.
+     *
+     * @param String apiInterface The Web API interface to call, e.g.
+     *                            ISteamUser
+     * @param String method The Web API method to call, e.g. GetPlayerSummaries
+     * @param array params Additional parameters to supply via HTTP GET
+     * @param int version The API method version to use
+     * @return stdClass Data is returned as a json_decoded object
      */
     public static function getJSONData($interface, $method, $version = 1, $params = null) {
         $data = self::getJSON($interface, $method, $version, $params);
@@ -72,10 +87,19 @@ abstract class WebApi {
     }
 
     /**
-     * Fetches data from Steam Web API using the specified interface, method and
-     * version. Additional parameters are supplied via HTTP GET.
-     * Data is returned as a String in the given format (which may be 'json',
-     * 'vdf', or 'xml').
+     * Fetches data from Steam Web API using the specified interface, method
+     * and version. Additional parameters are supplied via HTTP GET. Data is
+     * returned as a String in the given format.
+     *
+     * @param String apiInterface The Web API interface to call, e.g.
+     *                     ISteamUser
+     * @param String format The format to load from the API ('json', 'vdf', or
+     *                      'xml')
+     * @param String method The Web API method to call, e.g. GetPlayerSummaries
+     * @param array params Additional parameters to supply via HTTP GET
+     * @param int version The API method version to use
+     * @return String Data is returned as a String in the given format (which
+     *                may be 'json', 'vdf' or 'xml').
      */
     public static function load($format, $interface, $method, $version = 1, $params = null) {
         $version = str_pad($version, 4, '0', STR_PAD_LEFT);

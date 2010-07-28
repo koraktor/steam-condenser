@@ -46,7 +46,9 @@ abstract public class WebApi
     /**
      * Sets the Steam Web API key.
      *
-     * @param apiKey The Web API key to use
+     * @param apiKey The 128bit API key that has to be requested from
+     *               http://steamcommunity.com/dev
+     * @throws WebApiException If the given API key is invalid
      */
     public static void setApiKey(String apiKey)
             throws WebApiException {
@@ -62,8 +64,10 @@ abstract public class WebApi
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a JSON-encoded string.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
      * @return Data is returned as a JSON-encoded string.
      * @throws WebApiException In case of any request failure
      */
@@ -77,9 +81,11 @@ abstract public class WebApi
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a JSON-encoded string.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param version The API method version to use
      * @return Data is returned as a JSON-encoded string.
      * @throws WebApiException In case of any request failure
      */
@@ -92,9 +98,12 @@ abstract public class WebApi
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param params Additional parameters to supply via HTTP GET
+     * @param version The API method version to use
      * @return Data is returned as a JSON-encoded string.
      * @throws WebApiException In case of any request failure
      */
@@ -108,8 +117,10 @@ abstract public class WebApi
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a Hash containing the JSON data.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
      * @return Data is returned as a <code>JSONObject</code>
      * @throws JSONException In case of misformatted JSON data
      * @throws WebApiException In case of any request failure
@@ -124,9 +135,11 @@ abstract public class WebApi
      * method and version. Additional parameters are supplied via HTTP GET.
      * Data is returned as a Hash containing the JSON data.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param version The API method version to use
      * @return Data is returned as a <code>JSONObject</code>
      * @throws JSONException In case of misformatted JSON data
      * @throws WebApiException In case of any request failure
@@ -140,10 +153,12 @@ abstract public class WebApi
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
      *
-     * @param apiInterface The Web API interface to use
-     * @param method The Web API method to use
-     * @param params The HTTP GET parameters to send with the request
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param params Additional parameters to supply via HTTP GET
+     * @param version The API method version to use
      * @return Data is returned as a <code>JSONObject</code>
      * @throws JSONException In case of misformatted JSON data
      * @throws WebApiException In case of any request failure
@@ -161,14 +176,15 @@ abstract public class WebApi
     }
 
     /**
-     * Fetches data from Steam Web API using the specified interface, method and
-     * version. Additional parameters are supplied via HTTP GET.
-     * Data returned has the given format (which may be 'json', 'vdf', 'xml').
+     * Fetches data from Steam Web API using the specified interface, method
+     * and version. Additional parameters are supplied via HTTP GET. Data is
+     * returned as a String in the given format.
      *
-     * @param apiInterface The Web API interface to use
-     * @param format The format to use for the response. May be "json", "vdf"
-     *               or "xml".
-     * @param method The Web API method to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param format The format to load from the API ('json', 'vdf', or 'xml')
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
      * @return Data is returned as a String in the given format (which may be
      *        "json", "vdf" or "xml").
      * @throws WebApiException In case of any request failure
@@ -179,15 +195,16 @@ abstract public class WebApi
     }
 
     /**
-     * Fetches data from Steam Web API using the specified interface, method and
-     * version. Additional parameters are supplied via HTTP GET.
-     * Data returned has the given format (which may be 'json', 'vdf', 'xml').
+     * Fetches data from Steam Web API using the specified interface, method
+     * and version. Additional parameters are supplied via HTTP GET. Data is
+     * returned as a String in the given format.
      *
-     * @param apiInterface The Web API interface to use
-     * @param format The format to use for the response. May be "json", "vdf"
-     *               or "xml".
-     * @param method The Web API method to use
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param format The format to load from the API ('json', 'vdf', or 'xml')
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param version The API method version to use
      * @return Data is returned as a String in the given format (which may be
      *        "json", "vdf" or "xml").
      * @throws WebApiException In case of any request failure
@@ -198,16 +215,17 @@ abstract public class WebApi
     }
 
     /**
-     * Fetches data from Steam Web API using the specified interface, method and
-     * version. Additional parameters are supplied via HTTP GET.
-     * Data returned has the given format (which may be 'json', 'vdf', 'xml').
+     * Fetches data from Steam Web API using the specified interface, method
+     * and version. Additional parameters are supplied via HTTP GET. Data is
+     * returned as a String in the given format.
      *
-     * @param apiInterface The Web API interface to use
-     * @param format The format to use for the response. May be "json", "vdf"
-     *               or "xml".
-     * @param method The Web API method to use
-     * @param params The HTTP GET parameters to send with the request
-     * @param version The interface version to use
+     * @param apiInterface The Web API interface to call, e.g.
+     *                     <code>ISteamUser</code>
+     * @param format The format to load from the API ("json", "vdf", or "xml")
+     * @param method The Web API method to call, e.g.
+     *               <code>GetPlayerSummaries</code>
+     * @param params Additional parameters to supply via HTTP GET
+     * @param version The API method version to use
      * @return Data is returned as a String in the given format (which may be
      *        "json", "vdf", or "xml").
      * @throws WebApiException In case of any request failure
