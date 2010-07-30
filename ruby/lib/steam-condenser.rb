@@ -1,16 +1,12 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
-
-require 'yaml'
-
-libdir = File.dirname(__FILE__)
-$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 module SteamCondenser
 
-  version = YAML.load_file(File.join(File.dirname(__FILE__), '..', 'VERSION.yml'))
-  VERSION = "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
+  require 'steam-condenser/community'
+  require 'steam-condenser/servers'
+  require 'steam-condenser/version'
 
 end
