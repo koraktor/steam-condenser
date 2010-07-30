@@ -10,6 +10,7 @@ module SteamCondenser
   module Community
 
     require 'steam/community/steam_id'
+    require 'steam/community/web_api' 
 
   end
 
