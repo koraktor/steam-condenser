@@ -49,7 +49,7 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 			}
 
             if($extraDataFlag & 0x10) {
-                $this->serverId = $this->contentData->getLong | ($this->contentData->getLong << 32);
+                $this->serverId = $this->contentData->getLong() | ($this->contentData->getLong() << 32);
             }
 
 			if($extraDataFlag & 0x40)
