@@ -1,4 +1,11 @@
-<div id="pledgie">
+<div id="donate">
+  <script type="text/javascript">
+	var flattr_url = 'http://koraktor.github.com/steam-condenser/';
+  </script>
+  <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
+
+  <br /><br />
+
   <a href="http://www.pledgie.com/campaigns/3463">
     <img alt="Click here to lend your support to: steam-condenser and make a
               donation at www.pledgie.com !"

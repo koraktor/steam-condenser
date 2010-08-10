@@ -2,6 +2,8 @@
 pages:
  - name: About
    url:  index.html
+ - name: News
+   url:  news.html
  - name: Usage
    url:  usage.html
  - name: Downloads
@@ -48,7 +50,7 @@ pages:
     <div id="footer">
       <strong>{{ site.time | date: "%Y" }}</strong> &mdash; Sebastian Staudt
     </div>
-    {% include pledgie %}
+    {% include donate %}
     <div id="twitter">
       <script>
         new TWTR.Widget({
