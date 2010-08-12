@@ -11,8 +11,8 @@
  * @subpackage UDPSocket
  */
 
-require_once "InetAddress.php";
-require_once "Socket.php";
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'Socket.php';
 
 /**
  * This class represents a UDP socket

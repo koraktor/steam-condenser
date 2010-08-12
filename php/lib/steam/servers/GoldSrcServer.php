@@ -11,9 +11,9 @@
  * @subpackage GoldSrcServer
  */
 
-require_once "InetAddress.php";
-require_once "steam/servers/GameServer.php";
-require_once "steam/sockets/GoldSrcSocket.php";
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/GoldSrcSocket.php';
 
 /**
  * @package    Steam Condenser (PHP)

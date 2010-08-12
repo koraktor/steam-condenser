@@ -11,7 +11,7 @@
  * @subpackage RCONGoldSrcRequest
  */
 
-require_once "steam/packets/SteamPacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 class RCONGoldSrcRequest extends SteamPacket
 {

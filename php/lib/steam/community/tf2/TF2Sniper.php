@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once "steam/community/tf2/TF2Class.php";
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Class.php';
 
 /**
  * Represents the stats for the Team Fortress 2 sniper class for a specific user

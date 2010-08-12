@@ -11,9 +11,9 @@
  * @subpackage SteamSocket
  */
 
-require_once "InetAddress.php";
-require_once "steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php";
-require_once "steam/sockets/MasterServerSocket.php";
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/MasterServerSocket.php';
 
 /**
  * @package Steam Condenser (PHP)

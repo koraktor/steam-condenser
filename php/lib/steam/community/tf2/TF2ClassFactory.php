@@ -11,11 +11,11 @@
  * @subpackage Steam Community
  */
 
-require_once "steam/community/tf2/TF2Class.php";
-require_once "steam/community/tf2/TF2Engineer.php";
-require_once "steam/community/tf2/TF2Medic.php";
-require_once "steam/community/tf2/TF2Sniper.php";
-require_once "steam/community/tf2/TF2Spy.php";
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Class.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Engineer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Medic.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Sniper.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Spy.php';
 
 /**
  * The TF2ClassFactory is used to created instances of TF2Class based on the

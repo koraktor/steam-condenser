@@ -11,9 +11,9 @@
  * @subpackage Sockets
  */
 
-require_once "steam/packets/SteamPacket.php";
-require_once "steam/packets/rcon/RCONGoldSrcRequest.php";
-require_once "steam/sockets/SteamSocket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONGoldSrcRequest.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 
 /**
  * @package    Steam Condenser (PHP)

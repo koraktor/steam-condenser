@@ -11,8 +11,8 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/SteamId.php';
-require_once 'steam/community/l4d/L4DMap.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4DMap.php';
 
 /**
  * L4D2Map holds statistical information about maps played by a player in

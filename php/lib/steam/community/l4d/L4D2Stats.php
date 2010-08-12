@@ -11,10 +11,10 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/l4d/AbstractL4DStats.php';
-require_once 'steam/community/l4d/L4D2Map.php';
-require_once 'steam/community/l4d/L4D2Weapon.php';
-require_once 'steam/community/l4d/L4DExplosive.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/AbstractL4DStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4D2Map.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4D2Weapon.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4DExplosive.php';
 
 /**
  * The L4DStats class represents the game statistics for a single user in

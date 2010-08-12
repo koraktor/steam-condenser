@@ -6,7 +6,7 @@
  * @subpackage Packets
  */
 
-require_once "steam/packets/RequestPacketWithChallenge.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/RequestPacketWithChallenge.php';
 
 /**
  * @package    Steam Condenser (PHP)

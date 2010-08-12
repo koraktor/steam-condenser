@@ -11,9 +11,9 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/GameStats.php';
-require_once 'steam/community/dods/DoDSClass.php';
-require_once 'steam/community/dods/DoDSWeapon.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/dods/DoDSClass.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/dods/DoDSWeapon.php';
 
 /**
  * The DoDSStats class represents the game statistics for a single user in Day

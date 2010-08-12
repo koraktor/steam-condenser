@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once "steam/community/GameClass.php";
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameClass.php';
 
 /**
  * Represents the stats for a Team Fortress 2 class for a specific user

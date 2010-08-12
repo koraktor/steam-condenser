@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
 
 /**
  * The DefenseGridStats class represents the game statistics for a single user

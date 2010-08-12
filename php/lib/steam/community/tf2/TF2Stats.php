@@ -11,8 +11,8 @@
  * @subpackage Steam Community
  */
 
-require_once "steam/community/GameStats.php";
-require_once "steam/community/tf2/TF2ClassFactory.php";
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2ClassFactory.php';
 
 /**
  * The TF2Stats class represents the game statistics for a single user in Team

@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
 
 /**
  * AbstractL4DStats is an abstract base class for statistics for Left4Dead and

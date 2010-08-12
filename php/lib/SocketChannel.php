@@ -11,8 +11,8 @@
  * @subpackage SocketChannel
  */
 
-require_once "ByteBuffer.php";
-require_once "TCPSocket.php";
+require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
+require_once STEAM_CONDENSER_PATH . 'TCPSocket.php';
 
 class SocketChannel
 {

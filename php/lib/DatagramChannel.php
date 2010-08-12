@@ -11,9 +11,9 @@
  * @subpackage DatagramChannel
  */
 
-require_once "ByteBuffer.php";
-require_once "InetAddress.php";
-require_once "UDPSocket.php";
+require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'UDPSocket.php';
 
 /**
  * @package Steam Condenser (PHP)

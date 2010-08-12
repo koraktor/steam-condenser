@@ -9,7 +9,7 @@
  * @subpackage Packets
  */
 
-require_once "ByteBuffer.php";
+require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
 
 /**
  * @package Steam Condenser (PHP)

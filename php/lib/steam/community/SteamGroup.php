@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/SteamId.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
 
 /**
  * The SteamGroup class represents a group in the Steam Community

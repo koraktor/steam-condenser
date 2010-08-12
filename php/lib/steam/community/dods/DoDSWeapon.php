@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once "steam/community/GameWeapon.php";
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameWeapon.php';
 
 /**
  * Represents the stats for a Day of Defeat: Source weapon for a specific user

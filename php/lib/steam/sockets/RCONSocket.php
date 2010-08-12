@@ -11,13 +11,13 @@
  * @subpackage Sockets
  */
 
-require_once "InetAddress.php";
-require_once "SocketChannel.php";
-require_once "exceptions/RCONBanException.php";
-require_once "exceptions/PacketFormatException.php";
-require_once "steam/packets/rcon/RCONPacket.php";
-require_once "steam/packets/rcon/RCONPacketFactory.php";
-require_once "steam/sockets/SteamSocket.php";
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'SocketChannel.php';
+require_once STEAM_CONDENSER_PATH . 'exceptions/RCONBanException.php';
+require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacketFactory.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 
 /**
  * @package    Steam Condenser (PHP)

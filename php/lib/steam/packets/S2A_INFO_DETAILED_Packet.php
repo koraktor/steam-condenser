@@ -11,7 +11,7 @@
  * @subpackage Packets
  */
 
-require_once "steam/packets/S2A_INFO_BasePacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
 
 /**
  * The S2A_INFO_DETAILED_Packet class represents the response to a A2S_INFO

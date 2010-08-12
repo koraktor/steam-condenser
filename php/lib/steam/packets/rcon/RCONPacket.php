@@ -11,7 +11,7 @@
  * @subpackage RCONPacket
  */
 
-require_once "steam/packets/SteamPacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 abstract class RCONPacket extends SteamPacket
 {

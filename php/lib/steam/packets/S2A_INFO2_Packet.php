@@ -9,7 +9,7 @@
  * @subpackage Packets
  */
 
-require_once "steam/packets/S2A_INFO_BasePacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
 
 /**
  * @package Steam Condenser (PHP)

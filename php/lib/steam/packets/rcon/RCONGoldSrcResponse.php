@@ -11,7 +11,7 @@
  * @subpackage RCON packets
  */
 
-require_once "steam/packets/rcon/RCONPacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
 
 /**
  * @package Steam Condenser (PHP)

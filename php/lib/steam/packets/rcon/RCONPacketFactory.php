@@ -11,11 +11,11 @@
  * @subpackage Packets
  */
 
-require_once "ByteBuffer.php";
-require_once "steam/packets/SteamPacketFactory.php";
-require_once "steam/packets/rcon/RCONAuthResponse.php";
-require_once "steam/packets/rcon/RCONExecResponse.php";
-require_once "steam/packets/rcon/RCONPacket.php";
+require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthResponse.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONExecResponse.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
 
 /**
  * @package    Steam Condenser (PHP)

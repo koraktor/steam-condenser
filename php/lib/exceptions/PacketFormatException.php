@@ -11,7 +11,7 @@
  * @subpackage Exceptions
  */
 
-require_once "exceptions/SteamCondenserException.php";
+require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
 
 /**
  * @package Steam Condenser (PHP)

@@ -11,7 +11,7 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/l4d/AbstractL4DWeapon.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/AbstractL4DWeapon.php';
 
 /**
  * @package Steam Condenser (PHP)

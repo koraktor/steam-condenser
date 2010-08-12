@@ -11,14 +11,14 @@
  * @subpackage SourceServer
  */
 
-require_once "InetAddress.php";
-require_once "exceptions/RCONNoAuthException.php";
-require_once "steam/packets/rcon/RCONAuthRequest.php";
-require_once "steam/packets/rcon/RCONAuthResponse.php";
-require_once "steam/packets/rcon/RCONExecRequest.php";
-require_once "steam/servers/GameServer.php";
-require_once "steam/sockets/RCONSocket.php";
-require_once "steam/sockets/SourceSocket.php";
+require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'exceptions/RCONNoAuthException.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthRequest.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthResponse.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONExecRequest.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/RCONSocket.php';
+require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
 
 /**
  * @package Steam Condenser (PHP)

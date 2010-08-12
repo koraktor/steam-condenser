@@ -11,8 +11,8 @@
  * @subpackage Packets
  */
 
-require_once "steam/SteamPlayer.php";
-require_once "steam/packets/SteamPacket.php";
+require_once STEAM_CONDENSER_PATH . 'steam/SteamPlayer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
  * @package Steam Condenser (PHP)

@@ -11,7 +11,7 @@
  * @subpackage ByteBuffer
  */
 
-require_once "exceptions/BufferUnderflowException.php";
+require_once STEAM_CONDENSER_PATH . 'exceptions/BufferUnderflowException.php';
 
 /**
  * @package Steam Condenser (PHP)

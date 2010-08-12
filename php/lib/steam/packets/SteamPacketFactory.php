@@ -9,21 +9,21 @@
  * @subpackage Packets
  */
 
-require_once "exceptions/PacketFormatException.php";
-require_once "steam/packets/rcon/RCONGoldSrcResponse.php";
-require_once "steam/packets/S2A_INFO_DETAILED_Packet.php";
-require_once "steam/packets/A2S_INFO_Packet.php";
-require_once "steam/packets/S2A_INFO2_Packet.php";
-require_once "steam/packets/A2A_PING_Packet.php";
-require_once "steam/packets/A2A_ACK_Packet.php";
-require_once "steam/packets/A2S_PLAYER_Packet.php";
-require_once "steam/packets/S2A_PLAYER_Packet.php";
-require_once "steam/packets/A2S_RULES_Packet.php";
-require_once "steam/packets/S2A_RULES_Packet.php";
-require_once "steam/packets/A2S_SERVERQUERY_GETCHALLENGE_Packet.php";
-require_once "steam/packets/S2C_CHALLENGE_Packet.php";
-require_once "steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php";
-require_once "steam/packets/M2A_SERVER_BATCH_Packet.php";
+require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONGoldSrcResponse.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_DETAILED_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_INFO_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO2_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2A_PING_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2A_ACK_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_PLAYER_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_PLAYER_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_RULES_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_RULES_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_SERVERQUERY_GETCHALLENGE_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2C_CHALLENGE_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/M2A_SERVER_BATCH_Packet.php';
 
 /**
  * @package    Steam Condenser (PHP)

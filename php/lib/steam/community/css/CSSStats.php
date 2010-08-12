@@ -11,8 +11,8 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/css/CSSMap.php';
-require_once 'steam/community/css/CSSWeapon.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/css/CSSMap.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/css/CSSWeapon.php';
 
 /**
  * The CSSStats class represents the game statistics for a single user in
