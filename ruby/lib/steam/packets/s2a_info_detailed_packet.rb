@@ -15,11 +15,11 @@ class S2A_INFO_DETAILED_Packet < S2A_INFO_BasePacket
   def initialize(data)
     super SteamPacket::S2A_INFO_DETAILED_HEADER, data
 
-    @game_ip = @content_data.string
-    @server_name = @content_data.string
-    @map_name = @content_data.string
-    @game_directory = @content_data.string
-    @game_description = @content_data.string
+    @game_ip = @content_data.cstring
+    @server_name = @content_data.cstring
+    @map_name = @content_data.cstring
+    @game_directory = @content_data.cstring
+    @game_description = @content_data.cstring
     @number_of_players = @content_data.byte
     @max_players = @content_data.byte
     @network_version = @content_data.byte
@@ -30,8 +30,8 @@ class S2A_INFO_DETAILED_Packet < S2A_INFO_BasePacket
 
     if @is_mod
       @mod_info = {}
-      @mod_info['url_info'] = @content_data.string
-      @mod_info['url_dl'] = @content_data.string
+      @mod_info['url_info'] = @content_data.cstring
+      @mod_info['url_dl'] = @content_data.cstring
       @content_data.byte
       if @content_data.remaining == 12
         @mod_info['mod_version'] = @content_data.long

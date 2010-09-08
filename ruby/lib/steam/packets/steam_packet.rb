@@ -34,7 +34,7 @@ class SteamPacket
 
   # Returns a packed string representing the packet's data
   def to_s
-    [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.data].pack('c5a*')
+    [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.string].pack('c5a*')
   end
 
 end

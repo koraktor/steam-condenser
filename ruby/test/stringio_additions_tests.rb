@@ -13,7 +13,7 @@ class StringIOAdditionsTests < Test::Unit::TestCase
 
   def test_allocate
     buffer = StringIO.allocate(10)
-    assert_equal("\0" * 10, buffer.data)
+    assert_equal("\0" * 10, buffer.string)
   end
 
   def test_byte
@@ -48,17 +48,17 @@ class StringIOAdditionsTests < Test::Unit::TestCase
 
   def test_string
     buffer = StringIO.new("test\0test")
-    assert_equal('test', buffer.string)
+    assert_equal('test', buffer.cstring)
     assert_equal(4, buffer.remaining)
   end
 
   def test_put
     buffer = StringIO.new('te')
     buffer.write('st')
-    assert_equal('st', buffer.data)
+    assert_equal('st', buffer.string)
     buffer = StringIO.allocate(4)
     buffer.write('test')
-    assert_equal('test', buffer.data)
+    assert_equal('test', buffer.string)
   end
 
   def test_rewind
@@ -71,7 +71,7 @@ class StringIOAdditionsTests < Test::Unit::TestCase
   def test_wrap
     string = 'test'
     buffer = StringIO.new(string)
-    assert_equal(string, buffer.data)
+    assert_equal(string, buffer.string)
   end
 
 end

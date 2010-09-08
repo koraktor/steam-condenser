@@ -7,8 +7,6 @@ require 'stringio'
 
 class StringIO
 
-  alias_method :data, :string
-
   def self.allocate(size)
     new "\0" * size
   end
@@ -41,7 +39,7 @@ class StringIO
     read(4).unpack('l')[0]
   end
 
-  def string
+  def cstring
     gets("\0")[0..-2]
   end
 

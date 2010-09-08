@@ -20,7 +20,7 @@ class RCONPacketFactory < SteamPacketFactory
     byte_buffer.long
     request_id = byte_buffer.long
     header = byte_buffer.long
-    data = byte_buffer.string
+    data = byte_buffer.cstring
 
     case header
       when RCONPacket::SERVERDATA_AUTH_RESPONSE then

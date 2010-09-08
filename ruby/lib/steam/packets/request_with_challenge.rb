@@ -8,7 +8,7 @@ module RequestWithChallenge
 
   # Returns a packed version of the request
   def to_s
-    [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.data.to_i].pack('c5l')
+    [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.string.to_i].pack('c5l')
   end
 
 end

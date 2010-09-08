@@ -14,10 +14,10 @@ class S2A_INFO2_Packet < S2A_INFO_BasePacket
     super SteamPacket::S2A_INFO2_HEADER, data
 
     @protocol_version = @content_data.byte
-    @server_name = @content_data.string
-    @map_name = @content_data.string
-    @game_directory = @content_data.string
-    @game_description = @content_data.string
+    @server_name = @content_data.cstring
+    @map_name = @content_data.cstring
+    @game_directory = @content_data.cstring
+    @game_description = @content_data.cstring
     @app_id = @content_data.short
     @number_of_players = @content_data.byte
     @max_players = @content_data.byte
@@ -26,7 +26,7 @@ class S2A_INFO2_Packet < S2A_INFO_BasePacket
     @operating_system = @content_data.byte.chr
     @password_needed = @content_data.byte == 1
     @secure = @content_data.byte == 1
-    @game_version = @content_data.string
+    @game_version = @content_data.cstring
     extra_data_flag = @content_data.byte
 
     @server_port = @content_data.short unless extra_data_flag & 0x80 == 0
@@ -37,10 +37,10 @@ class S2A_INFO2_Packet < S2A_INFO_BasePacket
 
     unless extra_data_flag & 0x40 == 0
       @tv_port = @content_data.short
-      @tv_name = @content_data.string
+      @tv_name = @content_data.cstring
     end
 
-    @server_tags = @content_data.string unless extra_data_flag & 0x20 == 0
+    @server_tags = @content_data.cstring unless extra_data_flag & 0x20 == 0
 
     generate_info_hash
   end

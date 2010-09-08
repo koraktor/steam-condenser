@@ -24,7 +24,7 @@ class RCONPacket < SteamPacket
   end
 
   def bytes
-    [@content_data.length + 8, @request_id, @header_data, @content_data.data].pack('V3a*')
+    [@content_data.length + 8, @request_id, @header_data, @content_data.string].pack('V3a*')
   end
 
 end

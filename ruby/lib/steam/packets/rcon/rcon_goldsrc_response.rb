@@ -12,7 +12,7 @@ class RCONGoldSrcResponse < SteamPacket
   end
 
   def response
-    @content_data.data[0..-3]
+    @content_data.string[0..-3]
   end
 
 end

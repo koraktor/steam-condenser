@@ -22,8 +22,8 @@ class S2A_RULES_Packet < SteamPacket
     @rules_hash = {}
 
     rules_count.times do
-      rule  = @content_data.string
-      value = @content_data.string
+      rule  = @content_data.cstring
+      value = @content_data.cstring
 
       # This is a workaround for servers sending corrupt replies
       break if rule.empty? or value.empty?

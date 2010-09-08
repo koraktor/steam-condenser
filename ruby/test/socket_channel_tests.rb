@@ -34,7 +34,7 @@ class SocketChannelTests < Test::Unit::TestCase
     channel.close
     socket.close
 
-    received = buffer.data
+    received = buffer.string
 
     assert_equal(string, sent)
     assert_equal(string, received)

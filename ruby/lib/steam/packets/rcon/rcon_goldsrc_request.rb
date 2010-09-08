@@ -12,7 +12,7 @@ class RCONGoldSrcRequest < SteamPacket
   end
 
   def to_s
-    [0xFFFFFFFF, @content_data.data].pack('Va*')
+    [0xFFFFFFFF, @content_data.string].pack('Va*')
   end
 
 end
