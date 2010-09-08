@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.11.1
+version: 0.11.2
 ---
 Downloads
 =========
@@ -24,8 +24,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: 3f9a68b10e16b3139bb24eca9eae8289e8687d43
-  MD5:  e4800f434790fde815665e4be598171c</pre>
+  SHA1: d219ff002b6a13e84dd4d082c3994561261b4baf
+  MD5:  1b1dff5bfdc91b5056b7d1badc8faac5</pre>
 </div>
 
 <div class="download">
@@ -33,8 +33,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: bc9a406382facbbb0f18b9efd04ae2b8be30906e
-  MD5:  a6fac3280042756e9cd9a73842072f29</pre>
+  SHA1: b7756caf6c1ec383c49e8696ff9836a09b0cb80a
+  MD5:  380eee28f2cd8fa01cd91b6f489b3767</pre>
 </div>
 
 ## Git repository
