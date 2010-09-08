@@ -8,7 +8,7 @@ require 'steam/sockets/master_server_socket'
 
 class MasterServer
 
-  GOLDSRC_MASTER_SERVER = 'hl1master.steampowered.com', 27013
+  GOLDSRC_MASTER_SERVER = 'hl1master.steampowered.com', 27010
   SOURCE_MASTER_SERVER = 'hl2master.steampowered.com', 27011
 
   REGION_US_EAST_COAST = 0x00

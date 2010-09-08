@@ -24,7 +24,7 @@ import steamcondenser.steam.sockets.MasterServerSocket;
  */
 public class MasterServer
 {
-    public static final InetSocketAddress GOLDSRC_MASTER_SERVER = new InetSocketAddress("hl1master.steampowered.com", 27013);
+    public static final InetSocketAddress GOLDSRC_MASTER_SERVER = new InetSocketAddress("hl1master.steampowered.com", 27010);
     public static final InetSocketAddress SOURCE_MASTER_SERVER = new InetSocketAddress("hl2master.steampowered.com", 27011);
 
     public static final byte REGION_US_EAST_COAST = 0x00;
