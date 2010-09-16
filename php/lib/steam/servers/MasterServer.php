@@ -78,7 +78,7 @@ class MasterServer
 			}
 			catch(TimeoutException $e) {
 				$failCount ++;
-				if(failCount == 4) {
+				if($failCount == 4) {
 			    		throw $e;
 				}
 			}
