@@ -10,10 +10,9 @@
  * @package Steam Condenser (PHP)
  */
 
-ini_set("include_path", ini_get("include_path") . PATH_SEPARATOR . dirname(__FILE__) . "/../lib");
 error_reporting(E_ALL & ~E_USER_NOTICE);
 
-require_once "steam/community/SteamId.php";
+require_once dirname(__FILE__) . "/../lib/steam-condenser.php";
 
 require_once "PHPUnit/Framework.php";
 
