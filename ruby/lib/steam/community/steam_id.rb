@@ -192,12 +192,10 @@ class SteamId
 
   # Returns a GameStats object for the given game for the owner of this SteamID
   def game_stats(game_name)
-    game_name.downcase!
-
     if games.has_value? game_name
       friendly_name = game_name
-    elsif games.has_key? game_name
-      friendly_name = games[game_name]
+    elsif games.has_key? game_name.downcase
+      friendly_name = games[game_name.downcase]
     else
       raise ArgumentError.new("Stats for game #{game_name} do not exist.")
     end

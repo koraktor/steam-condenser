@@ -321,18 +321,17 @@ class SteamId {
     }
 
     /**
+     * Returns a GameStats object for the given game for the owner of this SteamID
      *
      * @param $gameName
      * @return GameStats
      */
     public function getGameStats($gameName) {
-        $gameName = strtolower($gameName);
-
         if(in_array($gameName, array_values($this->getGames()))) {
             $friendlyName = $gameName;
         }
-        else if(array_key_exists($gameName, $this->getGames())) {
-            $friendlyName = $this->games[$gameName];
+        else if(array_key_exists(strtolower($gameName), $this->getGames())) {
+            $friendlyName = $this->games[strtolower($gameName)];
         }
         else {
             throw new SteamCondenserException("Stats for game {$gameName} do not exist.");

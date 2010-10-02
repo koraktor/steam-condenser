@@ -377,15 +377,14 @@ public class SteamId {
 
 	public GameStats getGameStats(String gameName)
 			throws SteamCondenserException {
-		gameName = gameName.toLowerCase();
 		String friendlyName;
 
 		this.getGames();
 
 		if(this.games.containsKey(gameName)) {
 			friendlyName = this.games.get(gameName);
-		} else if(this.games.containsValue(gameName)) {
-			friendlyName = gameName;
+		} else if(this.games.containsValue(gameName.toLowerCase())) {
+			friendlyName = gameName.toLowerCase();
 		} else {
 			throw new SteamCondenserException("Stats for game " + gameName + " do not exist.");
 		}
