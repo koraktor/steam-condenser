@@ -54,10 +54,12 @@ public abstract class AbstractL4DStats extends GameStats {
 		if(this.isPublic()) {
 			Element mostRecentGameNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("mostRecentGame").item(0);
 			this.mostRecentGame = new HashMap<String, Object>();
-			this.mostRecentGame.put("difficulty", mostRecentGameNode.getElementsByTagName("difficulty").item(0).getTextContent());
-			this.mostRecentGame.put("escaped", mostRecentGameNode.getElementsByTagName("bEscaped").item(0).getTextContent().equals("1"));
-			this.mostRecentGame.put("movie", mostRecentGameNode.getElementsByTagName("movie").item(0).getTextContent());
-			this.mostRecentGame.put("timePlayed", mostRecentGameNode.getElementsByTagName("timeplayed").item(0).getTextContent());
+            if(mostRecentGameNode != null) {
+                this.mostRecentGame.put("difficulty", mostRecentGameNode.getElementsByTagName("difficulty").item(0).getTextContent());
+                this.mostRecentGame.put("escaped", mostRecentGameNode.getElementsByTagName("bEscaped").item(0).getTextContent().equals("1"));
+                this.mostRecentGame.put("movie", mostRecentGameNode.getElementsByTagName("movie").item(0).getTextContent());
+                this.mostRecentGame.put("timePlayed", mostRecentGameNode.getElementsByTagName("timeplayed").item(0).getTextContent());
+            }
 		}
 	}
 
