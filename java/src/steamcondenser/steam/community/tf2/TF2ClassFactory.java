@@ -26,19 +26,19 @@ abstract class TF2ClassFactory
     {
 	String className = classData.getElementsByTagName("className").item(0).getTextContent();
 
-	if(className == "Engineer")
+	if(className.equals("Engineer"))
 	{
 	    return new TF2Engineer(classData);
 	}
-	else if(className == "Medic")
+	else if(className.equals("Medic"))
 	{
 	    return new TF2Medic(classData);
 	}
-	else if(className == "Sniper")
+	else if(className.equals("Sniper"))
 	{
 	    return new TF2Sniper(classData);
 	}
-	else if(className == "Spy")
+	else if(className.equals("Spy"))
 	{
 	    return new TF2Spy(classData);
 	}
