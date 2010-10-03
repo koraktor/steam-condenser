@@ -35,7 +35,8 @@ public class L4DStats extends AbstractL4DStats {
 	 * If the Survival statistics haven't been parsed already, parsing is done
 	 * now.
 	 */
-	public HashMap<String, Object> getSurvivalStats() {
+	public HashMap<String, Object> getSurvivalStats()
+            throws SteamCondenserException {
 		if(!this.isPublic()) {
 			return null;
 		}
