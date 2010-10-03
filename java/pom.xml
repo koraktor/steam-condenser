@@ -9,6 +9,28 @@
     <version>0.12.0</version>
     <packaging>jar</packaging>
 
+    <name>Steam Condenser</name>
+    <description>A library for querying the Steam Community, Source, GoldSrc servers and Steam master servers</description>
+    <licenses>
+        <license>
+            <name>BSD license</name>
+            <url>http://www.opensource.org/licenses/bsd-license.php</url>
+        </license>
+    </licenses>
+    <scm>
+        <url>http://github.com/koraktor/steam-condenser</url>
+        <connection>scm:git:git://github.com/koraktor/steam-condenser.git</connection>
+        <developerConnection>scm:git:git@github.com:koraktor/steam-condenser.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>koraktor</id>
+            <name>Sebastian Staudt</name>
+            <email>koraktor@gmail.com</email>
+        </developer>
+    </developers>
+
     <build>
         <plugins>
             <plugin>
