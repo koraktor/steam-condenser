@@ -7,7 +7,6 @@ require 'yaml'
 
 module SteamCondenser
 
-  version = YAML.load_file(File.join(File.dirname(__FILE__), '..', '..', 'VERSION.yml'))
-  VERSION = "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
+  VERSION = '0.11.2'
 
 end

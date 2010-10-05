@@ -11,8 +11,14 @@ require 'jeweler'
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
+
+gemspec = Gem::Specification.new do |gem|
+  line = File.read('lib/steam-condenser/version.rb')[/^\s*VERSION\s*=\s*.*/]
+  gem.version = line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
+end
+
 # Gem specification
-Jeweler::Tasks.new do |s|
+Jeweler::Tasks.new(gemspec) do |s|
   s.authors = ['Sebastian Staudt']
   s.email = 'koraktor@gmail.com'
   s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
