@@ -5,7 +5,6 @@
 
 require 'zlib'
 
-require 'abstract_class'
 require 'exceptions/steam_condenser_exception'
 require 'steam/packets/s2a_info_detailed_packet'
 require 'steam/packets/a2s_info_packet'
@@ -22,9 +21,7 @@ require 'steam/packets/a2m_get_servers_batch2_packet'
 require 'steam/packets/m2a_server_batch_packet'
 require 'steam/packets/rcon/rcon_goldsrc_response'
 
-class SteamPacketFactory
-
-  include AbstractClass
+module SteamPacketFactory
 
   # Creates a new packet object based on the header byte of the given raw data
   def self.packet_from_data(raw_data)

@@ -8,7 +8,9 @@ require 'steam/sockets/steam_socket'
 
 # The SourceSocket class is a sub class of SteamSocket respecting the
 # specifications of the Source query protocol.
-class SourceSocket < SteamSocket
+class SourceSocket
+
+  include SteamSocket
 
   # Reads a packet from the channel. The Source query protocol specifies a
   # maximum packet size of 1400 byte. Greater packets will be split over several

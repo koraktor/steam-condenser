@@ -3,14 +3,13 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'steam/packets/steam_packet'
 
 # The S2A_INFO_BasePacket class represents the response to a A2S_INFO
 # request send to the server.
-class S2A_INFO_BasePacket < SteamPacket
+module S2A_INFO_BasePacket
 
-  include AbstractClass
+  include SteamPacket
 
   attr_reader :info_hash
 

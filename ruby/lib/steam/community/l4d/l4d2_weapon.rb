@@ -1,11 +1,13 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/l4d/abstract_l4d_weapon'
 
-class L4D2Weapon < AbstractL4DWeapon
+class L4D2Weapon
+
+  include AbstractL4DWeapon
 
   attr_reader :damage, :weapon_group
 

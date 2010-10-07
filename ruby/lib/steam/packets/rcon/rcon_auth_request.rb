@@ -5,10 +5,12 @@
 
 require 'steam/packets/rcon/rcon_packet'
 
-class RCONAuthRequest < RCONPacket
+class RCONAuthRequest
+
+  include RCONPacket
 
   def initialize(request_id, rcon_password)
-    super request_id, RCONPacket::SERVERDATA_AUTH, rcon_password
+    super request_id, SERVERDATA_AUTH, rcon_password
   end
 
 end

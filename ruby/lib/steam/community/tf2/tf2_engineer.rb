@@ -7,7 +7,9 @@ require 'steam/community/tf2/tf2_class'
 
 # Represents the stats for the Team Fortress 2 engineer class for a specific
 # user
-class TF2Engineer < TF2Class
+class TF2Engineer
+
+  include TF2Class
 
   attr_reader :max_buildings_built, :max_teleports, :max_sentry_kills
 

@@ -3,12 +3,8 @@
 #
 # Copyright (c) 2009-2010, Sebastian Staudt
 
-require 'abstract_class'
-
 # Super class for classes representing game weapons
-class GameWeapon
-
-  include AbstractClass
+module GameWeapon
 
   attr_reader :kills, :id, :shots
 

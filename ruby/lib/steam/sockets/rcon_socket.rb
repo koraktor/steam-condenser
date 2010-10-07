@@ -9,7 +9,9 @@ require 'steam/packets/rcon/rcon_packet'
 require 'steam/packets/rcon/rcon_packet_factory'
 require 'steam/sockets/steam_socket'
 
-class RCONSocket < SteamSocket
+class RCONSocket
+
+  include SteamSocket
 
   def initialize(ip_address, port_number)
     super ip_address, port_number

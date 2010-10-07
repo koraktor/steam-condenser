@@ -3,12 +3,11 @@
 #
 # Copyright (c) 2009-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'steam/community/game_weapon'
 
-class AbstractL4DWeapon < GameWeapon
+module AbstractL4DWeapon
 
-  include AbstractClass
+  include GameWeapon
 
   attr_reader :accuracy, :headshots_percentage, :kill_percentage
 

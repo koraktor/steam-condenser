@@ -3,12 +3,11 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'steam/packets/steam_packet'
 
-class RCONPacket < SteamPacket
+module RCONPacket
 
-  include AbstractClass
+  include SteamPacket
 
   SERVERDATA_AUTH = 3
   SERVERDATA_AUTH_RESPONSE = 2

@@ -1,12 +1,14 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/game_class'
 
 # Represents the stats for a DoD:S class for a specific user
-class DoDSClass < GameClass
+class DoDSClass
+
+  include GameClass
 
   attr_reader :blocks, :bombs_defused, :bombs_planted, :captures, :deaths,
               :dominations, :key, :kills, :name, :rounds_lost, :rounds_won,

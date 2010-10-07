@@ -3,7 +3,6 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'datagram_channel'
 require 'ipaddr'
 require 'stringio_additions'
@@ -11,9 +10,7 @@ require 'exceptions/timeout_exception'
 
 # Defines common methods for sockets used to connect to game and master
 # servers.
-class SteamSocket
-
-  include AbstractClass
+module SteamSocket
 
   def initialize(*args)
     @channel = DatagramChannel.open

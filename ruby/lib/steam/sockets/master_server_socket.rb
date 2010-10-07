@@ -5,7 +5,9 @@
 
 require 'steam/sockets/steam_socket'
 
-class MasterServerSocket < SteamSocket
+class MasterServerSocket
+
+  include SteamSocket
 
   def reply
     receive_packet 1500

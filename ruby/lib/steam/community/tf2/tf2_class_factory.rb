@@ -3,7 +3,6 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'steam/community/tf2/tf2_class'
 require 'steam/community/tf2/tf2_engineer'
 require 'steam/community/tf2/tf2_medic'
@@ -12,9 +11,7 @@ require 'steam/community/tf2/tf2_spy'
 
 # The TF2ClassFactory is used to created instances of TF2Class based on the XML
 # input data
-class TF2ClassFactory
-
-  include AbstractClass
+module TF2ClassFactory
 
   # Creates a new instance of TF2Class storing the statistics for a Team
   # Fortress 2 class with the assigned XML data

@@ -6,7 +6,7 @@
 require 'stringio_additions'
 
 # This class represents a packet used by the Source query protocol
-class SteamPacket
+module SteamPacket
 
   A2A_ACK_HEADER = 0x6A
   A2A_PING_HEADER = 0x69

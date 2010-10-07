@@ -5,12 +5,14 @@
 
 require 'steam/packets/steam_packet'
 
-class M2A_SERVER_BATCH_Packet < SteamPacket
+class M2A_SERVER_BATCH_Packet
+
+  include SteamPacket
 
   attr_reader :servers
 
   def initialize(data)
-    super SteamPacket::M2A_SERVER_BATCH_HEADER, data
+    super M2A_SERVER_BATCH_HEADER, data
 
     unless @content_data.byte == 0x0A
       raise PacketFormatException.new('Master query response is missing additional 0x0A byte.')

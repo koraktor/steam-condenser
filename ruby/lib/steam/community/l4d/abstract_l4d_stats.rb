@@ -1,17 +1,16 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'steam/community/game_stats'
 
 # AbstractL4DStats is an abstract base class for statistics for Left4Dead and
 # Left4Dead 2. As both games have more or less the same statistics available in
 # the Steam Community the code for both is pretty much the same.
-class AbstractL4DStats < GameStats
+module AbstractL4DStats
 
-  include AbstractClass
+  include GameStats
 
   SPECIAL_INFECTED = %w(boomer hunter smoker tank)
 

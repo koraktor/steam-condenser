@@ -7,7 +7,9 @@ require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d2_map'
 require 'steam/community/l4d/l4d2_weapon'
 
-class L4D2Stats < AbstractL4DStats
+class L4D2Stats
+
+  include AbstractL4DStats
 
   SPECIAL_INFECTED = SPECIAL_INFECTED + %w{charger jockey spitter}
 

@@ -7,7 +7,9 @@ require 'steam/packets/steam_packet'
 
 # The S2A_RULES_Packet class represents the response to a A2S_RULES
 # request send to the server.
-class S2A_RULES_Packet < SteamPacket
+class S2A_RULES_Packet
+
+  include SteamPacket
 
   attr_reader :rules_hash
 

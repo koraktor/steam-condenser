@@ -7,7 +7,9 @@ require 'steam/packets/steam_packet'
 
 # The S2A_PLAYER_Packet class represents the response to a A2S_PLAYER
 # request send to the server.
-class S2A_PLAYER_Packet < SteamPacket
+class S2A_PLAYER_Packet
+
+  include SteamPacket
 
   attr_reader :player_hash
 
@@ -15,7 +17,7 @@ class S2A_PLAYER_Packet < SteamPacket
   def initialize(content_data)
     raise Exception.new('Wrong formatted S2A_PLAYER packet.') if content_data.nil?
 
-    super SteamPacket::S2A_PLAYER_HEADER, content_data
+    super S2A_PLAYER_HEADER, content_data
 
     # Ignore player count
     @content_data.byte

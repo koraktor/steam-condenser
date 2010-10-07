@@ -11,7 +11,9 @@ require 'steam/servers/game_server'
 require 'steam/sockets/rcon_socket'
 require 'steam/sockets/source_socket'
 
-class SourceServer < GameServer
+class SourceServer
+
+  include GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(player_status)

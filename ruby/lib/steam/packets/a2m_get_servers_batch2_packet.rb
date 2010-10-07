@@ -6,11 +6,13 @@
 require 'steam/packets/steam_packet'
 require 'steam/servers/master_server'
 
-class A2M_GET_SERVERS_BATCH2_Packet < SteamPacket
+class A2M_GET_SERVERS_BATCH2_Packet
+
+  include SteamPacket
 
   # Creates a master server request, filtering by the given paramters.
   def initialize(region_code = MasterServer::REGION_ALL, start_ip = '0.0.0.0:0', filter = '')
-    super SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER
+    super A2M_GET_SERVERS_BATCH2_HEADER
 
     @filter = filter
     @region_code = region_code

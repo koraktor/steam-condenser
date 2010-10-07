@@ -10,7 +10,9 @@ require 'steam/sockets/steam_socket'
 
 # The SourceSocket class is a sub class of SteamSocket respecting the
 # specifications of the Source query protocol.
-class GoldSrcSocket < SteamSocket
+class GoldSrcSocket
+
+  include SteamSocket
 
   def initialize(ipaddress, port_number = 27015, is_hltv = false)
     super ipaddress, port_number

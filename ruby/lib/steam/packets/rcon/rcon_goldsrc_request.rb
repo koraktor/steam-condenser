@@ -5,7 +5,9 @@
 
 require 'steam/packets/steam_packet'
 
-class RCONGoldSrcRequest < SteamPacket
+class RCONGoldSrcRequest
+
+  include SteamPacket
 
   def initialize(request)
     super 0x00, request

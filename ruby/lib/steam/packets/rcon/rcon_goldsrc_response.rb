@@ -5,10 +5,12 @@
 
 require 'steam/packets/steam_packet'
 
-class RCONGoldSrcResponse < SteamPacket
+class RCONGoldSrcResponse
+
+  include SteamPacket
 
   def initialize(command_response)
-    super SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER, command_response
+    super RCON_GOLDSRC_RESPONSE_HEADER, command_response
   end
 
   def response

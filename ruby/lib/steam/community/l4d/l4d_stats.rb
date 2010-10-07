@@ -1,14 +1,16 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d_explosive'
 require 'steam/community/l4d/l4d_map'
 require 'steam/community/l4d/l4d_weapon'
 
-class L4DStats < AbstractL4DStats
+class L4DStats
+
+  include AbstractL4DStats
 
   # Creates a L4DStats object by calling the super constructor with the game
   # name "l4d".

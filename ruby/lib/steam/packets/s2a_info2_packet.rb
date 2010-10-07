@@ -7,11 +7,13 @@ require 'steam/packets/s2a_info_base_packet'
 
 # The S2A_INFO2_Packet class represents the response to a A2A_INFO
 # request send to a Source server.
-class S2A_INFO2_Packet < S2A_INFO_BasePacket
+class S2A_INFO2_Packet
+
+  include S2A_INFO_BasePacket
 
   # Creates a S2A_INFO2 response object based on the data received.
   def initialize(data)
-    super SteamPacket::S2A_INFO2_HEADER, data
+    super S2A_INFO2_HEADER, data
 
     @protocol_version = @content_data.byte
     @server_name = @content_data.cstring

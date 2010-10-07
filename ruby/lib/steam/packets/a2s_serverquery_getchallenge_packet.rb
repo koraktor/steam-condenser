@@ -7,11 +7,13 @@ require 'steam/packets/steam_packet'
 
 # The A2S_SERVERQUERY_GETCHALLENGE_Packet class represents a
 # A2S_SERVERQUERY_GETCHALLENGE request send to the server.
-class A2S_SERVERQUERY_GETCHALLENGE_Packet < SteamPacket
+class A2S_SERVERQUERY_GETCHALLENGE_Packet
+
+  include SteamPacket
 
   # Creates a new A2S_SERVERQUERY_GETCHALLENGE request object
   def initialize
-    super SteamPacket::A2S_SERVERQUERY_GETCHALLENGE_HEADER
+    super A2S_SERVERQUERY_GETCHALLENGE_HEADER
   end
 
 end

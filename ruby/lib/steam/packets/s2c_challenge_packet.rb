@@ -7,7 +7,9 @@ require 'steam/packets/steam_packet'
 
 # The S2C_CHALLENGE_Packet class represents the response
 # to a A2S_SERVERQUERY_GETCHALLENGE request send to the server.
-class S2C_CHALLENGE_Packet < SteamPacket
+class S2C_CHALLENGE_Packet
+
+  include SteamPacket
 
   # Creates a AS2C_CHALLENGE response object based on the data received.
   def initialize(challenge_number)

@@ -6,7 +6,9 @@
 require 'steam/community/game_class'
 
 # Represents the stats for a Team Fortress 2 class for a specific user
-class TF2Class < GameClass
+module TF2Class
+
+  include GameClass
 
   attr_reader :max_buildings_destroyed, :max_captures, :max_damage,
               :max_defenses, :max_dominations, :max_kill_assists, :max_kills,

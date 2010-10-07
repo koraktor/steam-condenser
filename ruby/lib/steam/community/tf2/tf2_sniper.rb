@@ -6,7 +6,9 @@
 require 'steam/community/tf2/tf2_class'
 
 # Represents the stats for the Team Fortress 2 sniper class for a specific user
-class TF2Sniper < TF2Class
+class TF2Sniper
+
+  include TF2Class
 
   # Creates a new instance of TF2Sniper based on the assigned XML data
   def initialize(class_data)

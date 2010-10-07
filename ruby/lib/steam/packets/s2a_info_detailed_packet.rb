@@ -9,11 +9,13 @@ require "steam/packets/s2a_info_base_packet"
 # request send to a GoldSrc server.
 # This is deprecated by 10/24/2008 for GoldSrc servers. They use the same
 # format as Source servers (S2A_INFO2) now.
-class S2A_INFO_DETAILED_Packet < S2A_INFO_BasePacket
+class S2A_INFO_DETAILED_Packet
+
+  include S2A_INFO_BasePacket
 
   # Creates a S2A_INFO_DETAILED response object based on the data received.
   def initialize(data)
-    super SteamPacket::S2A_INFO_DETAILED_HEADER, data
+    super S2A_INFO_DETAILED_HEADER, data
 
     @game_ip = @content_data.cstring
     @server_name = @content_data.cstring

@@ -7,7 +7,9 @@ require 'steam/packets/steam_packet'
 
 # The A2A_PING_Packet class represents a A2A_PING request send to the
 # server.
-class A2A_PING_Packet < SteamPacket
+class A2A_PING_Packet
+
+  include SteamPacket
 
   # Creates a new A2A_PING request object
   def initialize

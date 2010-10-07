@@ -1,12 +1,14 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/game_weapon'
 
 # Represents the stats for a Day of Defeat: Source weapon for a specific user
-class DoDSWeapon < GameWeapon
+class DoDSWeapon
+
+  include GameWeapon
 
   attr_reader :headshots, :name, :hits
 

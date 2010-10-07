@@ -6,7 +6,9 @@
 require 'steam/servers/game_server'
 require 'steam/sockets/goldsrc_socket'
 
-class GoldSrcServer < GameServer
+class GoldSrcServer
+
+  include GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(player_status)

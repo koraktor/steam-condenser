@@ -3,7 +3,6 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'exceptions/steam_condenser_exception'
 require 'steam/steam_player'
 require 'steam/packets/a2s_info_packet'
@@ -16,9 +15,7 @@ require 'steam/packets/s2a_player_packet'
 require 'steam/packets/s2a_rules_packet'
 require 'steam/packets/s2c_challenge_packet'
 
-class GameServer
-
-  include AbstractClass
+module GameServer
 
   REQUEST_CHALLENGE = 0
   REQUEST_INFO = 1

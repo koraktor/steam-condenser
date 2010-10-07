@@ -3,16 +3,15 @@
 #
 # Copyright (c) 2008-2010, Sebastian Staudt
 
-require 'abstract_class'
 require 'stringio_additions'
 require 'exceptions/packet_format_exception'
 require 'steam/packets/steam_packet_factory'
 require 'steam/packets/rcon/rcon_auth_response'
 require 'steam/packets/rcon/rcon_exec_response'
 
-class RCONPacketFactory < SteamPacketFactory
+module RCONPacketFactory
 
-  include AbstractClass
+  include SteamPacketFactory
 
   def self.packet_from_data(raw_data)
     byte_buffer = StringIO.new raw_data

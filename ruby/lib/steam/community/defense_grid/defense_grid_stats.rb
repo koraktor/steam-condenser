@@ -1,13 +1,15 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/game_stats'
 
 # The DefenseGridStats class represents the game statistics for a single user in
 # Defense Grid: The Awakening
-class DefenseGridStats < GameStats
+class DefenseGridStats
+
+  include GameStats
 
   attr_reader :bronze_medals, :damage_done, :damage_campaign, :damage_challenge,
               :encountered, :gold_medals, :heat_damage, :interest, :killed,

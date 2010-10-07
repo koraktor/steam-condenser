@@ -1,11 +1,13 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2010, Sebastian Staudt
 
 require 'steam/community/game_weapon'
 
-class L4DExplosive < GameWeapon
+class L4DExplosive
+
+  include GameWeapon
 
   # Creates a new instance of L4DExplosive based on the assigned XML data
   def initialize(weapon_data)

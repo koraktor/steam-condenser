@@ -10,9 +10,7 @@ require 'steam/community/game_achievement'
 
 # The GameStats class represents the game statistics for a single user and a
 # specific game
-class GameStats
-
-  protected :initialize
+module GameStats
 
   attr_reader :app_id, :custom_url, :game_friendly_name, :game_name,
               :hours_played, :privacy_state, :steam_id64
