@@ -1,0 +1,20 @@
+---
+layout:      code-sample
+name:        community
+description: Getting the Steam Community profile of Valve's Adrian Finol and
+             his TF2 achievements
+
+languages:
+  java: |
+    SteamId id = new SteamId("demomenz");
+    GameStats stats = id.getGameStats("tf2");
+    List<GameAchievement> achievements = stats.getAchievements();
+  php:  |
+    $id = new SteamId('demomenz');
+    $stats = $id->getGameStats('tf2');
+    $achievements = $stats->getAchievements();
+  ruby: |
+    id = SteamId.new('demomenz')
+    stats = id.game_stats('tf2')
+    achievements = stats.achievements
+---

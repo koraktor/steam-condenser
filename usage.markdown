@@ -24,6 +24,7 @@ title:       Usage
     $('#simple-query').load('code/simple-query.html');
     $('#master-query').load('code/master-query.html');
     $('#rcon').load('code/rcon.html');
+    $('#community').load('code/community.html');
   });
 </script>
 
@@ -35,3 +36,6 @@ title:       Usage
 
 ## Controlling game servers using RCON
 <div id="rcon"></div>
+
+## Getting information from the Steam Community
+<div id="community"></div>
