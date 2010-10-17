@@ -30,9 +30,6 @@ Condenser better.
    Want to support Steam Condenser with money? Just click on the Pledgie button
    in the upper right and [donate][4] any amount you want. Each buck will be used for
    the project, e.g. an own web server. You can also use the Flattr button to support Steam Condenser. The amount donated via Flattr depends on your Flattr settings.
-6. **Click on ads**<br />
-   Don't want to spend money? If you take a look at the advertisements on this
-   page and click on the links, you will also support Steam Condenser with money.
 
 {% include google_adsense %}
 
