@@ -62,7 +62,7 @@ public class CSSStats extends GameStats {
             this.lastMatchStats.put("damage", Integer.parseInt(lastMatchStats.getElementsByTagName("dmg").item(0).getTextContent()));
             this.lastMatchStats.put("deaths", Integer.parseInt(lastMatchStats.getElementsByTagName("deaths").item(0).getTextContent()));
             this.lastMatchStats.put("dominations", Integer.parseInt(lastMatchStats.getElementsByTagName("dominations").item(0).getTextContent()));
-            this.lastMatchStats.put("favoriteWeapon", lastMatchStats.getElementsByTagName("favwpn").item(0).getTextContent());
+            this.lastMatchStats.put("favoriteWeaponId", Integer.parseInt(lastMatchStats.getElementsByTagName("favwpnid").item(0).getTextContent()));
             this.lastMatchStats.put("kills", Integer.parseInt(lastMatchStats.getElementsByTagName("kills").item(0).getTextContent()));
             this.lastMatchStats.put("maxPlayers", Integer.parseInt(lastMatchStats.getElementsByTagName("max_players").item(0).getTextContent()));
             this.lastMatchStats.put("money", Integer.parseInt(lastMatchStats.getElementsByTagName("money").item(0).getTextContent()));

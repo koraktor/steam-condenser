@@ -58,7 +58,7 @@ class CSSStats extends GameStats {
             $this->lastMatchStats['damage'] = (int) $statsData->lastmatch->dmg;
             $this->lastMatchStats['deaths'] = (int) $statsData->lastmatch->deaths;
             $this->lastMatchStats['dominations'] = (int) $statsData->lastmatch->dominations;
-            $this->lastMatchStats['favoriteWeapon'] = (string) $statsData->lastmatch->favwpn;
+            $this->lastMatchStats['favoriteWeaponId'] = (int) $statsData->lastmatch->favwpnid;
             $this->lastMatchStats['kills'] = (int) $statsData->lastmatch->kills;
             $this->lastMatchStats['maxPlayers'] = (int) $statsData->lastmatch->max_players;
             $this->lastMatchStats['money'] = (int) $statsData->lastmatch->money;
