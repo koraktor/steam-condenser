@@ -75,8 +75,8 @@ public abstract class AbstractL4DStats extends GameStats {
 		if(this.favorites == null) {
 			Element favoritesNode = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("favorites").item(0);
 			this.favorites = new HashMap<String, Object>();
-			this.favorites.put("campagin", favoritesNode.getElementsByTagName("campaign").item(0).getTextContent());
-			this.favorites.put("campaginPercentage", Integer.parseInt(favoritesNode.getElementsByTagName("campaignpct").item(0).getTextContent()));
+			this.favorites.put("campaign", favoritesNode.getElementsByTagName("campaign").item(0).getTextContent());
+			this.favorites.put("campaignPercentage", Integer.parseInt(favoritesNode.getElementsByTagName("campaignpct").item(0).getTextContent()));
 			this.favorites.put("character", favoritesNode.getElementsByTagName("character").item(0).getTextContent());
 			this.favorites.put("characterPercentage", Integer.parseInt(favoritesNode.getElementsByTagName("characterpct").item(0).getTextContent()));
 			this.favorites.put("level1Weapon", favoritesNode.getElementsByTagName("weapon1").item(0).getTextContent());
@@ -104,7 +104,7 @@ public abstract class AbstractL4DStats extends GameStats {
 			this.lifetimeStats = new HashMap<String, Object>();
 			this.lifetimeStats.put("finalesSurvived", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("finales").item(0).getTextContent()));
 			this.lifetimeStats.put("gamesPlayed", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("gamesplayed").item(0).getTextContent()));
-			this.lifetimeStats.put("finalesSurvivedPercentage", (Integer) this.lifetimeStats.get("finalesSurvived") / (Integer) this.lifetimeStats.get("gamesPlayed"));
+			this.lifetimeStats.put("finalesSurvivedPercentage", (Float) this.lifetimeStats.get("finalesSurvived") / this.lifetimeStats.get("gamesPlayed"));
 			this.lifetimeStats.put("infectedKilled", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("infectedkilled").item(0).getTextContent()));
 			this.lifetimeStats.put("killsPerHour", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("killsperhour").item(0).getTextContent()));
 			this.lifetimeStats.put("avgKitsShared", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("kitsshared").item(0).getTextContent()));
@@ -202,7 +202,7 @@ public abstract class AbstractL4DStats extends GameStats {
 			this.versusStats.put("mostPointsInfected", versusStatsElement.getElementsByTagName("pointsas").item(0).getTextContent());
 			this.versusStats.put("gamesWon", Integer.parseInt(versusStatsElement.getElementsByTagName("gameswon").item(0).getTextContent()));
 			this.versusStats.put("gamesLost", Integer.parseInt(versusStatsElement.getElementsByTagName("gameslost").item(0).getTextContent()));
-			this.versusStats.put("highesSurvivorScore", Integer.parseInt(versusStatsElement.getElementsByTagName("survivorscore").item(0).getTextContent()));
+			this.versusStats.put("highestSurvivorScore", Integer.parseInt(versusStatsElement.getElementsByTagName("survivorscore").item(0).getTextContent()));
 
 			ArrayList<String> infectedArray = new ArrayList<String>();
 			infectedArray.add("boomer");
