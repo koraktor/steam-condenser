@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  * 
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.community;
@@ -84,9 +84,11 @@ public class SteamGroup {
 			this.groupId64 = (Long) id;
 		}
 		
-		if (fetch) {
+		if(fetch) {
 			this.fetchMembers();
 		}
+
+		this.cache();
 	}
 	
 	public boolean cache() {

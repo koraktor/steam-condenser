@@ -163,6 +163,8 @@ public class SteamId {
 		if(fetchData) {
 			this.fetchData();
 		}
+
+		this.cache();
 	}
 
 	public boolean cache() {
