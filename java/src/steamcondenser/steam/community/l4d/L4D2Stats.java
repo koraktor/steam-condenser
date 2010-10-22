@@ -87,7 +87,7 @@ public class L4D2Stats extends AbstractL4DStats {
                 mapHash.put("avgRoundScore", Integer.parseInt(mapData.getElementsByTagName("avgscoreperround").item(0).getTextContent()));
                 mapHash.put("highestGameScore", Integer.parseInt(mapData.getElementsByTagName("highgamescore").item(0).getTextContent()));
                 mapHash.put("highestRoundScore", Integer.parseInt(mapData.getElementsByTagName("highroundscore").item(0).getTextContent()));
-                mapHash.put("name", Integer.parseInt(mapData.getElementsByTagName("fullname").item(0).getTextContent()));
+                mapHash.put("name", mapData.getElementsByTagName("fullname").item(0).getTextContent());
                 mapHash.put("roundsPlayed", Integer.parseInt(mapData.getElementsByTagName("roundsplayed").item(0).getTextContent()));
                 mapHash.put("roundsWon", Integer.parseInt(mapData.getElementsByTagName("roundswon").item(0).getTextContent()));
                 mapsHash.put(mapId, mapHash);

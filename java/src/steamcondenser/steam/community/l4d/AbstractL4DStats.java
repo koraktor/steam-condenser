@@ -58,7 +58,7 @@ public abstract class AbstractL4DStats extends GameStats {
                 this.mostRecentGame.put("difficulty", mostRecentGameNode.getElementsByTagName("difficulty").item(0).getTextContent());
                 this.mostRecentGame.put("escaped", mostRecentGameNode.getElementsByTagName("bEscaped").item(0).getTextContent().equals("1"));
                 this.mostRecentGame.put("movie", mostRecentGameNode.getElementsByTagName("movie").item(0).getTextContent());
-                this.mostRecentGame.put("timePlayed", mostRecentGameNode.getElementsByTagName("timeplayed").item(0).getTextContent());
+                this.mostRecentGame.put("timePlayed", mostRecentGameNode.getElementsByTagName("time").item(0).getTextContent());
             }
 		}
 	}
@@ -104,7 +104,7 @@ public abstract class AbstractL4DStats extends GameStats {
 			this.lifetimeStats = new HashMap<String, Object>();
 			this.lifetimeStats.put("finalesSurvived", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("finales").item(0).getTextContent()));
 			this.lifetimeStats.put("gamesPlayed", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("gamesplayed").item(0).getTextContent()));
-			this.lifetimeStats.put("finalesSurvivedPercentage", (Float) this.lifetimeStats.get("finalesSurvived") / this.lifetimeStats.get("gamesPlayed"));
+			this.lifetimeStats.put("finalesSurvivedPercentage", (Float) this.lifetimeStats.get("finalesSurvived") / (Integer) this.lifetimeStats.get("gamesPlayed"));
 			this.lifetimeStats.put("infectedKilled", Integer.parseInt(lifetimeStatsElement.getElementsByTagName("infectedkilled").item(0).getTextContent()));
 			this.lifetimeStats.put("killsPerHour", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("killsperhour").item(0).getTextContent()));
 			this.lifetimeStats.put("avgKitsShared", Float.parseFloat(lifetimeStatsElement.getElementsByTagName("kitsshared").item(0).getTextContent()));
@@ -219,36 +219,5 @@ public abstract class AbstractL4DStats extends GameStats {
 		}
 
 		return this.versusStats;
-	}
-
-	/**
-	 * @return A HashMap of L4DWeapon for this user containing all Left4Dead
-	 * weapons.
-  	 * If the weapons haven't been parsed already, parsing is done now.
-	 */
-	public HashMap<String, GameWeapon> getWeaponStats() {
-		if(!this.isPublic()) {
-			return null;
-		}
-
-		if(this.weaponStats == null) {
-			Element weaponStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
-			this.weaponStats = new HashMap<String, GameWeapon>();
-			NodeList weaponNodes = weaponStatsElement.getChildNodes();
-			for(int i = 0; i < weaponNodes.getLength(); i++) {
-				Element weaponData = (Element) weaponNodes.item(i);
-				String weaponName = weaponData.getNodeName();
-				GameWeapon weapon;
-				if(!weaponName.equals("molotov") && !weaponName.equals("pipes")) {
-					weapon = new L4DWeapon(weaponData);
-				}
-				else {
-					weapon = new L4DExplosive(weaponData);
-				}
-				this.weaponStats.put(weaponName, weapon);
-			}
-		}
-
-		return this.weaponStats;
 	}
 }
