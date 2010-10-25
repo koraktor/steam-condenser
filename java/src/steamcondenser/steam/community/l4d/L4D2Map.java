@@ -56,17 +56,17 @@ public class L4D2Map extends L4DMap {
                 Element teammateNode = (Element) teammateNodes.item(i);
                 this.teammates.add(SteamId.create(Long.parseLong(teammateNode.getTextContent())));
             }
-        }
 
-        String medal = mapData.getElementsByTagName("medal").item(0).getTextContent();
-        if(medal.equals("gold")) {
-            this.medal = GOLD;
-        } else if(medal.equals("silver")) {
-            this.medal = SILVER;
-        } else if(medal.equals("bronze")) {
-            this.medal = BRONZE;
-        } else {
-            this.medal = NONE;
+            String medal = mapData.getElementsByTagName("medal").item(0).getTextContent();
+            if(medal.equals("gold")) {
+                this.medal = GOLD;
+            } else if(medal.equals("silver")) {
+                this.medal = SILVER;
+            } else if(medal.equals("bronze")) {
+                this.medal = BRONZE;
+            } else {
+                this.medal = NONE;
+            }
         }
     }
 
