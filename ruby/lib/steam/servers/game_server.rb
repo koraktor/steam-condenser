@@ -131,7 +131,7 @@ module GameServer
       players.pop if is_a? GoldSrcServer
 
       players.each do |player|
-        player_data = split_player_status(player)
+        player_data = self.class.split_player_status(player)
         @player_hash[player_data[1]].add_info(*player_data) if @player_hash.key?(player_data[1])
       end
     end
