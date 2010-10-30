@@ -6,7 +6,6 @@
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 require 'rubygems'
-require 'jeweler'
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
