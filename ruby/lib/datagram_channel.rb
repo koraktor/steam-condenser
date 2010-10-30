@@ -24,8 +24,7 @@ class DatagramChannel
     if args[0].is_a? IPAddr
       ip_address = args[0].to_s
     elsif args[0].is_a? String
-      sockaddr = (Socket.gethostbyname args[0])[3]
-      ip_address = "#{sockaddr[0]}.#{sockaddr[1]}.#{sockaddr[2]}.#{sockaddr[3]}"
+      ip_address = IPSocket.getaddress args[0]
     else
       raise ArgumentError
     end

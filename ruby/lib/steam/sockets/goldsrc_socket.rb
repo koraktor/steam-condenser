@@ -31,7 +31,7 @@ class GoldSrcSocket
       begin
         # Parsing of split packet headers
         request_id = @buffer.long
-        packet_number_and_count = @buffer.byte.to_i
+        packet_number_and_count = @buffer.byte
         packet_count = packet_number_and_count & 0xF
         packet_number = (packet_number_and_count >> 4) + 1
 

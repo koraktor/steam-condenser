@@ -25,7 +25,7 @@ module SteamPacketFactory
 
   # Creates a new packet object based on the header byte of the given raw data
   def self.packet_from_data(raw_data)
-    header = raw_data[0].to_i
+    header = raw_data[0].ord
     data = raw_data[1..-1]
 
     case header

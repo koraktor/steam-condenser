@@ -14,7 +14,7 @@ module SteamSocket
 
   def initialize(*args)
     @channel = DatagramChannel.open
-    @channel.connect *args
+    @channel.connect(*args)
     @channel.configure_blocking false
 
     @remote_socket = Socket.getaddrinfo args[0].to_s, args[1]

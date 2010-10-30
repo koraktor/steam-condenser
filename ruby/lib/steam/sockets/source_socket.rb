@@ -26,8 +26,8 @@ class SourceSocket
         # Parsing of split packet headers
         request_id = @buffer.long
         is_compressed = ((request_id & 0x80000000) != 0)
-        packet_count = @buffer.byte.to_i
-        packet_number = @buffer.byte.to_i + 1
+        packet_count = @buffer.byte
+        packet_number = @buffer.byte + 1
 
         if is_compressed
           @buffer.long

@@ -12,7 +12,7 @@ class StringIO
   end
 
   def byte
-    read(1)[0]
+    read(1)[0].ord
   end
 
   def float
