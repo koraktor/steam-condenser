@@ -29,7 +29,7 @@ module SteamSocket
     raise TimeoutException if select([@channel.socket], nil, nil, 1).nil?
 
     if buffer_length == 0
-      @buffer.truncate @buffer.size
+      @buffer.rewind
     else
       @buffer = StringIO.allocate buffer_length
     end
