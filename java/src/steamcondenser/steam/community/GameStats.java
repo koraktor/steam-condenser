@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import steamcondenser.SteamCondenserException;
@@ -86,10 +87,11 @@ public class GameStats {
 		String url;
 		try {
 			if(this.customUrl == null) {
-				url = "http://steamcommunity.com/profile/" + this.steamId64 + "/stats/" + this.gameName + "?xml=1";
+				url = "http://steamcommunity.com/profile/" + this.steamId64 + "/stats/" + this.gameName;
 			} else {
-				url = "http://steamcommunity.com/id/" + this.customUrl + "/stats/" + this.gameName + "?xml=1";
+				url = "http://steamcommunity.com/id/" + this.customUrl + "/stats/" + this.gameName;
 			}
+            url += "?xml=all";
 
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			this.xmlData = parser.parse(url).getDocumentElement();
@@ -99,7 +101,11 @@ public class GameStats {
 				this.appId = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameLink").item(0).getTextContent().replace("http://store.steampowered.com/app/", ""));
 				this.gameFriendlyName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameFriendlyName").item(0).getTextContent();
 				this.gameName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameName").item(0).getTextContent();
-				this.hoursPlayed = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0).getTextContent();
+
+                Node hoursPlayedNode = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0);
+                if(hoursPlayedNode != null) {
+	                this.hoursPlayed = hoursPlayedNode.getTextContent();
+                }
 
                 if(this.customUrl == null) {
                     this.customUrl = ((Element) this.xmlData.getElementsByTagName("player").item(0)).getElementsByTagName("customURL").item(0).getTextContent();

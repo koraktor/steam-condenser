@@ -52,7 +52,7 @@ class GameStats
     end
     @game_friendly_name = game_name
 
-    url = base_url + '?xml=1'
+    url = base_url + '?xml=all'
     @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
 
     @privacy_state = @xml_data.elements['privacyState'].text
@@ -60,7 +60,7 @@ class GameStats
       @app_id       = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]
       @custom_url   = @xml_data.elements['player/customURL'].text if @custom_url.nil?
       @game_name    = @xml_data.elements['game/gameName'].text
-      @hours_played = @xml_data.elements['stats/hoursPlayed'].text
+      @hours_played = @xml_data.elements['stats/hoursPlayed'].text unless @xml_data.elements['stats/hoursPlayed'].nil?
       @steam_id64   = @xml_data.elements['player/steamID64'].text.to_i if @steam_id64.nil?
     end
   end
