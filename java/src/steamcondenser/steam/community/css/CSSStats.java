@@ -97,9 +97,21 @@ public class CSSStats extends GameStats {
             this.totalStats.put("windowsBroken", Integer.parseInt(lifetimeStats.getElementsByTagName("winbroken").item(0).getTextContent()));
             this.totalStats.put("zoomedSniperKills", Integer.parseInt(lifetimeStats.getElementsByTagName("zsniperkills").item(0).getTextContent()));
 
-            this.lastMatchStats.put("kdratio", (Integer) this.lastMatchStats.get("kills") / (Integer) this.lastMatchStats.get("deaths"));
-            this.totalStats.put("accuracy", (Integer) this.totalStats.get("hits") / (Integer) this.totalStats.get("shots"));
-            this.totalStats.put("kdratio", (Integer) this.totalStats.get("kills") / (Integer) this.totalStats.get("deaths"));
+            if((Integer) this.lastMatchStats.get("deaths") > 0) {
+                this.lastMatchStats.put("kdratio", (Integer) this.lastMatchStats.get("kills") / (Integer) this.lastMatchStats.get("deaths"));
+            } else {
+                this.lastMatchStats.put("kdratio", 0);
+            }
+            if((Integer) this.totalStats.get("shots") > 0) {
+                this.totalStats.put("accuracy", (Integer) this.totalStats.get("hits") / (Integer) this.totalStats.get("shots"));
+            } else {
+                this.totalStats.put("accuracy", 0);
+            }
+            if((Integer) this.totalStats.get("deaths") > 0) {
+                this.totalStats.put("kdratio", (Integer) this.totalStats.get("kills") / (Integer) this.totalStats.get("deaths"));
+            } else {
+                this.totalStats.put("kdratio", 0);
+            }
             this.totalStats.put("roundsLost", (Integer) this.totalStats.get("roundsPlayed") - (Integer) this.totalStats.get("roundsWon"));
         }
     }

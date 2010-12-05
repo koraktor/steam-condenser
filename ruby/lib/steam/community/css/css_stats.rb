@@ -73,9 +73,9 @@ class CSSStats
       @total_stats[:windows_broken]          = @xml_data.elements['stats/lifetime/winbroken'].text.to_i
       @total_stats[:zoomed_sniper_kills]     = @xml_data.elements['stats/lifetime/zsniperkills'].text.to_i
 
-      @last_match_stats[:kdratio] = @last_match_stats[:kills].to_f / @last_match_stats[:deaths]
-      @total_stats[:accuracy]     = @total_stats[:hits].to_f / @total_stats[:shots]
-      @total_stats[:kdratio]      = @total_stats[:kills].to_f / @total_stats[:deaths]
+      @last_match_stats[:kdratio] = (@total_stats[:deaths] > 0) ? @last_match_stats[:kills].to_f / @last_match_stats[:deaths] : 0
+      @total_stats[:accuracy]     = (@total_stats[:shots] > 0) ? @total_stats[:hits].to_f / @total_stats[:shots] : 0
+      @total_stats[:kdratio]      = (@total_stats[:deaths] > 0) ? @total_stats[:kills].to_f / @total_stats[:deaths] : 0
       @total_stats[:rounds_lost]  = @total_stats[:rounds_played] - @total_stats[:rounds_won]
     end
   end
