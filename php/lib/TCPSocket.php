@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -58,7 +58,7 @@ class TCPSocket extends Socket
 		{
 			if(!$this->socket = fsockopen("tcp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
 			{
-				throw new Exception("Could not create socket.");
+				throw new Exception("Could not create socket: $socketErrstr");
 			}
 			stream_set_blocking($this->socket, $this->isBlocking);
 		}
