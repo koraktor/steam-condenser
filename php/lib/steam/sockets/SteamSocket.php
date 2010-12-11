@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -23,6 +23,11 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
  */
 abstract class SteamSocket
 {
+    /**
+     * @var int
+     */
+    private static $timeout = 1000;
+
 	/**
 	 * @var ByteBuffer
 	 */
@@ -32,6 +37,21 @@ abstract class SteamSocket
 	 * @var DatagramChannel
 	 */
 	protected $channel;
+
+    /**
+     * Sets the timeout for socket operations. This usually only affects
+     * timeouts, i.e. when a server does not respond in time.
+     *
+     * Due to the server-side implementation of the RCON protocol, each RCON
+     * request will also wait this amount of time after execution. So if you
+     * need RCON requests to execute fast, you should set this to a adequatly
+     * low value.
+     *
+     * @param $timeout The amount of milliseconds before a request times out
+     */
+    public static function setTimeout($timeout) {
+        self::$timeout = $timeout;
+    }
 
 	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
 	{
@@ -56,8 +76,7 @@ abstract class SteamSocket
 	 */
 	public function receivePacket($bufferLength = 0)
 	{
-        if(!$this->channel->socket()->select(1))
-        {
+        if(!$this->channel->socket()->select(self::$timeout)) {
 			throw new TimeoutException();
 		}
 

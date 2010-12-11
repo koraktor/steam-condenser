@@ -12,6 +12,21 @@ require 'exceptions/timeout_exception'
 # servers.
 module SteamSocket
 
+  @@timeout = 1000
+
+  # Sets the timeout for socket operations. This usually only affects timeouts,
+  # i.e. when a server does not respond in time.
+  #
+  # Due to the server-side implementation of the RCON protocol, each RCON
+  # request will also wait this amount of time after execution. So if you need
+  # RCON requests to execute fast, you should set this to a adequatly low
+  # value.
+  #
+  # +timeout+ The amount of milliseconds before a request times out
+  def self.timeout=(timeout)
+    @@timeout = timeout
+  end
+
   def initialize(*args)
     @channel = DatagramChannel.open
     @channel.connect(*args)
@@ -26,7 +41,7 @@ module SteamSocket
   end
 
   def receive_packet(buffer_length = 0)
-    raise TimeoutException if select([@channel.socket], nil, nil, 1).nil?
+    raise TimeoutException if select([@channel.socket], nil, nil, @@timeout / 1000).nil?
 
     if buffer_length == 0
       @buffer.rewind

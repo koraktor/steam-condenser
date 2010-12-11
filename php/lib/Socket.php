@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -174,11 +174,11 @@ abstract class Socket
 
 		if($this->socketsEnabled)
 		{
-			$select = socket_select($read, $write, $except, $timeout);
+			$select = socket_select($read, $write, $except, 0, $timeout * 1000);
 		}
 		else
 		{
-			$select = stream_select($read, $write, $except, $timeout);
+			$select = stream_select($read, $write, $except, 0, $timeout * 1000);
 		}
 
 		return $select > 0;

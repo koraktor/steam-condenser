@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  */
 
 package steamcondenser.steam.sockets;
@@ -30,9 +30,26 @@ import steamcondenser.steam.packets.SteamPacketFactory;
  */
 abstract public class SteamSocket
 {
+    private static int timeout = 1000;
+
     protected ByteBuffer buffer;
     protected SelectableChannel channel;
     protected InetSocketAddress remoteSocket;
+
+    /**
+     * Sets the timeout for socket operations. This usually only affects
+     * timeouts, i.e. when a server does not respond in time.
+     *
+     * Due to the server-side implementation of the RCON protocol, each RCON
+     * request will also wait this amount of time after execution. So if you
+     * need RCON requests to execute fast, you should set this to a adequatly
+     * low value.
+     *
+     * @param timeout The amount of milliseconds before a request times out
+     */
+    public static void setTimeout(int timeout) {
+        SteamSocket.timeout = timeout;
+    }
 
     /**
      * Creates a new SteamSocket used to connect to the given IP address and
@@ -88,7 +105,7 @@ abstract public class SteamSocket
         Selector selector = Selector.open();
         this.channel.register(selector, SelectionKey.OP_READ);
 
-        if (selector.select(1000) == 0) {
+        if (selector.select(SteamSocket.timeout) == 0) {
             selector.close();
             throw new TimeoutException();
         }
