@@ -6,9 +6,7 @@
 require 'steam/community/dods/dods_weapon'
 require 'steam/community/game_stats'
 
-class DoDSStats
-
-  include GameStats
+class DoDSStats < GameStats
 
   # Creates a DoDSStats object by calling the super constructor with the game
   # name "DoD:S"

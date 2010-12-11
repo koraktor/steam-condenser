@@ -8,7 +8,7 @@ require 'steam/community/l4d/l4d_explosive'
 require 'steam/community/l4d/l4d_map'
 require 'steam/community/l4d/l4d_weapon'
 
-class L4DStats
+class L4DStats < GameStats
 
   include AbstractL4DStats
 

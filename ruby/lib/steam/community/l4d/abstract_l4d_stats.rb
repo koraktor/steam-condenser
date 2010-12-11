@@ -10,8 +10,6 @@ require 'steam/community/game_stats'
 # the Steam Community the code for both is pretty much the same.
 module AbstractL4DStats
 
-  include GameStats
-
   SPECIAL_INFECTED = %w(boomer hunter smoker tank)
 
   def initialize(steam_id, game_name)

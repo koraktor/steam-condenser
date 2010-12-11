@@ -7,7 +7,7 @@ require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d2_map'
 require 'steam/community/l4d/l4d2_weapon'
 
-class L4D2Stats
+class L4D2Stats < GameStats
 
   include AbstractL4DStats
 

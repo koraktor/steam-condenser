@@ -7,9 +7,7 @@ require 'steam/community/game_stats'
 
 # The DefenseGridStats class represents the game statistics for a single user in
 # Defense Grid: The Awakening
-class DefenseGridStats
-
-  include GameStats
+class DefenseGridStats < GameStats
 
   attr_reader :bronze_medals, :damage_done, :damage_campaign, :damage_challenge,
               :encountered, :gold_medals, :heat_damage, :interest, :killed,

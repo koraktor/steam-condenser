@@ -8,9 +8,7 @@ require 'steam/community/tf2/tf2_class_factory'
 
 # The TF2Stats class represents the game statistics for a single user in Team
 # Fortress 2
-class TF2Stats
-
-  include GameStats
+class TF2Stats < GameStats
 
   attr_reader :accumulated_points
 

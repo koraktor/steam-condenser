@@ -8,9 +8,7 @@ require 'steam/community/css/css_weapon'
 
 # The CSSStats class represents the game statistics for a single user in
 # Counter-Strike: Source
-class CSSStats
-
-  include GameStats
+class CSSStats < GameStats
 
   MAPS = [ 'cs_assault', 'cs_compound', 'cs_havana', 'cs_italy', 'cs_militia',
            'cs_office', 'de_aztec', 'de_cbble', 'de_chateau', 'de_dust',
