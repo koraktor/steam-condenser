@@ -19,6 +19,9 @@ class GameStats
   # depending on the game selected
   def self.create_game_stats(steam_id, game_name)
     case game_name
+      when 'alienswarm'
+        require 'steam/community/alien_swarm/alien_swarm_stats'
+        AlienSwarmStats.new(steam_id)
       when 'cs:s'
         require 'steam/community/css/css_stats'
         CSSStats.new(steam_id)
