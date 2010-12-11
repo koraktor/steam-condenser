@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
+require 'steam/community/alien_swarm/alien_swarm_mission'
 require 'steam/community/alien_swarm/alien_swarm_weapon'
 
 # The AlienSwarmStats class represents the game statistics for a single user in
@@ -10,6 +11,8 @@ require 'steam/community/alien_swarm/alien_swarm_weapon'
 class AlienSwarmStats < GameStats
 
   attr_reader :lifetime_stats
+
+  BASE_URL = 'http://steamcommunity.com/public/images/gamestats/swarm/'
 
   WEAPONS = [ 'Autogun', 'Cannon_Sentry', 'Chainsaw', 'Flamer',
               'Grenade_Launcher', 'Hand_Grenades', 'Hornet_Barrage',
@@ -40,8 +43,10 @@ class AlienSwarmStats < GameStats
       @lifetime_stats[:healing]             = @xml_data.elements['stats/lifetime/healing'].text.to_i
       @lifetime_stats[:kills_per_hour]      = @xml_data.elements['stats/lifetime/killsperhour'].text.to_f
       @lifetime_stats[:level]               = @xml_data.elements['stats/lifetime/level'].text.to_i
+      @lifetime_stats[:promotion]           = @xml_data.elements['stats/lifetime/promotion'].text.to_i
+      @lifetime_stats[:promotion_img]       = @xml_data.elements['stats/lifetime/promotionpic'].text if @lifetime_stats[:promotion] > 0
       @lifetime_stats[:next_unlock]         = @xml_data.elements['stats/lifetime/nextunlock'].text
-      @lifetime_stats[:next_unlock_img]     = "http://steamcommunity.com/public/images/gamestats/swarm/#{@xml_data.elements['stats/lifetime/nextunlockimg'].text}"
+      @lifetime_stats[:next_unlock_img]     = BASE_URL + @xml_data.elements['stats/lifetime/nextunlockimg'].text
       @lifetime_stats[:shots_fired]         = @xml_data.elements['stats/lifetime/shotsfired'].text.to_i
       @lifetime_stats[:total_games]         = @xml_data.elements['stats/lifetime/totalgames'].text.to_i
 
@@ -79,6 +84,50 @@ class AlienSwarmStats < GameStats
     end
 
     @favorites
+  end
+
+  def item_stats
+    return unless public?
+
+    if @item_stats.nil?
+      @item_stats = {}
+      @item_stats[:ammo_deployed]             = @xml_data.elements['stats/weapons/ammo_deployed'].text.to_i
+      @item_stats[:sentryguns_deployed]       = @xml_data.elements['stats/weapons/sentryguns_deployed'].text.to_i
+      @item_stats[:sentry_flamers_deployed]   = @xml_data.elements['stats/weapons/sentry_flamers_deployed'].text.to_i
+      @item_stats[:sentry_freeze_deployed]    = @xml_data.elements['stats/weapons/sentry_freeze_deployed'].text.to_i
+      @item_stats[:sentry_cannon_deployed]    = @xml_data.elements['stats/weapons/sentry_cannon_deployed'].text.to_i
+      @item_stats[:medkits_used]              = @xml_data.elements['stats/weapons/medkits_used'].text.to_i
+      @item_stats[:flares_used]               = @xml_data.elements['stats/weapons/flares_used'].text.to_i
+      @item_stats[:adrenaline_used]           = @xml_data.elements['stats/weapons/adrenaline_used'].text.to_i
+      @item_stats[:tesla_traps_deployed]      = @xml_data.elements['stats/weapons/tesla_traps_deployed'].text.to_i
+      @item_stats[:freeze_grenades_thrown]    = @xml_data.elements['stats/weapons/freeze_grenades_thrown'].text.to_i
+      @item_stats[:electric_armor_used]       = @xml_data.elements['stats/weapons/electric_armor_used'].text.to_i
+      @item_stats[:healgun_heals]             = @xml_data.elements['stats/weapons/healgun_heals'].text.to_i
+      @item_stats[:healgun_heals_self]        = @xml_data.elements['stats/weapons/healgun_heals_self'].text.to_i
+      @item_stats[:healbeacon_heals]          = @xml_data.elements['stats/weapons/healbeacon_heals'].text.to_i
+      @item_stats[:healbeacon_heals_self]     = @xml_data.elements['stats/weapons/healbeacon_heals_self'].text.to_i
+      @item_stats[:damage_amps_used]          = @xml_data.elements['stats/weapons/damage_amps_used'].text.to_i
+      @item_stats[:healbeacons_deployed]      = @xml_data.elements['stats/weapons/healbeacons_deployed'].text.to_i
+      @item_stats[:healbeacon_heals_pct]      = @xml_data.elements['stats/weapons/healbeacon_heals_pct'].text.to_f
+      @item_stats[:healgun_heals_pct]         = @xml_data.elements['stats/weapons/healgun_heals_pct'].text.to_f
+      @item_stats[:healbeacon_heals_pct_self] = @xml_data.elements['stats/weapons/healbeacon_heals_pct_self'].text.to_f
+      @item_stats[:healgun_heals_pct_self]    = @xml_data.elements['stats/weapons/healgun_heals_pct_self'].text.to_f
+    end
+
+    @item_stats
+  end
+
+  def mission_stats
+    return unless public?
+
+    if @mission_stats.nil?
+      @mission_stats = {}
+      @xml_data.elements.each('stats/missions/*') do |mission_data|
+        @mission_stats[mission_data.name] = AlienSwarmMission.new(mission_data)
+      end
+    end
+
+    @mission_stats
   end
 
   # Returns a Hash of AlienSwarmWeapon for this user containing all Alien Swarm

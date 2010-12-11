@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
+require 'steam/community/game_weapon'
+
 # AlienSwarmWeapon holds statistical information about weapons used by a player
 # in Alien Swarm.
 class AlienSwarmWeapon
@@ -12,7 +14,7 @@ class AlienSwarmWeapon
   attr_reader :accuracy, :damage, :friendly_fire, :name, :shots
 
   # Creates a new instance of AlienSwarmWeapon based on the assigned weapon
-  # name and XML data
+  # XML data
   def initialize(weapon_data)
     super
 
