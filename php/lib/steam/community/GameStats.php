@@ -38,6 +38,9 @@ class GameStats {
      */
     public static function createGameStats($steamId, $gameName) {
         switch($gameName) {
+            case 'alienswarm':
+                require_once STEAM_CONDENSER_PATH . 'steam/community/alien_swarm/AlienSwarmStats.php';
+                return new AlienSwarmStats($steamId);
             case 'cs:s':
                 require_once STEAM_CONDENSER_PATH . 'steam/community/css/CSSStats.php';
                 return new CSSStats($steamId);
