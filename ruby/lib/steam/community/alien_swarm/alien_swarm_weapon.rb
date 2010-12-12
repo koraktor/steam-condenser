@@ -18,11 +18,11 @@ class AlienSwarmWeapon
   def initialize(weapon_data)
     super
 
-    @accuracy      = weapon_data.elements['accuracy'].text
-    @damage        = weapon_data.elements['damage'].text
+    @accuracy      = weapon_data.elements['accuracy'].text.to_f
+    @damage        = weapon_data.elements['damage'].text.to_i
     @friendly_fire = weapon_data.elements['friendlyfire'].text.to_i
     @name          = weapon_data.elements['name'].text
-    @shots         = weapon_data.elements['shotsfired'].text
+    @shots         = weapon_data.elements['shotsfired'].text.to_i
   end
 
 end

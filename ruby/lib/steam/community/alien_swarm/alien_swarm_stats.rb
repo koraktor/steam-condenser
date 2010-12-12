@@ -44,13 +44,13 @@ class AlienSwarmStats < GameStats
       @lifetime_stats[:kills_per_hour]      = @xml_data.elements['stats/lifetime/killsperhour'].text.to_f
       @lifetime_stats[:level]               = @xml_data.elements['stats/lifetime/level'].text.to_i
       @lifetime_stats[:promotion]           = @xml_data.elements['stats/lifetime/promotion'].text.to_i
-      @lifetime_stats[:promotion_img]       = @xml_data.elements['stats/lifetime/promotionpic'].text if @lifetime_stats[:promotion] > 0
+      @lifetime_stats[:promotion_img]       = BASE_URL + @xml_data.elements['stats/lifetime/promotionpic'].text if @lifetime_stats[:promotion] > 0
       @lifetime_stats[:next_unlock]         = @xml_data.elements['stats/lifetime/nextunlock'].text
       @lifetime_stats[:next_unlock_img]     = BASE_URL + @xml_data.elements['stats/lifetime/nextunlockimg'].text
       @lifetime_stats[:shots_fired]         = @xml_data.elements['stats/lifetime/shotsfired'].text.to_i
       @lifetime_stats[:total_games]         = @xml_data.elements['stats/lifetime/totalgames'].text.to_i
 
-      @lifetime_stats[:games_successful_percentage] = @lifetime_stats[:games_successful].to_f / @lifetime_stats[:total_games]
+      @lifetime_stats[:games_successful_percentage] = (@lifetime_stats[:total_games] > 0) ? @lifetime_stats[:games_successful].to_f / @lifetime_stats[:total_games] : 0;
     end
   end
 
@@ -86,6 +86,8 @@ class AlienSwarmStats < GameStats
     @favorites
   end
 
+  # Returns a Hash of item stats for this user like ammo deployed and medkits
+  # used. If the items haven't been parsed already, parsing is done now.
   def item_stats
     return unless public?
 
@@ -117,6 +119,9 @@ class AlienSwarmStats < GameStats
     @item_stats
   end
 
+  # Returns a Hash of AlienSwarmMission for this user containing all Alien
+  # Swarm missions. If the missions haven't been parsed already, parsing is
+  # done now.
   def mission_stats
     return unless public?
 
