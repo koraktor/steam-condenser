@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2010, Sebastian Staudt
 
-require 'yaml'
-
 module SteamCondenser
 
   VERSION = '0.11.4'

@@ -11,30 +11,10 @@ src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
 begin
-  require 'jeweler'
-
-  gemspec = Gem::Specification.new do |gem|
-    line = File.read('lib/steam-condenser/version.rb')[/^\s*VERSION\s*=\s*.*/]
-    gem.version = line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
-  end
-
-  # Gem specification
-  Jeweler::Tasks.new(gemspec) do |s|
-    s.authors = ['Sebastian Staudt']
-    s.email = 'koraktor@gmail.com'
-    s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
-    s.date = Time.now
-    s.homepage = 'http://koraktor.github.com/steam-condenser'
-    s.name = s.rubyforge_project = "steam-condenser"
-    s.summary = 'Steam Condenser - A Steam query library'
-
-    s.files = %w(README.md Rakefile LICENSE VERSION.yml) + src_files + test_files
-    s.rdoc_options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/source/blob/master/ruby/%s"]
-
-    s.add_dependency('bzip2-ruby', '>= 0.2')
-  end
+  require 'ore/tasks'
+  Ore::Tasks.new
 rescue LoadError
-  puts 'You need Jeweler to build the gem. Install it using `gem install jeweler`.'
+  $stderr.puts 'You need ore-tasks to build the gem. Install it using `gem install ore-tasks`.'
 end
 
 # Create a rake task +:rdoc+ to build the documentation
