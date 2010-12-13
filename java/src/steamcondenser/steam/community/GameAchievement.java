@@ -47,7 +47,7 @@ public class GameAchievement
 
         NodeList unlockTimestampElements = achievementData.getElementsByTagName("unlockTimestamp");
         if(this.unlocked && unlockTimestampElements.getLength() != 0) {
-            this.timestamp = new Date(Long.parseLong(achievementData.getElementsByTagName("unlockTimestamp").item(0).getTextContent()));
+            this.timestamp = new Date(Long.parseLong(achievementData.getElementsByTagName("unlockTimestamp").item(0).getTextContent()) * 1000);
         }
     }
 
