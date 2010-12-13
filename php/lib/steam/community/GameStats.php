@@ -81,7 +81,7 @@ class GameStats {
             $this->gameFriendlyName = (string) $this->xmlData->game->gameFriendlyName;
             $this->gameName = (string) $this->xmlData->game->gameName;
             $this->hoursPlayed = (string) $this->xmlData->stats->hoursPlayed;
-            $this->steamId64 = (string) $this->xmlData->player->steamID64;
+            $this->steamId64 = trim((string) $this->xmlData->player->steamID64);
         }
     }
 
