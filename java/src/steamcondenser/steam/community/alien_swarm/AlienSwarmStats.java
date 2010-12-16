@@ -45,7 +45,7 @@ public class AlienSwarmStats extends GameStats {
             this.hoursPlayed = lifetimeStats.getElementsByTagName("timeplayed").item(0).getTextContent();
 
             this.lifetimeStats = new HashMap<String, Object>();
-            this.lifetimeStats.put("accuracybiggi", Float.valueOf(lifetimeStats.getElementsByTagName("accuracy").item(0).getTextContent()));
+            this.lifetimeStats.put("accuracy", Float.valueOf(lifetimeStats.getElementsByTagName("accuracy").item(0).getTextContent()));
             this.lifetimeStats.put("aliensBurned", Integer.valueOf(lifetimeStats.getElementsByTagName("aliensburned").item(0).getTextContent()));
             this.lifetimeStats.put("aliensKilled", Integer.valueOf(lifetimeStats.getElementsByTagName("alienskilled").item(0).getTextContent()));
             this.lifetimeStats.put("campaigns", Integer.valueOf(lifetimeStats.getElementsByTagName("campaigns").item(0).getTextContent()));
