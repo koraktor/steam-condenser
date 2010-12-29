@@ -11,7 +11,7 @@
  */
 
 define('STEAM_CONDENSER_PATH', dirname(__FILE__) . '/');
-define('STEAM_CONDENSER_VERSION', '0.11.4');
+define('STEAM_CONDENSER_VERSION', '0.12.0');
 
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GoldSrcServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/MasterServer.php';
