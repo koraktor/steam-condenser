@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2010, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -13,6 +13,8 @@
 
 require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/C2M_CHECKMD5_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/S2M_HEARTBEAT2_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/MasterServerSocket.php';
 
 /**
@@ -44,6 +46,20 @@ class MasterServer
 		$masterServer = explode(":", $masterServer);
 		$this->socket = new MasterServerSocket(new InetAddress($masterServer[0]), $masterServer[1]);
 	}
+
+    /**
+     * Request a challenge number from the master server. This is used for
+     * further communication with the master server.
+     *
+     * Please note that this is NOT needed for finding servers using
+     *
+     * @return The challenge number returned from the master server
+     * @see sendHeartbeat()
+     */
+    public function getChallenge() {
+        $this->socket->send(new C2M_CHECKMD5_Packet());
+        return $this->socket->getReply()->getChallenge();
+    }
 
 
 	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
@@ -87,5 +103,30 @@ class MasterServer
 
 		return $serverArray;
 	}
+
+    /**
+     * Sends a constructed heartbeat to the master server
+     *
+     * This can be used to check server versions externally.
+     *
+     * @param array $data
+     * @return SteamPacket[] The reply from the master server – usually zero or
+     *         more packets. Zero means either the heartbeat was accepted by
+     *         the master or there was a timeout. So usually it's best to
+     *         repeat a heartbeat a few times when not receiving any packets.
+     */
+    public function sendHeartbeat($data) {
+        $this->socket->send(new S2M_HEARTBEAT2_Packet($data));
+
+        $replyPackets = array();
+        try {
+            do {
+                $replyPackets[] = $this->socket->getReply();
+            } while(true);
+        } catch(TimeoutException $e) {}
+
+        return $replyPackets;
+    }
+
 }
 ?>
