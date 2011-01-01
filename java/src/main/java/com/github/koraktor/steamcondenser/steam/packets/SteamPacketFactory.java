@@ -61,10 +61,19 @@ public abstract class SteamPacketFactory {
 		case SteamPacket.M2A_SERVER_BATCH_HEADER:
 			return new M2A_SERVER_BATCH_Paket(data);
 
+        case SteamPacket.M2C_ISVALIDMD5_HEADER:
+            return new M2C_ISVALIDMD5_Packet(data);
+
+        case SteamPacket.M2S_REQUESTRESTART_HEADER:
+            return new M2S_REQUESTRESTART_Packet(data);
+
 		case SteamPacket.RCON_GOLDSRC_CHALLENGE_HEADER:
 		case SteamPacket.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
 		case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
 			return new RCONGoldSrcResponsePacket(data);
+
+        case SteamPacket.S2A_LOGSTRING_HEADER:
+            return new S2A_LOGSTRING_Packet(data);
 
 		default:
 			throw new PacketFormatException("Unknown packet with header 0x"

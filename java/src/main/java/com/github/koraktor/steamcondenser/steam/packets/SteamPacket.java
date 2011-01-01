@@ -24,10 +24,15 @@ abstract public class SteamPacket
     public static final byte A2S_SERVERQUERY_GETCHALLENGE_HEADER = 0x57;
     public static final byte S2C_CHALLENGE_HEADER = 0x41;
     public static final byte A2M_GET_SERVERS_BATCH2_HEADER = 0x31;
+    public static final byte C2M_CHECKMD5_HEADER = 0x4D;
     public static final byte M2A_SERVER_BATCH_HEADER = 0x66;
+    public static final byte M2C_ISVALIDMD5_HEADER = 0x4E;
+    public static final byte M2S_REQUESTRESTART_HEADER = 0x4F;
     public static final byte RCON_GOLDSRC_CHALLENGE_HEADER = 0x63;
     public static final byte RCON_GOLDSRC_NO_CHALLENGE_HEADER = 0x39;
     public static final byte RCON_GOLDSRC_RESPONSE_HEADER = 0x6c;
+    public static final byte S2A_LOGSTRING_HEADER = 0x52;
+    public static final byte S2M_HEARTBEAT2_HEADER = 0x30;
 
     protected PacketBuffer contentData;
     protected byte headerData;
