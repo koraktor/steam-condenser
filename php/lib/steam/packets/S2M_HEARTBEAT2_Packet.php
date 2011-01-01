@@ -60,29 +60,20 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
      *        master server
      */
     public function __construct($data = array()) {
-        $this->serverData = array_merge(self::$DEFAULT_DATA, $data);
+        $data = array_merge(self::$DEFAULT_DATA, $data);
 
         if(empty($data['challenge'])) {
-            throw new SteamCondenserException("You have to provide a challenge number when sending a heartbeat to a master server.");
+            throw new SteamCondenserException('You have to provide a challenge number when sending a heartbeat to a master server.');
         }
 
-        parent::__construct(SteamPacket::S2M_HEARTBEAT2_HEADER);
-    }
-
-    /**
-     * Returns a byte array representation of the packet data
-     *
-     * @return string A byte array representing the contents of this request
-     *         packet
-     */
-    public function __toString() {
-        $string = chr($this->headerData) . "\x0A";
-
-        while(list($k, $v) = each($this->serverData)) {
-            $string .= "\\$k\\$v";
+        $bytes = "\x0A";
+        while(list($k, $v) = each($data)) {
+            $bytes .= "\\$k\\$v";
         }
+        $bytes .= "\x0A";
 
-        return $string . "\x0A";
+        parent::__construct(SteamPacket::S2M_HEARTBEAT2_HEADER, $bytes);
     }
+
 }
 ?>
