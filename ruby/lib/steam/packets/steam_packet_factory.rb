@@ -17,6 +17,7 @@ require 'steam/packets/a2m_get_servers_batch2_packet'
 require 'steam/packets/m2a_server_batch_packet'
 require 'steam/packets/m2c_isvalidmd5_packet'
 require 'steam/packets/m2s_requestrestart_packet'
+require 'steam/packets/s2a_logstring_packet'
 require 'steam/packets/rcon/rcon_goldsrc_response'
 
 module SteamPacketFactory
@@ -57,6 +58,8 @@ module SteamPacketFactory
            SteamPacket::RCON_GOLDSRC_NO_CHALLENGE_HEADER,
            SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER
         return RCONGoldSrcResponse.new(data)
+      when SteamPacket::S2A_LOGSTRING_HEADER
+        return S2A_LOGSTRING_Packet.new(data)
       else
         raise SteamCondenserException.new("Unknown packet with header 0x#{header.to_s(16)} received.")
     end
