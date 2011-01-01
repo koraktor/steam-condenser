@@ -42,14 +42,14 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 		if($this->contentData->remaining() > 0)
 		{
 			$extraDataFlag = $this->contentData->getByte();
-			 
+
 			if($extraDataFlag & 0x80)
 			{
 				$this->serverPort = $this->contentData->getShort();
 			}
 
             if($extraDataFlag & 0x10) {
-                $this->serverId = $this->contentData->getLong() | ($this->contentData->getLong() << 32);
+                $this->serverId = $this->contentData->getUnsignedLong() | ($this->contentData->getUnsignedLong() << 32);
             }
 
 			if($extraDataFlag & 0x40)
@@ -57,7 +57,7 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 				$this->tvPort = $this->contentData->getShort();
 				$this->tvName = $this->contentData->getString();
 			}
-			 
+
 			if($extraDataFlag & 0x20)
 			{
 				$this->serverTags = $this->contentData->getString();
