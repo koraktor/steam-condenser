@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -52,6 +52,7 @@ class MasterServer
      * further communication with the master server.
      *
      * Please note that this is NOT needed for finding servers using
+     * getServers()
      *
      * @return The challenge number returned from the master server
      * @see sendHeartbeat()
