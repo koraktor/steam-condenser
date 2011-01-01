@@ -49,11 +49,6 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
         );
 
     /**
-     * @var array
-     */
-    private $serverData;
-
-    /**
      * Creates a new heartbeat packet to send to a master server
      *
      * @param array $data The server data to send with the heartbeat to the
