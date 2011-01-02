@@ -18,7 +18,6 @@ class M2S_REQUESTRESTART_Packet
   def initialize(data)
     super C2M_CHECKMD5_HEADER, data
 
-    @content_data.byte
     @challenge = @content_data.long
   end
 

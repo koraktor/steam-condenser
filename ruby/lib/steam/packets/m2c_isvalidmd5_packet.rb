@@ -18,6 +18,7 @@ class M2C_ISVALIDMD5_Packet
   def initialize(data)
     super M2C_ISVALIDMD5_HEADER, data
 
+    @content_data.byte
     @challenge = @content_data.long
   end
 
