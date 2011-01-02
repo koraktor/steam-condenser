@@ -70,5 +70,15 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
         parent::__construct(SteamPacket::S2M_HEARTBEAT2_HEADER, $bytes);
     }
 
+    /**
+     * Returns a byte array representation of the packet data
+     *
+     * @return string A byte array representing the contents of this request
+     *         packet
+     */
+    public function getString() {
+        return $this->headerData + $this->contentData->_array();
+    }
+
 }
 ?>

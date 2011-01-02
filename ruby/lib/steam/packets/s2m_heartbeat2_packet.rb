@@ -49,4 +49,9 @@ class S2M_HEARTBEAT2_Packet
     super S2M_HEARTBEAT2_HEADER, bytes
   end
 
+  # Returns a byte array representation of the packet data
+  def to_s
+    [@header_data, @content_data.string].pack('ca*')
+  end
+
 end
