@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -24,12 +24,14 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/WebApiException.php';
 abstract class WebApi {
 
     /**
-     * @var array
+     * @var string
      */
     private static $apiKey = null;
 
     /**
      * Returns the Steam Web API key
+     *
+     * @return string The Steam Web API key
      */
     public static function getApiKey() {
         return self::$apiKey;
@@ -38,7 +40,7 @@ abstract class WebApi {
     /**
      * Sets the Steam Web API key
      *
-     * @param String apiKey The 128bit API key that has to be requested from
+     * @param string $apiKey The 128bit API key that has to be requested from
      *                      http://steamcommunity.com/dev
      */
     public static function setApiKey($apiKey) {
@@ -53,12 +55,12 @@ abstract class WebApi {
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
      *
-     * @param String apiInterface The Web API interface to call, e.g.
-     *                            ISteamUser
-     * @param String method The Web API method to call, e.g. GetPlayerSummaries
-     * @param array params Additional parameters to supply via HTTP GET
-     * @param int version The API method version to use
-     * @return String Data is returned as a JSON-encoded string.
+     * @param string $interface The Web API interface to call, e.g. ISteamUser
+     * @param string $method The Web API method to call, e.g.
+     *        GetPlayerSummaries
+     * @param int $version The API method version to use
+     * @param array $params Additional parameters to supply via HTTP GET
+     * @return string Data is returned as a JSON-encoded string.
      */
     public static function getJSON($interface, $method, $version = 1, $params = null) {
         return self::load('json', $interface, $method, $version, $params);
@@ -68,11 +70,11 @@ abstract class WebApi {
      * Fetches JSON data from Steam Web API using the specified interface,
      * method and version. Additional parameters are supplied via HTTP GET.
      *
-     * @param String apiInterface The Web API interface to call, e.g.
-     *                            ISteamUser
-     * @param String method The Web API method to call, e.g. GetPlayerSummaries
-     * @param array params Additional parameters to supply via HTTP GET
-     * @param int version The API method version to use
+     * @param string $interface The Web API interface to call, e.g. ISteamUser
+     * @param string $method The Web API method to call, e.g.
+     *        GetPlayerSummaries
+     * @param int $version The API method version to use
+     * @param array $params Additional parameters to supply via HTTP GET
      * @return stdClass Data is returned as a json_decoded object
      */
     public static function getJSONData($interface, $method, $version = 1, $params = null) {
@@ -91,14 +93,14 @@ abstract class WebApi {
      * and version. Additional parameters are supplied via HTTP GET. Data is
      * returned as a String in the given format.
      *
-     * @param String apiInterface The Web API interface to call, e.g.
-     *                     ISteamUser
-     * @param String format The format to load from the API ('json', 'vdf', or
-     *                      'xml')
-     * @param String method The Web API method to call, e.g. GetPlayerSummaries
-     * @param array params Additional parameters to supply via HTTP GET
-     * @param int version The API method version to use
-     * @return String Data is returned as a String in the given format (which
+     * @param string $format The format to load from the API ('json', 'vdf', or
+     *        'xml')
+     * @param string $interface The Web API interface to call, e.g. ISteamUser
+     * @param string $method The Web API method to call, e.g.
+     *        GetPlayerSummaries
+     * @param int $version The API method version to use
+     * @param array $params Additional parameters to supply via HTTP GET
+     * @return sssstring Data is returned as a String in the given format (which
      *                may be 'json', 'vdf' or 'xml').
      */
     public static function load($format, $interface, $method, $version = 1, $params = null) {

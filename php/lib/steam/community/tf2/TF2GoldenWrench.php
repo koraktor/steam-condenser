@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -11,8 +11,8 @@
  * @subpackage Steam Community
  */
 
-require_once 'steam/community/SteamId.php';
-require_once 'steam/community/WebApi.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 
 /**
  * Represents the special Team Fortress 2 item Golden Wrench. It includes the
@@ -50,9 +50,10 @@ class TF2GoldenWrench {
     private $owner;
 
     /**
-     * Returns a Set of all golden wrenches (as instances of TF2GoldenWrench)
+     * Returns an array of all golden wrenches (as instances of
+     * TF2GoldenWrench)
      *
-     * @return A Set containing all golden wrenches
+     * @return TF2GoldenWrench[] An array containing all golden wrenches
      * @throws JSONException On JSON errors
      * @throws SteamCondenserException If an error occurs querying the Web API
      *                                 or the Steam Community
