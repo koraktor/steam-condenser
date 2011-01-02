@@ -110,7 +110,7 @@ class MasterServer
      *
      * This can be used to check server versions externally.
      *
-     * @param array $data
+     * @param array $data The heartbeat data to send to the master server
      * @return SteamPacket[] The reply from the master server – usually zero or
      *         more packets. Zero means either the heartbeat was accepted by
      *         the master or there was a timeout. So usually it's best to
