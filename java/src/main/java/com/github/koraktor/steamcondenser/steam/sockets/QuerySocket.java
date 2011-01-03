@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.sockets;
@@ -19,11 +19,9 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 public abstract class QuerySocket extends SteamSocket
 {
     protected QuerySocket(InetAddress ipAddress, int portNumber)
-            throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
         this.channel = DatagramChannel.open();
-        this.channel.configureBlocking(false);
         ((DatagramChannel) this.channel).connect(this.remoteSocket);
     }
 

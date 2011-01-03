@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -29,7 +29,6 @@ class DatagramChannel
 	protected function __construct()
 	{
 		$this->socket = new UDPSocket();
-		$this->configureBlocking(true);
 	}
 
 	public static function open()
@@ -45,11 +44,6 @@ class DatagramChannel
 	public function connect(InetAddress $ipAddress, $portNumber)
 	{
 		$this->socket->connect($ipAddress, $portNumber);
-	}
-
-	public function configureBlocking($doBlock)
-	{
-		$this->socket->setBlock($doBlock);
 	}
 
 	public function read(ByteBuffer $destinationBuffer)

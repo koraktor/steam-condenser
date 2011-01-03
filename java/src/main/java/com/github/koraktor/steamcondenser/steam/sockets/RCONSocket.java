@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.sockets;
@@ -36,9 +36,8 @@ public class RCONSocket extends SteamSocket
     public void send(RCONPacket dataPacket)
             throws IOException
     {
-        if( ! ((SocketChannel)this.channel).isConnected()) {
+        if(!((SocketChannel)this.channel).isConnected()) {
             ((SocketChannel)this.channel).connect(this.remoteSocket);
-            this.channel.configureBlocking(false);
         }
 
         this.buffer = ByteBuffer.wrap(dataPacket.getBytes());

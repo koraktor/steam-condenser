@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -13,11 +13,6 @@
 
 abstract class Socket
 {
-	/**
-	 * @var boolean
-	 */
-	protected $isBlocking = true;
-
 	/**
 	 * The IP address the socket is connected to
 	 * @var InetAddress
@@ -202,14 +197,6 @@ abstract class Socket
 		{
 			throw new Exception("Could not send data.");
 		}
-	}
-
-	/**
-	 *
-	 */
-	public function setBlock($doBlock)
-	{
-		$this->isBlocking = $doBlock;
 	}
 
 	/**

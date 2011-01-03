@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'ipaddr'
 require 'socket'
@@ -40,9 +40,6 @@ class DatagramChannel
     self
   end
 
-  def configure_blocking(do_block)
-  end
-
   def read(destination_io)
     raise ArgumentError unless destination_io.is_a? StringIO
 
@@ -61,7 +58,6 @@ class DatagramChannel
 
   def initialize
     @socket = UDPSocket.new
-    configure_blocking true
   end
 
 end
