@@ -50,10 +50,14 @@ abstract class Socket
 		$this->socketsEnabled = extension_loaded("sockets");
 	}
 
-	public function __desctruct()
-	{
-		$this->close();
-	}
+    /**
+     * Destructor of this socket
+     *
+     * Automatically calls close()
+     */
+    public function __destruct() {
+        $this->close();
+    }
 
 	abstract public function connect(InetAddress $ipAddress, $portNumber);
 
@@ -64,11 +68,11 @@ abstract class Socket
 	{
 		if($this->socketsEnabled)
 		{
-			socket_close($this->socket);
+            @socket_close($this->socket);
 		}
 		else
 		{
-			fclose($this->socket);
+            @fclose($this->socket);
 		}
 	}
 

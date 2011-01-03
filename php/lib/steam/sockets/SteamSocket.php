@@ -61,7 +61,7 @@ abstract class SteamSocket
 
 	public function __destruct()
 	{
-		//$this->channel->close();
+        $this->channel->close();
 	}
 
 	/**

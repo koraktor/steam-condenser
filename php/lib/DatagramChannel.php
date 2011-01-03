@@ -31,6 +31,15 @@ class DatagramChannel
 		$this->socket = new UDPSocket();
 	}
 
+    /**
+     * Destructor of this channel
+     *
+     * Automatically calls close()
+     */
+    public function __destruct() {
+        $this->close();
+    }
+
 	public static function open()
 	{
 		return new DatagramChannel();
