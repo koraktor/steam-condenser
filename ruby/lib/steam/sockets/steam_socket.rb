@@ -34,6 +34,11 @@ module SteamSocket
     @remote_socket = Socket.getaddrinfo args[0].to_s, args[1]
   end
 
+  # Closes the underlying channel
+  def close
+    @channel.close
+  end
+
   # Abstract +reply+ method
   def reply
     raise NotImplementedError
@@ -59,10 +64,6 @@ module SteamSocket
 
     @buffer = StringIO.new data_packet.to_s
     @channel.write @buffer
-  end
-
-  def finalize
-    @channel.close
   end
 
 end
