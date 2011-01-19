@@ -22,6 +22,7 @@ public abstract class QuerySocket extends SteamSocket
             throws IOException {
         super(ipAddress, portNumber);
         this.channel = DatagramChannel.open();
+        this.channel.configureBlocking(false);
         ((DatagramChannel) this.channel).connect(this.remoteSocket);
     }
 

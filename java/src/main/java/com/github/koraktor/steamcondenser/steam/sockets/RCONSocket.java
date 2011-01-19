@@ -38,6 +38,7 @@ public class RCONSocket extends SteamSocket
     {
         if(!((SocketChannel)this.channel).isConnected()) {
             ((SocketChannel)this.channel).connect(this.remoteSocket);
+            this.channel.configureBlocking(false);
         }
 
         this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
