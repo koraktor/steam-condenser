@@ -1,17 +1,26 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'datagram_channel'
 require 'ipaddr'
 require 'stringio_additions'
 require 'exceptions/timeout_exception'
 
-# Defines common methods for sockets used to connect to game and master
-# servers.
+# This module defines common methods for sockets used to connect to game and
+# master servers.
+#
+# @author Sebastian Staudt
+# @see GoldSrcSocket
+# @see MasterServerSocket
+# @see RCONSocket
+# @see SourceSocket
+# @since sdds
 module SteamSocket
 
+  # The default timeout
+  # @since 0.11.0
   @@timeout = 1000
 
   # Sets the timeout for socket operations. This usually only affects timeouts,
@@ -45,7 +54,9 @@ module SteamSocket
   end
 
   def receive_packet(buffer_length = 0)
-    raise TimeoutException if select([@channel.socket], nil, nil, @@timeout / 1000).nil?
+    if select([@channel.socket], nil, nil, @@timeout / 1000.0).nil?
+      raise TimeoutException
+    end
 
     if buffer_length == 0
       @buffer.rewind
