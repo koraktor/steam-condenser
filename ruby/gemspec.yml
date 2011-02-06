@@ -17,6 +17,7 @@ extra_doc_files:
 
 dependencies:
   bzip2-ruby: ~> 0.2.7
+  json:       ~> 1.5.1
 
 development_dependencies:
   ore-tasks: ~> 0.3.0
