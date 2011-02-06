@@ -9,8 +9,8 @@ require 'steam/packets/steam_packet'
 # Creates a new A2A_RULES request object including the challenge_number
 class A2S_RULES_Packet
 
-  include RequestWithChallenge
   include SteamPacket
+  include RequestWithChallenge
 
   # Creates a new A2S_RULES request object including the challenge_number
   def initialize(challenge_number = -1)

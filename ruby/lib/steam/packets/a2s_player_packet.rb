@@ -10,8 +10,8 @@ require 'steam/packets/steam_packet'
 # server.
 class A2S_PLAYER_Packet
 
-  include RequestWithChallenge
   include SteamPacket
+  include RequestWithChallenge
 
   # Creates a new A2S_PLAYER request object including the challenge_number
   def initialize(challenge_number = -1)
