@@ -1,15 +1,13 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'stringio_additions'
 
 # This class represents a packet used by the Source query protocol
 module SteamPacket
 
-  A2A_ACK_HEADER = 0x6A
-  A2A_PING_HEADER = 0x69
   A2M_GET_SERVERS_BATCH2_HEADER = 0x31
   A2S_INFO_HEADER = 0x54
   A2S_PLAYER_HEADER = 0x55

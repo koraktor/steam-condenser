@@ -3,6 +3,8 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2011, Sebastian Staudt
+ *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
@@ -20,8 +22,6 @@ abstract class SteamPacket
 	const S2A_INFO_DETAILED_HEADER = 0x6D;
 	const A2S_INFO_HEADER = 0x54;
 	const S2A_INFO2_HEADER = 0x49;
-	const A2A_PING_HEADER = 0x69;
-	const A2A_ACK_HEADER = 0x6A;
 	const A2S_PLAYER_HEADER = 0x55;
 	const S2A_PLAYER_HEADER = 0x44;
 	const A2S_RULES_HEADER = 0x56;

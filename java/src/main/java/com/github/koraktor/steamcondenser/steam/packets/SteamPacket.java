@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.packets;
@@ -17,8 +17,6 @@ abstract public class SteamPacket
     public static final byte A2S_INFO_HEADER = 0x54;
     public static final byte S2A_INFO2_HEADER = 0x49;
     public static final byte S2A_INFO_DETAILED_HEADER = 0x6D;
-    public static final byte A2A_PING_HEADER = 0x69;
-    public static final byte A2A_ACK_HEADER = 0x6A;
     public static final byte A2S_PLAYER_HEADER = 0x55;
     public static final byte S2A_PLAYER_HEADER = 0x44;
     public static final byte A2S_RULES_HEADER = 0x56;

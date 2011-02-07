@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'zlib'
 
@@ -9,8 +9,6 @@ require 'exceptions/steam_condenser_exception'
 require 'steam/packets/s2a_info_detailed_packet'
 require 'steam/packets/a2s_info_packet'
 require 'steam/packets/s2a_info2_packet'
-require 'steam/packets/a2a_ping_packet'
-require 'steam/packets/a2a_ack_packet'
 require 'steam/packets/a2s_player_packet'
 require 'steam/packets/s2a_player_packet'
 require 'steam/packets/a2s_rules_packet'
@@ -35,10 +33,6 @@ module SteamPacketFactory
         return A2S_INFO_Packet.new
       when SteamPacket::S2A_INFO2_HEADER
         return S2A_INFO2_Packet.new(data)
-      when SteamPacket::A2A_PING_HEADER
-        return A2A_PING_Packet.new
-      when SteamPacket::A2A_ACK_HEADER
-        return A2A_ACK_Packet.new(data)
       when SteamPacket::A2S_PLAYER_HEADER
         return A2S_PLAYER_Packet.new
       when SteamPacket::S2A_PLAYER_HEADER

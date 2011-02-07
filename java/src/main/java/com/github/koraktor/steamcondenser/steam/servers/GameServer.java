@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.servers;
@@ -19,7 +19,6 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.SteamPlayer;
 import com.github.koraktor.steamcondenser.steam.packets.A2S_INFO_Packet;
 import com.github.koraktor.steamcondenser.steam.packets.S2A_INFO_BasePacket;
-import com.github.koraktor.steamcondenser.steam.packets.A2A_PING_Packet;
 import com.github.koraktor.steamcondenser.steam.packets.A2S_PLAYER_Packet;
 import com.github.koraktor.steamcondenser.steam.packets.S2A_PLAYER_Packet;
 import com.github.koraktor.steamcondenser.steam.packets.A2S_RULES_Packet;
@@ -279,7 +278,7 @@ abstract public class GameServer {
 	 */
 	public void updatePing()
 			throws IOException, TimeoutException, SteamCondenserException {
-		this.sendRequest(new A2A_PING_Packet());
+		this.sendRequest(new A2S_INFO_Packet());
 		long startTime = System.currentTimeMillis();
 		this.getReply();
 		long endTime = System.currentTimeMillis();

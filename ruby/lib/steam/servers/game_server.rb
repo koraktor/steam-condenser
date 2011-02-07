@@ -1,12 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'exceptions/steam_condenser_exception'
 require 'steam/steam_player'
 require 'steam/packets/a2s_info_packet'
-require 'steam/packets/a2a_ping_packet'
 require 'steam/packets/a2s_player_packet'
 require 'steam/packets/a2s_rules_packet'
 require 'steam/packets/a2s_serverquery_getchallenge_packet'
@@ -150,7 +149,7 @@ module GameServer
   end
 
   def update_ping
-    send_request A2A_PING_Packet.new
+    send_request A2S_INFO_Packet.new
     start_time = Time.now
     reply
     end_time = Time.now

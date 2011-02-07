@@ -3,6 +3,8 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
+ * Copyright (c) 2008-2011, Sebastian Staudt
+ *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
@@ -14,8 +16,6 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONGoldSrcResponse.php'
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_DETAILED_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_INFO_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO2_Packet.php';
-require_once STEAM_CONDENSER_PATH . 'steam/packets/A2A_PING_Packet.php';
-require_once STEAM_CONDENSER_PATH . 'steam/packets/A2A_ACK_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_PLAYER_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_PLAYER_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_RULES_Packet.php';
@@ -50,12 +50,6 @@ abstract class SteamPacketFactory
 
 			case SteamPacket::S2A_INFO2_HEADER:
 				return new S2A_INFO2_Packet($data);
-
-			case SteamPacket::A2A_PING_HEADER:
-				return new A2A_PING_Packet();
-
-			case SteamPacket::A2A_ACK_HEADER:
-				return new A2A_ACK_Packet($data);
 
 			case SteamPacket::A2S_PLAYER_HEADER:
 				return new A2S_PLAYER_Packet();

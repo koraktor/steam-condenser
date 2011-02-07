@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.packets;
@@ -39,12 +39,6 @@ public abstract class SteamPacketFactory {
 
 		case SteamPacket.S2A_INFO2_HEADER:
 			return new S2A_INFO2_Packet(data);
-
-		case SteamPacket.A2A_PING_HEADER:
-			return new A2A_PING_Packet();
-
-		case SteamPacket.A2A_ACK_HEADER:
-			return new A2A_ACK_Packet(data);
 
 		case SteamPacket.A2S_PLAYER_HEADER:
 			return new A2S_PLAYER_Packet(Helper.integerFromByteArray(data));
