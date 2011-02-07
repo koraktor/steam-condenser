@@ -23,6 +23,7 @@ included LICENSE file.
 ## Credits
 
 * Sebastian Staudt -- koraktor(at)gmail.com
+* DeFirence -- defirence(at)defirence.za.net
 
 ## See Also
 
