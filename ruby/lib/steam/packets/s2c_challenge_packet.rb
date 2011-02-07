@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/steam_packet'
 
@@ -11,7 +11,7 @@ class S2C_CHALLENGE_Packet
 
   include SteamPacket
 
-  # Creates a AS2C_CHALLENGE response object based on the data received.
+  # Creates a S2C_CHALLENGE response object based on the data received.
   def initialize(challenge_number)
     super S2C_CHALLENGE_HEADER, challenge_number
   end

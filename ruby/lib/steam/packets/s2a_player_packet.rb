@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/steam_packet'
 

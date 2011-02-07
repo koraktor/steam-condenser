@@ -1,12 +1,12 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/s2a_info_base_packet'
 
-# The S2A_INFO2_Packet class represents the response to a A2A_INFO
-# request send to a Source server.
+# The S2A_INFO2_Packet class represents the response to a A2S_INFO request sent
+# to a Source server.
 class S2A_INFO2_Packet
 
   include S2A_INFO_BasePacket

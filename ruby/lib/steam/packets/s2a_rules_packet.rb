@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/steam_packet'
 
@@ -15,7 +15,7 @@ class S2A_RULES_Packet
 
   # Creates a S2A_RULES response object based on the data received.
   def initialize(content_data)
-    raise Exception.new('Wrong formatted A2A_RULES response packet.') if content_data.nil?
+    raise Exception.new('Wrong formatted S2A_RULES response packet.') if content_data.nil?
 
     super SteamPacket::S2A_RULES_HEADER, content_data
 
