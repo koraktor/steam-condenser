@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'zlib'
-
 require 'exceptions/steam_condenser_exception'
 require 'steam/packets/s2a_info_detailed_packet'
 require 'steam/packets/a2s_info_packet'
@@ -62,6 +60,8 @@ module SteamPacketFactory
     packet_data = split_packets.join ''
 
     if is_compressed
+      require 'zlib'
+
       begin
         require 'bz2'
         packet_data = BZ2.uncompress(packet_data)
