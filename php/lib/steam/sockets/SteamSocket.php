@@ -12,8 +12,8 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
-require_once STEAM_CONDENSER_PATH . 'DatagramChannel.php';
 require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
+require_once STEAM_CONDENSER_PATH . 'UDPSocket.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/TimeoutException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
 
@@ -33,10 +33,10 @@ abstract class SteamSocket
 	 */
 	protected $buffer;
 
-	/**
-	 * @var DatagramChannel
-	 */
-	protected $channel;
+    /**
+     * @var UDPSocket
+     */
+    protected $socket;
 
     /**
      * Sets the timeout for socket operations. This usually only affects
@@ -55,13 +55,13 @@ abstract class SteamSocket
 
 	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
 	{
-		$this->channel = DatagramChannel::open();
-		$this->channel->connect($ipAddress, $portNumber);
+		$this->socket = new UDPSocket();
+		$this->socket->connect($ipAddress, $portNumber);
 	}
 
 	public function __destruct()
 	{
-        $this->channel->close();
+        $this->socket->close();
 	}
 
 	/**
@@ -75,7 +75,7 @@ abstract class SteamSocket
 	 */
 	public function receivePacket($bufferLength = 0)
 	{
-        if(!$this->channel->socket()->select(self::$timeout)) {
+        if(!$this->socket->select(self::$timeout)) {
 			throw new TimeoutException();
 		}
 
@@ -88,7 +88,8 @@ abstract class SteamSocket
 			$this->buffer = ByteBuffer::allocate($bufferLength);
 		}
 
-		$this->channel->read($this->buffer);
+        $data = $this->socket->recv($this->buffer->remaining());
+        $this->buffer->put($data);
 		$bytesRead = $this->buffer->position();
 		$this->buffer->rewind();
 		$this->buffer->limit($bytesRead);
@@ -103,8 +104,7 @@ abstract class SteamSocket
 	{
 		trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
 
-		$this->buffer = ByteBuffer::wrap($dataPacket->__toString());
-		$this->channel->write($this->buffer);
+        $this->socket->send($dataPacket->__toString());
 	}
 }
 ?>

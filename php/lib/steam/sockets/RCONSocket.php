@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -12,7 +12,7 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
-require_once STEAM_CONDENSER_PATH . 'SocketChannel.php';
+require_once STEAM_CONDENSER_PATH . 'TCPSocket.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/RCONBanException.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
@@ -23,22 +23,32 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
  * @package    Steam Condenser (PHP)
  * @subpackage Sockets
  */
-class RCONSocket extends SteamSocket {
-    public function __construct(InetAddress $ipAddress, $portNumber) {
-        parent::__construct($ipAddress, $portNumber);
+class RCONSocket extends SteamSocket
+{
+    /**
+     * @var InetAddress
+     */
+    private $ipAddress;
 
+    /**
+     * @var int
+     */
+    private $portNumber;
+
+
+    public function __construct(InetAddress $ipAddress, $portNumber) {
         $this->buffer = ByteBuffer::allocate(1400);
-        $this->channel = SocketChannel::open();
-        $this->remoteSocket = array($ipAddress, $portNumber);
+        $this->ipAddress = $ipAddress;
+        $this->portNumber = $portNumber;
     }
 
     public function send(RCONPacket $dataPacket) {
-        if(!$this->channel->isConnected()) {
-            $this->channel->connect($this->remoteSocket[0], $this->remoteSocket[1]);
+        if(empty($this->socket)) {
+            $this->socket = new TCPSocket();
+            $this->socket->connect($this->ipAddress, $this->portNumber);
         }
 
-        $this->buffer = ByteBuffer::wrap($dataPacket->getBytes());
-        $this->channel->write($this->buffer);
+        $this->socket->send($dataPacket->__toString());
     }
 
     public function getReply() {
