@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'exceptions/rcon_no_auth_exception'
 require 'steam/packets/rcon/rcon_auth_request'
@@ -44,17 +44,14 @@ class SourceServer
 
   def rcon_exec(command)
     @rcon_socket.send RCONExecRequest.new(@rcon_request_id, command)
+    @rcon_socket.send RCONExecRequest.new(@rcon_request_id, nil)
     response_packets = []
 
     begin
-      begin
-        response_packet = @rcon_socket.reply
-        raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
-        response_packets << response_packet
-      end while true
-    rescue TimeoutException
-      raise $! if response_packets.empty?
-    end
+      response_packet = @rcon_socket.reply
+      raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
+      response_packets << response_packet
+    end while response_packet.response.size > 0
 
     response = ''
     response_packets.each do |packet|

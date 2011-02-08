@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -25,8 +25,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
  * @subpackage SourceServer
  * @todo Server has to recognize incoming packets
  */
-class SourceServer extends GameServer {
-
+class SourceServer extends GameServer
+{
     /**
      * @var long
      */
@@ -69,27 +69,19 @@ class SourceServer extends GameServer {
 
     public function rconExec($command) {
         $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
+        $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, null));
 
-        try {
-            while(true) {
-                $responsePacket = $this->rconSocket->getReply();
+        do {
+            $responsePacket = $this->rconSocket->getReply();
 
-                if($responsePacket instanceof RCONAuthResponse) {
-                    throw new RCONNoAuthException();
-                }
-
-                $responsePackets[] = $responsePacket;
+            if($responsePacket instanceof RCONAuthResponse) {
+                throw new RCONNoAuthException();
             }
-        }
-        catch(TimeoutException $e)
-        {
-            if(empty($responsePackets))
-            {
-                throw $e;
-            }
-        }
 
-        $response = "";
+            $responsePackets[] = $responsePacket;
+        } while(strlen($responsePacket->getResponse()) > 0);
+
+        $response = '';
         foreach($responsePackets as $packet) {
             $response .= $packet->getResponse();
         }

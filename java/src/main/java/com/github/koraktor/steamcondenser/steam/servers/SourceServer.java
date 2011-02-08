@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.servers;
@@ -69,22 +69,17 @@ public class SourceServer extends GameServer {
 	public String rconExec(String command)
 			throws IOException, TimeoutException, SteamCondenserException {
 		this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
+        this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, ""));
 		ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
 		RCONPacket responsePacket;
 
-		try {
-			while(true) {
-				responsePacket = this.rconSocket.getReply();
-				if(responsePacket instanceof RCONAuthResponse) {
-					throw new RCONNoAuthException();
-				}
-				responsePackets.add((RCONExecResponsePacket) responsePacket);
-			}
-		} catch(TimeoutException e) {
-			if(responsePackets.isEmpty()) {
-				throw e;
-			}
-		}
+        do {
+            responsePacket = this.rconSocket.getReply();
+            if(responsePacket instanceof RCONAuthResponse) {
+                throw new RCONNoAuthException();
+            }
+            responsePackets.add((RCONExecResponsePacket) responsePacket);
+        } while(((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
 
 		String response = new String();
 		for(RCONExecResponsePacket packet : responsePackets) {
