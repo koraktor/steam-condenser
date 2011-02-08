@@ -3,8 +3,9 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'datagram_channel'
 require 'ipaddr'
+require 'socket'
+
 require 'stringio_additions'
 require 'exceptions/timeout_exception'
 
@@ -36,25 +37,20 @@ module SteamSocket
     @@timeout = timeout
   end
 
-  def initialize(*args)
-    @channel = DatagramChannel.open
-    @channel.connect(*args)
+  def initialize(ip, port = 27015)
+    ip = IPSocket.getaddress(ip) unless ip.is_a? IPAddr
 
-    @remote_socket = Socket.getaddrinfo args[0].to_s, args[1]
+    @socket = UDPSocket.new
+    @socket.connect ip, port
   end
 
-  # Closes the underlying channel
+  # Closes the underlying socket
   def close
-    @channel.close
-  end
-
-  # Abstract +reply+ method
-  def reply
-    raise NotImplementedError
+    @socket.close
   end
 
   def receive_packet(buffer_length = 0)
-    if select([@channel.socket], nil, nil, @@timeout / 1000.0).nil?
+    if select([@socket], nil, nil, @@timeout / 1000.0).nil?
       raise TimeoutException
     end
 
@@ -64,7 +60,9 @@ module SteamSocket
       @buffer = StringIO.allocate buffer_length
     end
 
-    bytes_read = @channel.read @buffer
+    data = @socket.recv @buffer.remaining
+    bytes_read = @buffer.write data
+    @buffer.truncate bytes_read
     @buffer.rewind
 
     bytes_read
@@ -73,8 +71,7 @@ module SteamSocket
   def send(data_packet)
     puts "Sending data packet of type \"#{data_packet.class.to_s}\"." if $DEBUG
 
-    @buffer = StringIO.new data_packet.to_s
-    @channel.write @buffer
+    @socket.send data_packet.to_s, 0
   end
 
 end

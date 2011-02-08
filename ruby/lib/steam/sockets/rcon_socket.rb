@@ -1,9 +1,12 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'socket_channel'
+require 'ipaddr'
+require 'socket'
+require 'timeout'
+
 require 'exceptions/rcon_ban_exception'
 require 'steam/packets/rcon/rcon_packet'
 require 'steam/packets/rcon/rcon_packet_factory'
@@ -13,16 +16,26 @@ class RCONSocket
 
   include SteamSocket
 
-  def initialize(ip_address, port_number)
-    super ip_address, port_number
-    @channel = SocketChannel.open
+  def initialize(ip, port)
+    ip = IPSocket.getaddress(ip) unless ip.is_a? IPAddr
+
+    @ip     = ip
+    @port   = port
+    @socket = nil
+  end
+
+  def connect
+    begin
+      timeout(@@timeout / 1000.0) { @socket = TCPSocket.new @ip, @port }
+    rescue Timeout::Error
+      raise TimeoutException
+    end
   end
 
   def send(data_packet)
-    @channel.connect @remote_socket unless @channel.connected?
+    connect if @socket.nil? || @socket.closed?
 
-    @buffer = StringIO.new data_packet.bytes
-    @channel.write @buffer
+    super
   end
 
   def reply

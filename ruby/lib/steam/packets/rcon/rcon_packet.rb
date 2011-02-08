@@ -22,7 +22,7 @@ module RCONPacket
     @request_id = request_id
   end
 
-  def bytes
+  def to_s
     [@content_data.length + 8, @request_id, @header_data, @content_data.string].pack('V3a*')
   end
 
