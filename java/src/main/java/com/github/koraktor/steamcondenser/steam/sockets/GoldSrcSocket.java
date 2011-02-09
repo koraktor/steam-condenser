@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.sockets;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import com.github.koraktor.steamcondenser.exceptions.RCONBanException;
 import com.github.koraktor.steamcondenser.exceptions.RCONNoAuthException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.exceptions.UncompletePacketException;
@@ -149,7 +150,9 @@ public class GoldSrcSocket extends QuerySocket
         }
 
 
-        if(response.trim().equals("Bad rcon_password") || response.trim().equals("You have been banned from this server")) {
+        if(response.trim().equals("Bad rcon_password") {
+            throw new RCONBanException();
+        } else if(response.trim().equals("You have been banned from this server")) {
             throw new RCONNoAuthException();
         }
 

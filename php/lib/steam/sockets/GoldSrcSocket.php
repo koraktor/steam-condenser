@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -11,6 +11,8 @@
  * @subpackage Sockets
  */
 
+require_once STEAM_CONDENSER_PATH . 'exceptions/RCONBanException.php';
+require_once STEAM_CONDENSER_PATH . 'exceptions/RCONNoAuthException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONGoldSrcRequest.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
@@ -111,8 +113,9 @@ class GoldSrcSocket extends SteamSocket
             $response = $this->getReply()->getResponse();
         }
 
-        if(trim($response) == "Bad rcon_password." || trim($response) == "You have been banned from this server.")
-        {
+        if(trim($response) == "Bad rcon_password.") {
+            throw new RCONBanException();
+        } elseif(trim($response) == "You have been banned from this server.") {
             throw new RCONNoAuthException();
         }
 

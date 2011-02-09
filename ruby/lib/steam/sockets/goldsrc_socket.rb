@@ -1,9 +1,11 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'stringio_additions'
+require 'exceptions/rcon_ban_exception'
+require 'exceptions/rcon_no_auth_exception'
 require 'steam/packets/steam_packet_factory'
 require 'steam/packets/rcon/rcon_goldsrc_request'
 require 'steam/sockets/steam_socket'
@@ -76,7 +78,9 @@ class GoldSrcSocket
       response = reply.response
     end
 
-    if response.strip == 'Bad rcon_password.' or response.strip == 'You have been banned from this server.'
+    if response.strip == 'Bad rcon_password.'
+      raise RCONBanException
+    elsif response.strip == 'You have been banned from this server.'
       raise RCONNoAuthException
     end
 
