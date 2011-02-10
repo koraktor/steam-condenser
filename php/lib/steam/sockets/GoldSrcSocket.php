@@ -114,9 +114,9 @@ class GoldSrcSocket extends SteamSocket
         }
 
         if(trim($response) == "Bad rcon_password.") {
-            throw new RCONBanException();
-        } elseif(trim($response) == "You have been banned from this server.") {
             throw new RCONNoAuthException();
+        } elseif(trim($response) == "You have been banned from this server.") {
+            throw new RCONBanException();
         }
 
         try
@@ -138,9 +138,8 @@ class GoldSrcSocket extends SteamSocket
         $this->rconSend("challenge rcon");
         $response = trim($this->getReply()->getResponse());
 
-        if($response == "You have been banned from this server.")
-        {
-            throw new RCONNoAuthException();
+        if($response == "You have been banned from this server.") {
+            throw new RCONBanException();
         }
 
         $this->rconChallenge = floatval(substr($response, 14));

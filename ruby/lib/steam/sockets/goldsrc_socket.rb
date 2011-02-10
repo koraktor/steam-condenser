@@ -79,9 +79,9 @@ class GoldSrcSocket
     end
 
     if response.strip == 'Bad rcon_password.'
-      raise RCONBanException
-    elsif response.strip == 'You have been banned from this server.'
       raise RCONNoAuthException
+    elsif response.strip == 'You have been banned from this server.'
+      raise RCONBanException
     end
 
     begin
@@ -99,7 +99,9 @@ class GoldSrcSocket
     rcon_send 'challenge rcon'
     response = reply.response.strip
 
-    raise RCONNoAuthException if response == 'You have been banned from this server.'
+    if response == 'You have been banned from this server.'
+      raise RCONBanException
+    end
 
     @rcon_challenge = response[14..-1]
   end

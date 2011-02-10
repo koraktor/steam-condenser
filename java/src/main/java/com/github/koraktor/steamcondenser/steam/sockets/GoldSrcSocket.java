@@ -150,10 +150,10 @@ public class GoldSrcSocket extends QuerySocket
         }
 
 
-        if(response.trim().equals("Bad rcon_password") {
-            throw new RCONBanException();
-        } else if(response.trim().equals("You have been banned from this server")) {
+        if(response.trim().equals("Bad rcon_password")) {
             throw new RCONNoAuthException();
+        } else if(response.trim().equals("You have been banned from this server")) {
+            throw new RCONBanException();
         }
 
         String responsePart;
@@ -182,7 +182,7 @@ public class GoldSrcSocket extends QuerySocket
 
         String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse().trim();
         if(response.equals("You have been banned from this server.")) {
-            throw new RCONNoAuthException();
+            throw new RCONBanException();
         }
 
         this.rconChallenge = Long.valueOf(response.substring(14));
