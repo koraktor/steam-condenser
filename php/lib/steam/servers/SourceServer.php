@@ -16,6 +16,7 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/RCONNoAuthException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthRequest.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthResponse.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONExecRequest.php';
+require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONTerminator.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/RCONSocket.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
@@ -69,7 +70,7 @@ class SourceServer extends GameServer
 
     public function rconExec($command) {
         $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
-        $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, null));
+        $this->rconSocket->send(new RCONTerminator($this->rconRequestId));
 
         do {
             $responsePacket = $this->rconSocket->getReply();

@@ -21,6 +21,7 @@ import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONAuthResponse;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONExecRequestPacket;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONExecResponsePacket;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONPacket;
+import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONTerminator;
 import com.github.koraktor.steamcondenser.steam.sockets.RCONSocket;
 import com.github.koraktor.steamcondenser.steam.sockets.SourceSocket;
 
@@ -69,7 +70,7 @@ public class SourceServer extends GameServer {
 	public String rconExec(String command)
 			throws IOException, TimeoutException, SteamCondenserException {
 		this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
-        this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, ""));
+        this.rconSocket.send(new RCONTerminator(this.rconRequestId));
 		ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
 		RCONPacket responsePacket;
 
