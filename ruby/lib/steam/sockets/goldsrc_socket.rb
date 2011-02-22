@@ -68,6 +68,7 @@ class GoldSrcSocket
     rcon_challenge if @rcon_challenge.nil? or @is_hltv
 
     rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
+    rcon_send "rcon #{@rcon_challenge} #{password}"
     if @is_hltv
       begin
         response = reply.response
@@ -85,12 +86,9 @@ class GoldSrcSocket
     end
 
     begin
-      loop do
-        response_part = reply.response
-        response << response_part
-      end
-    rescue TimeoutException
-    end
+      response_part = reply.response
+      response << response_part
+    end while response_part.size > 0
 
     response
   end

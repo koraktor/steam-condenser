@@ -136,6 +136,7 @@ public class GoldSrcSocket extends QuerySocket
         }
 
         this.rconSend("rcon " + this.rconChallenge + " " + password + " " + command);
+        this.rconSend("rcon " + this.rconChallenge + " " + password);
         String response;
         if(this.isHLTV) {
             try {
@@ -158,14 +159,10 @@ public class GoldSrcSocket extends QuerySocket
 
         String responsePart;
 
-        try {
-            do {
-                responsePart = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
-                response += responsePart;
-            } while(true);
-        }
-        catch(TimeoutException e) {
-        }
+        do {
+            responsePart = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
+            response += responsePart;
+        } while(responsePart.length() > 0);
 
         return response;
     }

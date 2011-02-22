@@ -101,6 +101,7 @@ class GoldSrcSocket extends SteamSocket
         }
 
         $this->rconSend("rcon {$this->rconChallenge} $password $command");
+        $this->rconSend("rcon {$this->rconChallenge} $password");
         if($this->isHLTV) {
             try {
                 $response = $this->getReply()->getResponse();
@@ -119,14 +120,10 @@ class GoldSrcSocket extends SteamSocket
             throw new RCONBanException();
         }
 
-        try
-        {
-            while(true) {
-                $responsePart = $this->getReply()->getResponse();
-                $response .= $responsePart;
-            }
-        }
-        catch(TimeoutException $e) {}
+        do {
+            $responsePart = $this->getReply()->getResponse();
+            $response .= $responsePart;
+        } while(strlen($responsePart) > 0);
 
         return $response;
     }
