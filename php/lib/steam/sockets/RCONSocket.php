@@ -49,7 +49,7 @@ class RCONSocket extends SteamSocket
      */
     public function close() {
         if(!empty($this->socket)) {
-            $this->close();
+            parent::close();
         }
     }
 
