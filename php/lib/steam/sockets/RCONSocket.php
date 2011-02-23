@@ -42,6 +42,17 @@ class RCONSocket extends SteamSocket
         $this->portNumber = $portNumber;
     }
 
+    /**
+     * Closes the underlying TCPSocket if it exists
+     *
+     * @see SteamSocket#close
+     */
+    public function close() {
+        if(!empty($this->socket)) {
+            $this->close();
+        }
+    }
+
     public function send(RCONPacket $dataPacket) {
         if(empty($this->socket)) {
             $this->socket = new TCPSocket();

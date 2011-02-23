@@ -130,12 +130,24 @@ abstract public class SteamSocket
     }
 
     /**
-     * Closes the DatagramChannel
+     * Closes this socket
+     *
+     * @see #close
      */
     @Override
     public void finalize()
-            throws IOException
-    {
-        this.channel.close();
+            throws IOException {
+        this.close();
+    }
+
+    /**
+     * Closes the underlying {@link java.nio.channels.DatagramChannel}
+     *
+     * @see SelectableChannel#close
+     */
+    public void close() {
+        try {
+            this.channel.close();
+        } catch (IOException e) {}
     }
 }

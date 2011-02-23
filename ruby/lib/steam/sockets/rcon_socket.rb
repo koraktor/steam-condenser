@@ -24,6 +24,11 @@ class RCONSocket
     @socket = nil
   end
 
+  # Closes the underlying socket if it exists
+  def close
+    super unless @socket.nil?
+  end
+
   def connect
     begin
       timeout(@@timeout / 1000.0) { @socket = TCPSocket.new @ip, @port }

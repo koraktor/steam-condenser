@@ -33,6 +33,18 @@ public class RCONSocket extends SteamSocket
         this.channel = SocketChannel.open();
     }
 
+    /**
+     * Closes the underlying {@link SocketChannel}
+     *
+     * @see SteamSocket#close
+     */
+    @Override
+    public void close() {
+        if(((SocketChannel)this.channel).isConnected()) {
+            super.close();
+        }
+    }
+
     public void send(RCONPacket dataPacket)
             throws IOException
     {

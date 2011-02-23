@@ -59,10 +59,23 @@ abstract class SteamSocket
 		$this->socket->connect($ipAddress, $portNumber);
 	}
 
-	public function __destruct()
-	{
+    /**
+     * Closes this socket
+     *
+     * @see #close
+     */
+    public function __destruct() {
+        $this->close();
+    }
+
+    /**
+     * Closes the underlying UDPSocket
+     *
+     * @see UDPSocket#close
+     */
+    public function close() {
         $this->socket->close();
-	}
+    }
 
 	/**
 	 * Abstract getReplyData() method
