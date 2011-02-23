@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -44,15 +44,6 @@ class TCPSocket extends Socket
 				$errorCode = socket_last_error($this->socket);
 				throw new Exception("Could not connect socket: " . socket_strerror($errorCode));
 			}
-
-			if($this->isBlocking)
-			{
-				socket_set_block($this->socket);
-			}
-			else
-			{
-				socket_set_nonblock($this->socket);
-			}
 		}
 		else
 		{
@@ -60,7 +51,7 @@ class TCPSocket extends Socket
 			{
 				throw new Exception("Could not create socket: $socketErrstr");
 			}
-			stream_set_blocking($this->socket, $this->isBlocking);
+			stream_set_blocking($this->socket, true);
 		}
 	}
 }
