@@ -81,6 +81,7 @@ public class SourceServer extends GameServer {
             }
             responsePackets.add((RCONExecResponsePacket) responsePacket);
         } while(((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
+        this.rconSocket.getReply();
 
 		String response = new String();
 		for(RCONExecResponsePacket packet : responsePackets) {

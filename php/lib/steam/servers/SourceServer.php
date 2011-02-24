@@ -81,6 +81,7 @@ class SourceServer extends GameServer
 
             $responsePackets[] = $responsePacket;
         } while(strlen($responsePacket->getResponse()) > 0);
+        $this->rconSocket->getReply();
 
         $response = '';
         foreach($responsePackets as $packet) {
