@@ -61,20 +61,19 @@ abstract class Socket
 
 	abstract public function connect(InetAddress $ipAddress, $portNumber);
 
-	/**
-	 * Closes the socket
-	 */
-	public function close()
-	{
-		if($this->socketsEnabled)
-		{
-            @socket_close($this->socket);
-		}
-		else
-		{
-            @fclose($this->socket);
-		}
-	}
+    /**
+     * Closes the socket
+     */
+    public function close() {
+        if(!empty($this->socket)) {
+            if($this->socketsEnabled) {
+                @socket_close($this->socket);
+            } else {
+                @fclose($this->socket);
+            }
+            $this->socket = null;
+        }
+    }
 
 	/**
 	 * @return byte
