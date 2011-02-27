@@ -76,8 +76,8 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
      * @return string A byte array representing the contents of this request
      *         packet
      */
-    public function getString() {
-        return $this->headerData + $this->contentData->_array();
+    public function __toString() {
+        return pack("ca*", $this->headerData, $this->contentData->_array());
     }
 
 }
