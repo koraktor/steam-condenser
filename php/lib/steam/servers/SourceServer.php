@@ -75,13 +75,16 @@ class SourceServer extends GameServer
         do {
             $responsePacket = $this->rconSocket->getReply();
 
+            if($responsePacket == null) {
+                continue;
+            }
+
             if($responsePacket instanceof RCONAuthResponse) {
                 throw new RCONNoAuthException();
             }
 
             $responsePackets[] = $responsePacket;
-        } while(strlen($responsePacket->getResponse()) > 0);
-        $this->rconSocket->getReply();
+        } while($responsePacket == null || strlen($responsePacket->getResponse()) > 0);
 
         $response = '';
         foreach($responsePackets as $packet) {

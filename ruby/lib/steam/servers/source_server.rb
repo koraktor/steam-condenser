@@ -50,10 +50,11 @@ class SourceServer
 
     begin
       response_packet = @rcon_socket.reply
+      redo if response_packet.nil?
       raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
       response_packets << response_packet
     end while response_packet.response.size > 0
-    @rcon_socket.reply
+
 
     response = ''
     response_packets.each do |packet|

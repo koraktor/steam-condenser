@@ -32,6 +32,10 @@ abstract class RCONPacketFactory extends SteamPacketFactory
 		$header = $byteBuffer->getLong();
 		$data = $byteBuffer->getString();
 
+        if($packetSize - 10 != strlen($data)) {
+            return null;
+        }
+
 		switch($header)
 		{
 			case RCONPacket::SERVERDATA_AUTH_RESPONSE:

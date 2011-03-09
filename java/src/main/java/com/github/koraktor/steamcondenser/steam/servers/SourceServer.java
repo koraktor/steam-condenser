@@ -76,12 +76,14 @@ public class SourceServer extends GameServer {
 
         do {
             responsePacket = this.rconSocket.getReply();
+            if(responsePacket == null) {
+                continue;
+            }
             if(responsePacket instanceof RCONAuthResponse) {
                 throw new RCONNoAuthException();
             }
             responsePackets.add((RCONExecResponsePacket) responsePacket);
-        } while(((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
-        this.rconSocket.getReply();
+        } while(responsePacket == null || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
 
 		String response = new String();
 		for(RCONExecResponsePacket packet : responsePackets) {
