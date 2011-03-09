@@ -22,7 +22,7 @@ public class RCONTerminator extends RCONPacket {
      * @param requestId The request ID for this RCON session
      */
     public RCONTerminator(int requestId) {
-        super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, null);
+        super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, "");
     }
 
 }
