@@ -126,8 +126,10 @@ module GameServer
 
     unless rcon_password.nil? or @player_hash.empty?
       rcon_auth(rcon_password)
-      players = rcon_exec('status').split("\n")[7..-1]
-      players.pop if is_a? GoldSrcServer
+      players = rcon_exec('status').lines.select do |line|
+        line.start_with?('#') && line != '#end'
+      end
+      players.shift
 
       players.each do |player|
         player_data = self.class.split_player_status(player)

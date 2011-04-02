@@ -224,10 +224,10 @@ abstract class GameServer {
         if($rconPassword != null && !empty($this->playerHash)) {
             $this->rconAuth($rconPassword);
             $players = explode("\n", $this->rconExec('status'));
-            $players = array_slice($players, 7, sizeof($players) - 7);
-            if(get_class($this) == 'GoldSrcServer') {
-                array_pop($players);
-            }
+            $players = array_filter($players, function($line) {
+                return strpos($line, '#') === 0 && $line != '#end';
+            });
+            array_unshift($players);
 
             foreach($players as $player) {
                 $playerData = $this->splitPlayerStatus($player);
