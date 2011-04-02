@@ -177,7 +177,7 @@ class SteamId
       if game.elements['globalStatsLink'].nil?
         @games[game_name] = false
       else
-        friendly_name = game.elements['globalStatsLink'].text.match(/http:\/\/steamcommunity.com\/stats\/([0-9a-zA-Z:]+)\/achievements\//)[1]
+        friendly_name = game.elements['globalStatsLink'].text.match(/http:\/\/steamcommunity.com\/stats\/([^?\/]+)\/achievements\//)[1]
         @games[game_name] = friendly_name.downcase
       end
     end

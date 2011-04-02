@@ -258,7 +258,7 @@ class SteamId {
         foreach($gamesData->games->game as $game) {
             $gameName = (string) $game->name;
             if($game->globalStatsLink != null) {
-                preg_match('#http://steamcommunity.com/stats/([0-9a-zA-Z:]+)/achievements/#', (string) $game->globalStatsLink, $friendlyName);
+                preg_match('#http://steamcommunity.com/stats/([^?/]+)/achievements/#', (string) $game->globalStatsLink, $friendlyName);
                 $this->games[$gameName] = strtolower($friendlyName[1]);
             } else {
                 $this->games[$gameName] = false;

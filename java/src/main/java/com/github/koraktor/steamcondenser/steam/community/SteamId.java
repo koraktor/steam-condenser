@@ -311,7 +311,7 @@ public class SteamId {
 				Node globalStatsLinkNode = game.getElementsByTagName("globalStatsLink").item(0);
 				if(globalStatsLinkNode != null) {
                     String friendlyName = globalStatsLinkNode.getTextContent();
-					Pattern regex = Pattern.compile("http://steamcommunity.com/stats/([0-9a-zA-Z:]+)/achievements/");
+					Pattern regex = Pattern.compile("http://steamcommunity.com/stats/([^?/]+)/achievements/");
 					Matcher matcher = regex.matcher(friendlyName);
 					matcher.find(0);
 					friendlyName = matcher.group(1).toLowerCase();
