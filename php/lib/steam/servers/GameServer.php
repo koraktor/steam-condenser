@@ -223,10 +223,12 @@ abstract class GameServer {
 
         if($rconPassword != null && !empty($this->playerHash)) {
             $this->rconAuth($rconPassword);
-            $players = explode("\n", $this->rconExec('status'));
-            $players = array_filter($players, function($line) {
-                return strpos($line, '#') === 0 && $line != '#end';
-            });
+            $players = array();
+            foreach(explode("\n", $this->rconExec('status')) as $line) {
+                if(strpos($line, '#') === 0 && $line != '#end') {
+                    $players[] = $line;
+                }
+            }
             array_unshift($players);
 
             foreach($players as $player) {
