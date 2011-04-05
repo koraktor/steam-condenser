@@ -127,7 +127,7 @@ module GameServer
     unless rcon_password.nil? or @player_hash.empty?
       rcon_auth(rcon_password)
       players = rcon_exec('status').lines.select do |line|
-        line.start_with?('#') && line != '#end'
+        line.start_with?('#') && line != "#end\n"
       end
       players.shift
 
