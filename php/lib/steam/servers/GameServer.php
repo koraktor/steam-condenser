@@ -229,7 +229,7 @@ abstract class GameServer {
                     $players[] = $line;
                 }
             }
-            array_unshift($players);
+            array_shift($players);
 
             foreach($players as $player) {
                 $playerData = $this->splitPlayerStatus($player);
