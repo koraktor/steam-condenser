@@ -8,6 +8,8 @@
 package com.github.koraktor.steamcondenser.steam;
 
 import java.util.List;
+import java.util.Map;
+
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 /**
@@ -24,6 +26,7 @@ public class SteamPlayer {
     private int loss;
     private String name;
     private int ping;
+    private int rate;
     private int realId;
     private int score;
     private String state;
@@ -44,28 +47,41 @@ public class SteamPlayer {
         this.extended = false;
     }
 
-    public void addInformation(List<String> playerData)
+    /**
+     * Extends a player object with information retrieved from a RCON call to
+     * the status command
+     *
+     * @param playerData The player data retrieved from
+     *        <code>rcon status</code>
+     * @throws SteamCondenserException
+     */
+    public void addInformation(Map<String, String> playerData)
             throws SteamCondenserException {
-        this.extended = true;
-
-        this.realId = Integer.parseInt(playerData.get(0));
-        this.steamId = playerData.get(2);
-
-        if(!playerData.get(1).equals(this.name)) {
+        if(!playerData.get("name").equals(this.name)) {
             throw new SteamCondenserException("Information to add belongs to a different player.");
         }
 
-        if(this.isBot()) {
-            this.state = playerData.get(3);
-        } else {
-            String[] address = playerData.get(7).split(":");
-            this.ipAddress   = address[0];
-            if(address.length > 1) {
+        this.extended = true;
+        this.realId = Integer.parseInt(playerData.get("userid"));
+        this.steamId = playerData.get("uniqueid");
+
+        if(playerData.containsKey("state")) {
+            this.state = playerData.get("state");
+        }
+
+        if(!this.isBot()) {
+            this.loss  = Integer.parseInt(playerData.get("loss"));
+            this.ping  = Integer.parseInt(playerData.get("ping"));
+
+            if(playerData.containsKey("adr")) {
+                String[] address = playerData.get("adr").split(":");
+                this.ipAddress   = address[0];
                 this.clientPort  = Integer.parseInt(address[1]);
             }
-            this.loss        = Integer.parseInt(playerData.get(4));
-            this.ping        = Integer.parseInt(playerData.get(3));
-            this.state       = playerData.get(6);
+
+            if(playerData.containsKey("rate")) {
+                this.rate = Integer.parseInt(playerData.get("rate"));
+            }
         }
     }
 
@@ -118,6 +134,13 @@ public class SteamPlayer {
      */
     public int getPing() {
         return this.ping;
+    }
+
+    /**
+     * @return Returns the rate of this player
+     */
+    public int getRate() {
+        return this.rate;
     }
 
     /**

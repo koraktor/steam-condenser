@@ -22,24 +22,6 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/GoldSrcSocket.php';
 class GoldSrcServer extends GameServer {
 
     /**
-     * Splits the player status obtained with "rcon status"
-     * @param String $playerStatus
-     * @return String[]
-     */
-    public function splitPlayerStatus($playerStatus) {
-        preg_match('%# *(\d+) +"(.*)" +(\d+) +(.*)%', $playerStatus, $playerData);
-        array_shift($playerData);
-        $morePlayerData = preg_split('/\s+/', array_pop($playerData));
-        $playerData = array_merge($playerData, $morePlayerData);
-        $playerData[0] = $playerData[2];
-        unset($playerData[2]);
-        unset($playerData[4]);
-        $playerData[5] = null;
-
-        return array_values($playerData);
-    }
-
-    /**
      * @param InetAddress $serverIP
      * @param int $portNumber The listening port of the server, defaults to 27015
      */

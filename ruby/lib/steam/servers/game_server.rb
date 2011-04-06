@@ -21,6 +21,41 @@ module GameServer
   REQUEST_PLAYER = 2
   REQUEST_RULES = 3
 
+  # Parses the player attribute names supplied by +rcon status+
+  def self.player_status_attributes(status_header)
+    status_header.split.map do |attribute|
+      case attribute
+        when '#'
+          :id
+        when 'connected'
+          :time
+        when 'frag'
+          :score
+        else
+          attribute.to_sym
+      end
+    end
+  end
+
+  # Splits the player status obtained with +rcon status+
+  def self.split_player_status(attributes, player_status)
+    data = player_status[1..-1].strip.split '"'
+    data = [ data[0].split, data[1], data[2].split ]
+    data.flatten!
+
+    if attributes.size > data.size + 1
+      data.insert 1, nil
+      data.insert 4, nil, nil, nil
+    end
+
+    player_data = {}
+    data.each_index do |i|
+      player_data[attributes[i]] = data[i]
+    end
+
+    player_data
+  end
+
   # Returns the last measured response time of this server
   #
   # If there's no data, update_ping is called to measure the current response
@@ -124,16 +159,18 @@ module GameServer
   def update_player_info(rcon_password = nil)
     handle_response_for_request GameServer::REQUEST_PLAYER
 
-    unless rcon_password.nil? or @player_hash.empty?
-      rcon_auth(rcon_password)
+    unless rcon_password.nil? || @player_hash.nil? || @player_hash.empty?
+      rcon_auth rcon_password
       players = rcon_exec('status').lines.select do |line|
         line.start_with?('#') && line != "#end\n"
       end
-      players.shift
+      attributes = GameServer.player_status_attributes players.shift
 
       players.each do |player|
-        player_data = self.class.split_player_status(player)
-        @player_hash[player_data[1]].add_info(*player_data) if @player_hash.key?(player_data[1])
+        player_data = GameServer.split_player_status(attributes, player)
+        if @player_hash.key? player_data[:name]
+          @player_hash[player_data[:name]].add_info player_data
+        end
       end
     end
   end

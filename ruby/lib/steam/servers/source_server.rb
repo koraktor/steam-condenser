@@ -16,15 +16,6 @@ class SourceServer
 
   include GameServer
 
-  # Splits the player status obtained with +rcon status+
-  def self.split_player_status(player_status)
-    player_data = player_status.match(/# *(\d+)(?: \d)? +"(.*)" +(.*)/).to_a[1..-1]
-    player_data[2] = player_data[2].split
-    player_data.flatten!
-    player_data.delete_at(3)
-    player_data
-  end
-
   def initialize(ip_address, port_number = 27015)
     super port_number
     @rcon_socket = RCONSocket.new ip_address, port_number
@@ -54,7 +45,6 @@ class SourceServer
       raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
       response_packets << response_packet
     end while response_packet.response.size > 0
-
 
     response = ''
     response_packets.each do |packet|

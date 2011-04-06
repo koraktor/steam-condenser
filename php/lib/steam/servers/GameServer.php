@@ -59,6 +59,57 @@ abstract class GameServer {
      */
     protected $socket;
 
+        /**
+     * Parses the player attribute names supplied by +rcon status+
+     *
+     * @param string statusHeader
+     * @return Split player attribute names
+     */
+    private static function getPlayerStatusAttributes($statusHeader) {
+        $statusAttributes = array();
+        foreach(preg_split("/\s+/", $statusHeader) as $attribute) {
+            if($attribute == '#') {
+                $statusAttributes[] = 'id';
+            } else if($attribute == 'connected') {
+                $statusAttributes[] = 'time';
+            } else if($attribute == 'frag') {
+                $statusAttributes[] = 'score';
+            } else {
+                $statusAttributes[] = $attribute;
+            }
+        }
+
+        return $statusAttributes;
+    }
+
+    /**
+     * Splits the player status obtained with "rcon status"
+     *
+     * @param array attributes
+     * @param string playerStatus
+     * @return Split player data
+     */
+    private static function splitPlayerStatus($attributes, $playerStatus) {
+        $data = explode('"', trim(substr($playerStatus, 1)));
+        $data = array_merge(
+            preg_split("/\s+/", trim($data[0])),
+            array($data[1]),
+            preg_split("/\s+/", trim($data[2]))
+        );
+
+        if(sizeof($attributes) > sizeof($data) + 1) {
+            array_splice($data, 1, 0, array(null));
+            array_splice($data, 4, 0, array(null, null, null, null));
+        }
+
+        $playerData = array();
+        for($i = 0; $i < sizeof($data); $i ++) {
+            $playerData[$attributes[$i]] = $data[$i];
+        }
+
+        return $playerData;
+    }
+
     /**
      * @param InetAddress $serverIP
      * @param int $portNumber The listening port of the server, defaults to 27015
@@ -193,8 +244,6 @@ abstract class GameServer {
         $this->socket->send($requestData);
     }
 
-    abstract public function splitPlayerStatus($command);
-
     /**
      *
      */
@@ -229,12 +278,12 @@ abstract class GameServer {
                     $players[] = $line;
                 }
             }
-            array_shift($players);
+            $attributes = self::getPlayerStatusAttributes(array_shift($players));
 
             foreach($players as $player) {
-                $playerData = $this->splitPlayerStatus($player);
-                if(array_key_exists($playerData[1], $this->playerHash)) {
-                    $this->playerHash[$playerData[1]]->addInformation($playerData);
+                $playerData = self::splitPlayerStatus($attributes, $player);
+                if(array_key_exists($playerData['name'], $this->playerHash)) {
+                    $this->playerHash[$playerData['name']]->addInformation($playerData);
                 }
             }
         }

@@ -68,25 +68,4 @@ public class GoldSrcServer extends GameServer {
 		return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command).trim();
 	}
 
-	/**
-	 * Splits the player status obtained with "rcon status"
-	 * @param playerStatus
-	 * @return Split player data
-	 */
-    protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-        Pattern regex = Pattern.compile("# *(\\d+) +\"(.*)\" +(\\d+) +(.*)");
-        Matcher matcher = regex.matcher(playerStatus);
-        matcher.find();
-
-        ArrayList<String> playerData = new ArrayList<String>();
-        for(int i = 1; i < matcher.groupCount() - 1; i ++) {
-            playerData.add(matcher.group(i));
-        }
-        playerData.addAll(Arrays.asList(matcher.group(matcher.groupCount()).split("\\s+")));
-        playerData.remove(4);
-        playerData.set(5, null);
-
-        return playerData;
-    }
-
 }

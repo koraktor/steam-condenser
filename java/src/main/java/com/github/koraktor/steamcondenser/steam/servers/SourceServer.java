@@ -95,24 +95,4 @@ public class SourceServer extends GameServer {
 		return response.trim();
 	}
 
-	/**
-	 * Splits the player status obtained with "rcon status"
-	 * @param playerStatus
-	 * @return Split player data
-	 */
-    protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-        Pattern regex = Pattern.compile("# *(\\d+)(?: \\d)? +\"(.*)\" +(.*)");
-        Matcher matcher = regex.matcher(playerStatus);
-        matcher.find();
-
-        ArrayList<String> playerData = new ArrayList<String>();
-        for(int i = 1; i < matcher.groupCount(); i ++) {
-            playerData.add(matcher.group(i));
-        }
-        playerData.addAll(Arrays.asList(matcher.group(matcher.groupCount()).split("\\s+")));
-        playerData.remove(3);
-
-        return playerData;
-    }
-
 }

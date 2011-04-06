@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
 
@@ -44,6 +45,58 @@ abstract public class GameServer {
 	protected HashMap<String, String> rulesHash;
 	protected HashMap<String, Object> serverInfo;
 	protected QuerySocket socket;
+
+    /**
+     * Parses the player attribute names supplied by +rcon status+
+     *
+     * @param statusHeader
+     * @return Split player attribute names
+     */
+    private static List<String> getPlayerStatusAttributes(String statusHeader) {
+        List<String> statusAttributes = new ArrayList<String>();
+        for(String attribute : statusHeader.split("\\s+")) {
+            if(attribute.equals("#")) {
+                statusAttributes.add("id");
+            } else if(attribute.equals("connected")) {
+                statusAttributes.add("time");
+            } else if(attribute.equals("frag")) {
+                statusAttributes.add("score");
+            } else {
+                statusAttributes.add(attribute);
+            }
+        }
+
+        return statusAttributes;
+    }
+
+    /**
+     * Splits the player status obtained with "rcon status"
+     *
+     * @param attributes
+     * @param playerStatus
+     * @return Split player data
+     */
+    private static Map<String, String> splitPlayerStatus(List<String> attributes, String playerStatus) {
+        List<String> tmpData = Arrays.asList(playerStatus.substring(1).trim().split("\""));
+        List<String> data = new ArrayList<String>();
+        data.addAll(Arrays.asList(tmpData.get(0).trim().split("\\s+")));
+        data.add(tmpData.get(1));
+        data.addAll(Arrays.asList(tmpData.get(2).trim().split("\\s+")));
+
+        if(attributes.size() > data.size() + 1) {
+          data.add(1, null);
+          data.add(4, null);
+          data.add(4, null);
+          data.add(4, null);
+        }
+
+        Map<String, String> playerData = new HashMap<String, String>();
+        for(int i = 0; i < data.size(); i ++) {
+            playerData.put(attributes.get(i), data.get(i));
+        }
+
+        return playerData;
+    }
 
 	/**
 	 * Checks if the port number is valid
@@ -222,8 +275,6 @@ abstract public class GameServer {
 		this.socket.send(requestData);
 	}
 
-	abstract protected ArrayList<String> splitPlayerStatus(String playerStatus);
-
 	/**
 	 * Returns a String representation of this server
 	 * @return A human readable version of this server's information
@@ -314,11 +365,11 @@ abstract public class GameServer {
                     players.add(line);
                 }
             }
-            players.remove(0);
+            List<String> attributes = getPlayerStatusAttributes(players.remove(0));
 
 			for(String player : players) {
-				ArrayList<String> playerData = this.splitPlayerStatus(player);
-				String playerName = playerData.get(1);
+				Map<String, String> playerData = splitPlayerStatus(attributes, player);
+				String playerName = playerData.get("name");
                 if(this.playerHash.containsKey(playerName)) {
                     this.playerHash.get(playerName).addInformation(playerData);
                 }

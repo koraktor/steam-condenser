@@ -115,26 +115,39 @@ class SteamPlayer
         $this->extended = false;
     }
 
+    /**
+     * Extends a player object with information retrieved from a RCON call to
+     * the status command
+     *
+     * @param string playerData The player data retrieved from
+     *        <code>rcon status</code>
+     * @throws SteamCondenserException
+     */
     public function addInformation($playerData) {
-        $this->extended = true;
-
-        $this->realId  = intval($playerData[0]);
-        $this->steamId = $playerData[2];
-
-        if($playerData[1] != $this->name) {
+        if($playerData['name'] != $this->name) {
             throw new SteamCondenserException('Information to add belongs to a different player.');
         }
 
-        if($this->isBot()) {
-            $this->state = $playerData[3];
+        $this->extended = true;
+        $this->realId   = intval($playerData['userid']);
+        if(array_key_exists('state', $playerData)) {
+            $this->state    = $playerData['state'];
         }
-        else {
-            $address = explode(':', $playerData[7]);
-            $this->ipAddress  = $address[0];
-            $this->clientPort = intval($address[1]);
-            $this->loss       = intval($playerData[4]);
-            $this->ping       = intval($playerData[3]);
-            $this->state      = $playerData[6];
+        $this->steamId  = $playerData['uniqueid'];
+
+        if(!$this->isBot()) {
+            $this->loss = intval($playerData['loss']);
+            $this->ping = intval($playerData['ping']);
+
+            if(array_key_exists('data', $playerData)) {
+                $address = explode(':', $playerData['adr']);
+                $this->ipAddress  = $address[0];
+                $this->clientPort = intval($address[1]);
+            }
+
+            if(array_key_exists('rate', $playerData)) {
+                $this->rate = $playerData['rate'];
+            }
         }
     }
 
@@ -190,6 +203,13 @@ class SteamPlayer
     public function getPing()
     {
         return $this->ping;
+    }
+
+    /**
+     * @return Returns the rate of this player
+     */
+    public function getRate() {
+        return $this->rate;
     }
 
     /**
