@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.github.koraktor.steamcondenser.exceptions.RCONNoAuthException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
@@ -98,9 +100,19 @@ public class SourceServer extends GameServer {
 	 * @param playerStatus
 	 * @return Split player data
 	 */
-	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split("\\s+")));
+    protected ArrayList<String> splitPlayerStatus(String playerStatus) {
+        Pattern regex = Pattern.compile("# *(\\d+)(?: \\d)? +\"(.*)\" +(.*)");
+        Matcher matcher = regex.matcher(playerStatus);
+        matcher.find();
+
+        ArrayList<String> playerData = new ArrayList<String>();
+        for(int i = 1; i < matcher.groupCount(); i ++) {
+            playerData.add(matcher.group(i));
+        }
+        playerData.addAll(Arrays.asList(matcher.group(matcher.groupCount()).split("\\s+")));
         playerData.remove(3);
+
         return playerData;
-	}
+    }
+
 }

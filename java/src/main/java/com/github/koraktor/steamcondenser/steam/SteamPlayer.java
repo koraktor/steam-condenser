@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam;
@@ -58,12 +58,14 @@ public class SteamPlayer {
         if(this.steamId.equals("BOT")) {
             this.state = playerData.get(3);
         } else {
-            String[] address = playerData.get(6).split(":");
+            String[] address = playerData.get(7).split(":");
             this.ipAddress   = address[0];
-            this.clientPort  = Integer.parseInt(address[1]);
+            if(address.length > 1) {
+                this.clientPort  = Integer.parseInt(address[1]);
+            }
             this.loss        = Integer.parseInt(playerData.get(4));
             this.ping        = Integer.parseInt(playerData.get(3));
-            this.state       = playerData.get(5);
+            this.state       = playerData.get(6);
         }
     }
 

@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2008-2009, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'exceptions/steam_condenser_exception'
 
@@ -35,8 +35,8 @@ class SteamPlayer
       @state = player_data[0]
     else
       @ip_address, @client_port  = player_data[4].split(':')
-      @loss  = player_data[2]
-      @ping  = player_data[1]
+      @loss  = player_data[1]
+      @ping  = player_data[0]
       @state = player_data[3]
     end
   end

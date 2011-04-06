@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -33,7 +33,9 @@ class GoldSrcServer extends GameServer {
         $playerData = array_merge($playerData, $morePlayerData);
         $playerData[0] = $playerData[2];
         unset($playerData[2]);
-        unset($playerData[5]);
+        unset($playerData[4]);
+        $playerData[5] = null;
+
         return array_values($playerData);
     }
 

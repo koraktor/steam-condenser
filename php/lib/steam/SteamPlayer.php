@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -129,12 +129,12 @@ class SteamPlayer
             $this->state = $playerData[3];
         }
         else {
-            $address = explode(':', $playerData[6]);
+            $address = explode(':', $playerData[7]);
             $this->ipAddress  = $address[0];
             $this->clientPort = intval($address[1]);
             $this->loss       = intval($playerData[4]);
             $this->ping       = intval($playerData[3]);
-            $this->state      = $playerData[5];
+            $this->state      = $playerData[6];
         }
     }
 

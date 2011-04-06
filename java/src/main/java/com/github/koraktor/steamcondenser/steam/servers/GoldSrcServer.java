@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.servers;
@@ -12,6 +12,8 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.sockets.GoldSrcSocket;
@@ -71,11 +73,20 @@ public class GoldSrcServer extends GameServer {
 	 * @param playerStatus
 	 * @return Split player data
 	 */
-	protected ArrayList<String> splitPlayerStatus(String playerStatus) {
-		ArrayList<String> playerData = new ArrayList<String>(Arrays.asList(playerStatus.substring(1).split("\\s+")));
-		playerData.set(0, playerData.get(2));
-		playerData.remove(2);
-		playerData.remove(4);
-		return playerData;
-	}
+    protected ArrayList<String> splitPlayerStatus(String playerStatus) {
+        Pattern regex = Pattern.compile("# *(\\d+) +\"(.*)\" +(\\d+) +(.*)");
+        Matcher matcher = regex.matcher(playerStatus);
+        matcher.find();
+
+        ArrayList<String> playerData = new ArrayList<String>();
+        for(int i = 1; i < matcher.groupCount() - 1; i ++) {
+            playerData.add(matcher.group(i));
+        }
+        playerData.addAll(Arrays.asList(matcher.group(matcher.groupCount()).split("\\s+")));
+        playerData.remove(4);
+        playerData.set(5, null);
+
+        return playerData;
+    }
+
 }
