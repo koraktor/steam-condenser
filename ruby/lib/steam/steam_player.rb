@@ -31,7 +31,7 @@ class SteamPlayer
 
     @real_id  = real_id
     @steam_id = steam_id
-    if steam_id == 'BOT'
+    if bot?
       @state = player_data[0]
     else
       @ip_address, @client_port  = player_data[4].split(':')
@@ -39,6 +39,11 @@ class SteamPlayer
       @ping  = player_data[0]
       @state = player_data[3]
     end
+  end
+
+  # Returns whether this player is a bot
+  def bot?
+    @steam_id == 'BOT'
   end
 
   # Returns a String representation of this player

@@ -125,7 +125,7 @@ class SteamPlayer
             throw new SteamCondenserException('Information to add belongs to a different player.');
         }
 
-        if($this->steamId == 'BOT') {
+        if($this->isBot()) {
             $this->state = $playerData[3];
         }
         else {
@@ -226,6 +226,14 @@ class SteamPlayer
     public function getSteamId()
     {
         return $this->steamId;
+    }
+
+    /**
+     * Returns whether this player object has extended information
+     * @return boolean
+     */
+    public function isBot() {
+        return $this->steamId == 'BOT';
     }
 
     /**

@@ -55,7 +55,7 @@ public class SteamPlayer {
             throw new SteamCondenserException("Information to add belongs to a different player.");
         }
 
-        if(this.steamId.equals("BOT")) {
+        if(this.isBot()) {
             this.state = playerData.get(3);
         } else {
             String[] address = playerData.get(7).split(":");
@@ -148,6 +148,13 @@ public class SteamPlayer {
     public String getSteamId()
     {
         return this.steamId;
+    }
+
+    /**
+     * Returns whether this player is a bot
+     */
+    public boolean isBot() {
+        return this.steamId.equals("BOT");
     }
 
     /**
