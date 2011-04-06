@@ -63,26 +63,20 @@ class RCONSocket extends SteamSocket
     }
 
     public function getReply() {
-        if($this->receivePacket(1440) == 0) {
+        if($this->receivePacket(4) == 0) {
             throw new RCONBanException();
         }
-        $packetData = substr($this->buffer->_array(), 0, $this->buffer->limit());
-        $packetSize = $this->buffer->getLong() + 4;
 
-        if($packetSize > 1440) {
-            $remainingBytes = $packetSize - $this->buffer->limit();
-            do {
-                if($remainingBytes < 1440) {
-                    $this->receivePacket($remainingBytes);
-                }
-                else {
-                    $this->receivePacket(1440);
-                }
-                $packetData .= substr($this->buffer->_array(), 0, $this->buffer->limit());
-                $remainingBytes -= $this->buffer->limit();
-            }
-            while($remainingBytes > 0);
+        $packetSize     = $this->buffer->getLong();
+        $remainingBytes = $packetSize;
+
+        $packetData = '';
+        do {
+            $receivedBytes = $this->receivePacket($remainingBytes);
+            $remainingBytes -= $receivedBytes;
+            $packetData .= substr($this->buffer->_array(), 0, $this->buffer->limit());
         }
+        while($remainingBytes > 0);
 
         return RCONPacketFactory::getPacketFromData($packetData);
     }

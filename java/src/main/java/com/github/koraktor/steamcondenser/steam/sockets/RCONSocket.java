@@ -60,35 +60,24 @@ public class RCONSocket extends SteamSocket
     public RCONPacket getReply()
             throws IOException, TimeoutException, SteamCondenserException
     {
-        if(this.receivePacket(1440) <= 0) {
+        if(this.receivePacket(4) <= 0) {
             throw new RCONBanException();
         }
+        int packetSize = Integer.reverseBytes(this.buffer.getInt());
+        int remainingBytes = packetSize;
 
-        byte[] packetData = this.buffer.array();
+        byte[] packetData;
         List<Byte> packetDataList = new ArrayList<Byte>();
-        for(int i = 0; i < this.buffer.limit(); i ++){
-            packetDataList.add(packetData[i]);
-        }
+        int receivedBytes;
+        do {
+            receivedBytes = this.receivePacket(remainingBytes);
 
-        int packetSize = Integer.reverseBytes(this.buffer.getInt()) + 4;
-
-        if(packetSize > 1440) {
-            int remainingBytes = packetSize - this.buffer.limit();
-            do {
-                if(remainingBytes < 1440) {
-                    this.receivePacket(remainingBytes);
-                }
-                else {
-                    this.receivePacket(1440);
-                }
-
-                packetData = this.buffer.array();
-                for(int i = 0; i < this.buffer.limit(); i ++){
-                    packetDataList.add(packetData[i]);
-                }
-                remainingBytes -= this.buffer.limit();
-            } while(remainingBytes > 0);
-        }
+            packetData = this.buffer.array();
+            for(int i = 0; i < this.buffer.limit(); i ++){
+                packetDataList.add(packetData[i]);
+            }
+            remainingBytes -= receivedBytes;
+        } while(remainingBytes > 0);
 
         packetData = new byte[packetDataList.size()];
         for(int i = 0; i < packetData.length; i ++) {

@@ -16,12 +16,9 @@ module RCONPacketFactory
   def self.packet_from_data(raw_data)
     byte_buffer = StringIO.new raw_data
 
-    size = byte_buffer.long
     request_id = byte_buffer.long
     header = byte_buffer.long
     data = byte_buffer.cstring
-
-    return nil if size - 10 != data.size
 
     case header
       when RCONPacket::SERVERDATA_AUTH_RESPONSE then

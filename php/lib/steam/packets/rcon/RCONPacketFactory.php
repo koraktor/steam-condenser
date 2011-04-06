@@ -27,14 +27,9 @@ abstract class RCONPacketFactory extends SteamPacketFactory
 	{
 		$byteBuffer = new ByteBuffer($rawData);
 
-		$packetSize = $byteBuffer->getLong();
 		$requestId = $byteBuffer->getLong();
 		$header = $byteBuffer->getLong();
 		$data = $byteBuffer->getString();
-
-        if($packetSize - 10 != strlen($data)) {
-            return null;
-        }
 
 		switch($header)
 		{

@@ -44,24 +44,17 @@ class RCONSocket
   end
 
   def reply
-    raise RCONBanException if receive_packet(1440) == 0
+    raise RCONBanException if receive_packet(4) == 0
 
-    packet_data = @buffer.get
     @buffer.rewind
-    packet_size = @buffer.long + 4
+    remaining_bytes = @buffer.long
 
-    if packet_size > 1440
-      remaining_bytes = packet_size - @buffer.size
-      begin
-        if remaining_bytes < 1440
-          receive_packet remaining_bytes
-        else
-          receive_packet 1440
-        end
-        packet_data << @buffer.get
-        remaining_bytes -= @buffer.size
-      end while remaining_bytes > 0
-    end
+    packet_data = ''
+    begin
+      received_bytes = receive_packet remaining_bytes
+      remaining_bytes -= received_bytes
+      packet_data << @buffer.get
+    end while remaining_bytes > 0
 
     RCONPacketFactory.packet_from_data(packet_data)
   end
