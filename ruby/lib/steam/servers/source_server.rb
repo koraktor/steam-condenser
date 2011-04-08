@@ -16,10 +16,14 @@ class SourceServer
 
   include GameServer
 
-  def initialize(ip_address, port_number = 27015)
-    super port_number
-    @rcon_socket = RCONSocket.new ip_address, port_number
-    @socket = SourceSocket.new ip_address, port_number
+  def initialize(address, port = 27015)
+    super
+  end
+
+  # Initializes the sockets to communicate with the Source server
+  def init_socket
+    @rcon_socket = RCONSocket.new @ip_address, @port
+    @socket      = SourceSocket.new @ip_address, @port
   end
 
   def rcon_auth(password)

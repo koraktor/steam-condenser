@@ -9,11 +9,7 @@ package com.github.koraktor.steamcondenser.steam.servers;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.sockets.GoldSrcSocket;
@@ -25,28 +21,84 @@ import com.github.koraktor.steamcondenser.steam.sockets.GoldSrcSocket;
  */
 public class GoldSrcServer extends GameServer {
 
+    private boolean isHLTV;
+
 	private String rconPassword;
 
-	/**
-	 * @param ipAddress The IP of the server to connect to
-	 * @param portNumber The port number of the server
-	 */
-	public GoldSrcServer(InetAddress ipAddress, int portNumber)
-			throws IOException {
-		super(portNumber);
-		this.socket = new GoldSrcSocket(ipAddress, portNumber, false);
-	}
+    /**
+     * @param address The address of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public GoldSrcServer(String address)
+            throws IOException, SteamCondenserException {
+        this(address, 27015, false);
+    }
+
+    /**
+     * @param address The address of the server to connect to
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public GoldSrcServer(String address, Integer port)
+            throws IOException, SteamCondenserException {
+        this(address, port, false);
+    }
+
+    /**
+     * @param address The address of the server to connect to
+     * @param port The port number of the server
+     * @param isHLTV Whether this server is a HLTV server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public GoldSrcServer(String address, Integer port, boolean isHLTV)
+            throws IOException, SteamCondenserException {
+        super(address, port);
+
+        this.isHLTV = isHLTV;
+    }
+
+    /**
+     * @param address The address of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public GoldSrcServer(InetAddress address)
+            throws IOException, SteamCondenserException {
+        this(address, 27015, false);
+    }
 
 	/**
 	 * @param ipAddress The IP of the server to connect to
-	 * @param portNumber The port number of the server
-	 * @param isHLTV Whether this server is a HLTV server
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
 	 */
-	public GoldSrcServer(InetAddress ipAddress, int portNumber, boolean isHLTV)
-			throws IOException {
-		super(portNumber);
-		this.socket = new GoldSrcSocket(ipAddress, portNumber, isHLTV);
-	}
+    public GoldSrcServer(InetAddress ipAddress, Integer port)
+            throws IOException, SteamCondenserException {
+        this(ipAddress.toString(), port, false);
+    }
+
+	/**
+	 * @param ipAddress The IP of the server to connect to
+     * @param port The port number of the server
+	 * @param isHLTV Whether this server is a HLTV server
+     * @throws IOException
+     * @throws SteamCondenserException
+	 */
+    public GoldSrcServer(InetAddress ipAddress, Integer port, boolean isHLTV)
+            throws IOException, SteamCondenserException {
+        this(ipAddress.toString(), port, isHLTV);
+    }
+
+    /**
+     * Initializes the socket to communicate with the GoldSrc server
+     */
+    public void initSocket() throws IOException {
+        this.socket = new GoldSrcSocket(this.ipAddress, this.port, this.isHLTV);
+    }
 
 	/**
 	 * @param password Password to use for RCON commands

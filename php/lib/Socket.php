@@ -59,7 +59,7 @@ abstract class Socket
         $this->close();
     }
 
-	abstract public function connect(InetAddress $ipAddress, $portNumber);
+    abstract public function connect($ipAddress, $portNumber);
 
     /**
      * Closes the socket

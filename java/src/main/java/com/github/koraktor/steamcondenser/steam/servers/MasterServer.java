@@ -8,8 +8,8 @@
 package com.github.koraktor.steamcondenser.steam.servers;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +29,10 @@ import com.github.koraktor.steamcondenser.steam.sockets.MasterServerSocket;
  * A Steam master server
  * @author Sebastian Staudt
  */
-public class MasterServer
-{
-    public static final InetSocketAddress GOLDSRC_MASTER_SERVER = new InetSocketAddress("hl1master.steampowered.com", 27010);
-    public static final InetSocketAddress SOURCE_MASTER_SERVER = new InetSocketAddress("hl2master.steampowered.com", 27011);
+public class MasterServer extends Server {
+
+    public static final String GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+    public static final String SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
     public static final byte REGION_US_EAST_COAST = 0x00;
     public static final byte REGION_US_WEST_COAST = 0x01;
@@ -46,10 +46,46 @@ public class MasterServer
 
     private MasterServerSocket socket;
 
-    public MasterServer(InetSocketAddress masterServer)
-            throws IOException, UnknownHostException
-    {
-        this.socket = new MasterServerSocket(masterServer.getAddress(), masterServer.getPort());
+    /**
+     * @param address The address of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public MasterServer(String address)
+            throws IOException, SteamCondenserException {
+        super(address, null);
+    }
+
+    /**
+     * @param address The address of the server to connect to
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public MasterServer(String address, Integer port)
+            throws IOException, SteamCondenserException {
+        super(address, port);
+    }
+
+    /**
+     * @param ipAddress The IP of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public MasterServer(InetAddress ipAddress)
+            throws IOException, SteamCondenserException {
+        super(ipAddress.toString(), null);
+    }
+
+    /**
+     * @param ipAddress The IP of the server to connect to
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public MasterServer(InetAddress ipAddress, Integer port)
+            throws IOException, SteamCondenserException {
+        super(ipAddress.toString(), port);
     }
 
     /**
@@ -116,6 +152,13 @@ public class MasterServer
     }
 
     /**
+     * Initializes the socket to communicate with the master server
+     */
+    public void initSocket() throws IOException {
+        this.socket = new MasterServerSocket(this.ipAddress, this.port);
+    }
+
+    /**
      * Sends a constructed heartbeat to the master server
      *
      * This can be used to check server versions externally.
@@ -142,4 +185,5 @@ public class MasterServer
 
         return replyPackets;
     }
+
 }

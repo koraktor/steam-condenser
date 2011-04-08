@@ -11,7 +11,6 @@
  * @subpackage UDPSocket
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'Socket.php';
 
 /**
@@ -27,7 +26,7 @@ class UDPSocket extends Socket
 	/**
 	 * Connects the UDP socket to the host with the given IP address and port number
 	 */
-	public function connect(InetAddress $ipAddress, $portNumber)
+	public function connect($ipAddress, $portNumber)
 	{
 		$this->ipAddress = $ipAddress;
 		$this->portNumber = $portNumber;

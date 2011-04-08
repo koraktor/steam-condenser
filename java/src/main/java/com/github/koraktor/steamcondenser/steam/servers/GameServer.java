@@ -32,7 +32,7 @@ import com.github.koraktor.steamcondenser.steam.sockets.QuerySocket;
 /**
  * @author Sebastian Staudt
  */
-abstract public class GameServer {
+public abstract class GameServer extends Server {
 
 	private static final int REQUEST_CHALLENGE = 0;
 	private static final int REQUEST_INFO = 1;
@@ -45,6 +45,17 @@ abstract public class GameServer {
 	protected HashMap<String, String> rulesHash;
 	protected HashMap<String, Object> serverInfo;
 	protected QuerySocket socket;
+
+    /**
+     * Creates a new game server instance with the given address and port
+     *
+     * @param address
+     * @param port
+     */
+    protected GameServer(String address, Integer port)
+            throws IOException, SteamCondenserException {
+        super(address, port);
+    }
 
     /**
      * Parses the player attribute names supplied by +rcon status+
@@ -97,18 +108,6 @@ abstract public class GameServer {
 
         return playerData;
     }
-
-	/**
-	 * Checks if the port number is valid
-	 * @param portNumber The port number of the server
-	 * @throws IllegalArgumentException
-	 */
-	protected GameServer(int portNumber)
-			throws IllegalArgumentException {
-		if(portNumber < 0 || portNumber > 65535) {
-			throw new IllegalArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
-		}
-	}
 
 	/**
 	 * @return The response time of this server in milliseconds

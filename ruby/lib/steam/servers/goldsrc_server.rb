@@ -10,9 +10,15 @@ class GoldSrcServer
 
   include GameServer
 
-  def initialize(ip_address, port_number = 27015, is_hltv = false)
-    super port_number
-    @socket = GoldSrcSocket.new ip_address, port_number, is_hltv
+  def initialize(address, port = 27015, is_hltv = false)
+    super address, port
+
+    @is_hltv = is_hltv
+  end
+
+  # Initializes the socket to communicate with the GoldSrc server
+  def init_socket
+    @socket = GoldSrcSocket.new @ip_address, @port, @is_hltv
   end
 
   def rcon_auth(password)

@@ -17,7 +17,7 @@ require 'exceptions/timeout_exception'
 # @see MasterServerSocket
 # @see RCONSocket
 # @see SourceSocket
-# @since sdds
+# @since 0.5.0
 module SteamSocket
 
   # The default timeout
@@ -37,11 +37,9 @@ module SteamSocket
     @@timeout = timeout
   end
 
-  def initialize(ip, port = 27015)
-    ip = IPSocket.getaddress(ip) unless ip.is_a? IPAddr
-
-    @socket = UDPSocket.new
-    @socket.connect ip, port
+  def initialize(ip_address, port = 27015)
+    @socket       = UDPSocket.new
+    @socket.connect ip_address, port
   end
 
   # Closes the underlying socket

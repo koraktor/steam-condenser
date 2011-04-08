@@ -10,11 +10,8 @@ package com.github.koraktor.steamcondenser.steam.servers;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.github.koraktor.steamcondenser.exceptions.RCONNoAuthException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
@@ -36,16 +33,55 @@ public class SourceServer extends GameServer {
 
 	protected RCONSocket rconSocket;
 
-	/**
-	 * @param ipAddress The IP of the server to connect to
-	 * @param portNumber The port number of the server
-	 */
-	public SourceServer(InetAddress ipAddress, int portNumber)
-			throws IOException {
-		super(portNumber);
-		this.rconSocket = new RCONSocket(ipAddress, portNumber);
-		this.socket = new SourceSocket(ipAddress, portNumber);
-	}
+    /**
+     * @param address The address of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public SourceServer(String address)
+            throws IOException, SteamCondenserException {
+        super(address, 27015);
+    }
+
+    /**
+     * @param address The address of the server to connect to
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public SourceServer(String address, Integer port)
+            throws IOException, SteamCondenserException {
+        super(address, port);
+    }
+
+    /**
+     * @param address The IP of the server to connect to
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public SourceServer(InetAddress address)
+            throws IOException, SteamCondenserException {
+        super(address.toString(), 27015);
+    }
+
+    /**
+     * @param address The IP of the server to connect to
+     * @param port The port number of the server
+     * @throws IOException
+     * @throws SteamCondenserException
+     */
+    public SourceServer(InetAddress address, Integer port)
+            throws IOException, SteamCondenserException {
+        super(address.toString(), port);
+    }
+
+    /**
+     * Initializes the socket to communicate with the Source server
+     */
+    public void initSocket() throws IOException {
+        this.rconSocket = new RCONSocket(this.ipAddress, this.port);
+        this.socket = new SourceSocket(this.ipAddress, this.port);
+    }
 
 	/**
 	 * Authenticate via RCON

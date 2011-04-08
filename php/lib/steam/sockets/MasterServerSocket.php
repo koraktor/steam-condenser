@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -11,7 +11,6 @@
  * @subpackage Sockets
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 
@@ -21,10 +20,6 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
  */
 class MasterServerSocket extends SteamSocket
 {
-	public function __construct(InetAddress $ipAddress, $portNumber)
-	{
-		parent::__construct($ipAddress, $portNumber);
-	}
 
 	/**
 	 * @throws PacketFormatException

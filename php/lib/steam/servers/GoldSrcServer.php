@@ -11,7 +11,6 @@
  * @subpackage GoldSrcServer
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/GoldSrcSocket.php';
 
@@ -22,13 +21,25 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/GoldSrcSocket.php';
 class GoldSrcServer extends GameServer {
 
     /**
-     * @param InetAddress $serverIP
-     * @param int $portNumber The listening port of the server, defaults to 27015
+     * @var bool
      */
-    public function __construct(InetAddress $ipAddress, $portNumber = 27015, $isHLTV = false) {
-        parent::__construct($portNumber);
+    private $isHLTV;
 
-        $this->socket = new GoldSrcSocket($ipAddress, $portNumber, $isHLTV);
+    /**
+     * @param string $address
+     * @param int $port The listening port of the server, defaults to 27015
+     */
+    public function __construct($address, $port = 27015, $isHLTV = false) {
+        parent::__construct($address, $port);
+
+        $this->isHLTV = $isHLTV;
+    }
+
+    /**
+     * Initializes the sockets to communicate with the GoldSrc server
+     */
+    public function initSocket() {
+        $this->socket = new GoldSrcSocket($this->ipAddress, $this->port, $this->isHLTV);
     }
 
     /**

@@ -12,7 +12,6 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'UDPSocket.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/TimeoutException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
@@ -53,11 +52,10 @@ abstract class SteamSocket
         self::$timeout = $timeout;
     }
 
-	public function __construct(InetAddress $ipAddress, $portNumber = 27015)
-	{
-		$this->socket = new UDPSocket();
-		$this->socket->connect($ipAddress, $portNumber);
-	}
+    public function __construct($ipAddress, $portNumber = 27015) {
+        $this->socket = new UDPSocket();
+        $this->socket->connect($ipAddress, $portNumber);
+    }
 
     /**
      * Closes this socket

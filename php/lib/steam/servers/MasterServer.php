@@ -11,18 +11,18 @@
  * @subpackage SteamSocket
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/C2M_CHECKMD5_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2M_HEARTBEAT2_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/Server.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/MasterServerSocket.php';
 
 /**
  * @package Steam Condenser (PHP)
  * @subpackage MasterServer
  */
-class MasterServer
-{
+class MasterServer extends Server {
+
 	const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
 	const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
@@ -41,12 +41,6 @@ class MasterServer
 	 */
 	private $socket;
 
-	public function __construct($masterServer)
-	{
-		$masterServer = explode(":", $masterServer);
-		$this->socket = new MasterServerSocket(new InetAddress($masterServer[0]), $masterServer[1]);
-	}
-
     /**
      * Request a challenge number from the master server. This is used for
      * further communication with the master server.
@@ -58,10 +52,17 @@ class MasterServer
      * @see sendHeartbeat()
      */
     public function getChallenge() {
-        $this->socket->send(new C2M_CHECKMD5_Packet());
-        return $this->socket->getReply()->getChallenge();
+        while(true) {
+            try {
+                $this->socket->send(new C2M_CHECKMD5_Packet());
+                return $this->socket->getReply()->getChallenge();
+            } catch(Exception $e) {
+                if($this->rotateIp()) {
+                    throw $e;
+                }
+            }
+        }
     }
-
 
 	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
 	{
@@ -70,40 +71,50 @@ class MasterServer
 		$portNumber = 0;
 		$hostName   = "0.0.0.0";
 
-		do
-		{
-			$this->socket->send(new A2M_GET_SERVERS_BATCH2_Packet($regionCode, "$hostName:$portNumber", $filter));
-			try {
-				$serverStringArray = $this->socket->getReply()->getServers();
+        while(true) {
+            try {
+                do {
+                    $this->socket->send(new A2M_GET_SERVERS_BATCH2_Packet($regionCode, "$hostName:$portNumber", $filter));
+                    try {
+                        $serverStringArray = $this->socket->getReply()->getServers();
 
-				foreach($serverStringArray as $serverString)
-				{
-					$serverString = explode(":", $serverString);
-					$hostName = $serverString[0];
-					$portNumber = $serverString[1];
+                        foreach($serverStringArray as $serverString) {
+                            $serverString = explode(":", $serverString);
+                            $hostName = $serverString[0];
+                            $portNumber = $serverString[1];
 
-					if($hostName != "0.0.0.0" && $portNumber != 0)
-					{
-						$serverArray[] = array($hostName, $portNumber);
-					}
-					else
-					{
-						$finished = true;
-					}
-				}
-				$failCount = 0;
-			}
-			catch(TimeoutException $e) {
-				$failCount ++;
-				if($failCount == 4) {
-			    		throw $e;
-				}
-			}
-		}
-		while(!$finished);
+                            if($hostName != "0.0.0.0" && $portNumber != 0) {
+                                $serverArray[] = array($hostName, $portNumber);
+                            } else {
+                                $finished = true;
+                            }
+                        }
+                        $failCount = 0;
+                    } catch(TimeoutException $e) {
+                        $failCount ++;
+                        if($failCount == 4) {
+                                throw $e;
+                        }
+                    }
+                } while(!$finished);
+                break;
+            } catch(Exception $e) {
+                echo get_class($e) . "\n";
+                if($this->rotateIp()) {
+                    throw $e;
+                }
+            }
+        }
 
 		return $serverArray;
 	}
+
+    /**
+     * Initializes the socket to communicate with the master server
+     */
+    public function initSocket() {
+        $this->socket = new MasterServerSocket($this->ipAddress, $this->port);
+    }
 
     /**
      * Sends a constructed heartbeat to the master server
@@ -117,16 +128,25 @@ class MasterServer
      *         repeat a heartbeat a few times when not receiving any packets.
      */
     public function sendHeartbeat($data) {
-        $this->socket->send(new S2M_HEARTBEAT2_Packet($data));
+        while(true) {
+            try {
+                $this->socket->send(new S2M_HEARTBEAT2_Packet($data));
 
-        $replyPackets = array();
-        try {
-            do {
-                $replyPackets[] = $this->socket->getReply();
-            } while(true);
-        } catch(TimeoutException $e) {}
+                $replyPackets = array();
+                try {
+                    do {
+                        $replyPackets[] = $this->socket->getReply();
+                    } while(true);
+                } catch(TimeoutException $e) {}
 
-        return $replyPackets;
+                return $replyPackets;
+            } catch(Exception $e) {
+                echo get_class($e) . "\n";
+                if($this->rotateIp()) {
+                    throw $e;
+                }
+            }
+        }
     }
 
 }

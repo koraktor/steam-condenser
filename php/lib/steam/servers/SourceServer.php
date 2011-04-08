@@ -11,7 +11,6 @@
  * @subpackage SourceServer
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/RCONNoAuthException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthRequest.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthResponse.php';
@@ -34,14 +33,11 @@ class SourceServer extends GameServer
     private $rconRequestId;
 
     /**
-     * @param InetAddress $serverIP
-     * @param int $portNumber The listening port of the server, defaults to 27015
+     * Initializes the sockets to communicate with the Source server
      */
-    public function __construct(InetAddress $ipAddress, $portNumber = 27015) {
-        parent::__construct($portNumber);
-
-        $this->rconSocket = new RCONSocket($ipAddress, $portNumber);
-        $this->socket = new SourceSocket($ipAddress, $portNumber);
+    public function initSocket() {
+        $this->rconSocket = new RCONSocket($this->ipAddress, $this->port);
+        $this->socket = new SourceSocket($this->ipAddress, $this->port);
     }
 
     public function rconAuth($password) {

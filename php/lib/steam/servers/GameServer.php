@@ -17,12 +17,13 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_INFO_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_PLAYER_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_RULES_Packet.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_SERVERQUERY_GETCHALLENGE_Packet.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/Server.php';
 
 /**
  * @package    Steam Condenser (PHP)
  * @subpackage GameServer
  */
-abstract class GameServer {
+abstract class GameServer extends Server {
 
     const REQUEST_CHALLENGE = 0;
     const REQUEST_INFO      = 1;
@@ -111,13 +112,12 @@ abstract class GameServer {
     }
 
     /**
-     * @param InetAddress $serverIP
-     * @param int $portNumber The listening port of the server, defaults to 27015
+     * @param string $address
+     * @param int $portNumber The listening port of the server, defaults to
+     *        27015
      */
-    public function __construct($portNumber = 27015) {
-        if(!is_numeric($portNumber) || $portNumber <= 0 || $portNumber > 65535) {
-            throw new Exception("The listening port of the server has to be a number greater than 0 and less than 65536.");
-        }
+    public function __construct($address, $port = 27015) {
+        parent::__construct($address, $port);
     }
 
     /**

@@ -13,8 +13,11 @@ require 'steam/packets/s2a_info_base_packet'
 require 'steam/packets/s2a_player_packet'
 require 'steam/packets/s2a_rules_packet'
 require 'steam/packets/s2c_challenge_packet'
+require 'steam/servers/server'
 
 module GameServer
+
+  include Server
 
   REQUEST_CHALLENGE = 0
   REQUEST_INFO = 1
@@ -54,6 +57,13 @@ module GameServer
     end
 
     player_data
+  end
+
+  # Creates a new instance of a game server object
+  #
+  # The port defaults to 27015 for game servers
+  def initialize(address, port = 27015)
+    super
   end
 
   # Returns the last measured response time of this server
@@ -193,13 +203,6 @@ module GameServer
     reply
     end_time = Time.now
     @ping = (end_time - start_time) * 1000
-  end
-
-  # Checks whether the listening port number of the server is in a valid range
-  def initialize(port_number = 27015)
-    unless port_number.to_i > 0 and port_number.to_i < 65536
-      raise ArgumentError.new('The listening port of the server has to be a number greater than 0 and less than 65536.')
-    end
   end
 
   def to_s

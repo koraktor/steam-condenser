@@ -11,7 +11,6 @@
  * @subpackage Sockets
  */
 
-require_once STEAM_CONDENSER_PATH . 'InetAddress.php';
 require_once STEAM_CONDENSER_PATH . 'TCPSocket.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/RCONBanException.php';
 require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
@@ -26,7 +25,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 class RCONSocket extends SteamSocket
 {
     /**
-     * @var InetAddress
+     * @var string
      */
     private $ipAddress;
 
@@ -36,7 +35,7 @@ class RCONSocket extends SteamSocket
     private $portNumber;
 
 
-    public function __construct(InetAddress $ipAddress, $portNumber) {
+    public function __construct($ipAddress, $portNumber) {
         $this->buffer = ByteBuffer::allocate(1400);
         $this->ipAddress = $ipAddress;
         $this->portNumber = $portNumber;
