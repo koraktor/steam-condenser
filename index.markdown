@@ -46,6 +46,7 @@ Twitter][5].
 - If you have a problem with using Steam Condenser or a question, please have
   a look at the [Steam Condenser group][4] for a related topic. If you can't
   find one, feel free to create your own.
+- Join #steam-condenser on freenode.net to ask for help
 - Additionally you're welcome to ask for support by messaging [me (koraktor)][6]
   at GitHub or [@steamcondenser][5] at Twitter.
 
