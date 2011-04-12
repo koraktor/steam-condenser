@@ -6,7 +6,7 @@
 
     <groupId>com.github.koraktor</groupId>
     <artifactId>steam-condenser</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
     <packaging>jar</packaging>
 
     <name>Steam Condenser</name>
