@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.12.0
+version: 0.13.0
 ---
 Downloads
 =========
@@ -24,8 +24,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: 3f3835bfd2bfe9f1eb4ad97edca19ab50fc1eeec
-  MD5:  286f712b9ad8eaecabb9ffd58d1bb1d8</pre>
+  SHA1: b7b61203c67ce8266fc7858cce9fc74abe5b39dc
+  MD5:  3b44d6ce3941d9d482bde5e6aecf0eca</pre>
 </div>
 
 <div class="download">
@@ -33,8 +33,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: 75791abd3485d473fb795fb1091d21dd25ef01fc
-  MD5:  80aca4fa9a160d02374ca1eec93d6f3b</pre>
+  SHA1: 4abc5667833d44d0c2dd1b41cef46c3af0437836
+  MD5:  f7959ae2429e8add72c3d6f2025f9ef0</pre>
 </div>
 
 ## Git repository
@@ -54,12 +54,12 @@ in the *master* branch, please clone the Git repository.
 
 <div class="download">
   <h3>Gzip compressed Tar</h3>
-  <a href="http://github.com/koraktor/steam-condenser/tarball/{{page.version}}">steam-condenser-{{page.version}}.tar.gz</a>
+  <a href="https://github.com/koraktor/steam-condenser/tarball/{{page.version}}">steam-condenser-{{page.version}}.tar.gz</a>
 </div>
 
 <div class="download">
   <h3>Zip archive</h3>
-  <a href="http://github.com/koraktor/steam-condenser/zipball/{{page.version}}">steam-condenser-{{page.version}}.zip</a>
+  <a href="https://github.com/koraktor/steam-condenser/zipball/{{page.version}}">steam-condenser-{{page.version}}.zip</a>
 </div>
 
 <br /><br />
