@@ -139,7 +139,7 @@ class SteamPlayer
             $this->loss = intval($playerData['loss']);
             $this->ping = intval($playerData['ping']);
 
-            if(array_key_exists('data', $playerData)) {
+            if(array_key_exists('adr', $playerData)) {
                 $address = explode(':', $playerData['adr']);
                 $this->ipAddress  = $address[0];
                 $this->clientPort = intval($address[1]);
