@@ -62,6 +62,11 @@ class SteamPlayer
     /**
      * @var int
      */
+    private $rate;
+
+    /**
+     * @var int
+     */
     private $realId;
 
     /**
