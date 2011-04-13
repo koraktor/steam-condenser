@@ -66,9 +66,7 @@ public abstract class GameServer extends Server {
     private static List<String> getPlayerStatusAttributes(String statusHeader) {
         List<String> statusAttributes = new ArrayList<String>();
         for(String attribute : statusHeader.split("\\s+")) {
-            if(attribute.equals("#")) {
-                statusAttributes.add("id");
-            } else if(attribute.equals("connected")) {
+            if(attribute.equals("connected")) {
                 statusAttributes.add("time");
             } else if(attribute.equals("frag")) {
                 statusAttributes.add("score");
@@ -88,17 +86,24 @@ public abstract class GameServer extends Server {
      * @return Split player data
      */
     private static Map<String, String> splitPlayerStatus(List<String> attributes, String playerStatus) {
-        List<String> tmpData = Arrays.asList(playerStatus.substring(1).trim().split("\""));
+        if(!attributes.get(0).equals("userid")) {
+            playerStatus = playerStatus.replaceAll("^\\d+ +", "");
+        }
+
+        List<String> tmpData = Arrays.asList(playerStatus.split("\""));
         List<String> data = new ArrayList<String>();
         data.addAll(Arrays.asList(tmpData.get(0).trim().split("\\s+")));
         data.add(tmpData.get(1));
         data.addAll(Arrays.asList(tmpData.get(2).trim().split("\\s+")));
+        data.remove("");
 
         if(attributes.size() > data.size() + 1) {
-          data.add(1, null);
-          data.add(4, null);
-          data.add(4, null);
-          data.add(4, null);
+            data.add(4, null);
+            data.add(4, null);
+            data.add(4, null);
+            data.add(4, null);
+        } else if(attributes.size() < data.size()) {
+            data.remove(1);
         }
 
         Map<String, String> playerData = new HashMap<String, String>();
@@ -361,7 +366,7 @@ public abstract class GameServer extends Server {
 			List<String> players = new ArrayList<String>();
             for(String line : Arrays.asList(this.rconExec("status").split("\n"))) {
                 if(line.startsWith("#") && !line.equals("#end")) {
-                    players.add(line);
+                    players.add(line.substring(1).trim());
                 }
             }
             List<String> attributes = getPlayerStatusAttributes(players.remove(0));

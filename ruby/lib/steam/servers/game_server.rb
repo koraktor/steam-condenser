@@ -28,8 +28,6 @@ module GameServer
   def self.player_status_attributes(status_header)
     status_header.split.map do |attribute|
       case attribute
-        when '#'
-          :id
         when 'connected'
           :time
         when 'frag'
@@ -42,13 +40,16 @@ module GameServer
 
   # Splits the player status obtained with +rcon status+
   def self.split_player_status(attributes, player_status)
-    data = player_status[1..-1].strip.split '"'
+    player_status.sub! /^\d+ +/, '' if attributes.first != :userid
+
+    data = player_status.split '"'
     data = [ data[0].split, data[1], data[2].split ]
     data.flatten!
 
-    if attributes.size > data.size + 1
-      data.insert 1, nil
-      data.insert 4, nil, nil, nil
+    if attributes.size > data.size
+      data.insert 3, nil, nil, nil
+    elsif attributes.size < data.size
+      data.delete_at 1
     end
 
     player_data = {}
@@ -87,6 +88,10 @@ module GameServer
   def players(rcon_password = nil)
     update_player_info(rcon_password) if @player_hash.nil?
     @player_hash
+  end
+
+  def rcon_authenticated?
+    @rcon_authenticated
   end
 
   # Returns a hash of the settings applied on the server. These settings are
@@ -173,6 +178,8 @@ module GameServer
       rcon_auth rcon_password
       players = rcon_exec('status').lines.select do |line|
         line.start_with?('#') && line != "#end\n"
+      end.map do |line|
+        line[1..-1].strip
       end
       attributes = GameServer.player_status_attributes players.shift
 

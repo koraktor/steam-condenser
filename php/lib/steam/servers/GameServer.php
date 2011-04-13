@@ -69,9 +69,7 @@ abstract class GameServer extends Server {
     private static function getPlayerStatusAttributes($statusHeader) {
         $statusAttributes = array();
         foreach(preg_split("/\s+/", $statusHeader) as $attribute) {
-            if($attribute == '#') {
-                $statusAttributes[] = 'id';
-            } else if($attribute == 'connected') {
+            if($attribute == 'connected') {
                 $statusAttributes[] = 'time';
             } else if($attribute == 'frag') {
                 $statusAttributes[] = 'score';
@@ -91,16 +89,23 @@ abstract class GameServer extends Server {
      * @return Split player data
      */
     private static function splitPlayerStatus($attributes, $playerStatus) {
-        $data = explode('"', trim(substr($playerStatus, 1)));
+        if($attributes[0] != 'userid') {
+            $playerStatus = preg_replace('/^\d+ +/', '', $playerStatus);
+        }
+
+        $data = explode('"', $playerStatus);
         $data = array_merge(
-            preg_split("/\s+/", trim($data[0])),
+            array_filter(preg_split("/\s+/", trim($data[0]))),
             array($data[1]),
             preg_split("/\s+/", trim($data[2]))
         );
+        $data = array_values($data);
 
-        if(sizeof($attributes) > sizeof($data) + 1) {
-            array_splice($data, 1, 0, array(null));
-            array_splice($data, 4, 0, array(null, null, null, null));
+        if(sizeof($attributes) > sizeof($data)) {
+            $data = array_splice($data, 3, 0, array(null, null, null));
+        } elseif(sizeof($attributes) < sizeof($data)) {
+            unset($data[1]);
+            $data = array_values($data);
         }
 
         $playerData = array();
@@ -275,7 +280,7 @@ abstract class GameServer extends Server {
             $players = array();
             foreach(explode("\n", $this->rconExec('status')) as $line) {
                 if(strpos($line, '#') === 0 && $line != '#end') {
-                    $players[] = $line;
+                    $players[] = trim(substr($line, 1));
                 }
             }
             $attributes = self::getPlayerStatusAttributes(array_shift($players));
