@@ -42,7 +42,13 @@ module GameServer
   def self.split_player_status(attributes, player_status)
     player_status.sub! /^\d+ +/, '' if attributes.first != :userid
 
-    data = player_status.split '"'
+    first_quote = player_status.index '"'
+    last_quote  = player_status.rindex '"'
+    data = [
+      player_status[0, first_quote],
+      player_status[first_quote + 1..last_quote - 1],
+      player_status[last_quote + 1..-1]
+    ]
     data = [ data[0].split, data[1], data[2].split ]
     data.flatten!
 

@@ -93,7 +93,14 @@ abstract class GameServer extends Server {
             $playerStatus = preg_replace('/^\d+ +/', '', $playerStatus);
         }
 
-        $data = explode('"', $playerStatus);
+        $firstQuote = strpos($playerStatus, '"');
+        $lastQuote  = strrpos($playerStatus, '"');
+        $data = array(
+            substr($playerStatus, 0, $firstQuote),
+            substr($playerStatus, $firstQuote + 1, $lastQuote),
+            substr($playerStatus, $lastQuote + 1)
+        );
+
         $data = array_merge(
             array_filter(preg_split("/\s+/", trim($data[0]))),
             array($data[1]),

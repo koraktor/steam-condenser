@@ -90,7 +90,13 @@ public abstract class GameServer extends Server {
             playerStatus = playerStatus.replaceAll("^\\d+ +", "");
         }
 
-        List<String> tmpData = Arrays.asList(playerStatus.split("\""));
+        int firstQuote = playerStatus.indexOf('"');
+        int lastQuote  = playerStatus.lastIndexOf('"');
+        List<String> tmpData = new ArrayList<String>();
+        tmpData.add(playerStatus.substring(0, firstQuote));
+        tmpData.add(playerStatus.substring(firstQuote + 1, lastQuote));
+        tmpData.add(playerStatus.substring(lastQuote + 1));
+
         List<String> data = new ArrayList<String>();
         data.addAll(Arrays.asList(tmpData.get(0).trim().split("\\s+")));
         data.add(tmpData.get(1));
