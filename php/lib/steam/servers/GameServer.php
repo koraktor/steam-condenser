@@ -102,7 +102,7 @@ abstract class GameServer extends Server {
         $data = array_values($data);
 
         if(sizeof($attributes) > sizeof($data)) {
-            $data = array_splice($data, 3, 0, array(null, null, null));
+            array_splice($data, 3, 0, array(null, null, null));
         } elseif(sizeof($attributes) < sizeof($data)) {
             unset($data[1]);
             $data = array_values($data);
