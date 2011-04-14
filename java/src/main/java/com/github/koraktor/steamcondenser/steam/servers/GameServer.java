@@ -97,11 +97,11 @@ public abstract class GameServer extends Server {
         data.addAll(Arrays.asList(tmpData.get(2).trim().split("\\s+")));
         data.remove("");
 
-        if(attributes.size() > data.size() + 1) {
-            data.add(4, null);
-            data.add(4, null);
-            data.add(4, null);
-            data.add(4, null);
+        if(attributes.size() > data.size() + 1 &&
+           attributes.contains("state")) {
+            data.add(3, null);
+            data.add(3, null);
+            data.add(3, null);
         } else if(attributes.size() < data.size()) {
             data.remove(1);
         }

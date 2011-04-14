@@ -46,7 +46,7 @@ module GameServer
     data = [ data[0].split, data[1], data[2].split ]
     data.flatten!
 
-    if attributes.size > data.size
+    if attributes.size > data.size && attributes.include?(:state)
       data.insert 3, nil, nil, nil
     elsif attributes.size < data.size
       data.delete_at 1
