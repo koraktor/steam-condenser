@@ -97,7 +97,7 @@ abstract class GameServer extends Server {
         $lastQuote  = strrpos($playerStatus, '"');
         $data = array(
             substr($playerStatus, 0, $firstQuote),
-            substr($playerStatus, $firstQuote + 1, $lastQuote),
+            substr($playerStatus, $firstQuote + 1, $lastQuote - 1 - $firstQuote),
             substr($playerStatus, $lastQuote + 1)
         );
 
