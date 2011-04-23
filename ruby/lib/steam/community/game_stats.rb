@@ -1,7 +1,7 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'open-uri'
 require 'rexml/document'
@@ -37,6 +37,9 @@ class GameStats
       when 'l4d2'
         require 'steam/community/l4d/l4d2_stats'
         L4D2Stats.new(steam_id)
+      when 'portal2'
+        require 'steam/community/portal2/portal2_stats'
+        Portal2Stats.new steam_id
       when 'tf2'
         require 'steam/community/tf2/tf2_stats'
         TF2Stats.new(steam_id)
