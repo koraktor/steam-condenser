@@ -1,7 +1,7 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/community/game_stats'
 require 'steam/community/tf2/tf2_class_factory'
@@ -23,16 +23,6 @@ class TF2Stats < GameStats
     end
   end
 
-  # Returns the current Team Fortress 2 inventory (a.k.a. backpack) of this
-  # player
-  def inventory
-    if @inventory.nil?
-      @inventory = TF2Inventory.new(steam_id64)
-    end
-
-    @inventory
-  end
-
   # Returns a Hash of TF2Class for this user containing all Team Fortress 2
   # classes. If the classes haven't been parsed already, parsing is done now.
   def class_stats
@@ -46,6 +36,13 @@ class TF2Stats < GameStats
     end
 
     @class_stats
+  end
+
+  # Returns the current Team Fortress 2 inventory (a.k.a. backpack) of this
+  # player
+  def inventory
+    @inventory = TF2Inventory.new(steam_id64) if @inventory.nil?
+    @inventory
   end
 
 end

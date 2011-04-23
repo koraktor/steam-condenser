@@ -1,70 +1,24 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2010, Sebastian Staudt
+# Copyright (c) 2010-2011, Sebastian Staudt
 
-require 'steam/community/web_api'
+require 'steam/community/game_item'
 
 # Represents a Team Fortress 2 item
 class TF2Item
 
+  include GameItem
+
   CLASSES = [ :scout, :sniper, :soldier, :demoman, :medic, :heavy, :pyro, :spy ]
 
-  attr_reader :attributes, :backpack_position, :class, :count, :defindex, :id,
-              :level, :name, :quality, :slot, :type
-
-  @@attribute_schema = nil
-
-  @@item_schema = nil
-
-  @@schema_language = 'en'
-
-  # Returns the attribute schema
-  #
-  # The attribute schema is fetched first if not done already
-  def self.attribute_schema
-    update_schema if @@attribute_schema.nil?
-
-    @@attribute_schema
-  end
-
-  # Returns the item schema
-  #
-  # The item schema is fetched first if not done already
-  def self.item_schema
-    update_schema if @@item_schema.nil?
-
-    @@item_schema
-  end
-
-  # Sets the language the schema should be fetched in (default is: +'en'+)
-  def self.schema_language=(language)
-    @@schema_language = language
-  end
-
   # Creates a new instance of a TF2Item with the given data
-  def initialize(item_data)
-    update_schema if @@item_schema.nil?
-
-    @defindex          = item_data[:defindex]
-
-    @backpack_position = item_data[:inventory] & 0xffff
-    @class             = @@item_schema[@defindex][:item_class]
-    @count             = item_data[:quantity]
-    @id                = item_data[:id]
-    @level             = item_data[:level]
-    @name              = @@item_schema[@defindex][:item_name]
-    @quality           = @@qualities[item_data[:quality]]
-    @slot              = @@item_schema[@defindex][:item_slot]
-    @type              = @@item_schema[@defindex][:item_type_name]
+  def initialize(inventory, item_data)
+    super
 
     @equipped = {}
     CLASSES.each_index do |class_id|
       @equipped[CLASSES[class_id]] = (item_data[:inventory] & (1 << 16 + class_id) != 0)
-    end
-
-    unless @@item_schema[@defindex][:attributes].nil?
-      @attributes = @@item_schema[@defindex][:attributes][:attribute]
     end
   end
 
@@ -76,31 +30,6 @@ class TF2Item
   # Returns whether this item is equipped by this player at all
   def equipped?
     @equipped.has_value? true
-  end
-
-  protected
-
-  # Updates the item schema (this includes attributes and qualities) using the
-  # +GetSchema+ method of interface +ITFItems_440+
-  def update_schema
-    params = {}
-    params[:language] = @@schema_language unless @@schema_language.nil?
-    result = WebApi.json!('ITFItems_440', 'GetSchema', 1, params)
-
-    @@attribute_schema = {}
-    result[:attributes][:attribute].each do |attribute_data|
-      @@attribute_schema[attribute_data[:name]] = attribute_data
-    end
-
-    @@item_schema = []
-    result[:items][:item].each do |item_data|
-      @@item_schema[item_data[:defindex]] = item_data
-    end
-
-    @@qualities = []
-    result[:qualities].each do |quality, id|
-      @@qualities[id] = quality
-    end
   end
 
 end
