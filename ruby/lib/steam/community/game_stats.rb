@@ -58,6 +58,9 @@ class GameStats
     url = base_url + '?xml=all'
     @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
 
+    error = @xml_data.elements['error']
+    raise SteamCondenserException.new(error.text) unless error.nil?
+
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?
       @app_id       = @xml_data.elements['game/gameLink'].text.match(/http:\/\/store.steampowered.com\/app\/([1-9][0-9]+)/)[1]

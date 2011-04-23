@@ -96,6 +96,11 @@ public class GameStats {
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			this.xmlData = parser.parse(url).getDocumentElement();
 
+            NodeList errorNode = this.xmlData.getElementsByTagName("error");
+            if(errorNode.getLength() > 0) {
+                throw new SteamCondenserException(errorNode.item(0).getTextContent());
+            }
+
 			this.privacyState = this.xmlData.getElementsByTagName("privacyState").item(0).getTextContent();
 			if(this.isPublic()) {
 				this.appId = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameLink").item(0).getTextContent().replace("http://store.steampowered.com/app/", ""));

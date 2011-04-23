@@ -73,6 +73,10 @@ class GameStats {
     protected function __construct($steamId, $gameName) {
         $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/$steamId/stats/$gameName?xml=all"));
 
+        if($this->xmlData->error != null) {
+            throw new SteamCondenserException((string) $this->xmlData->error);
+        }
+
         $this->privacyState = (string) $this->xmlData->privacyState;
         if($this->isPublic()) {
             preg_match('#http://store.steampowered.com/app/([1-9][0-9]*)#', (string) $this->xmlData->game->gameLink, $appId);
