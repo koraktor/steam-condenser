@@ -88,6 +88,7 @@ module WebApi
       open(url, { :proxy => true }).read
     rescue OpenURI::HTTPError
       status = $!.io.status[0]
+      status = [status, ''] unless status.is_a? Array
       raise WebApiException.new(:unauthorized) if status[0].to_i == 401
       raise WebApiException.new(:http_error, status[0].to_i, status[1])
     end
