@@ -20,8 +20,9 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.css.CSSStats;
 import com.github.koraktor.steamcondenser.steam.community.defense_grid.DefenseGridStats;
 import com.github.koraktor.steamcondenser.steam.community.dods.DoDSStats;
-import com.github.koraktor.steamcondenser.steam.community.l4d.L4DStats;
 import com.github.koraktor.steamcondenser.steam.community.l4d.L4D2Stats;
+import com.github.koraktor.steamcondenser.steam.community.l4d.L4DStats;
+import com.github.koraktor.steamcondenser.steam.community.portal2.Portal2Stats;
 import com.github.koraktor.steamcondenser.steam.community.tf2.TF2Stats;
 
 /**
@@ -64,6 +65,8 @@ public class GameStats {
 			return new L4DStats(steamId);
         } else if(gameName.equals("l4d2")) {
             return new L4D2Stats(steamId);
+        } else if(gameName.equals("portal2")) {
+            return new Portal2Stats(steamId);
 		} else if(gameName.equals("tf2")) {
 			return new TF2Stats(steamId);
 		} else {

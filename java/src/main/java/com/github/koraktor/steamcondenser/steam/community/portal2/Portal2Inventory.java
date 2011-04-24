@@ -2,10 +2,10 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010-2011, Sebastian Staudt
+ * Copyright (c) 2011, Sebastian Staudt
  */
 
-package com.github.koraktor.steamcondenser.steam.community.tf2;
+package com.github.koraktor.steamcondenser.steam.community.portal2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +17,13 @@ import com.github.koraktor.steamcondenser.steam.community.GameInventory;
 import com.github.koraktor.steamcondenser.steam.community.GameItem;
 
 /**
- * Represents the inventory (aka. Backpack) of a Team Fortress 2 player
+ * Represents the inventory (aka. Robot Enrichment) of a Portal 2 player
  *
  * @author Sebastian Staudt
  */
-public class TF2Inventory extends GameInventory {
+public class Portal2Inventory extends GameInventory {
 
-    public static Map<Long, TF2Inventory> cache = new HashMap<Long, TF2Inventory>();
+    public static Map<Long, Portal2Inventory> cache = new HashMap<Long, Portal2Inventory>();
 
     /**
      * Returns whether the requested inventory is already cached
@@ -51,7 +51,7 @@ public class TF2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
-    public static TF2Inventory create(long steamId64)
+    public static Portal2Inventory create(long steamId64)
             throws JSONException, WebApiException {
         return create(steamId64, true, false);
     }
@@ -66,7 +66,7 @@ public class TF2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
-    public static TF2Inventory create(long steamId64, boolean fetchNow)
+    public static Portal2Inventory create(long steamId64, boolean fetchNow)
             throws JSONException, WebApiException {
         return create(steamId64, fetchNow, false);
     }
@@ -82,17 +82,17 @@ public class TF2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
-    public static TF2Inventory create(long steamId64, boolean fetchNow, boolean bypassCache)
+    public static Portal2Inventory create(long steamId64, boolean fetchNow, boolean bypassCache)
             throws JSONException, WebApiException {
         if(isCached(steamId64) && !bypassCache) {
-            TF2Inventory inventory = cache.get(steamId64);
+            Portal2Inventory inventory = cache.get(steamId64);
             if(fetchNow && !inventory.isFetched()) {
                 inventory.fetch();
             }
 
             return inventory;
         } else {
-            return new TF2Inventory(steamId64, fetchNow);
+            return new Portal2Inventory(steamId64, fetchNow);
         }
     }
 
@@ -103,7 +103,7 @@ public class TF2Inventory extends GameInventory {
      * @param steamId64 The 64bit Steam ID of the user
      * @throws JSONException on invalid JSON data
      */
-    protected TF2Inventory(long steamId64)
+    public Portal2Inventory(long steamId64)
             throws JSONException {
         super(steamId64, true);
     }
@@ -115,28 +115,28 @@ public class TF2Inventory extends GameInventory {
      * @param fetchNow Whether the data should be fetched now
      * @throws JSONException on invalid JSON data
      */
-    protected TF2Inventory(long steamId64, boolean fetchNow)
+    public Portal2Inventory(long steamId64, boolean fetchNow)
             throws JSONException {
         super(steamId64, fetchNow);
     }
 
     /**
-     * Returns the application ID of Team Fortress 2
+     * Returns the application ID of Portal 2
      *
-     * @return The application ID of Team Fortress 2 is 440
+     * @return The application ID of Portal 2 is 620
      */
     protected int getAppId() {
-        return 440;
+        return 620;
     }
 
     /**
-     * Returns the item class for Team Fortress 2
+     * Returns the item class for Portal 2
      *
-     * @return The item class for Team Fortress 2 is TF2Item
-     * @see TF2Item
+     * @return The item class for Portal 2 is Portal2Item
+     * @see Portal2Item
      */
     protected Class<? extends GameItem> getItemClass() {
-        return TF2Item.class;
+        return Portal2Item.class;
     }
 
 }
