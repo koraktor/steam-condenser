@@ -9,6 +9,9 @@ require 'steam/community/tf2/tf2_item'
 # Represents the inventory (aka. Backpack) of a Team Fortress 2 player
 class TF2Inventory
 
+  include Cacheable
+  cacheable_with_ids :steam_id64
+
   include GameInventory
 
   @@app_id = 440

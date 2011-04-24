@@ -10,9 +10,6 @@ require 'steam/community/web_api'
 # Provides basic functionality to represent an inventory of player in a game
 module GameInventory
 
-  include Cacheable
-  cacheable_with_ids :steam_id64
-
   attr_reader :items, :steam_id64
 
   @@attribute_schema = {}
