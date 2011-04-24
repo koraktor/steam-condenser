@@ -10,8 +10,8 @@ module Cacheable
   def self.included(base) #:nodoc:
 
     base.extend ClassMethods
-    base.class_eval 'class_variable_set :@@cache, {}'
-    base.class_eval 'class_variable_set :@@cache_ids, {}'
+    base.send :class_variable_set, :@@cache, {}
+    base.send :class_variable_set, :@@cache_ids, []
 
     class << base
       alias_method :create, :new
@@ -67,8 +67,8 @@ module Cacheable
 
   # Saves this object in the cache
   def cache
-    cache     = self.class.class_eval 'class_variable_get :@@cache'
-    cache_ids = self.class.class_eval 'class_variable_get :@@cache_ids'
+    cache     = self.class.send :class_variable_get, :@@cache
+    cache_ids = self.class.send :class_variable_get, :@@cache_ids
 
     cache_ids.each do |cache_id|
       cache_id_value = instance_variable_get('@' + cache_id.to_s)
