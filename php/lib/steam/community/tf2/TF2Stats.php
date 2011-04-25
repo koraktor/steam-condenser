@@ -97,7 +97,7 @@ class TF2Stats extends GameStats {
             $this->inventory = TF2Inventory::create($this->steamId64);
         }
 
-        return $this->steamId64;
+        return $this->inventory;
     }
 }
 ?>
