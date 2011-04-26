@@ -112,6 +112,7 @@ abstract class WebApi {
 
         if($params != null && !empty($params)) {
             $url .= '?';
+            $url_params = array();
             foreach($params as $k => $v) {
                 $url_params[] = "$k=$v";
             }
