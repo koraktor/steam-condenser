@@ -13,8 +13,6 @@ module GameItem
 
   # Creates a new instance of a GameItem with the given data
   def initialize(inventory, item_data)
-    @inventory         = inventory
-
     @defindex          = item_data[:defindex]
     @backpack_position = item_data[:inventory] & 0xffff
     @class             = inventory.item_schema[@defindex][:item_class]
