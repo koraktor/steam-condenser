@@ -64,7 +64,7 @@ public class GameItem {
         this.type             = inventory.getItemSchema().get(this.defindex).getString("item_type_name");
 
         if(!inventory.getItemSchema().get(this.defindex).isNull("attributes")) {
-          this.attributes = inventory.getItemSchema().get(this.defindex).getJSONObject("attributes").getJSONArray("attribute");
+          this.attributes = inventory.getItemSchema().get(this.defindex).getJSONArray("attributes");
         }
     }
 
