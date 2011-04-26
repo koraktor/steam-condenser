@@ -185,7 +185,7 @@ public abstract class GameInventory {
     }
 
     /**
-     * Returns the item schema
+     * Returns the item quality schema
      *
      * The item schema is fetched first if not done already
      *
@@ -233,7 +233,7 @@ public abstract class GameInventory {
 
     /**
      * Updates the item schema (this includes attributes and qualities) using
-     * the "GetSchema" method of interface "ITFItems_440"
+     * the "GetSchema" method of interface "IEconItems_{AppId}"
      *
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors

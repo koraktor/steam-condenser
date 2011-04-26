@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010-2011, Sebastian Staudt
+ * Copyright (c) 2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.portal2;
@@ -41,8 +41,8 @@ public class Portal2Item extends GameItem {
         super(inventory, itemData);
 
         this.equipped = new HashMap<String, Boolean>();
-        for(int classId = 0; classId < BOTS.length; classId++) {
-            this.equipped.put(BOTS[classId], (itemData.getLong("inventory") & (1 << 16 + classId)) != 0);
+        for(int botId = 0; botId < BOTS.length; botId++) {
+            this.equipped.put(BOTS[botId], (itemData.getLong("inventory") & (1 << 16 + botId)) != 0);
         }
     }
 

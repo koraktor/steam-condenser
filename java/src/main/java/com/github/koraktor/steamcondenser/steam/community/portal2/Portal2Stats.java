@@ -14,6 +14,9 @@ import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
 /**
+ * The Portal2Stats class represents the game statistics for a single user in
+ * Portal 2
+ *
  * @author Sebastian Staudt
  */
 public class Portal2Stats extends GameStats {
