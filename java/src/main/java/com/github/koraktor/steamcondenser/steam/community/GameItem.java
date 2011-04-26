@@ -40,6 +40,8 @@ public class GameItem {
 
     private String slot;
 
+    private boolean tradeable;
+
     private String type;
 
     /**
@@ -61,6 +63,7 @@ public class GameItem {
         this.name             = inventory.getItemSchema().get(this.defindex).getString("item_name");
         this.quality          = inventory.getQualitySchema().get(itemData.getInt("quality"));
         this.slot             = inventory.getItemSchema().get(this.defindex).getString("item_slot");
+        this.tradeable        = itemData.isNull("flag_cannot_trade") || !itemData.getBoolean("flag_cannot_trade");
         this.type             = inventory.getItemSchema().get(this.defindex).getString("item_type_name");
 
         if(!inventory.getItemSchema().get(this.defindex).isNull("attributes")) {
@@ -156,6 +159,15 @@ public class GameItem {
      */
     public String getSlot() {
         return this.slot;
+    }
+
+    /**
+     * Returns whether this item is tradeable
+     *
+     * @return bool Whether this item is tradeable
+     */
+    public boolean isTradeable() {
+        return this.tradeable;
     }
 
     /**

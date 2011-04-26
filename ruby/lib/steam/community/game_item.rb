@@ -24,11 +24,17 @@ module GameItem
     @name              = inventory.item_schema[@defindex][:item_name]
     @quality           = inventory.qualities[item_data[:quality]]
     @slot              = inventory.item_schema[@defindex][:item_slot]
+    @tradeable         = !(item_data[:flag_cannot_trade] == true)
     @type              = inventory.item_schema[@defindex][:item_type_name]
 
     unless inventory.item_schema[@defindex][:attributes].nil?
       @attributes = inventory.item_schema[@defindex][:attributes]
     end
+  end
+
+  # Returns whether this item is tradeable
+  def tradeable?
+    @tradeable
   end
 
 end

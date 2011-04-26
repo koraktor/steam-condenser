@@ -69,6 +69,11 @@ abstract class GameItem {
     private $slot;
 
     /**
+     * @var bool
+     */
+    private $tradeable;
+
+    /**
      * @var string
      */
     private $type;
@@ -93,6 +98,7 @@ abstract class GameItem {
         $this->name             = $itemSchema[$this->defindex]->item_name;
         $this->quality          = $qualitySchema[$itemData->quality];
         $this->slot             = $itemSchema[$this->defindex]->item_slot;
+        $this->tradeable        = !($itemData->flag_cannot_trade == true);
         $this->type             = $itemSchema[$this->defindex]->item_type_name;
 
         if(@$itemSchema[$this->defindex]->attributes != null) {
@@ -197,6 +203,15 @@ abstract class GameItem {
      */
     public function getType() {
         return $this->type;
+    }
+
+    /**
+     * Returns whether this item is tradeable
+     *
+     * @return bool Whether this item is tradeable
+     */
+    public function isTradeable() {
+        return $this->tradeable;
     }
 
 }
