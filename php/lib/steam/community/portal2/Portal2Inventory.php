@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010-2011, Sebastian Staudt
+ * Copyright (c) 2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -11,23 +11,23 @@
  * @subpackage Steam Community
  */
 
-require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Item.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameInventory.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/portal2/Portal2Item.php';
 
 /**
- * Represents the inventory (aka. Backpack) of a Team Fortress 2 player
+ * Represents the inventory (aka. Robot Enrichment) of a Portal 2 player
  *
  * @package    Steam Condenser (PHP)
  * @subpackage Steam Community
  */
-class TF2Inventory extends GameInventory {
+class Portal2Inventory extends GameInventory {
 
-    const APP_ID = 440;
+    const APP_ID = 620;
 
-    const ITEM_CLASS = 'TF2Item';
+    const ITEM_CLASS = 'Portal2Item';
 
     /**
-     * @var TF2Inventory[]
+     * @var Portal2Inventory[]
      */
     protected static $cache = array();
 
@@ -38,7 +38,7 @@ class TF2Inventory extends GameInventory {
         self::$cache = array();
     }
 
-        /**
+    /**
      * This checks the cache for an existing inventory. If it exists it is
      * returned. Otherwise a new inventory is created.
      *
@@ -54,7 +54,7 @@ class TF2Inventory extends GameInventory {
             }
             return $inventory;
         } else {
-            return new TF2Inventory($steamId64, $fetchNow);
+            return new Portal2Inventory($steamId64, $fetchNow);
         }
     }
 

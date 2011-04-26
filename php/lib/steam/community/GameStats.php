@@ -56,6 +56,9 @@ class GameStats {
             case 'l4d2':
                 require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4D2Stats.php';
                 return new L4D2Stats($steamId);
+            case 'portal2':
+                require_once STEAM_CONDENSER_PATH . 'steam/community/portal2/Portal2Stats.php';
+                return new Portal2Stats($steamId);
             case 'tf2':
                 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Stats.php';
                 return new TF2Stats($steamId);
