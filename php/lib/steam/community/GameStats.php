@@ -3,7 +3,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -74,7 +74,16 @@ class GameStats {
      * @param $gameName
      */
     protected function __construct($steamId, $gameName) {
-        $this->xmlData = new SimpleXMLElement(file_get_contents("http://www.steamcommunity.com/id/$steamId/stats/$gameName?xml=all"));
+        if(is_numeric($steamId)) {
+            $this->steamId64 = $steamId;
+        } else {
+            $this->customUrl = strtolower($steamId);
+        }
+        $this->gameFriendlyName = $gameName;
+
+        $url = $this->getBaseUrl() . '?xml=all';
+
+        $this->xmlData = new SimpleXMLElement(file_get_contents($url));
 
         if($this->xmlData->error != null && !empty($this->xmlData->error)) {
             throw new SteamCondenserException((string) $this->xmlData->error);
@@ -128,6 +137,17 @@ class GameStats {
         }
 
         return $this->achievementsDone;
+    }
+
+    /**
+     * @return String
+     */
+    public function getBaseUrl() {
+        if(empty($this->customUrl)) {
+            return "http://steamcommunity.com/profiles/{$this->steamId64}/stats/{$this->gameFriendlyName}";
+        } else {
+            return "http://steamcommunity.com/id/{$this->customUrl}/stats/{$this->gameFriendlyName}";
+        }
     }
 
     /**
