@@ -5,8 +5,12 @@
 
 require 'steam/packets/steam_packet'
 
-# The C2M_CHECKMD5 packet type is used to initialize (challenge) master server
-# communication.
+# This packet class represents a C2M_CHECKMD5 request sent to a master server
+#
+# It is used to initialize (challenge) master server communication.
+#
+# @author Sebastian Staudt
+# @see MasterServer#challenge
 class C2M_CHECKMD5_Packet
 
   include SteamPacket
@@ -16,7 +20,9 @@ class C2M_CHECKMD5_Packet
     super C2M_CHECKMD5_HEADER
   end
 
-  # Returns a byte array representation of the packet data
+  # Returns the raw data representing this packet
+  #
+  # @return string A string containing the raw data of this request packet
   def to_s
     [@header_data, 0xFF].pack('c2')
   end

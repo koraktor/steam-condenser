@@ -3,38 +3,37 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * The C2M_CHECKMD5 packet type is used to initialize (challenge) master server
- * communication.
+ * This packet class represents a C2M_CHECKMD5 request sent to a master server
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * It is used to initialize (challenge) master server communication.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see        MasterServer::getChallenge()
  */
 class C2M_CHECKMD5_Packet extends SteamPacket
 {
 
     /**
-     * Creates a new challenge request packet for master server communication
+     * Creates a new C2M_CHECKMD% request object
      */
     public function __construct() {
         parent::__construct(SteamPacket::C2M_CHECKMD5_HEADER);
     }
 
     /**
-     * Returns a byte array representation of the packet data
+     * Returns the raw data representing this packet
      *
-     * @return string A byte array representing the contents of this request
-     *         packet
+     * @return string A string containing the raw data of this request packet
      */
     public function __toString()
     {

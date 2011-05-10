@@ -9,13 +9,18 @@ package com.github.koraktor.steamcondenser.steam.packets;
 import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
 
 /**
- * Represents a request sent to a master server.
- * <br /><br />
- * <a name="filtering">Filtering</a>:<br />
+ * This packet class represents a A2M_GET_SERVERS_BATCH2 request sent to a
+ * master server
+ * <p>
+ * It is used to receive a list of game servers matching the specified filters.
+ * <p>
+ * Filtering:
+ * <p>
  * Instead of filtering the results sent by the master server locally, you
  * should at least use the following filters to narrow down the results sent by
  * the master server. Receiving all servers from the master server is taking
- * quite some time.<br /><br />
+ * quite some time.
+ * <p>
  * Available filters:
  * <ul>
  * 	<li>\type\d: Request only dedicated servers</li>
@@ -27,7 +32,9 @@ import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
  *  <li>\full\1: Request only servers <b>not</b> full</li>
  *  <li>\proxy\1: Request only spectator proxy servers</li>
  * </ul>
+ *
  * @author Sebastian Staudt
+ * @see MasterServer#getServers(byte, String)
  */
 public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
 {
@@ -36,7 +43,8 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
     private String startIp;
 
     /**
-     * Creates a master server request without applying any filters.
+     * Creates a new A2M_GET_SERVERS_BATCH2 request object without applying any
+     * filters
      */
     public A2M_GET_SERVERS_BATCH2_Paket()
     {
@@ -44,11 +52,13 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
     }
 
     /**
-     * Creates a master server request, filtering by the given paramters.
+     * Creates a new A2M_GET_SERVERS_BATCH2 request object, filtering by the
+     * given paramters
+     *
      * @param regionCode The region code to filter servers by region.
      * @param startIp This should be the last IP received from the master
      *        server or 0.0.0.0
-     * @param filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
+     * @param filter The filters to apply in the form ("\filtername\value...")
      */
     public A2M_GET_SERVERS_BATCH2_Paket(byte regionCode, String startIp, String filter)
     {
@@ -60,8 +70,11 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
     }
 
     /**
-     * @return A byte[] representing the contents of this request packet
+     * Returns the raw data representing this packet
+     *
+     * @return A byte array containing the raw data of this request packet
      */
+    @Override
     public byte[] getBytes()
     {
         byte[] bytes, filterBytes, startIpBytes;

@@ -3,24 +3,28 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Source Condenser (PHP)
+ * @package    Source Condenser
  * @subpackage Packets
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * Represents a request sent to a master server.
- * <br /><br />
- * <a name="filtering">Filtering</a>:<br />
+ * This packet class represents a A2M_GET_SERVERS_BATCH2 request sent to a
+ * master server
+ *
+ * It is used to receive a list of game servers matching the specified filters.
+ *
+ * Filtering:
  * Instead of filtering the results sent by the master server locally, you
  * should at least use the following filters to narrow down the results sent by
  * the master server. Receiving all servers from the master server is taking
- * quite some time.<br /><br />
+ * quite some time.
+ *
  * Available filters:
  * <ul>
  * 	<li>\type\d: Request only dedicated servers</li>
@@ -32,8 +36,10 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  *  <li>\full\1: Request only servers <b>not</b> full</li>
  *  <li>\proxy\1: Request only spectator proxy servers</li>
  * </ul>
- * @package Source Condenser (PHP)
+ *
+ * @package Source Condenser
  * @subpackage Packets
+ * @see MasterServer#getServers
  */
 class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
 {
@@ -42,11 +48,14 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
     private $startIp;
 
     /**
-     * Creates a master server request, filtering by the given paramters.
-     * @param byte regionCode The region code to filter servers by region.
-     * @param String startIp This should be the last IP received from the master
-     *        server or 0.0.0.0
-     * @param String filter The <a href="#filtering">filters</a> to apply in the form ("\filtername\value...")
+     * Creates a new A2M_GET_SERVERS_BATCH2 request object, filtering by the
+     * given paramters
+     *
+     * @param int $regionCode The region code to filter servers by region.
+     * @param String $startIp This should be the last IP received from the
+     *        master server or 0.0.0.0
+     * @param String $filter The filters to apply in the form
+     *        ("\filtername\value...")
      */
     public function __construct($regionCode = MasterServer::REGION_ALL, $startIp = "0.0.0.0", $filter = "")
     {
@@ -58,7 +67,9 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
     }
 
     /**
-     * @return byte[] A byte array representing the contents of this request packet
+     * Returns the raw data representing this packet
+     *
+     * @return string A string containing the raw data of this request packet
      */
     public function __toString()
     {
