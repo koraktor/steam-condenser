@@ -1,7 +1,7 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
@@ -17,14 +17,22 @@ rescue LoadError
   $stderr.puts 'You need ore-tasks to build the gem. Install it using `gem install ore-tasks`.'
 end
 
-# Create a rake task +:rdoc+ to build the documentation
-desc "Building docs"
-Rake::RDocTask.new do |rdoc|
-  rdoc.title = "Steam Condenser documentation"
-  rdoc.rdoc_files.include ["lib/**/*.rb", "LICENSE", "README.md"]
-  rdoc.main = "README.md"
-  rdoc.rdoc_dir = "rdoc"
-  rdoc.options = ["--all", "--inline-source", "--line-numbers", "--charset=utf-8", "--webcvs=http://github.com/koraktor/steam-condenser/blob/master/ruby/%s"]
+# Check if YARD is installed
+begin
+  require 'yard'
+
+  # Create a rake task +:doc+ to build the documentation using YARD
+  YARD::Rake::YardocTask.new do |yardoc|
+    yardoc.name    = 'doc'
+    yardoc.files   = [ 'lib/**/*.rb', 'LICENSE', 'README.md' ]
+    yardoc.options = [ '--private', '--title', 'Metior — API Documentation' ]
+  end
+rescue LoadError
+  # Create a rake task +:doc+ to show that YARD is not installed
+  desc 'Generate YARD Documentation (not available)'
+  task :doc do
+    $stderr.puts 'You need YARD to build the documentation. Install it using `gem install yard`.'
+  end
 end
 
 # Task for cleaning documentation and package directories
