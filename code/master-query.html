@@ -18,11 +18,9 @@ languages:
     $master = new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
     $servers = $master->getServers();
     $randomServer = $servers[array_rand($servers)];
-    $server = new GoldSrcServer(new InetAddress($randomServer[0],
-      $randomServer[1]));
+    $server = new GoldSrcServer($randomServer[0], $randomServer[1]));
   ruby: |
     master = MasterServer.new(*MasterServer::GOLDSRC_MASTER_SERVER)
     servers = master.get_servers
-    random_server = servers[rand(servers.length)]
-    server = GoldSrcServer.new(*random_server)
+    server = GoldSrcServer.new(*servers.choice)
 ---
