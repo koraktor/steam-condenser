@@ -2,13 +2,20 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
+ * This class represents a S2A_INFO_DETAILED response packet sent by a Source
+ * or GoldSrc server
+ *
+ * Out-of-date (before 10/24/2008) GoldSrc servers use an older format (see
+ * {@link S2A_INFO_DETAILED_Packet}).
+ *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 {
@@ -20,6 +27,11 @@ public class S2A_INFO2_Packet extends S2A_INFO_BasePacket
     protected String tvName;
     protected short tvPort;
 
+    /**
+     * Creates a new S2A_INFO2 response object based on the given data
+     *
+     * @param dataBytes The raw packet data replied from the server
+     */
     public S2A_INFO2_Packet(byte[] dataBytes)
     {
 	super(SteamPacket.S2A_INFO2_HEADER, dataBytes);

@@ -15,7 +15,7 @@ class C2M_CHECKMD5_Packet
 
   include SteamPacket
 
-  # Creates a new challenge request packet for master server communication
+  # Creates a new C2M_CHECKMD5 request object
   def initialize
     super C2M_CHECKMD5_HEADER
   end

@@ -1,5 +1,5 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
@@ -20,9 +20,19 @@ require 'steam/packets/m2s_requestrestart_packet'
 require 'steam/packets/s2a_logstring_packet'
 require 'steam/packets/rcon/rcon_goldsrc_response'
 
+# This module provides functionality to handle raw packet data, including
+# data split into several UDP / TCP packets and BZIP2 compressed data. It's the
+# main utility to transform data bytes into packet objects.
+#
+# @author Sebastian Staudt
+# @see SteamPacket
 module SteamPacketFactory
 
   # Creates a new packet object based on the header byte of the given raw data
+  #
+  # @param [String] raw_data The raw data of the packet
+  # @raise [SteamCondenserException] if the packet header is not recognized
+  # @return [SteamPacket] The packet object generated from the packet data
   def self.packet_from_data(raw_data)
     header = raw_data[0].ord
     data = raw_data[1..-1]
@@ -65,6 +75,19 @@ module SteamPacketFactory
     end
   end
 
+  # Reassembles the data of a split and/or compressed packet into a single
+  # packet object
+  #
+  # @param [Array<String>] split_packets An array of packet data
+  # @param [true, false] is_compressed whether the data of this packet is
+  #        compressed
+  # @param [Fixnum] packet_checksum The CRC32 checksum of the decompressed
+  #        packet data
+  # @raise [SteamCondenserException] if the bz2 gem is not installed
+  # @raise [PacketFormatException] if the calculated CRC32 checksum does not
+  #        match the expected value
+  # @return [SteamPacket] The reassembled packet
+  # @see packet_from_data
   def self.reassemble_packet(split_packets, is_compressed = false, packet_checksum = 0)
     packet_data = split_packets.join ''
 

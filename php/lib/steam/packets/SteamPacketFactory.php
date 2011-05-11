@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'exceptions/PacketFormatException.php';
@@ -29,14 +26,24 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/M2S_REQUESTRESTART_Packet.php
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_LOGSTRING_Packet.php';
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * This module provides functionality to handle raw packet data, including data
+ * split into several UDP / TCP packets and BZIP2 compressed data. It's the
+ * main utility to transform data bytes into packet objects.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see        SteamPacket
  */
 abstract class SteamPacketFactory
 {
 	/**
-	 * @param byte[] $rawData
-	 * @return SteamPacket
+     * Creates a new packet object based on the header byte of the given raw
+     * data
+     *
+     * @param string $rawData The raw data of the packet
+     * @throws PacketFormatException if the packet header is not recognized
+     * @return SteamPacket The packet object generated from the packet data
 	 */
 	public static function getPacketFromData($rawData)
 	{
@@ -97,6 +104,19 @@ abstract class SteamPacketFactory
 		}
 	}
 
+    /**
+     * Reassembles the data of a split and/or compressed packet into a single
+     * packet object
+     *
+     * @param array $splitPackets An array of packet data
+     * @param bool $isCompressed whether the data of this packet is compressed
+     * @param int $packetChecksum The CRC32 checksum of the decompressed
+     *        packet data
+     * @throws PacketFormatException if the calculated CRC32 checksum does not
+     *         match the expected value
+     * @return SteamPacket The reassembled packet
+     * @see packetFromData()
+     */
 	public static function reassemblePacket($splitPackets, $isCompressed = false, $packetChecksum = 0)
 	{
 		$packetData = "";

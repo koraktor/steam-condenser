@@ -14,25 +14,27 @@
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * The M2S_REQUESTRESTART packet type is used to by master servers to request a
- * game server restart, e.g. when using outdated versions.
+ * This packet class represent a M2S_REQUESTRESTART response replied from a
+ * master server
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * It is used to request a game server restart, e.g. when the server is
+ * outdated.
+ *
+ * @author Sebastian Staudt
+ * @see MasterServer::sendHeartbeat
  */
 class M2S_REQUESTRESTART_Packet extends SteamPacket
 {
 
     /**
-     * @var long
+     * @var int
      */
     private $challenge;
 
     /**
-     * Creates a new server restart request packet sent by a master server
+     * Creates a new M2S_REQUESTRESTART object based on the given data
      *
-     * @param string $data This packet returns the challenge number initially
-     *        provided by an M2C_ISVALIDMD5 packet.
+     * @param string $data The raw packet data replied from the server
      */
     public function __construct($data) {
         parent::__construct(SteamPacket::C2M_CHECKMD5_HEADER, $data);

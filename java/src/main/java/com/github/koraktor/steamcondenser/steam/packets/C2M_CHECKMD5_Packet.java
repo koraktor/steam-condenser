@@ -9,7 +9,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
  * This packet class represents a C2M_CHECKMD5 request sent to a master server
- *
+ * <p>
  * It is used to initialize (challenge) master server communication.
  *
  * @author Sebastian Staudt

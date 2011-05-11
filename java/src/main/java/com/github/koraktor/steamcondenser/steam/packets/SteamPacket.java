@@ -10,7 +10,11 @@ package com.github.koraktor.steamcondenser.steam.packets;
 import com.github.koraktor.steamcondenser.PacketBuffer;
 
 /**
+ * This module implements the basic functionality used by most of the packets
+ * used in communication with master, Source or GoldSrc servers.
+ *
  * @author Sebastian Staudt
+ * @see SteamPacketFactory
  */
 abstract public class SteamPacket
 {
@@ -34,21 +38,44 @@ abstract public class SteamPacket
     public static final byte S2A_LOGSTRING_HEADER = 0x52;
     public static final byte S2M_HEARTBEAT2_HEADER = 0x30;
 
+    /**
+     * This variable stores the content of the package
+     */
     protected PacketBuffer contentData;
+
+    /**
+     * This byte stores the type of the packet
+     */
     protected byte headerData;
 
 
+    /**
+     * Creates a new packet object based on the given data
+     *
+     * @param headerData The packet header
+     */
     protected SteamPacket(byte headerData)
     {
 	this(headerData, new byte[0]);
     }
 
+    /**
+     * Creates a new packet object based on the given data
+     *
+     * @param headerData The packet header
+     * @param contentBytes The raw data of the packet
+     */
     protected SteamPacket(byte headerData, byte[] contentBytes)
     {
 	this.contentData = new PacketBuffer(contentBytes);
 	this.headerData = headerData;
     }
 
+    /**
+     * Returns the raw data representing this packet
+     *
+     * @return A byte array containing the raw data of this request packet
+     */
     public byte[] getBytes()
     {
 	byte[] bytes = new byte[this.contentData.getLength() + 5];

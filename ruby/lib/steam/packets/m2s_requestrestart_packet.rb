@@ -5,16 +5,26 @@
 
 require 'steam/packets/steam_packet'
 
-# The M2S_REQUESTRESTART packet type is used to by master servers to request a
-# game server restart, e.g. when using outdated versions.
+# This packet class represent a M2S_REQUESTRESTART response replied from a
+# master server
+#
+# It is used to request a game server restart, e.g. when the server is
+# outdated.
+#
+# @author Sebastian Staudt
+# @see MasterServer#sendHeartbeat
 class M2S_REQUESTRESTART_Packet
 
   include SteamPacket
 
   # Returns the challenge number used for master server communication
+  #
+  # @return [Fixnum] The challenge number
   attr_reader :challenge
 
-  # Creates a new server restart request packet sent by a master server
+  # Creates a new M2S_REQUESTRESTART response object based on the given data
+  #
+  # @param [String] data The raw packet data replied from the server
   def initialize(data)
     super M2S_REQUESTRESTART_HEADER, data
 

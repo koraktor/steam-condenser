@@ -21,9 +21,23 @@ import com.github.koraktor.steamcondenser.exceptions.UncompletePacketException;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
- * @author Sebastian Staudt
+ * This module provides functionality to handle raw packet data, including data
+ * split into several UDP / TCP packets and BZIP2 compressed data. It's the
+ * main utility to transform data bytes into packet objects.
+ *
+ * @author     Sebastian Staudt
+ * @see        SteamPacket
  */
 public abstract class SteamPacketFactory {
+
+    /**
+     * Creates a new packet object based on the header byte of the given raw
+     * data
+     *
+     * @param rawData The raw data of the packet
+     * @throws PacketFormatException if the packet header is not recognized
+     * @return The packet object generated from the packet data
+     */
 	public static SteamPacket getPacketFromData(byte[] rawData)
 			throws PacketFormatException {
 		byte header = rawData[0];
@@ -81,11 +95,36 @@ public abstract class SteamPacketFactory {
 		}
 	}
 
+    /**
+     * Reassembles the data of a split packet into a single packet object
+     *
+     * @param splitPackets An array of packet data
+     * @throws IOException if decompressing the packet data fails
+     * @throws PacketFormatException if the calculated CRC32 checksum does not
+     *         match the expected value
+     * @return SteamPacket The reassembled packet
+     * @see SteamPacketFactory#getPacketFromData
+     */
 	public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets)
 			throws IOException, SteamCondenserException {
 		return SteamPacketFactory.reassemblePacket(splitPackets, false, 0, 0);
 	}
 
+    /**
+     * Reassembles the data of a split and/or compressed packet into a single
+     * packet object
+     *
+     * @param splitPackets An array of packet data
+     * @param isCompressed whether the data of this packet is compressed
+     * @param uncompressedSize The size of the decompressed packet data
+     * @param packetChecksum The CRC32 checksum of the decompressed
+     *        packet data
+     * @throws IOException if decompressing the packet data fails
+     * @throws PacketFormatException if the calculated CRC32 checksum does not
+     *         match the expected value
+     * @return SteamPacket The reassembled packet
+     * @see SteamPacketFactory#getPacketFromData
+     */
 	public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets,
 			boolean isCompressed, int uncompressedSize, int packetChecksum)
 			throws IOException, SteamCondenserException {

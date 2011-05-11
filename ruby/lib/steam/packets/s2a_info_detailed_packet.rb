@@ -1,19 +1,26 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011 Sebastian Staudt
 
 require "steam/packets/s2a_info_base_packet"
 
-# The S2A_INFO_DETAILED_Packet class represents the response to a A2S_INFO
-# request send to a GoldSrc server.
-# This is deprecated by 10/24/2008 for GoldSrc servers. They use the same
-# format as Source servers (S2A_INFO2) now.
+# This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
+# server
+#
+# This is deprecated by 10/24/2008. GoldSrc servers use the same format as
+# Source servers now (see {S2A_INFO2_Packet}).
+#
+# @author Sebastian Staudt
+# @see GameServer#update_server_info
 class S2A_INFO_DETAILED_Packet
 
   include S2A_INFO_BasePacket
 
-  # Creates a S2A_INFO_DETAILED response object based on the data received.
+  # Creates a new S2A_INFO_DETAILED response object based on the given data
+  #
+  # @param [String] data The raw packet data replied from the server
+  # @see S2A_INFO_BasePacket#generate_info_hash
   def initialize(data)
     super S2A_INFO_DETAILED_HEADER, data
 

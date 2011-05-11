@@ -3,27 +3,32 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
 
 /**
- * The S2A_INFO_DETAILED_Packet class represents the response to a A2S_INFO
- * request send to a GoldSrc server.
- * This is deprecated by 10/24/2008 for GoldSrc servers. They use the same
- * format as Source servers (S2A_INFO2) now.
+ * This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
+ * server
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * This is deprecated by 10/24/2008. GoldSrc servers use the same format as
+ * Source servers now (see {@link S2A_INFO2_Packet}).
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see GameServer::updateServerInfo()
  */
 class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
 
+    /**
+     * Creates a new S2A_INFO_DETAILED response object based on the given data
+     *
+     * @param string $data The raw packet data replied from the server
+     */
     public function __construct($data) {
         parent::__construct(SteamPacket::S2A_INFO_DETAILED_HEADER, $data);
 

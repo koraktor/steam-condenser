@@ -12,12 +12,23 @@ import java.util.HashMap;
 import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
 
 /**
+ * This class represents a S2A_RULES response sent by a game server
+ *
+ * It is used to transfer a list of server rules (a.k.a. CVARs) with their
+ * active values.
+ *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRulesInfo
  */
 public class S2A_RULES_Packet extends SteamPacket
 {
     private HashMap<String, String> rulesHash;
 
+    /**
+     * Creates a new S2A_RULES response object based on the given data
+     *
+     * @param dataBytes The raw packet data sent by the server
+     */
     public S2A_RULES_Packet(byte[] dataBytes)
             throws PacketFormatException {
         super(SteamPacket.S2A_RULES_HEADER, dataBytes);
@@ -44,6 +55,11 @@ public class S2A_RULES_Packet extends SteamPacket
         }
     }
 
+    /**
+     * Returns the list of server rules (a.k.a. CVars) with the current values
+     *
+     * @return array A list of server rules
+     */
     public HashMap<String, String> getRulesHash() {
         return this.rulesHash;
     }

@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
@@ -17,13 +14,15 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * The S2M_HEARTBEAT2 packet type is used to signal a game servers availability
  * and status to the master servers.
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see        MasterServer::sendHeartbeat()
  */
 class S2M_HEARTBEAT2_Packet extends SteamPacket
 {
     /**
-     * @var array
+     * @var array Default data to send with a S2M_HEARTBEAT2 packet
      */
     private static $DEFAULT_DATA = array(
             'appid'     => 320,
@@ -49,10 +48,12 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
         );
 
     /**
-     * Creates a new heartbeat packet to send to a master server
+     * Creates a new S2M_HEARTBEAT2 packet object based on the given data
      *
-     * @param array $data The server data to send with the heartbeat to the
-     *        master server
+     * @param array $data The data to send with the heartbeat. The data
+     *        contents are merged with the values from {@link DEFAULT_DATA}.
+     * @throws SteamCondenserException when the required challenge number is
+     *         missing
      */
     public function __construct($data = array()) {
         $data = array_merge(self::$DEFAULT_DATA, $data);
@@ -71,10 +72,9 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
     }
 
     /**
-     * Returns a byte array representation of the packet data
+     * Returns the raw data representing this packet
      *
-     * @return string A byte array representing the contents of this request
-     *         packet
+     * @return string A string containing the raw data of this request packet
      */
     public function __toString() {
         return pack("ca*", $this->headerData, $this->contentData->_array());

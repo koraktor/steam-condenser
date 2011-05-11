@@ -8,10 +8,14 @@
 package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
- * The M2S_REQUESTRESTART packet type is used to by master servers to request a
- * game server restart, e.g. when using outdated versions.
+ * This packet class represent a M2S_REQUESTRESTART response replied from a
+ * master server
+ * <p>
+ * It is used to request a game server restart, e.g. when the server is
+ * outdated.
  *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#sendHeartbeat
  */
 public class M2S_REQUESTRESTART_Packet extends SteamPacket
 {
@@ -19,10 +23,9 @@ public class M2S_REQUESTRESTART_Packet extends SteamPacket
     private int challenge;
 
     /**
-     * Creates a new server restart request packet sent by a master server
+     * Creates a new M2S_REQUESTRESTART object based on the given data
      *
-     * @param data This packet returns the challenge number initially
-     *        provided by an M2C_ISVALIDMD5 packet.
+     * @param data The raw packet data replied from the server
      */
     public M2S_REQUESTRESTART_Packet(byte[] data) {
         super(SteamPacket.C2M_CHECKMD5_HEADER, data);

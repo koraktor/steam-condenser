@@ -8,9 +8,9 @@
 package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
- * The S2A_LOGSTRING packet type is used to transfer log messages.
+ * This class represents a S2A_LOGSTRING packet used to transfer log messages
  *
- * @author Sebastian Staudt
+ * @author     Sebastian Staudt
  */
 public class S2A_LOGSTRING_Packet extends SteamPacket
 {
@@ -21,9 +21,9 @@ public class S2A_LOGSTRING_Packet extends SteamPacket
     private String message;
 
     /**
-     * Creates a new log message packet
+     * Creates a new S2A_LOGSTRING object based on the given data
      *
-     * @param data
+     * @param data The raw packet data sent by the server
      */
     public S2A_LOGSTRING_Packet(byte[] data) {
         super(SteamPacket.S2A_LOGSTRING_HEADER, data);
@@ -33,7 +33,9 @@ public class S2A_LOGSTRING_Packet extends SteamPacket
     }
 
     /**
-     * @return The log message of this packet
+     * Returns the log message contained in this packet
+     *
+     * @return string The log message
      */
     public String getMessage() {
         return this.message;

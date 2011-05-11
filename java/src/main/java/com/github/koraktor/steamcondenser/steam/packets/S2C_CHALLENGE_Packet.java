@@ -8,17 +8,21 @@
 package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
- * A S2C_CHALLENGE_Packet response
+ * This packet class represents a S2C_CHALLENGE response replied by a game
+ * server
+ *
+ * It is used to provide a challenge number to a client requesting information
+ * from the game server.
  *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateChallengeNumber
  */
 public class S2C_CHALLENGE_Packet extends SteamPacket
 {
     /**
-     * Creates a S2C_CHALLENGE_Packet response base on a challenge number
+     * Creates a new S2C_CHALLENGE response object based on the given data
      *
-     * @param challengeNumberBytes A byte[] representation of the challenge
-     *        number to send in this packet
+     * @param challengeNumberBytes The raw packet data replied from the server
      */
     public S2C_CHALLENGE_Packet(byte[] challengeNumberBytes)
     {
@@ -26,8 +30,10 @@ public class S2C_CHALLENGE_Packet extends SteamPacket
     }
 
     /**
-     * @return The challenge number contained in this packet
-     */
+     * Returns the challenge number received from the game server
+     *
+     * @return The challenge number provided by the game server
+    */
     public int getChallengeNumber()
     {
 	return Integer.reverseBytes(this.contentData.getInt());

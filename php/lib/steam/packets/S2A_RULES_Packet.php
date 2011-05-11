@@ -3,29 +3,35 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * @package Steam Condenser (PHP)
- * @subpackage SteamPacket
+ * This class represents a S2A_RULES response sent by a game server
+ *
+ * It is used to transfer a list of server rules (a.k.a. CVARs) with their
+ * active values.
+ *
+ * @author Sebastian Staudt
+ * @package steam-condenser
+ * @subpackage packets
+ * @see GameServer::updateRulesInfo()
  */
 class S2A_RULES_Packet extends SteamPacket
 {
 	/**
-	 * @var String[]
+     * @var array
 	 */
 	private $rulesArray;
 
 	/**
-	 * @param String $contentData
+     * Creates a new S2A_RULES response object based on the given data
+     *
+     * @param string $contentData The raw packet data sent by the server
 	 */
 	public function __construct($contentData)
 	{
@@ -50,7 +56,9 @@ class S2A_RULES_Packet extends SteamPacket
 	}
 
 	/**
-	 * @return String[]
+     * Returns the list of server rules (a.k.a. CVars) with the current values
+     *
+     * @return array A list of server rules
 	 */
 	public function getRulesArray()
 	{

@@ -12,12 +12,22 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
 import com.github.koraktor.steamcondenser.steam.SteamPlayer;
 
 /**
+ * This class represents a S2A_PLAYER response sent by a game server
+ *
+ * It is used to transfer a list of players currently playing on the server.
+ *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updatePlayerInfo
  */
 public class S2A_PLAYER_Packet extends SteamPacket
 {
     private HashMap<String, SteamPlayer> playerHash;
 
+    /**
+     * Creates a new S2A_PLAYER response object based on the given data
+     *
+     * @param dataBytes The raw packet data sent by the server
+     */
     public S2A_PLAYER_Packet(byte[] dataBytes)
     throws PacketFormatException
     {
@@ -43,6 +53,11 @@ public class S2A_PLAYER_Packet extends SteamPacket
 	}
     }
 
+    /**
+     * Returns the list of active players provided by the server
+     *
+     * @return All active players on the server
+     */
     public HashMap<String, SteamPlayer> getPlayerHash()
 	{
 		return this.playerHash;

@@ -8,10 +8,13 @@
 package com.github.koraktor.steamcondenser.steam.packets;
 
 /**
- * A packet of type M2S_ISVALIDMD5 is used by the master server to provide a
- * challenge number to a game server
+ * This packet class represents a M2S_ISVALIDMD5 response replied by a master
+ * server
+ * <p>
+ * It is used to provide a challenge number to a game server
  *
  * @author Sebastian Staudt
+ * @see    com.github.koraktor.steamcondenser.steam.servers.MasterServer#getChallenge
  */
 public class M2C_ISVALIDMD5_Packet extends SteamPacket
 {
@@ -19,9 +22,9 @@ public class M2C_ISVALIDMD5_Packet extends SteamPacket
     private int challenge;
 
     /**
-     * Creates a new response packet with the data from the master server
+     * Creates a new M2S_ISVALIDMD5 response object based on the given data
      *
-     * @param data The packet data sent by the master server
+     * @param data The raw packet data replied from the server
      */
     public M2C_ISVALIDMD5_Packet(byte[] data) {
         super(SteamPacket.M2C_ISVALIDMD5_HEADER, data);

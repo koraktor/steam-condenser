@@ -1,19 +1,29 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/steam_packet'
 
-# The S2A_RULES_Packet class represents the response to a A2S_RULES
-# request send to the server.
+# This class represents a S2A_RULES response sent by a game server
+#
+# It is used to transfer a list of server rules (a.k.a. CVARs) with their
+# active values.
+#
+# @author Sebastian Staudt
+# @see GameServer#update_rules_info
 class S2A_RULES_Packet
 
   include SteamPacket
 
+  # Returns the list of server rules (a.k.a. CVars) with the current values
+  #
+  # @return [Hash<String, String>] A list of server rules
   attr_reader :rules_hash
 
-  # Creates a S2A_RULES response object based on the data received.
+  # Creates a new S2A_RULES response object based on the given data
+  #
+  # @param [String] content_data The raw packet data sent by the server
   def initialize(content_data)
     raise Exception.new('Wrong formatted S2A_RULES response packet.') if content_data.nil?
 

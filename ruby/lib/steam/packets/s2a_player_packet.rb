@@ -1,25 +1,33 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/packets/steam_packet'
 
-# The S2A_PLAYER_Packet class represents the response to a A2S_PLAYER
-# request send to the server.
+# This class represents a S2A_PLAYER response sent by a game server
+#
+# It is used to transfer a list of players currently playing on the server.
+#
+# @author Sebastian Staudt
+# @see GameServer#update_player_info
 class S2A_PLAYER_Packet
 
   include SteamPacket
 
+  # Returns the list of active players provided by the server
+  #
+  # @return [Hash<String, SteamPlayer>] All active players on the server
   attr_reader :player_hash
 
-  # Creates a S2A_PLAYER response object based on the data received.
+  # Creates a new S2A_PLAYER response object based on the given data
+  #
+  # @param [String] content_data The raw packet data sent by the server
   def initialize(content_data)
     raise Exception.new('Wrong formatted S2A_PLAYER packet.') if content_data.nil?
 
     super S2A_PLAYER_HEADER, content_data
 
-    # Ignore player count
     @content_data.byte
     @player_hash = {}
 

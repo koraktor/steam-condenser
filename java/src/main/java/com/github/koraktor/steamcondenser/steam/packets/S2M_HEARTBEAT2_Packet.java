@@ -18,9 +18,13 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
  * and status to the master servers.
  *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#sendHeartbeat
  */
 public class S2M_HEARTBEAT2_Packet extends SteamPacket
 {
+    /**
+     * Default data to send with a S2M_HEARTBEAT2 packet
+     */
     private static final Map<String, Object> DEFAULT_DATA = new HashMap<String, Object>() {{
         put("appid", 320);
         put("bot", 0);
@@ -45,10 +49,11 @@ public class S2M_HEARTBEAT2_Packet extends SteamPacket
     }};
 
     /**
-     * Creates a new heartbeat packet to send to a master server
+     * Creates a new S2M_HEARTBEAT2 packet object based on the given data
      *
-     * @param data The server data to send with the heartbeat to the master
-     *        server
+     * @param data The data to send with the heartbeat. The data contents are
+     *        merged with the values from
+     *        {@link S2M_HEARTBEAT2_Packet#DEFAULT_DATA}.
      * @throws SteamCondenserException when the required challenge number is
      *         missing
      */
@@ -73,6 +78,11 @@ public class S2M_HEARTBEAT2_Packet extends SteamPacket
         this.contentData = new PacketBuffer(bytes.getBytes());
     }
 
+    /**
+     * Returns the raw data representing this packet
+     *
+     * @return A byte array containing the raw data of this request packet
+     */
     public byte[] getBytes() {
         byte[] bytes = new byte[1 + this.contentData.array().length];
         bytes[0] = this.headerData;

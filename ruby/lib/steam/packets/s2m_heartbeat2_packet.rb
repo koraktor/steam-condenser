@@ -5,12 +5,19 @@
 
 require 'steam/packets/steam_packet'
 
-# The S2M_HEARTBEAT2 packet type is used to signal a game servers availability
-# and status to the master servers.
+# This class represents a S2M_HEARTBEAT2 packet sent by game servers to master
+# servers
+#
+# It is used to signal the game server's availability and status to the master
+# servers.
+#
+# @author Sebastian Staudt
+# @see MasterServer#send_heartbeat
 class S2M_HEARTBEAT2_Packet
 
   include SteamPacket
 
+  # Default data to send with a S2M_HEARTBEAT2 packet
   DEFAULT_DATA = {
     :appid     => 320,
     :bots      => 0,
@@ -34,7 +41,12 @@ class S2M_HEARTBEAT2_Packet
     :version   => '1.0.0.0'
   }
 
-  # Creates a new heartbeat packet to send to a master server
+  # Creates a new S2M_HEARTBEAT2 packet object based on the given data
+  #
+  # @param [Hash<Symbol, Object>] data The data to send with the heartbeat. The
+  #        data contents are merge with the values from {DEFAULT_DATA}.
+  # @raise [SteamCondenserException] when the required challenge number is
+  #        missing
   def initialize(data = {})
     data = DEFAULT_DATA.merge data
 
@@ -49,7 +61,9 @@ class S2M_HEARTBEAT2_Packet
     super S2M_HEARTBEAT2_HEADER, bytes
   end
 
-  # Returns a byte array representation of the packet data
+  # Returns the raw data representing this packet
+  #
+  # @return [String] A string containing the raw data of this request packet
   def to_s
     [@header_data, @content_data.string].pack('ca*')
   end

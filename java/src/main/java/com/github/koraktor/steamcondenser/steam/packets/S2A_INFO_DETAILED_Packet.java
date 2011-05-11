@@ -10,18 +10,25 @@ package com.github.koraktor.steamcondenser.steam.packets;
 import java.util.HashMap;
 
 /**
- * The S2A_INFO_DETAILED_Packet class represents the response to a A2S_INFO
- * request send to a GoldSrc server.
- * This is deprecated by 10/24/2008 for GoldSrc servers. They use the same
- * format as Source servers (S2A_INFO2) now.
+ * This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
+ * server
+ *
+ * This is deprecated by 10/24/2008. GoldSrc servers use the same format as
+ * Source servers now (see {@link S2A_INFO2_Packet}).
  *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
 	protected boolean isMod;
 	protected HashMap<String, Object> modInfo;
 	protected String serverIp;
 
+    /**
+     * Creates a new S2A_INFO_DETAILED response object based on the given data
+     *
+     * @param dataBytes The raw packet data replied from the server
+     */
 	public S2A_INFO_DETAILED_Packet(byte[] dataBytes) {
 		super(SteamPacket.S2A_INFO_DETAILED_HEADER, dataBytes);
 

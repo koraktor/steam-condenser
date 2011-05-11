@@ -5,20 +5,21 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * A packet of type M2S_ISVALIDMD5 is used by the master server to provide a
- * challenge number to a game server
+ * This packet class represents a M2S_ISVALIDMD5 response replied by a master
+ * server
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * It is used to provide a challenge number to a game server
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see        MasterServer::getChallenge()
  */
 class M2C_ISVALIDMD5_Packet extends SteamPacket
 {
@@ -29,9 +30,9 @@ class M2C_ISVALIDMD5_Packet extends SteamPacket
     private $challenge;
 
     /**
-     * Creates a new response packet with the data from the master server
+     * Creates a new M2S_ISVALIDMD5 response object based on the given data
      *
-     * @param string $data The packet data sent by the master server
+     * @param string $data The raw packet data replied from the server
      */
     public function __construct($data) {
         parent::__construct(SteamPacket::M2C_ISVALIDMD5_HEADER, $data);

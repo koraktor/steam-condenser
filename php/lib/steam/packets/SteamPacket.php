@@ -5,17 +5,19 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
 
 /**
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * This module implements the basic functionality used by most of the packets
+ * used in communication with master, Source or GoldSrc servers.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage packets
+ * @see        SteamPacketFactory
  */
 abstract class SteamPacket
 {
@@ -40,21 +42,20 @@ abstract class SteamPacket
     const S2M_HEARTBEAT2_HEADER = 0x30;
 
 	/**
-	 * This variable stores the content of the package
-	 * @var mixed
+     * @var string This variable stores the content of the packet
 	 */
 	protected $contentData;
 
 	/**
-	 * This byte stores the type of the packet
-	 * @var byte
+     * @var int This byte stores the type of the packet
 	 */
 	protected $headerData;
 
 	/**
-	 * @param byte $headerData
-	 * @param byte[] $contentData
-	 * @param bool $splitPacket
+     * Creates a new packet object based on the given data
+     *
+     * @param int $headerData The packet header
+     * @param string $contentData The raw data of the packet
 	 */
 	public function __construct($headerData, $contentData = null)
 	{
@@ -79,7 +80,9 @@ abstract class SteamPacket
 	}
 
 	/**
-	 * @return String
+     * Returns the raw data representing this packet
+     *
+     * @return string A string containing the raw data of this request packet
 	 */
 	public function __toString()
 	{

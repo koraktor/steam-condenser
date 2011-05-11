@@ -3,21 +3,19 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
 
 /**
- * The S2A_LOGSTRING packet type is used to transfer log messages.
+ * This class represents a S2A_LOGSTRING packet used to transfer log messages
  *
- * @package Steam Condenser (PHP)
- * @subpackage Packets
+ * @package    steam-condenser
+ * @subpackage packets
+ * @author     Sebastian Staudt
  */
 class S2A_LOGSTRING_Packet extends SteamPacket
 {
@@ -28,9 +26,9 @@ class S2A_LOGSTRING_Packet extends SteamPacket
     private $message;
 
     /**
-     * Creates a new log message packet
+     * Creates a new S2A_LOGSTRING object based on the given data
      *
-     * @param string $data
+     * @param string $data The raw packet data sent by the server
      */
     public function __construct($data) {
         parent::__construct(SteamPacket::S2A_LOGSTRING_HEADER, $data);
@@ -40,7 +38,9 @@ class S2A_LOGSTRING_Packet extends SteamPacket
     }
 
     /**
-     * @return string The log message of this packet
+     * Returns the log message contained in this packet
+     *
+     * @return string The log message
      */
     public function getMessage() {
         return $this->message;
