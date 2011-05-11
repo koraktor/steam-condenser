@@ -16,7 +16,7 @@ class M2S_REQUESTRESTART_Packet
 
   # Creates a new server restart request packet sent by a master server
   def initialize(data)
-    super C2M_CHECKMD5_HEADER, data
+    super M2S_REQUESTRESTART_HEADER, data
 
     @challenge = @content_data.long
   end
