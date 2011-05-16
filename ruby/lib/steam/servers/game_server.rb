@@ -92,7 +92,7 @@ module GameServer
   # As the players and their scores change quite often be sure to update this
   # list regularly by calling update_player_info.
   def players(rcon_password = nil)
-    update_player_info(rcon_password) if @player_hash.nil?
+    update_players(rcon_password) if @player_hash.nil?
     @player_hash
   end
 
@@ -111,7 +111,7 @@ module GameServer
   # this hash. But if you need to, you can achieve this by calling
   # update_rules_info.
   def rules
-    update_rules_info if @rules_hash.nil?
+    update_rules if @rules_hash.nil?
     @rules_hash
   end
 
@@ -177,7 +177,7 @@ module GameServer
     update_challenge_number
   end
 
-  def update_player_info(rcon_password = nil)
+  def update_players(rcon_password = nil)
     handle_response_for_request GameServer::REQUEST_PLAYER
 
     unless rcon_password.nil? || @player_hash.nil? || @player_hash.empty?
@@ -198,7 +198,7 @@ module GameServer
     end
   end
 
-  def update_rules_info
+  def update_rules
     handle_response_for_request GameServer::REQUEST_RULES
   end
 

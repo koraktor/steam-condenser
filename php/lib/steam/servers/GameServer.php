@@ -148,7 +148,7 @@ abstract class GameServer extends Server {
      */
     public function getPlayers($rconPassword = null) {
         if($this->playerHash == null) {
-            $this->updatePlayerInfo($rconPassword);
+            $this->updatePlayers($rconPassword);
         }
         return $this->playerHash;
     }
@@ -158,7 +158,7 @@ abstract class GameServer extends Server {
      */
     public function getRules() {
         if($this->rulesHash == null) {
-            $this->updateRulesInfo();
+            $this->updateRules();
         }
         return $this->rulesHash;
     }
@@ -280,7 +280,7 @@ abstract class GameServer extends Server {
     /**
      *
      */
-    public function updatePlayerInfo($rconPassword = null) {
+    public function updatePlayers($rconPassword = null) {
         $this->handleResponseForRequest(self::REQUEST_PLAYER);
 
         if($rconPassword != null && !empty($this->playerHash)) {
@@ -305,7 +305,7 @@ abstract class GameServer extends Server {
     /**
      *
      */
-    public function updateRulesInfo() {
+    public function updateRules() {
         $this->handleResponseForRequest(self::REQUEST_RULES);
     }
 

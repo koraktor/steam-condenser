@@ -146,7 +146,7 @@ public abstract class GameServer extends Server {
 	public HashMap<String, SteamPlayer> getPlayers(String rconPassword)
 			throws IOException, SteamCondenserException, TimeoutException {
 		if(this.playerHash == null) {
-			this.updatePlayerInfo(rconPassword);
+			this.updatePlayers(rconPassword);
 		}
 		return this.playerHash;
 	}
@@ -157,7 +157,7 @@ public abstract class GameServer extends Server {
 	public HashMap<String, String> getRules()
 			throws IOException, SteamCondenserException, TimeoutException {
 		if(this.rulesHash == null) {
-			this.updateRulesInfo();
+			this.updateRules();
 		}
 		return this.rulesHash;
 	}
@@ -351,9 +351,9 @@ public abstract class GameServer extends Server {
 	 * @throws TimeoutException
 	 * @throws SteamCondenserException
 	 */
-	public void updatePlayerInfo()
+	public void updatePlayers()
 			throws IOException, TimeoutException, SteamCondenserException {
-		this.updatePlayerInfo(null);
+		this.updatePlayers(null);
 	}
 
 	/**
@@ -362,7 +362,7 @@ public abstract class GameServer extends Server {
 	 * @throws TimeoutException
 	 * @throws SteamCondenserException
 	 */
-	public void updatePlayerInfo(String rconPassword)
+	public void updatePlayers(String rconPassword)
 			throws IOException, TimeoutException, SteamCondenserException {
 		this.handleResponseForRequest(GameServer.REQUEST_PLAYER);
 
@@ -392,7 +392,7 @@ public abstract class GameServer extends Server {
 	 * @throws TimeoutException
 	 * @throws SteamCondenserException
 	 */
-	public void updateRulesInfo()
+	public void updateRules()
 			throws IOException, TimeoutException, SteamCondenserException {
 		this.handleResponseForRequest(GameServer.REQUEST_RULES);
 	}
