@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
- * @subpackage TCPSocket
  */
 
 require_once STEAM_CONDENSER_PATH . 'Socket.php';
@@ -18,13 +15,22 @@ require_once STEAM_CONDENSER_PATH . 'Socket.php';
  *
  * It can connect to a remote host, send and receive packets
  *
- * @package Steam Condenser (PHP)
- * @subpackage TCPSocket
+ * @author  Sebastian Staudt
+ * @package steam-condenser
  */
 class TCPSocket extends Socket
 {
 	/**
-	 * Connects the TCP socket to the host with the given IP address and port number
+     * Connects the TCP socket to the host with the given IP address and port
+     * number
+     *
+     * Depending on whether PHP's sockets extension is loaded, this uses either
+     * <code>socket_create</code>/<code>socket_connect</code> or
+     * <code>fsockopen</code>.
+     *
+     * @param string $ipAddress The IP address to connect to
+     * @param int $portNumber The TCP port to connect to
+     * @throws Exception if an error occurs during connecting the socket
 	 */
     public function connect($ipAddress, $portNumber) {
 		$this->ipAddress = $ipAddress;

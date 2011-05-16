@@ -5,9 +5,9 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author Sebastian Staudt
+ * @author  Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
+ * @package steam-condenser
  */
 
 define('STEAM_CONDENSER_PATH', dirname(__FILE__) . '/');

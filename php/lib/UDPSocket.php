@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
- * @subpackage UDPSocket
  */
 
 require_once STEAM_CONDENSER_PATH . 'Socket.php';
@@ -18,13 +15,22 @@ require_once STEAM_CONDENSER_PATH . 'Socket.php';
  *
  * It can connect to a remote host, send and receive packets
  *
- * @package Steam Condenser (PHP)
- * @subpackage UDPSocket
+ * @author  Sebastian Staudt
+ * @package steam-condenser
  */
 class UDPSocket extends Socket
 {
 	/**
-	 * Connects the UDP socket to the host with the given IP address and port number
+     * Connects the UDP socket to the host with the given IP address and port
+     * number
+     *
+     * Depending on whether PHP's sockets extension is loaded, this uses either
+     * <code>socket_create</code>/<code>socket_connect</code> or
+     * <code>fsockopen</code>.
+     *
+     * @param string $ipAddress The IP address to connect to
+     * @param int $portNumber The UDP port to connect to
+     * @throws Exception if an error occurs during connecting the socket
 	 */
 	public function connect($ipAddress, $portNumber)
 	{

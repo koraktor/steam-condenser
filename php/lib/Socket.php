@@ -5,22 +5,29 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
- * @subpackage Socket
  */
 
+/**
+ * This class represents an IP socket
+ *
+ * It can connect to a remote host, send and receive packets
+ *
+ * @author  Sebastian Staudt
+ * @package steam-condenser
+ */
 abstract class Socket
 {
 	/**
 	 * The IP address the socket is connected to
+     *
 	 * @var InetAddress
 	 */
 	protected $ipAddress;
 
 	/**
 	 * The port number the socket is connected to
+     *
 	 * @var int
 	 */
 	protected $portNumber;
@@ -44,6 +51,9 @@ abstract class Socket
 
 	/**
 	 * Constructs the Socket object
+     *
+     * This will check if PHP's sockets extension is loaded which might be used
+     * for socket communication.
 	 */
 	public function __construct()
 	{
@@ -59,6 +69,13 @@ abstract class Socket
         $this->close();
     }
 
+    /**
+     * Connects the socket to the host with the given IP address and port
+     * number
+     *
+     * @param string $ipAddress The IP address to connect to
+     * @param int $portNumber The TCP port to connect to
+     */
     abstract public function connect($ipAddress, $portNumber);
 
     /**
@@ -76,71 +93,11 @@ abstract class Socket
     }
 
 	/**
-	 * @return byte
-	 */
-	public function getByte()
-	{
-		return ord($this->read(1));
-	}
-
-	/**
-	 * @return float
-	 */
-	public function getFloat()
-	{
-		return floatval($this->read(4));
-	}
-
-	/**
-	 * @return long
-	 */
-	public function getLong()
-	{
-		$reply = unpack("Vlong", $this->read(4));
-		return $reply["long"];
-	}
-
-	/**
-	 * @return String
-	 */
-	public function flushBuffer()
-	{
-		$reply = $this->readBuffer;
-		$this->readBuffer = "";
-		return $reply;
-	}
-
-	/**
-	 * @return short
-	 */
-	public function getShort()
-	{
-		$reply = unpack("vshort", $this->read(2));
-		return $reply["short"];
-	}
-
-	/**
-	 * @return String
-	 */
-	public function getString()
-	{
-		$returnString = null;
-		while(true)
-		{
-			$byte = $this->getByte();
-			if($byte == 0)
-			{
-				break;
-			}
-			$returnString .= chr($byte);
-		}
-
-		return $returnString;
-	}
-
-	/**
-	 * @param int $length
-	 * @return String
+     * Receives the specified amount of data from the socket
+     *
+     * @param int $length The number of bytes to read from the socket
+     * @return string The data read from the socket
+     * @throws Exception if reading from the socket fails
 	 */
 	public function recv($length = 128)
 	{
@@ -162,7 +119,12 @@ abstract class Socket
 	}
 
 	/**
-	 * @return boolean
+     * Waits for data to be read from this socket before the specified timeout
+     * occurs
+     *
+     * @param int $timeout The number of milliseconds to wait for data arriving
+     *        on this socket before timing out
+     * @return boolean whether data arrived on this socket before the timeout
 	 */
 	public function select($timeout = 0)
 	{
@@ -183,7 +145,10 @@ abstract class Socket
 	}
 
 	/**
-	 * @param String $data
+     * Sends the specified data to the peer this socket is connected to
+     *
+     * @param string $data The data to send to the connected peer
+     * @throws Exception if sending fails
 	 */
 	public function send($data)
 	{
@@ -203,7 +168,9 @@ abstract class Socket
 	}
 
 	/**
-	 *
+     * Returns the file descriptor of the underlying socket
+     *
+     * @return resource The underlying socket descriptor
 	 */
 	public function socket()
 	{
