@@ -5,6 +5,7 @@
 
 module SteamCondenser
 
+  # The current version of Steam Condenser
   VERSION = '0.13.1'
 
 end
