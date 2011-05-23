@@ -26,12 +26,7 @@ class MasterServer
   REGION_AFRICA = 0x07
   REGION_ALL = 0xFF
 
-  # Creates a new instance of a master server object
-  def initialize(address, port)
-    super
 
-    @server_array = []
-  end
 
   # Request a challenge number from the master server. This is used for further
   # communication with the master server.
@@ -51,14 +46,10 @@ class MasterServer
   end
 
   def servers(region_code = MasterServer::REGION_ALL, filters = '')
-    update_servers region_code, filters if @server_array.empty?
-    @server_array
-  end
-
-  def update_servers(region_code, filters)
     fail_count     = 0
     finished       = false
     current_server = '0.0.0.0:0'
+    server_array   = []
 
     failsafe do
       begin
@@ -70,7 +61,7 @@ class MasterServer
               finished = true
             else
               current_server = server
-              @server_array << server.split(':')
+              server_array << server.split(':')
             end
           end
           fail_count = 0
@@ -79,6 +70,8 @@ class MasterServer
         end
       end while !finished
     end
+
+    server_array
   end
 
   # Sends a constructed heartbeat to the master server
