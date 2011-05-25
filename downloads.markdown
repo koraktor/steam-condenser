@@ -33,8 +33,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
   <br />
   <pre>
-  SHA1: 7de44bbcbfb4ec54ec36f2bc9ba9280609ad1c49
-  MD5:  f681b55439d28b55d43bcb165a3f8fc4</pre>
+  SHA1: 13683147e324788e8fe8f6112744bd0d288499a0
+  MD5:  ecaf3c7660e5540e55178a9d25794aae</pre>
 </div>
 
 ## Git repository
