@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
- * @subpackage SteamSocket
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/A2M_GET_SERVERS_BATCH2_Packet.php';
@@ -18,23 +15,73 @@ require_once STEAM_CONDENSER_PATH . 'steam/servers/Server.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/MasterServerSocket.php';
 
 /**
- * @package Steam Condenser (PHP)
- * @subpackage MasterServer
+ * This class represents a Steam master server and can be used to get game
+ * servers which are publicly available
+ *
+ * An intance of this class can be used much like Steam's server browser to get
+ * a list of available game servers, including filters to narrow down the
+ * search results.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage servers
  */
 class MasterServer extends Server {
 
+    /**
+     * @var string The master server address to query for GoldSrc game servers
+     */
 	const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+
+    /**
+     * @var string The master server address to query for GoldSrc game servers
+     */
 	const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
-        const REGION_US_EAST_COAST = 0x00;
-	const REGION_US_WEST_COAST = 0x01;
-	const REGION_SOUTH_AMERICA = 0x02;
-	const REGION_EUROPE = 0x03;
-	const REGION_ASIA = 0x04;
-	const REGION_AUSTRALIA = 0x05;
-	const REGION_MIDDLE_EAST = 0x06;
-	const REGION_AFRICA = 0x07;
-	const REGION_ALL = 0xFF;
+    /**
+     * @var int The region code for the US east coast
+     */
+    const REGION_US_EAST_COAST = 0x00;
+
+    /**
+     * @var int The region code for the US west coast
+     */
+    const REGION_US_WEST_COAST = 0x01;
+
+    /**
+     * @var int The region code for South America
+     */
+    const REGION_SOUTH_AMERICA = 0x02;
+
+    /**
+     * @var int The region code for Europe
+     */
+    const REGION_EUROPE = 0x03;
+
+    /**
+     * @var int The region code for Asia
+     */
+    const REGION_ASIA = 0x04;
+
+    /**
+     * @var int The region code for Australia
+     */
+    const REGION_AUSTRALIA = 0x05;
+
+    /**
+     * @var int The region code for the Middle East
+     */
+    const REGION_MIDDLE_EAST = 0x06;
+
+    /**
+     * @var int The region code for Africa
+     */
+    const REGION_AFRICA = 0x07;
+
+    /**
+     * @var int The region code for the whole world
+     */
+    const REGION_ALL = 0xFF;
 
 	/**
 	 * @var MasterServerSocket
@@ -42,14 +89,19 @@ class MasterServer extends Server {
 	private $socket;
 
     /**
-     * Request a challenge number from the master server. This is used for
-     * further communication with the master server.
+     * Request a challenge number from the master server.
      *
-     * Please note that this is NOT needed for finding servers using
-     * getServers()
+     * This is used for further communication with the master server.
+     *
+     * Please note that this is <strong>not</strong> needed for finding servers
+     * using {@link getServers()}.
      *
      * @return The challenge number returned from the master server
      * @see sendHeartbeat()
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
      */
     public function getChallenge() {
         while(true) {
@@ -64,6 +116,41 @@ class MasterServer extends Server {
         }
     }
 
+    /**
+     * Returns a list of game server matching the given region and filters
+     *
+     * Filtering:
+     * Instead of filtering the results sent by the master server locally, you
+     * should at least use the following filters to narrow down the results
+     * sent by the master server.
+     *
+     * <strong>Note:</strong> Receiving all servers from the master server is
+     * taking quite some time.
+     *
+     * Available filters:
+     *
+     * <ul>
+     * <li><code>\type\d</code>: Request only dedicated servers
+     * <li><code>\secure\1</code>: Request only secure servers
+     * <li><code>\gamedir\[mod]</code>: Request only servers of a specific mod
+     * <li><code>\map\[mapname]</code>: Request only servers running a specific
+     *     map
+     * <li><code>\linux\1</code>: Request only linux servers
+     * <li><code>\emtpy\1</code>: Request only **non**-empty servers
+     * <li><code>\full\</code>: Request only servers **not** full
+     * <li><code>\proxy\1</code>: Request only spectator proxy servers
+     * </ul>
+     *
+     * @param int $regionCode The region code to specify a location of the
+     *        game servers
+     * @param string $filter The filters that game servers should match
+     * @return array A list of game servers matching the given
+     *         region and filters
+     * @see A2M_GET_SERVERS_BATCH2_Packet
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
 	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
 	{
 		$failCount  = 0;
@@ -111,6 +198,8 @@ class MasterServer extends Server {
 
     /**
      * Initializes the socket to communicate with the master server
+     *
+     * @see MasterServerSocket
      */
     public function initSocket() {
         $this->socket = new MasterServerSocket($this->ipAddress, $this->port);
@@ -122,10 +211,12 @@ class MasterServer extends Server {
      * This can be used to check server versions externally.
      *
      * @param array $data The heartbeat data to send to the master server
-     * @return SteamPacket[] The reply from the master server – usually zero or
-     *         more packets. Zero means either the heartbeat was accepted by
-     *         the master or there was a timeout. So usually it's best to
-     *         repeat a heartbeat a few times when not receiving any packets.
+     * @return The reply from the master server – usually zero or more packets.
+     *         Zero means either the heartbeat was accepted by the master or
+     *         there was a timeout. So usually it's best to repeat a heartbeat
+     *         a few times when not receiving any packets.
+     * @throws SteamCondenserException if heartbeat data is missing the
+     *         challenge number or the reply cannot be parsed
      */
     public function sendHeartbeat($data) {
         while(true) {

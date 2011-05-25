@@ -15,9 +15,15 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.sockets.GoldSrcSocket;
 
 /**
- * A GoldSrc game server.
+ * This class represents a GoldSrc game server and can be used to query
+ * information about and remotely execute commands via RCON on the server
+ * <p/>
+ * A GoldSrc game server is an instance of the Half-Life Dedicated Server
+ * (HLDS) running games using Valve's GoldSrc engine, like Half-Life
+ * Deathmatch, Counter-Strike 1.6 or Team Fortress Classic.
  *
  * @author Sebastian Staudt
+ * @see SourceServer
  */
 public class GoldSrcServer extends GameServer {
 
@@ -26,9 +32,13 @@ public class GoldSrcServer extends GameServer {
 	private String rconPassword;
 
     /**
-     * @param address The address of the server to connect to
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public GoldSrcServer(String address)
             throws IOException, SteamCondenserException {
@@ -36,10 +46,14 @@ public class GoldSrcServer extends GameServer {
     }
 
     /**
-     * @param address The address of the server to connect to
-     * @param port The port number of the server
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public GoldSrcServer(String address, Integer port)
             throws IOException, SteamCondenserException {
@@ -47,11 +61,16 @@ public class GoldSrcServer extends GameServer {
     }
 
     /**
-     * @param address The address of the server to connect to
-     * @param port The port number of the server
-     * @param isHLTV Whether this server is a HLTV server
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @param isHLTV HLTV servers need special treatment, so this is used to
+     *        determine if the server is a HLTV server
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public GoldSrcServer(String address, Integer port, boolean isHLTV)
             throws IOException, SteamCondenserException {
@@ -61,9 +80,13 @@ public class GoldSrcServer extends GameServer {
     }
 
     /**
-     * @param address The address of the server to connect to
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public GoldSrcServer(InetAddress address)
             throws IOException, SteamCondenserException {
@@ -71,39 +94,54 @@ public class GoldSrcServer extends GameServer {
     }
 
 	/**
-	 * @param ipAddress The IP of the server to connect to
-     * @param port The port number of the server
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
 	 */
-    public GoldSrcServer(InetAddress ipAddress, Integer port)
+    public GoldSrcServer(InetAddress address, Integer port)
             throws IOException, SteamCondenserException {
-        this(ipAddress.toString(), port, false);
+        this(address.toString(), port, false);
     }
 
 	/**
-	 * @param ipAddress The IP of the server to connect to
-     * @param port The port number of the server
-	 * @param isHLTV Whether this server is a HLTV server
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a GoldSrc server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @param isHLTV HLTV servers need special treatment, so this is
+     *        used to determine if the server is a HLTV server
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
 	 */
-    public GoldSrcServer(InetAddress ipAddress, Integer port, boolean isHLTV)
+    public GoldSrcServer(InetAddress address, Integer port, boolean isHLTV)
             throws IOException, SteamCondenserException {
-        this(ipAddress.toString(), port, isHLTV);
+        this(address.toString(), port, isHLTV);
     }
 
     /**
      * Initializes the socket to communicate with the GoldSrc server
+     *
+     * @see GoldSrcSocket
      */
     public void initSocket() throws IOException {
         this.socket = new GoldSrcSocket(this.ipAddress, this.port, this.isHLTV);
     }
 
 	/**
-	 * @param password Password to use for RCON commands
-	 * @return Returns always true, because GoldSrc doesn't have a special
-	 *         authentication feature
+     * Saves the password for authenticating the RCON communication with the
+     * server
+     *
+     * @param password The RCON password of the server
+     * @return GoldSrc's RCON does not preauthenticate connections so
+     *         this method always returns <code>true</code>
+     * @see #rconExec
 	 */
 	public boolean rconAuth(String password) {
 		this.rconPassword = password;
@@ -111,9 +149,15 @@ public class GoldSrcServer extends GameServer {
 	}
 
 	/**
-	 * @param command RCON command to send to the server
-	 * @return The response send by the server
-	 * @throws SteamCondenserException
+     * Remotely executes a command on the server via RCON
+     *
+     * @param command The command to execute on the server via RCON
+     * @return The output of the executed command
+     * @see #rconExec
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public String rconExec(String command)
 			throws IOException, TimeoutException, SteamCondenserException {

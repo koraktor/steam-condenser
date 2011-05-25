@@ -26,30 +26,82 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 import com.github.koraktor.steamcondenser.steam.sockets.MasterServerSocket;
 
 /**
- * A Steam master server
+ * This class represents a Steam master server and can be used to get game
+ * servers which are publicly available
+ * <p/>
+ * An intance of this class can be used much like Steam's server browser to get
+ * a list of available game servers, including filters to narrow down the
+ * search results.
+ *
  * @author Sebastian Staudt
  */
 public class MasterServer extends Server {
 
+    /**
+     * The master server address to query for GoldSrc game servers
+     */
     public static final String GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+
+    /**
+     * The master server address to query for GoldSrc game servers
+     */
     public static final String SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
+    /**
+     * The region code for the US east coast
+     */
     public static final byte REGION_US_EAST_COAST = 0x00;
+
+    /**
+     * The region code for the US west coast
+     */
     public static final byte REGION_US_WEST_COAST = 0x01;
+
+    /**
+     * The region code for South America
+     */
     public static final byte REGION_SOUTH_AMERICA = 0x02;
+
+    /**
+     * The region code for Europe
+     */
     public static final byte REGION_EUROPE = 0x03;
+
+    /**
+     * The region code for Asia
+     */
     public static final byte REGION_ASIA = 0x04;
+
+    /**
+     * The region code for Australia
+     */
     public static final byte REGION_AUSTRALIA = 0x05;
+
+    /**
+     * The region code for the Middle East
+     */
     public static final byte REGION_MIDDLE_EAST = 0x06;
+
+    /**
+     * The region code for Africa
+     */
     public static final byte REGION_AFRICA = 0x07;
+
+    /**
+     * The region code for the whole world
+     */
     public static final byte REGION_ALL = (byte)0xFF;
 
     private MasterServerSocket socket;
 
     /**
-     * @param address The address of the server to connect to
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a master server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public MasterServer(String address)
             throws IOException, SteamCondenserException {
@@ -57,10 +109,14 @@ public class MasterServer extends Server {
     }
 
     /**
-     * @param address The address of the server to connect to
-     * @param port The port number of the server
-     * @throws IOException
-     * @throws SteamCondenserException
+     * Creates a new instance of a master server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public MasterServer(String address, Integer port)
             throws IOException, SteamCondenserException {
@@ -68,37 +124,48 @@ public class MasterServer extends Server {
     }
 
     /**
-     * @param ipAddress The IP of the server to connect to
-     * @throws IOException
-     * @throws SteamCondenserException
-     */
-    public MasterServer(InetAddress ipAddress)
-            throws IOException, SteamCondenserException {
-        super(ipAddress.toString(), null);
-    }
-
-    /**
-     * @param ipAddress The IP of the server to connect to
-     * @param port The port number of the server
-     * @throws IOException
-     * @throws SteamCondenserException
-     */
-    public MasterServer(InetAddress ipAddress, Integer port)
-            throws IOException, SteamCondenserException {
-        super(ipAddress.toString(), port);
-    }
-
-    /**
-     * Request a challenge number from the master server. This is used for
-     * further communication with the master server.
+     * Creates a new instance of a GoldSrc server object
      *
-     * Please note that this is NOT needed for finding servers using
-     * getServers()
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
+     */
+    public MasterServer(InetAddress address)
+            throws IOException, SteamCondenserException {
+        super(address.toString(), null);
+    }
+
+    /**
+     * Creates a new instance of a master server object
+     *
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
+     */
+    public MasterServer(InetAddress address, Integer port)
+            throws IOException, SteamCondenserException {
+        super(address.toString(), port);
+    }
+
+    /**
+     * Request a challenge number from the master server.
+     * <p/>
+     * This is used for further communication with the master server.
+     * <p/>
+     * Please note that this is <strong>not</strong> needed for finding servers
+     * using {@link #getServers}.
      *
      * @return The challenge number returned from the master server
      * @see #sendHeartbeat
-     * @throws IOException on socket failures
-     * @throws SteamCondenserException on packet errors
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
      */
     public int getChallenge()
             throws IOException, SteamCondenserException, TimeoutException {
@@ -106,12 +173,62 @@ public class MasterServer extends Server {
         return ((M2C_ISVALIDMD5_Packet) this.socket.getReply()).getChallenge();
     }
 
+    /**
+     * Returns a list of all available game servers
+     * <p/>
+     * <strong>Note:</strong> Receiving all servers from the master server is
+     * taking quite some time.
+     *
+     * @return A list of game servers matching the given
+     *         region and filters
+     * @see A2M_GET_SERVERS_BATCH2_Paket
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     public Vector<InetSocketAddress> getServers()
             throws IOException, SteamCondenserException, TimeoutException
     {
         return this.getServers(MasterServer.REGION_ALL, "");
     }
 
+    /**
+     * Returns a list of game server matching the given region and filters
+     * <p/>
+     * Filtering:
+     * Instead of filtering the results sent by the master server locally, you
+     * should at least use the following filters to narrow down the results
+     * sent by the master server.
+     * <p/>
+     * <strong>Note:</strong> Receiving all servers from the master server is
+     * taking quite some time.
+     *
+     * Available filters:
+     *
+     * <ul>
+     * <li><code>\type\d</code>: Request only dedicated servers
+     * <li><code>\secure\1</code>: Request only secure servers
+     * <li><code>\gamedir\[mod]</code>: Request only servers of a specific mod
+     * <li><code>\map\[mapname]</code>: Request only servers running a specific
+     *     map
+     * <li><code>\linux\1</code>: Request only linux servers
+     * <li><code>\emtpy\1</code>: Request only **non**-empty servers
+     * <li><code>\full\</code>: Request only servers **not** full
+     * <li><code>\proxy\1</code>: Request only spectator proxy servers
+     * </ul>
+     *
+     * @param regionCode The region code to specify a location of the game
+     *        servers
+     * @param filter The filters that game servers should match
+     * @return A list of game servers matching the given
+     *         region and filters
+     * @see A2M_GET_SERVERS_BATCH2_Paket
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
             throws IOException, SteamCondenserException, TimeoutException
     {
@@ -153,6 +270,8 @@ public class MasterServer extends Server {
 
     /**
      * Initializes the socket to communicate with the master server
+     *
+     * @see MasterServerSocket
      */
     public void initSocket() throws IOException {
         this.socket = new MasterServerSocket(this.ipAddress, this.port);
@@ -160,7 +279,7 @@ public class MasterServer extends Server {
 
     /**
      * Sends a constructed heartbeat to the master server
-     *
+     * <p/>
      * This can be used to check server versions externally.
      *
      * @param data The heartbeat data to send to the master server
@@ -168,9 +287,9 @@ public class MasterServer extends Server {
      *         Zero means either the heartbeat was accepted by the master or
      *         there was a timeout. So usually it's best to repeat a heartbeat
      *         a few times when not receiving any packets.
-     * @throws IOException on socket failures
+     * @throws IOException if the request fails
      * @throws SteamCondenserException if heartbeat data is missing the
-     *         challenge number
+     *         challenge number or the reply cannot be parsed
      */
     public List<SteamPacket> sendHeartbeat(Map<String, Object> data)
             throws IOException, SteamCondenserException {

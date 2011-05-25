@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage SourceServer
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'exceptions/RCONNoAuthException.php';
@@ -21,25 +18,46 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/RCONSocket.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
 
 /**
- * @package Steam Condenser (PHP)
- * @subpackage SourceServer
- * @todo Server has to recognize incoming packets
+ * This class represents a Source game server and can be used to query
+ * information about and remotely execute commands via RCON on the server
+ *
+ * A Source game server is an instance of the Source Dedicated Server (SrcDS)
+ * running games using Valve's Source engine, like Counter-Strike: Source,
+ * Team Fortress 2 or Left4Dead.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage servers
+ * @see        GoldSrcServer
  */
 class SourceServer extends GameServer
 {
     /**
-     * @var long
+     * @var long The request ID used for RCON request
      */
     private $rconRequestId;
 
     /**
      * Initializes the sockets to communicate with the Source server
+     *
+     * @see RCONSocket
+     * @see SourceSocket
      */
     public function initSocket() {
         $this->rconSocket = new RCONSocket($this->ipAddress, $this->port);
         $this->socket = new SourceSocket($this->ipAddress, $this->port);
     }
 
+    /**
+     * Authenticates the connection for RCON communication with the server
+     *
+     * @param string $password The RCON password of the server
+     * @return whether authentication was successful
+     * @see rconExec()
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     public function rconAuth($password) {
         $this->rconRequestId = rand(0, pow(2, 16));
 
@@ -50,6 +68,17 @@ class SourceServer extends GameServer
         return $reply->getRequestId() == $this->rconRequestId;
     }
 
+    /**
+     * Remotely executes a command on the server via RCON
+     *
+     * @param string $command The command to execute on the server via RCON
+     * @return string The output of the executed command
+     * @see rconAuth()
+     * @throws RCONNoAuthException if not authenticated with the server
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     public function rconExec($command) {
         $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
         $this->rconSocket->send(new RCONTerminator($this->rconRequestId));

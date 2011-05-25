@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage GameServer
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
@@ -20,8 +17,13 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/A2S_SERVERQUERY_GETCHALLENGE_
 require_once STEAM_CONDENSER_PATH . 'steam/servers/Server.php';
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage GameServer
+ * This class is subclassed by classes representing different game server
+ * implementations and provides the basic functionality to communicate with
+ * them using the common query protocol
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage servers
  */
 abstract class GameServer extends Server {
 
@@ -31,40 +33,42 @@ abstract class GameServer extends Server {
     const REQUEST_RULES     = 3;
 
     /**
-     * @var int
+     * @var int The challenge number to communicate with the server
      */
     protected $challengeNumber;
 
     /**
-     * @var mixed[]
+     * @var array Basic information about this server
      */
     protected $infoHash;
 
     /**
-     * @var int
+     * @var int The response time of this server
      */
     protected $ping;
 
     /**
-     * @var SteamPlayer[]
+     * @var array The players playing on this server
      */
     protected $playerHash;
 
     /**
-     * @var mixed[]
+     * @var array The settings applied on the server
      */
     protected $rulesHash;
 
     /**
-     * @var SteamSocket
+     * @var SteamSocket The socket of to communicate with the server
      */
     protected $socket;
 
-        /**
-     * Parses the player attribute names supplied by +rcon status+
+    /**
+     * Parses the player attribute names supplied by <code>rcon status</code>
      *
-     * @param string statusHeader
-     * @return Split player attribute names
+     * @param string $statusHeader The header line provided by <code>rcon
+     *        status</code>
+     * @return array Split player attribute names
+     * @see splitPlayerStatus()
      */
     private static function getPlayerStatusAttributes($statusHeader) {
         $statusAttributes = array();
@@ -82,11 +86,13 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * Splits the player status obtained with "rcon status"
+     * Splits the player status obtained with <code>rcon status</code>
      *
-     * @param array attributes
-     * @param string playerStatus
-     * @return Split player data
+     * @param array $attributes The attribute names
+     * @param string $playerStatus The status line of a single player
+     * @return array The attributes with the corresponding values for this
+     *         player
+     * @see getPlayerStatusAttributes()
      */
     private static function splitPlayerStatus($attributes, $playerStatus) {
         if($attributes[0] != 'userid') {
@@ -125,16 +131,29 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * @param string $address
-     * @param int $portNumber The listening port of the server, defaults to
-     *        27015
+     * Creates a new instance of a game server object
+     *
+     * @param string $address Either an IP address, a DNS name or one of them
+     *        combined with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param int $port The port the server is listening on
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     public function __construct($address, $port = 27015) {
         parent::__construct($address, $port);
     }
 
     /**
-     * @return The response time of this server in milliseconds
+     * Returns the last measured response time of this server
+     *
+     * If the latency hasn't been measured yet, it is done when calling this
+     * method for the first time.
+     *
+     * If this information is vital to you, be sure to call
+     * {@link updatePing()} regularly to stay up-to-date.
+     *
+     * @return int The latency of this server in milliseconds
+     * @see updatePing()
      */
     public function getPing() {
         if($this->ping == null) {
@@ -144,7 +163,20 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * @return An array of SteamPlayers representing all players on this server
+     * Returns a list of players currently playing on this server
+     *
+     * If the players haven't been fetched yet, it is done when calling this
+     * method for the first time.
+     *
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling {@link updatePlayers()} if you rely on
+     * this information.
+     *
+     * @param string $rconPassword The RCON password of this server may be
+     *        provided to gather more detailed information on the players, like
+     *     STEAM_IDs.
+     * @return array The players on this server
+     * @see updatePlayers()
      */
     public function getPlayers($rconPassword = null) {
         if($this->playerHash == null) {
@@ -154,7 +186,18 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * @return A associative array containing the rules of this server
+     * Returns the settings applied on the server. These settings are also
+     * called rules.
+     *
+     * If the rules haven't been fetched yet, it is done when calling this
+     * method for the first time.
+     *
+     * As the rules usually don't change often, there's almost no need to
+     * update this hash. But if you need to, you can achieve this by calling
+     * {@link updateRules()}.
+     *
+     * @return array The currently active server rules
+     * @see updateRules()
      */
     public function getRules() {
         if($this->rulesHash == null) {
@@ -164,7 +207,18 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * @return A associative array containing basic information about the server
+     * Returns an associative array with basic information on the server.
+     *
+     * If the server information haven't been fetched yet, it is done when
+     * calling this method for the first time.
+     *
+     * The server information usually only changes on map change and when
+     * players join or leave. As the latter changes can be monitored by calling
+     * {@link updatePlayers()}, there's no need to call
+     * {@link updateServerInfo()} very often.
+     *
+     * @return array Server attributes with their values
+     * @see updateServerInfo()
      */
     public function getServerInfo() {
         if($this->infoHash == null) {
@@ -173,6 +227,13 @@ abstract class GameServer extends Server {
         return $this->infoHash;
     }
 
+    /**
+     * Initializes this server object with basic information
+     *
+     * @see updateChallengeNumber()
+     * @see updatePing()
+     * @see updateServerInfo()
+     */
     public function initialize() {
         $this->updatePing();
         $this->updateServerInfo();
@@ -180,14 +241,28 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * @return SteamPacket
+     * Receives a response from the server
+     *
+     * @return SteamPacket The response packet replied by the server
      */
     private function getReply() {
         return $this->socket->getReply();
     }
 
     /**
+     * Sends the specified request to the server and handles the returned
+     * response
      *
+     * Depending on the given request type this will fill the various data
+     * attributes of the server object.
+     *
+     * @param int $requestType The type of request to send to the server
+     * @param bool $repeatOnFailure Whether the request should be repeated, if
+     *        the replied packet isn't expected. This is useful to handle
+     *        missing challenge numbers, which will be automatically filled in,
+     *        although not requested explicitly.
+     * @throws SteamCondenserException if either the request type or the
+     *        response packet is not known
      */
     private function handleResponseForRequest($requestType, $repeatOnFailure = true) {
         try {
@@ -246,26 +321,65 @@ abstract class GameServer extends Server {
         }
     }
 
+    /**
+     * Authenticates the connection for RCON communication with the server
+     *
+     * @param string $password The RCON password of the server
+     * @return bool whether authentication was successful
+     * @see rconAuth()
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     abstract public function rconAuth($password);
 
+    /**
+     * Remotely executes a command on the server via RCON
+     *
+     * @param string $command The command to execute on the server via RCON
+     * @return string The output of the executed command
+     * @see rconExec()
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
     abstract public function rconExec($command);
 
     /**
-     * @param SteamPacket $requestData
+     * Sends a request packet to the server
+     *
+     * @param SteamPacket $requestData The request packet to send to the server
      */
     private function sendRequest(SteamPacket $requestData) {
         $this->socket->send($requestData);
     }
 
     /**
+     * Sends a A2S_SERVERQUERY_GETCHALLENGE request to the server and updates
+     * the challenge number used to communicate with this server
      *
+     * There's usually no need to call this method explicitly, because
+     * {@link handleResponseForRequest()} will automatically get the challenge
+     * number when the server assigns a new one.
+     *
+     * @see handleResponseForRequest()
+     * @see initialize()
      */
     public function updateChallengeNumber() {
         $this->handleResponseForRequest(self::REQUEST_CHALLENGE);
     }
 
     /**
+     * Sends a A2S_INFO request to the server and measures the time needed for
+     * the reply
      *
+     * If this information is vital to you, be sure to call this method
+     * regularly to stay up-to-date.
+     *
+     * @return int The latency of this server in milliseconds
+     * @see getPing()
+     * @see initialize()
      */
     public function updatePing() {
         $this->sendRequest(new A2S_INFO_Packet());
@@ -278,7 +392,18 @@ abstract class GameServer extends Server {
     }
 
     /**
+     * Sends a A2S_PLAYERS request to the server and updates the players' data
+     * for this server
      *
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling this method if you rely on this
+     * information.
+     *
+     * @param string $rconPassword The RCON password of this server may be
+     *        provided to gather more detailed information on the players, like
+     *        STEAM_IDs.
+     * @see getPlayers()
+     * @see handleResponseForRequest()
      */
     public function updatePlayers($rconPassword = null) {
         $this->handleResponseForRequest(self::REQUEST_PLAYER);
@@ -303,21 +428,41 @@ abstract class GameServer extends Server {
     }
 
     /**
+     * Sends a A2S_RULES request to the server and updates the rules of this
+     * server
      *
+     * As the rules usually don't change often, there's almost no need to
+     * update this hash. But if you need to, you can achieve this by calling
+     * this method.
+     *
+     * @see getRules()
+     * @see handleResponseForRequest()
      */
     public function updateRules() {
         $this->handleResponseForRequest(self::REQUEST_RULES);
     }
 
     /**
+     * Sends a A2S_INFO request to the server and updates this server's basic
+     * information
      *
+     * The server information usually only changes on map change and when
+     * players join or leave. As the latter changes can be monitored by calling
+     * {@link updatePlayers()}, there's no need to call this method very often.
+     *
+     * @see getServerInfo()
+     * @see handleResponseForRequest()
+     * @see initialize()
      */
     public function updateServerInfo() {
         $this->handleResponseForRequest(self::REQUEST_INFO);
     }
 
     /**
-     * @return String
+     * Returns a human-readable text representation of the server
+     *
+     * @return string Available information about the server in a
+     *         human-readable format
      */
     public function __toString() {
         $returnString = "";

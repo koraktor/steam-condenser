@@ -30,6 +30,10 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 import com.github.koraktor.steamcondenser.steam.sockets.QuerySocket;
 
 /**
+ * This class is subclassed by classes representing different game server
+ * implementations and provides the basic functionality to communicate with
+ * them using the common query protocol
+ *
  * @author Sebastian Staudt
  */
 public abstract class GameServer extends Server {
@@ -47,10 +51,14 @@ public abstract class GameServer extends Server {
 	protected QuerySocket socket;
 
     /**
-     * Creates a new game server instance with the given address and port
+     * Creates a new instance of a game server object
      *
-     * @param address
-     * @param port
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     protected GameServer(String address, Integer port)
             throws IOException, SteamCondenserException {
@@ -58,10 +66,11 @@ public abstract class GameServer extends Server {
     }
 
     /**
-     * Parses the player attribute names supplied by +rcon status+
+     * Parses the player attribute names supplied by <code>rcon status</code>
      *
-     * @param statusHeader
-     * @return Split player attribute names
+     * @param statusHeader The header line provided by <code>rcon status</code>
+     * @return array Split player attribute names
+     * @see #splitPlayerStatus
      */
     private static List<String> getPlayerStatusAttributes(String statusHeader) {
         List<String> statusAttributes = new ArrayList<String>();
@@ -79,11 +88,13 @@ public abstract class GameServer extends Server {
     }
 
     /**
-     * Splits the player status obtained with "rcon status"
+     * Splits the player status obtained with <code>rcon status</code>
      *
-     * @param attributes
-     * @param playerStatus
-     * @return Split player data
+     * @param attributes The attribute names
+     * @param playerStatus The status line of a single player
+     * @return array The attributes with the corresponding values for this
+     *         player
+     * @see #getPlayerStatusAttributes
      */
     private static Map<String, String> splitPlayerStatus(List<String> attributes, String playerStatus) {
         if(!attributes.get(0).equals("userid")) {
@@ -120,7 +131,20 @@ public abstract class GameServer extends Server {
     }
 
 	/**
-	 * @return The response time of this server in milliseconds
+     * Returns the last measured response time of this server
+     * <p/>
+     * If the latency hasn't been measured yet, it is done when calling this
+     * method for the first time.
+     * <p/>
+     * If this information is vital to you, be sure to call
+     * {@link #updatePing} regularly to stay up-to-date.
+     *
+     * @return The latency of this server in milliseconds
+     * @see #updatePing
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public int getPing()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -131,8 +155,21 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @return An HashMap of SteamPlayers representing all players on this
-	 *         server
+     * Returns a list of players currently playing on this server
+     * <p/>
+     * If the players haven't been fetched yet, it is done when calling this
+     * method for the first time.
+     * <p/>
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling {@link #updatePlayers} if you rely on
+     * this information.
+     *
+     * @return The players on this server
+     * @see #updatePlayers
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public HashMap<String, SteamPlayer> getPlayers()
 			throws IOException, SteamCondenserException, TimeoutException {
@@ -140,8 +177,23 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @return An HashMap of SteamPlayers extended with additional information
-	 *         from "rcon status" representing all players on this server
+     * Returns a list of players currently playing on this server
+     * <p/>
+     * If the players haven't been fetched yet, it is done when calling this
+     * method for the first time.
+     * <p/>
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling {@link #updatePlayers} if you rely on
+     * this information.
+     *
+     * @param rconPassword The RCON password of this server may be provided to
+     *        gather more detailed information on the players, like STEAM_IDs.
+     * @return The players on this server
+     * @see #updatePlayers
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public HashMap<String, SteamPlayer> getPlayers(String rconPassword)
 			throws IOException, SteamCondenserException, TimeoutException {
@@ -152,7 +204,22 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @return A HashMap containing the rules of this server
+     * Returns the settings applied on the server. These settings are also
+     * called rules.
+     * <p/>
+     * If the rules haven't been fetched yet, it is done when calling this
+     * method for the first time.
+     * <p/>
+     * As the rules usually don't change often, there's almost no need to
+     * update this hash. But if you need to, you can achieve this by calling
+     * {@link #updateRules}.
+     *
+     * @return The currently active server rules
+     * @see #updateRules
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public HashMap<String, String> getRules()
 			throws IOException, SteamCondenserException, TimeoutException {
@@ -163,7 +230,22 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @return A HashMap containing basic information about the server
+     * Returns an associative array with basic information on the server.
+     * <p/>
+     * If the server information haven't been fetched yet, it is done when
+     * calling this method for the first time.
+     * <p/>
+     * The server information usually only changes on map change and when
+     * players join or leave. As the latter changes can be monitored by calling
+     * {@link #updatePlayers}, there's no need to call
+     * {@link #updateServerInfo} very often.
+     *
+     * @return Server attributes with their values
+     * @see #updateServerInfo
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public HashMap<String, Object> getServerInfo()
 			throws IOException, SteamCondenserException, TimeoutException {
@@ -174,11 +256,13 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Returns a packet sent by the server in response to a query
-	 * @return Packet recieved from the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Receives a response from the server
+     *
+     * @return The response packet replied by the server
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	private SteamPacket getReply()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -186,9 +270,18 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @throws IOException
-	 * @throws SteamCondenserException
-	 * @throws TimeoutException
+     * Sends the specified request to the server and handles the returned
+     * response
+     * <p/>
+     * Depending on the given request type this will fill the various data
+     * attributes of the server object.
+     *
+     * @param requestType The type of request to send to the server
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if either the request type or the
+     *         response packet is not known or a problem occurs while parsing
+     *         the reply
+     * @throws TimeoutException if the request times out
 	 */
 	private void handleResponseForRequest(int requestType)
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -196,9 +289,22 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * @throws IOException
-	 * @throws SteamCondenserException
-	 * @throws TimeoutException
+     * Sends the specified request to the server and handles the returned
+     * response
+     * <p/>
+     * Depending on the given request type this will fill the various data
+     * attributes of the server object.
+     *
+     * @param requestType The type of request to send to the server
+     * @param repeatOnFailure Whether the request should be repeated, if
+     *        the replied packet isn't expected. This is useful to handle
+     *        missing challenge numbers, which will be automatically filled in,
+     *        although not requested explicitly.
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if either the request type or the
+     *         response packet is not known or a problem occurs while parsing
+     *         the reply
+     * @throws TimeoutException if the request times out
 	 */
 	private void handleResponseForRequest(int requestType, boolean repeatOnFailure)
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -255,11 +361,15 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Initializes the server object with basic data (ping, server info and
-	 * challenge number)
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Initializes this server object with basic information
+     *
+     * @see #updateChallengeNumber
+     * @see #updatePing
+     * @see #updateServerInfo
+     * @throws IOException if a request fails
+     * @throws SteamCondenserException if a problem occurs while parsing a
+     *         reply
+     * @throws TimeoutException if a request times out
 	 */
 	public void initialize()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -268,16 +378,39 @@ public abstract class GameServer extends Server {
 		this.updateChallengeNumber();
 	}
 
+    /**
+     * Authenticates with the server for RCON communication
+     *
+     * @param password The RCON password of the server
+     * @return <code>true</code>, if the authentication was successful
+     * @see #rconExec
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
 	abstract public boolean rconAuth(String password)
 			throws IOException, TimeoutException, SteamCondenserException;
 
+    /**
+     * Remotely executes a command on the server via RCON
+     *
+     * @param command The command to execute on the server via RCON
+     * @return The output of the executed command
+     * @see #rconAuth
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
+     */
 	abstract public String rconExec(String command)
 			throws IOException, TimeoutException, SteamCondenserException;
 
 	/**
-	 * Sends a query packet to the server
-	 * @param requestData The query packet to send to the server
-	 * @throws IOException
+     * Sends a request packet to the server
+     *
+     * @param requestData The request packet to send to the server
+     * @throws IOException if the request fails
 	 */
 	private void sendRequest(SteamPacket requestData)
 			throws IOException {
@@ -285,8 +418,10 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Returns a String representation of this server
-	 * @return A human readable version of this server's information
+     * Returns a human-readable text representation of the server
+     *
+     * @return string Available information about the server in a
+     *         human-readable format
 	 */
 	@Override
 	public String toString() {
@@ -320,10 +455,19 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Get the challenge number from the server
-	 * @throws IOException
-	 * @throws SteamCondenserException
-	 * @throws TimeoutException
+	 * Sends a A2S_SERVERQUERY_GETCHALLENGE request to the server and updates
+     * the challenge number used to communicate with this server
+     * <p/>
+     * There's usually no need to call this method explicitly, because
+     * {@link #handleResponseForRequest} will automatically get the challenge
+     * number when the server assigns a new one.
+     *
+     * @see #handleResponseForRequest
+     * @see #initialize
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updateChallengeNumber()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -331,10 +475,18 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Pings the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Sends a A2S_INFO request to the server and measures the time needed for
+     * the reply
+     * <p/>
+     * If this information is vital to you, be sure to call this method
+     * regularly to stay up-to-date.
+     *
+     * @see #getPing
+     * @see #initialize
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updatePing()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -346,10 +498,19 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Gets information about the players on the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Sends a A2S_PLAYERS request to the server and updates the players' data
+     * for this server
+     * <p/>
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling this method if you rely on this
+     * information.
+     *
+     * @see #getPlayers
+     * @see #handleResponseForRequest
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updatePlayers()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -357,10 +518,21 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Gets information about the players on the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Sends a A2S_PLAYERS request to the server and updates the players' data
+     * for this server
+     * <p/>
+     * As the players and their scores change quite often be sure to update
+     * this list regularly by calling this method if you rely on this
+     * information.
+     *
+     * @param rconPassword The RCON password of this server may be provided to
+     *        gather more detailed information on the players, like STEAM_IDs.
+     * @see #getPlayers
+     * @see #handleResponseForRequest
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updatePlayers(String rconPassword)
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -387,10 +559,19 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Gets information about the setting of the server
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Sends a A2S_RULES request to the server and updates the rules of this
+     * server
+     * <p/>
+     * As the rules usually don't change often, there's almost no need to
+     * update this hash. But if you need to, you can achieve this by calling
+     * this method.
+     *
+     * @see #getRules
+     * @see #handleResponseForRequest
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updateRules()
 			throws IOException, TimeoutException, SteamCondenserException {
@@ -398,10 +579,20 @@ public abstract class GameServer extends Server {
 	}
 
 	/**
-	 * Gets basic server information
-	 * @throws IOException
-	 * @throws TimeoutException
-	 * @throws SteamCondenserException
+     * Sends a A2S_INFO request to the server and updates this server's basic
+     * information
+     * <p/>
+     * The server information usually only changes on map change and when
+     * players join or leave. As the latter changes can be monitored by calling
+     * {@link #updatePlayers}, there's no need to call this method very often.
+     *
+     * @see #getServerInfo
+     * @see #handleResponseForRequest
+     * @see #initialize
+     * @throws IOException if the request fails
+     * @throws SteamCondenserException if a problem occurs while parsing the
+     *         reply
+     * @throws TimeoutException if the request times out
 	 */
 	public void updateServerInfo()
 			throws IOException, TimeoutException, SteamCondenserException {

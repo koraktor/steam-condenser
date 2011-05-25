@@ -17,8 +17,9 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 /**
  * This class is subclassed by all classes implementing server functionality
- *
- * It provides basic name resolution features.
+ * <p/>
+ * It provides basic name resolution features and the ability to rotate
+ * between different IP addresses belonging to a single DNS name.
  *
  * @author Sebastian Staudt
  */
@@ -37,10 +38,13 @@ public abstract class Server {
     /**
      * Creates a new server instance with the given address and port
      *
-     * @param address
-     * @param port
-     * @throws IOException
-     * @throws SteamCondenserException
+     * @param address Either an IP address, a DNS name or one of them combined
+     *        with the port number. If a port number is given, e.g.
+     *        'server.example.com:27016' it will override the second argument.
+     * @param port The port the server is listening on
+     * @see #initSocket
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
      */
     protected Server(String address, Integer port)
             throws IOException, SteamCondenserException {
@@ -73,23 +77,39 @@ public abstract class Server {
         this.initSocket();
     }
 
+    /**
+     * Returns a list of host names associated with this server
+     *
+     * @return The host names of this server
+     */
     public List<String> getHostNames() {
         return this.hostNames;
     }
 
+    /**
+     * Returns a list of IP addresses associated with this server
+     *
+     * @return The IP addresses of this server
+     */
     public List<InetAddress> getIpAddresses() {
         return this.ipAddresses;
     }
 
     /**
      * Rotate this server's IP address to the next one in the IP list
-     *
-     * This method will return <code>true</code>, if the IP list reached its
-     * end. If the list contains only one IP address, this method will
-     * instantly return <code>true</code>.
-     *
-     * @return bool
-     * @throws IOException
+     * <p/>
+     * If this method returns <code>true</code>, it indicates that all IP
+     * addresses have been used, hinting at the server(s) being unreachable. An
+     * appropriate action should be taken to inform the user.
+     * <p/>
+     * Servers with only one IP address will always cause this method to return
+     * <code>true</code> and the sockets will not be reinitialized.
+     * <p/>
+     * @return bool <code>true</code>, if the IP list reached its end. If the
+     *         list contains only one IP address, this method will instantly
+     *         return <code>true</code>
+     * @see #initSocket
+     * @throws IOException if initializing the socket fails
      */
     public boolean rotateIp() throws IOException {
         if(this.ipAddresses.size() == 1) {
@@ -106,8 +126,11 @@ public abstract class Server {
 
     /**
      * Initializes the socket(s) to communicate with the server
+     * <p/>
+     * Must be implemented in subclasses to prepare sockets for server
+     * communication
      *
-     * @throws IOException
+     * @throws IOException if initializing the socket fails
      */
     protected abstract void initSocket() throws IOException;
 

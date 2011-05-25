@@ -1,5 +1,5 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
@@ -15,6 +15,11 @@ require 'steam/packets/s2a_rules_packet'
 require 'steam/packets/s2c_challenge_packet'
 require 'steam/servers/server'
 
+# This module is included by classes representing different game server
+# implementations and provides the basic functionality to communicate with
+# them using the common query protocol
+#
+# @author Sebastian Staudt
 module GameServer
 
   include Server
@@ -24,7 +29,11 @@ module GameServer
   REQUEST_PLAYER = 2
   REQUEST_RULES = 3
 
-  # Parses the player attribute names supplied by +rcon status+
+  # Parses the player attribute names supplied by `rcon status`
+  #
+  # @param [String] status_header The header line provided by `rcon status`
+  # @return [Array<Symbol>] Split player attribute names
+  # @see .split_player_status
   def self.player_status_attributes(status_header)
     status_header.split.map do |attribute|
       case attribute
@@ -38,7 +47,13 @@ module GameServer
     end
   end
 
-  # Splits the player status obtained with +rcon status+
+  # Splits the player status obtained with `rcon status`
+  #
+  # @param [Array<Symbol>] attributes The attribute names
+  # @param [String] player_status The status line of a single player
+  # @return [Hash<Symbol, String>] The attributes with the corresponding values
+  #         for this player
+  # @see .player_status_attributes
   def self.split_player_status(attributes, player_status)
     player_status.sub! /^\d+ +/, '' if attributes.first != :userid
 
@@ -68,48 +83,85 @@ module GameServer
 
   # Creates a new instance of a game server object
   #
-  # The port defaults to 27015 for game servers
+  # @param [String] address Either an IP address, a DNS name or one of them
+  #        combined with the port number. If a port number is given, e.g.
+  #        'server.example.com:27016' it will override the second argument.
+  # @param [Fixnum] port The port the server is listening on
+  # @raise [SteamCondenserException] if an host name cannot be resolved
   def initialize(address, port = 27015)
     super
   end
 
   # Returns the last measured response time of this server
   #
-  # If there's no data, update_ping is called to measure the current response
-  # time of the server.
+  # If the latency hasn't been measured yet, it is done when calling this
+  # method for the first time.
   #
-  # Whenever you want to get a new value for the ping time call update_ping.
+  # If this information is vital to you, be sure to call {#update_ping}
+  # regularly to stay up-to-date.
+  #
+  # @return [Fixnum] The latency of this server in milliseconds
+  # @see #update_ping
   def ping
     update_ping if @ping.nil?
     @ping
   end
 
-  # Returns an array of the player's currently playing on this server.
+  # Returns a list of players currently playing on this server
   #
-  # If there's no data, update_player_info is called to get the current list of
-  # players.
+  # If the players haven't been fetched yet, it is done when calling this
+  # method for the first time.
   #
   # As the players and their scores change quite often be sure to update this
-  # list regularly by calling update_player_info.
+  # list regularly by calling {#update_players} if you rely on this
+  # information.
+  #
+  # @param [String] rcon_password The RCON password of this server may be
+  #        provided to gather more detailed information on the players, like
+  #        STEAM_IDs.
+  # @return [Hash] The players on this server
+  # @see update_players
   def players(rcon_password = nil)
     update_players(rcon_password) if @player_hash.nil?
     @player_hash
+  end
+
+  # Authenticates the connection for RCON communication with the server
+  #
+  # @abstract Must be be implemented by including classes to handle the
+  #           authentication
+  # @param [String] password The RCON password of the server
+  # @return [Boolean] whether the authentication was successful
+  # @see #rcon_exec
+  def rcon_auth(password)
   end
 
   def rcon_authenticated?
     @rcon_authenticated
   end
 
-  # Returns a hash of the settings applied on the server. These settings are
-  # also called rules.
-  # The hash has the format of +rule_name+ => +rule_value+
+  # Remotely executes a command on the server via RCON
   #
-  # If there's no data, update_rules_info is called to get the current list of
+  # @abstract Must be be implemented by including classes to handle the command
+  #           execution
+  # @param [String] command The command to execute on the server
+  # @return [String] The output of the executed command
+  # @see #rcon_auth
+  def rcon_exec(command)
+  end
+
+  # Returns the settings applied on the server. These settings are also called
   # rules.
+  #
+  # If the rules haven't been fetched yet, it is done when calling this method
+  # for the first time.
   #
   # As the rules usually don't change often, there's almost no need to update
   # this hash. But if you need to, you can achieve this by calling
-  # update_rules_info.
+  # {#update_rules}.
+  #
+  # @return [Hash<String, String>] The currently active server rules
+  # @see #update_rules
   def rules
     update_rules if @rules_hash.nil?
     @rules_hash
@@ -117,17 +169,33 @@ module GameServer
 
   # Returns a hash with basic information on the server.
   #
-  # If there's no data, update_server_info is called to get up-to-date
-  # information.
+  # If the server information haven't been fetched yet, it is done when
+  # calling this method for the first time.
   #
   # The server information usually only changes on map change and when players
   # join or leave. As the latter changes can be monitored by calling
-  # update_player_info, there's no need to call update_server_info very often.
+  # {#update_players}, there's no need to call {#update_server_info} very
+  # often.
+  #
+  # @return [Hash] Server attributes with their values
+  # @see #update_server_info
   def server_info
     update_server_info if @info_hash.nil?
     @info_hash
   end
 
+  # Sends the specified request to the server and handles the returned response
+  #
+  # Depending on the given request type this will fill the various data
+  # attributes of the server object.
+  #
+  # @param [Fixnum] request_type The type of request to send to the server
+  # @param [Boolean] repeat_on_failure Whether the request should be repeated,
+  #        if the replied packet isn't expected. This is useful to handle
+  #        missing challenge numbers, which will be automatically filled in,
+  #        although not requested explicitly.
+  # @raise [SteamCondenserException] if either the request type or the response
+  #        packet is not known
   def handle_response_for_request(request_type, repeat_on_failure = true)
     begin
       case request_type
@@ -171,12 +239,29 @@ module GameServer
     end
   end
 
+  # Initializes this server object with basic information
+  #
+  # @see #update_challenge_number
+  # @see #update_ping
+  # @see #update_server_info
   def init
     update_ping
     update_server_info
     update_challenge_number
   end
 
+  # Sends a A2S_PLAYERS request to the server and updates the players' data for
+  # this server
+  #
+  # As the players and their scores change quite often be sure to update this
+  # list regularly by calling this method if you rely on this
+  # information.
+  #
+  # @param [String] rcon_password The RCON password of this server may be
+  #        provided to gather more detailed information on the players, like
+  #        STEAM_IDs.
+  # @see #handle_response_for_request
+  # @see #players
   def update_players(rcon_password = nil)
     handle_response_for_request GameServer::REQUEST_PLAYER
 
@@ -198,18 +283,52 @@ module GameServer
     end
   end
 
+  # Sends a A2S_RULES request to the server and updates the rules of this
+  # server
+  #
+  # As the rules usually don't change often, there's almost no need to update
+  # this hash. But if you need to, you can achieve this by calling this method.
+  #
+  # @see #handle_response_for_request
+  # @see #rules
   def update_rules
     handle_response_for_request GameServer::REQUEST_RULES
   end
 
+  # Sends a A2S_INFO request to the server and updates this server's basic
+  # information
+  #
+  # The server information usually only changes on map change and when players
+  # join or leave. As the latter changes can be monitored by calling
+  # {#update_players}, there's no need to call this method very often.
+  #
+  # @see #handle_response_for_request
+  # @see #server_info
   def update_server_info
     handle_response_for_request GameServer::REQUEST_INFO
   end
 
+  # Sends a A2S_SERVERQUERY_GETCHALLENGE request to the server and updates the
+  # challenge number used to communicate with this server
+  #
+  # There's usually no need to call this method explicitly, because
+  # {#handle_response_for_request} will automatically get the challenge number
+  # when the server assigns a new one.
+  #
+  # @see #handle_response_for_request
+  # @see #init
   def update_challenge_number
     handle_response_for_request GameServer::REQUEST_CHALLENGE
   end
 
+  # Sends a A2S_INFO request to the server and measures the time needed for the
+  # reply
+  #
+  # If this information is vital to you, be sure to call this method regularly
+  # to stay up-to-date.
+  #
+  # @return [Fixnum] The latency of this server in milliseconds
+  # @see #ping
   def update_ping
     send_request A2S_INFO_Packet.new
     start_time = Time.now
@@ -218,6 +337,10 @@ module GameServer
     @ping = (end_time - start_time) * 1000
   end
 
+  # Returns a human-readable text representation of the server
+  #
+  # @return [String] Available information about the server in a human-readable
+  #         format
   def to_s
     return_string = ''
 
@@ -250,11 +373,17 @@ module GameServer
 
   protected
 
+  # Receives a response from the server
+  #
+  # @return [SteamPacket] The response packet replied by the server
   def reply
     @socket.reply
   end
 
-  def send_request packet
+  # Sends a request packet to the server
+  #
+  # @param [SteamPacket] packet The request packet to send to the server
+  def send_request(packet)
     @socket.send packet
   end
 
