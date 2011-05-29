@@ -83,6 +83,7 @@ class SourceServer extends GameServer
         $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
         $this->rconSocket->send(new RCONTerminator($this->rconRequestId));
 
+        $response = '';
         do {
             $responsePacket = $this->rconSocket->getReply();
 
@@ -94,13 +95,9 @@ class SourceServer extends GameServer
                 throw new RCONNoAuthException();
             }
 
-            $responsePackets[] = $responsePacket;
-        } while($responsePacket == null || strlen($responsePacket->getResponse()) > 0);
+            $response .= $responsePacket->getResponse();
+        } while(strlen($response) == 0 || strlen($responsePacket->getResponse()) > 0);
 
-        $response = '';
-        foreach($responsePackets as $packet) {
-            $response .= $packet->getResponse();
-        }
 
         return trim($response);
     }

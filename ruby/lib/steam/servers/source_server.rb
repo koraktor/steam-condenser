@@ -71,19 +71,13 @@ class SourceServer
   def rcon_exec(command)
     @rcon_socket.send RCONExecRequest.new(@rcon_request_id, command)
     @rcon_socket.send RCONTerminator.new(@rcon_request_id)
-    response_packets = []
-
-    begin
-      response_packet = @rcon_socket.reply
-      redo if response_packet.nil?
-      raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
-      response_packets << response_packet
-    end while response_packet.response.size > 0
 
     response = ''
-    response_packets.each do |packet|
-      response << packet.response
-    end
+    begin
+      response_packet = @rcon_socket.reply
+      raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
+      response << response_packet.response
+    end while response.length == 0 || response_packet.response.size > 0
 
     response.strip
   end

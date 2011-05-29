@@ -151,21 +151,14 @@ public class SourceServer extends GameServer {
 		ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
 		RCONPacket responsePacket;
 
+        String response = "";
         do {
             responsePacket = this.rconSocket.getReply();
-            if(responsePacket == null) {
-                continue;
-            }
             if(responsePacket instanceof RCONAuthResponse) {
                 throw new RCONNoAuthException();
             }
-            responsePackets.add((RCONExecResponsePacket) responsePacket);
-        } while(responsePacket == null || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
-
-		String response = new String();
-		for(RCONExecResponsePacket packet : responsePackets) {
-			response += packet.getResponse();
-		}
+            response += ((RCONExecResponsePacket) responsePacket).getResponse();
+        } while(response.length() == 0 || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
 
 		return response.trim();
 	}
