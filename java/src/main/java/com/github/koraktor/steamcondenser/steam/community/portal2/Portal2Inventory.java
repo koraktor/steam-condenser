@@ -104,7 +104,7 @@ public class Portal2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      */
     public Portal2Inventory(long steamId64)
-            throws JSONException {
+            throws JSONException, WebApiException {
         super(steamId64, true);
     }
 
@@ -116,7 +116,7 @@ public class Portal2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      */
     public Portal2Inventory(long steamId64, boolean fetchNow)
-            throws JSONException {
+            throws JSONException, WebApiException {
         super(steamId64, fetchNow);
     }
 

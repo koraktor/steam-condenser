@@ -104,7 +104,7 @@ public class TF2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      */
     protected TF2Inventory(long steamId64)
-            throws JSONException {
+            throws JSONException, WebApiException {
         super(steamId64, true);
     }
 
@@ -116,7 +116,7 @@ public class TF2Inventory extends GameInventory {
      * @throws JSONException on invalid JSON data
      */
     protected TF2Inventory(long steamId64, boolean fetchNow)
-            throws JSONException {
+            throws JSONException, WebApiException {
         super(steamId64, fetchNow);
     }
 
