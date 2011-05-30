@@ -42,8 +42,8 @@ class QueryTests < Test::Unit::TestCase
 
       server = GoldSrcServer.new(*servers[rand(servers.length)])
       server.init
-      server.update_player_info
-      server.update_rules_info
+      server.update_players
+      server.update_rules
 
       print server.to_s
     end
@@ -60,8 +60,8 @@ class QueryTests < Test::Unit::TestCase
 
       server = SourceServer.new(*servers[rand(servers.length)])
       server.init
-      server.update_player_info
-      server.update_rules_info
+      server.update_players
+      server.update_rules
 
       print server.to_s
     end

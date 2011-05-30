@@ -63,8 +63,8 @@ public class QueryTests
 
         GoldSrcServer server = new GoldSrcServer(randomServer.getAddress(), randomServer.getPort());
         server.initialize();
-        server.updatePlayerInfo();
-        server.updateRulesInfo();
+        server.updatePlayers();
+        server.updateRules();
 
         System.out.println(server);
     }
@@ -85,8 +85,8 @@ public class QueryTests
 
         SourceServer server = new SourceServer(randomServer.getAddress(), randomServer.getPort());
         server.initialize();
-        server.updatePlayerInfo();
-        server.updateRulesInfo();
+        server.updatePlayers();
+        server.updateRules();
 
         System.out.println(server);
     }
