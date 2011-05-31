@@ -11,8 +11,6 @@ require 'steam/packets/rcon/rcon_exec_response'
 
 module RCONPacketFactory
 
-  include SteamPacketFactory
-
   def self.packet_from_data(raw_data)
     byte_buffer = StringIO.new raw_data
 

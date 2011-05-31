@@ -11,7 +11,7 @@ import com.github.koraktor.steamcondenser.PacketBuffer;
 import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacketFactory;
 
-public abstract class RCONPacketFactory extends SteamPacketFactory
+public abstract class RCONPacketFactory
 {
     public static RCONPacket getPacketFromData(byte[] rawData)
         throws PacketFormatException

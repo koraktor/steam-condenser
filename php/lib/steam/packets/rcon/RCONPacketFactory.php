@@ -21,7 +21,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
  * @package    Steam Condenser (PHP)
  * @subpackage Packets
  */
-abstract class RCONPacketFactory extends SteamPacketFactory
+abstract class RCONPacketFactory
 {
 	public static function getPacketFromData($rawData)
 	{
