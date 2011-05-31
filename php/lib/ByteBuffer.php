@@ -37,11 +37,6 @@ class ByteBuffer
 	/**
 	 * @var int
 	 */
-	private $mark;
-
-	/**
-	 * @var int
-	 */
 	private $position;
 
     /**
@@ -80,7 +75,6 @@ class ByteBuffer
 		$this->capacity = strlen($byteArray);
 		$this->limit = $this->capacity;
 		$this->position = 0;
-		$this->mark = -1;
 	}
 
     /**
@@ -103,7 +97,6 @@ class ByteBuffer
 	{
 		$this->limit = $this->capacity;
 		$this->position = 0;
-		$this->mark = -1;
 	}
 
     /**
@@ -116,7 +109,6 @@ class ByteBuffer
     {
         $this->limit = $this->position;
         $this->position = 0;
-        $this->mark = -1;
 
         return $this;
     }
@@ -143,12 +135,6 @@ class ByteBuffer
 
 		$data = substr($this->byteArray, $this->position, $length);
 		$this->position += $length;
-
-		if($length < 0)
-		{
-			debug_print_backtrace();
-			die();
-		}
 
 		return $data;
 	}
@@ -292,7 +278,6 @@ class ByteBuffer
      */
 	public function rewind()
 	{
-		$this->mark = -1;
 		$this->position = 0;
 
 		return $this;
