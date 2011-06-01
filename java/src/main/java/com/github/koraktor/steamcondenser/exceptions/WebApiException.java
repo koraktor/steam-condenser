@@ -2,17 +2,18 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.exceptions;
 
 /**
- * This adds support for Steam Web API to classes needing this functionality.
- * The Web API requires you to register a domain with your Steam account to
- * acquire an API key. See http://steamcommunity.com/dev for further details.
+ * This exception is raised when a Steam Web API request or a related action
+ * fails. This can have codeious reasons like an invalid Web API key or a broken
+ * request.
  *
  * @author Sebastian Staudt
+ * @see com.github.koraktor.steamcondenser.steam.community.WebApi
  */
 public class WebApiException extends SteamCondenserException {
 
@@ -21,70 +22,72 @@ public class WebApiException extends SteamCondenserException {
     private String message;
 
     /**
-     * Creates a new <code>WebApiException</code> with an error message
-     * according to the given <code>cause</code>.
+     * Creates a new WebApiException with an error message according to the
+     * given <code>$cause</code>. If this cause is <code>STATUS_BAD</code> (which
+     * will origin from the Web API itself) or <code>HTTP_ERROR</code> the
+     * details about this failed request will be taken from
+     * <code>$statusCode</code> and <code>$statusMessage</code>.
      *
-     * @param cause Specifies the cause for this exception which may be one of
-     *              the following:
-     * <li><code>HTTP_ERROR</code>:   An error in the HTTP request itself will
-     *                                result in an exception with this reason.
-     * <li><code>INVALID_KEY</code>:  This occurs when trying to set a Web API
-     *                                key that isn't valid, i.e. a 128 bit
-     *                                integer in a hexadecimal string.
-     * <li><code>STATUS_BAD</code>:   This is caused by a succesful request
-     *                                that fails for some Web API internal
-     *                                reason (e.g. a invalid argument). Details
-     *                                about this failed request will be taken
-     *                                from <code>statusCode</code> and
-     *                                <code>statusMessage</code>.
-     * <li><code>UNAUTHORIZED</code>: This happens when a Steam Web API request
-     *                                is rejected as unauthorized. This most
-     *                                likely means that you did not specify a
-     *                                valid Web API key using
-     *                                <code>WebAPI.setApiKey()</code>. A Web
-     *                                API key can be obtained from
-     *                                http://steamcommunity.com/dev/apikey.
+     * @param cause An integer indicating the problem which caused this
+     *        exception:
      *
-     * Other undefined reasons will cause a generic error message.
+     *        <ul>
+     *        <li><code>HTTP_ERROR</code>: An error during the HTTP request
+     *            itself will result in an exception with this reason.</li>
+     *        <li><code>INVALID_KEY</code>: This occurs when trying to set a
+     *            Web API key that isn't valid, i.e. a 128 bit integer in a
+     *            hexadecimal string.
+     *        <li><code>STATUS_BAD</code>: This is caused by a successful
+     *            request that fails for some Web API internal reason (e.g. an
+     *            invalid argument). Details about this failed request will be
+     *            taken from <code>statusCode</code> and
+     *            <code>statusMessage</code>.
+     *        <li><code>UNAUTHORIZED</code>: This happens when a Steam Web API
+     *            request is rejected as unauthorized. This most likely means
+     *            that you did not specify a valid Web API key using
+     *            {@link com.github.koraktor.steamcondenser.steam.community.WebApi#setApiKey}.
+     *            A Web API key can be obtained from
+     *            http://steamcommunity.com/dev/apikey.
+     *        </ul>
+     *
+     *        Other undefined reasons will cause a generic error message.
      */
     public WebApiException(Cause cause) {
         this(cause, null, null);
     }
 
     /**
-     * Creates a new <code>WebApiException</code> with an error message
-     * according to the given <code>cause</code>. If this cause is
-     * <code>STATUS_BAD</code> (which will origin from the Web API itself) or
-     * <code>HTTP_ERROR</code> the details about this failed request will be
-     * taken from <code>statusCode</code> and <code>statusMessage</code>.
+     * Creates a new WebApiException with an error message according to the
+     * given <code>cause</code>. If this cause is <code>STATUS_BAD</code>
+     * (which will origin from the Web API itself) or <code>HTTP_ERROR</code>
+     * the details about this failed request will be taken from
+     * <code>statusCode</code> and <code>statusMessage</code>.
      *
-     * @param cause Specifies the cause for this exception which may be one of
-     *              the following:
-     * <li><code>HTTP_ERROR</code>:   An error in the HTTP request itself will
-     *                                result in an exception with this reason.
-     * <li><code>INVALID_KEY</code>:  This occurs when trying to set a Web API
-     *                                key that isn't valid, i.e. a 128 bit
-     *                                integer in a hexadecimal string.
-     * <li><code>STATUS_BAD</code>:   This is caused by a succesful request
-     *                                that fails for some Web API internal
-     *                                reason (e.g. a invalid argument). Details
-     *                                about this failed request will be taken
-     *                                from <code>statusCode</code> and
-     *                                <code>statusMessage</code>.
-     * <li><code>UNAUTHORIZED</code>: This happens when a Steam Web API request
-     *                                is rejected as unauthorized. This most
-     *                                likely means that you did not specify a
-     *                                valid Web API key using
-     *                                <code>WebAPI.setApiKey()</code>. A Web
-     *                                API key can be obtained from
-     *                                http://steamcommunity.com/dev/apikey.
+     * @param cause An integer indicating the problem which caused this
+     *        exception:
      *
-     * Other undefined reasons will cause a generic error message.
+     *        <ul>
+     *        <li><code>HTTP_ERROR</code>: An error during the HTTP request
+     *            itself will result in an exception with this reason.</li>
+     *        <li><code>INVALID_KEY</code>: This occurs when trying to set a
+     *            Web API key that isn't valid, i.e. a 128 bit integer in a
+     *            hexadecimal string.
+     *        <li><code>STATUS_BAD</code>: This is caused by a successful
+     *            request that fails for some Web API internal reason (e.g. an
+     *            invalid argument). Details about this failed request will be
+     *            taken from <code>statusCode</code> and
+     *            <code>statusMessage</code>.
+     *        <li><code>UNAUTHORIZED</code>: This happens when a Steam Web API
+     *            request is rejected as unauthorized. This most likely means
+     *            that you did not specify a valid Web API key using
+     *            {@link com.github.koraktor.steamcondenser.steam.community.WebApi#setApiKey}.
+     *            A Web API key can be obtained from
+     *            http://steamcommunity.com/dev/apikey.
+     *        </ul>
      *
-     * @param statusCode    Will specify the status code for errors of type
-     *                      HTTP_ERROR and STATUS_BAD
-     * @param statusMessage Will specify a status message for errors of type
-     *                      HTTP_ERROR and STATUS_BAD
+     *        Other undefined reasons will cause a generic error message.
+     * @param statusCode The HTTP status code returned by the Web API
+     * @param statusMessage The status message returned in the response
      */
     public WebApiException(Cause cause, Integer statusCode, String statusMessage) {
         switch(cause) {
