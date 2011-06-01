@@ -87,16 +87,16 @@ abstract class Server {
     /**
      * Rotate this server's IP address to the next one in the IP list
      *
-     * If this method returns <code>true</code>, it indicates that all IP
+     * If this method returns <var>true</var>, it indicates that all IP
      * addresses have been used, hinting at the server(s) being unreachable. An
      * appropriate action should be taken to inform the user.
      *
      * Servers with only one IP address will always cause this method to return
-     * <code>true</code> and the sockets will not be reinitialized.
+     * <var>true</var> and the sockets will not be reinitialized.
      *
-     * @return bool <code>true</code>, if the IP list reached its end. If the
+     * @return bool <var>true</var>, if the IP list reached its end. If the
      *         list contains only one IP address, this method will instantly
-     *         return <code>true</code>
+     *         return <var>true</var>
      * @see initSocket()
      */
     public function rotateIp() {

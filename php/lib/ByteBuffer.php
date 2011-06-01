@@ -90,8 +90,8 @@ class ByteBuffer
     /**
      * Clears the state of this byte buffer object
      *
-     * Sets the <code>limit</code> to the <code>capacity</code> of the buffer
-     * and resets the <code>position</code>.
+     * Sets the <var>limit</var> to the <var>capacity</var> of the buffer and
+     * resets the <var>position</var>.
      */
 	public function clear()
 	{
@@ -100,8 +100,8 @@ class ByteBuffer
 	}
 
     /**
-     * Sets the <code>limit</code> to the current <code>position</code> before
-     * resetting the <code>position</code>.
+     * Sets the <var>limit</var> to the current <var>position</var> before
+     * resetting the <var>position</var>.
      *
      * @return ByteBuffer This byte buffer
      */
@@ -114,12 +114,12 @@ class ByteBuffer
     }
 
 	/**
-     * Reads the specified amount of bytes from the current
-     * <code>position</code> of the byte buffer
+     * Reads the specified amount of bytes from the current <var>position</var>
+     * of the byte buffer
      *
      * @param int $length The amount of bytes to read from the buffer or
-     *        <code>null</code> if everything up to <code>limit</code> should
-     *        be read
+     *        <var>null</var> if everything up to <var>limit</var> should be
+     *        read
      * @return string The data read from the buffer
 	 */
 	public function get($length = null)
@@ -153,7 +153,7 @@ class ByteBuffer
      * Reads a floating point number from the buffer
      *
      * @return float The floating point number, i.e. four bytes converted to a
-     *         <code>float</code> read at the current position
+     *         <var>float</var> read at the current position
 	 */
 	public function getFloat()
 	{
@@ -165,7 +165,7 @@ class ByteBuffer
      * Reads a long integer from the buffer
      *
      * @return long The long integer, i.e. four bytes converted to a
-     *         <code>long</code> read at the current position
+     *         <var>long</var> read at the current position
 	 */
 	public function getLong()
 	{
@@ -177,7 +177,7 @@ class ByteBuffer
      * Reads a short integer from the buffer
      *
      * @return short The short integer, i.e. two bytes converted to a
-     *         <code>short</code> read at the current position
+     *         <var>short</var> read at the current position
 	 */
 	public function getShort()
 	{
@@ -207,7 +207,7 @@ class ByteBuffer
      * Reads an unsigned long integer from the buffer
      *
      * @return long The long integer, i.e. four bytes converted to an
-     *         unsigned <code>float</code> read at the current position
+     *         unsigned <var>float</var> read at the current position
 	 */
 	public function getUnsignedLong()
 	{
@@ -216,11 +216,10 @@ class ByteBuffer
 	}
 
     /**
-     * Sets or returns the <code>limit</code> of the buffer
+     * Sets or returns the <var>limit</var> of the buffer
      *
-     * @param int $newLimit Sets the buffer's <code>limit</code> to this value
-     * @return int If no new <code>limit</code> value is given, the current
-     *         value
+     * @param int $newLimit Sets the buffer's <var>limit</var> to this value
+     * @return int If no new <var>limit</var> value is given, the current value
      */
 	public function limit($newLimit = null)
 	{
@@ -235,9 +234,9 @@ class ByteBuffer
 	}
 
     /**
-     * Returns the current <code>position</code> of the buffer
+     * Returns the current <var>position</var> of the buffer
      *
-     * @return int The current <code>position</code> of the buffer
+     * @return int The current <var>position</var> of the buffer
      */
 	public function position()
 	{
@@ -246,7 +245,7 @@ class ByteBuffer
 
     /**
      * Replaces the contents of the byte buffer with the bytes from the source
-     * string beginning at the current <code>position</code>
+     * string beginning at the current <var>position</var>
      *
      * @param string $sourceByteArray The string to take bytes from
      * @return ByteBuffer This byte buffer
@@ -262,7 +261,7 @@ class ByteBuffer
 
     /**
      * Returns the remaining number of byte from the current
-     * <code>position</code> to the <code>limit</code> of the buffer
+     * <var>position</var> to the <var>limit</var> of the buffer
      *
      * @return int The number of bytes remaining in the buffer
      */
@@ -272,7 +271,7 @@ class ByteBuffer
 	}
 
     /**
-     * Resets the <code>position</code> of this buffer
+     * Resets the <var>position</var> of this buffer
      *
      * @return ByteBuffer This byte buffer
      */

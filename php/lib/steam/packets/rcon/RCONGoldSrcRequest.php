@@ -26,8 +26,8 @@ class RCONGoldSrcRequest extends SteamPacket
     /**
      * Creates a request for the given request string
      *
-     * The request string has the form <code>rcon {challenge number} {RCON
-     * password} {command}</code>.
+     * The request string has the form <var>rcon {challenge number} {RCON
+     * password} {command}</var>.
      *
      * @param string $request The request string to send to the server
      */

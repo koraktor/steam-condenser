@@ -63,10 +63,10 @@ abstract class GameServer extends Server {
     protected $socket;
 
     /**
-     * Parses the player attribute names supplied by <code>rcon status</code>
+     * Parses the player attribute names supplied by <var>rcon status</var>
      *
-     * @param string $statusHeader The header line provided by <code>rcon
-     *        status</code>
+     * @param string $statusHeader The header line provided by <var>rcon
+     *        status</var>
      * @return array Split player attribute names
      * @see splitPlayerStatus()
      */
@@ -86,7 +86,7 @@ abstract class GameServer extends Server {
     }
 
     /**
-     * Splits the player status obtained with <code>rcon status</code>
+     * Splits the player status obtained with <var>rcon status</var>
      *
      * @param array $attributes The attribute names
      * @param string $playerStatus The status line of a single player

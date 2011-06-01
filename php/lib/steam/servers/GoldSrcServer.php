@@ -63,7 +63,7 @@ class GoldSrcServer extends GameServer {
      *
      * @param string $password The RCON password of the server
      * @return GoldSrc's RCON does not preauthenticate connections so
-     *         this method always returns <code>true</code>
+     *         this method always returns <var>true</var>
      * @see rconAuth()
      */
     public function rconAuth($password) {

@@ -14,7 +14,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/RequestPacketWithChallenge.ph
  * This packet class represents a A2S_RULES request send to a game server
  *
  * The game server will return a list of currently active game rules, e.g.
- * <code>mp_friendlyfire = 1</code>.
+ * <var>mp_friendlyfire = 1</var>.
  *
  * This packet type requires the client to challenge the server in advance,
  * which is done automatically if required.

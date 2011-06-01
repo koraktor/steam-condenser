@@ -93,8 +93,8 @@ class MasterServer extends Server {
      *
      * This is used for further communication with the master server.
      *
-     * Please note that this is <strong>not</strong> needed for finding servers
-     * using {@link getServers()}.
+     * Please note that this is <b>not</b> needed for finding servers using
+     * {@link getServers()}.
      *
      * @return The challenge number returned from the master server
      * @see sendHeartbeat()
@@ -124,21 +124,21 @@ class MasterServer extends Server {
      * should at least use the following filters to narrow down the results
      * sent by the master server.
      *
-     * <strong>Note:</strong> Receiving all servers from the master server is
-     * taking quite some time.
+     * <b>Note:</b> Receiving all servers from the master server is taking
+     * quite some time.
      *
      * Available filters:
      *
      * <ul>
-     * <li><code>\type\d</code>: Request only dedicated servers
-     * <li><code>\secure\1</code>: Request only secure servers
-     * <li><code>\gamedir\[mod]</code>: Request only servers of a specific mod
-     * <li><code>\map\[mapname]</code>: Request only servers running a specific
+     * <li><var>\type\d</var>: Request only dedicated servers
+     * <li><var>\secure\1</var>: Request only secure servers
+     * <li><var>\gamedir\[mod]</var>: Request only servers of a specific mod
+     * <li><var>\map\[mapname]</var>: Request only servers running a specific
      *     map
-     * <li><code>\linux\1</code>: Request only linux servers
-     * <li><code>\emtpy\1</code>: Request only **non**-empty servers
-     * <li><code>\full\</code>: Request only servers **not** full
-     * <li><code>\proxy\1</code>: Request only spectator proxy servers
+     * <li><var>\linux\1</var>: Request only linux servers
+     * <li><var>\emtpy\1</var>: Request only **non**-empty servers
+     * <li><var>\full\</var>: Request only servers **not** full
+     * <li><var>\proxy\1</var>: Request only spectator proxy servers
      * </ul>
      *
      * @param int $regionCode The region code to specify a location of the

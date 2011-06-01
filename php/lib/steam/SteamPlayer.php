@@ -124,8 +124,8 @@ class SteamPlayer
      * Extends a player object with information retrieved from a RCON call to
      * the status command
      *
-     * @param string playerData The player data retrieved from
-     *        <code>rcon status</code>
+     * @param string $playerData The player data retrieved from
+     *        <var>rcon status</var>
      * @throws SteamCondenserException
      */
     public function addInformation($playerData) {

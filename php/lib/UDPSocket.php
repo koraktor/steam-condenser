@@ -25,8 +25,8 @@ class UDPSocket extends Socket
      * number
      *
      * Depending on whether PHP's sockets extension is loaded, this uses either
-     * <code>socket_create</code>/<code>socket_connect</code> or
-     * <code>fsockopen</code>.
+     * <var>socket_create</var>/<var>socket_connect</var> or
+     * <var>fsockopen</var>.
      *
      * @param string $ipAddress The IP address to connect to
      * @param int $portNumber The UDP port to connect to
