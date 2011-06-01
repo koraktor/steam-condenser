@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 0.13.1
+version: 0.14.0
 ---
 Downloads
 =========
@@ -11,12 +11,22 @@ The latest stable release of Steam Condenser is version **{{page.version}}**.
 ## Packages
 These files contain complete, ready-for-use packages for their specific
 programming language. Right now there are releases for Java, PHP and Ruby.
-Packages for PHP and Java have to be downloaded manually, the Ruby gem can be
-installed using one simple command.
+The Ruby gem can be installed using RubyGems, the Java JAR can be installed
+using Maven and the PHP package has to be downloaded manually.
 
 <div class="command">
   <h3>Ruby</h3>
   <pre>gem install steam-condenser</pre>
+</div>
+
+<div class="command">
+  <h3>Java</h3>
+  You have to define Steam Condenser as a dependency in your POM file:
+  <pre>&lt;dependency>
+    &lt;groupId>com.github.koraktor&lt;/groupId>
+    &lt;artifactId>steam-condenser&lt;/artifactId>
+    &lt;version>{{page.version}}&lt;/version>
+&lt;/dependency></pre>
 </div>
 
 <div class="download">
@@ -24,17 +34,8 @@ installed using one simple command.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: e49be0823f3269d59d081cb77760a2a1f3ca507f
-  MD5:  7403766af6edbf79320f93f0215f4337</pre>
-</div>
-
-<div class="download">
-  <h3>Java</h3>
-  <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}.jar">steam-condenser-{{page.version}}.jar</a>
-  <br />
-  <pre>
-  SHA1: 13683147e324788e8fe8f6112744bd0d288499a0
-  MD5:  ecaf3c7660e5540e55178a9d25794aae</pre>
+  SHA1: 5d7fa1ea74003093e4eb14fc25f80f6965c60830
+  MD5:  e0810962023884f3aa3739d5534ecc91</pre>
 </div>
 
 ## Git repository
