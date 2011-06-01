@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import com.github.koraktor.steamcondenser.exceptions.RCONBanException;
 import com.github.koraktor.steamcondenser.exceptions.RCONNoAuthException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
-import com.github.koraktor.steamcondenser.exceptions.UncompletePacketException;
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacketFactory;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcRequestPacket;
@@ -126,7 +125,6 @@ public class GoldSrcSocket extends QuerySocket
      * @throws IOException
      * @throws TimeoutException
      * @throws SteamCondenserException
-     * @throws UncompletePacketException
      */
     public String rconExec(String password, String command)
             throws IOException, TimeoutException, SteamCondenserException

@@ -17,7 +17,6 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import com.github.koraktor.steamcondenser.Helper;
 import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
-import com.github.koraktor.steamcondenser.exceptions.UncompletePacketException;
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
@@ -132,9 +131,6 @@ public abstract class SteamPacketFactory {
 		packetData = new byte[0];
 
 		for (byte[] splitPacket : splitPackets) {
-			if (splitPacket == null) {
-				throw new UncompletePacketException();
-			}
 			tmpData = packetData;
 			packetData = new byte[tmpData.length + splitPacket.length];
 			System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);

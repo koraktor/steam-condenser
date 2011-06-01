@@ -123,11 +123,6 @@ abstract class SteamPacketFactory
 
 		foreach($splitPackets as $splitPacket)
 		{
-			if($splitPacket == null)
-			{
-				throw new UncompletePacketException();
-			}
-
 			$packetData .= $splitPacket;
 		}
 
