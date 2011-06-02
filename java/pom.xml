@@ -78,13 +78,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>generate-javadoc</id>
-                        <goals>
-                            <goal>javadoc</goal>
-                        </goals>
-                        <phase>site</phase>
-                    </execution>
-                    <execution>
                         <id>generate-javadoc-jar</id>
                         <goals>
                             <goal>jar</goal>
