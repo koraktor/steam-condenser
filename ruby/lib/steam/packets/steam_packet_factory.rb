@@ -95,7 +95,6 @@ module SteamPacketFactory
       require 'zlib'
 
       begin
-        require 'bz2'
         packet_data = BZ2.uncompress(packet_data)
       rescue LoadError
         raise SteamCondenserException.new('You need to install the libbzip2 interface for Ruby.')

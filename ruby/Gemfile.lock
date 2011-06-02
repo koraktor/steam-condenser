@@ -1,0 +1,14 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    bzip2-ruby (0.2.7)
+    json (1.5.1)
+    yard (0.7.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bzip2-ruby (~> 0.2.7)
+  json (~> 1.5.1)
+  yard (~> 0.7.1)
