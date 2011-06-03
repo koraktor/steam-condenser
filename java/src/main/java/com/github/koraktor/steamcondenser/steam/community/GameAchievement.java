@@ -54,10 +54,10 @@ public class GameAchievement
             throws JSONException, WebApiException {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("gameid", appId);
-        JSONObject data = new JSONObject(WebApi.getJSON("ISteamUserStats", "GetGlobalAchievementPercentagesForApp", 1, params));
+        JSONObject data = new JSONObject(WebApi.getJSON("ISteamUserStats", "GetGlobalAchievementPercentagesForApp", 2, params));
 
         HashMap<String, Double> percentages = new HashMap<String, Double>();
-        JSONArray achievementsData = data.getJSONObject("achievementpercentages").getJSONObject("achievements").getJSONArray("achievement");
+        JSONArray achievementsData = data.getJSONObject("achievementpercentages").getJSONArray("achievements");
         for(int i = 0; i < achievementsData.length(); i ++) {
             JSONObject achievementData = achievementsData.getJSONObject(i);
             percentages.put(achievementData.getString("name"), achievementData.getDouble("percent"));

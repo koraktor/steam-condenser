@@ -22,8 +22,8 @@ class GameAchievement
   def self.global_percentages(app_id)
     percentages = {}
 
-    data = WebApi.json('ISteamUserStats', 'GetGlobalAchievementPercentagesForApp', 1, { :gameid => app_id })
-    JSON.parse(data, { :symbolize_names => true })[:achievementpercentages][:achievements][:achievement].each do |percentage|
+    data = WebApi.json('ISteamUserStats', 'GetGlobalAchievementPercentagesForApp', 2, { :gameid => app_id })
+    JSON.parse(data, { :symbolize_names => true })[:achievementpercentages][:achievements].each do |percentage|
       percentages[percentage[:name].to_sym] = percentage[:percent]
     end
 
