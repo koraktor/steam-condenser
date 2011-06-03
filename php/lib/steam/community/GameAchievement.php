@@ -3,13 +3,15 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
  * @author     Sebastian Staudt
  * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package    Steam Condenser (PHP)
  * @subpackage Steam Community
  */
+
+require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 
 /**
  * The GameAchievement class represents a specific achievement for a single game
@@ -44,6 +46,30 @@ class GameAchievement {
      * @var bool
      */
     private $unlocked;
+
+    /**
+     * Loads the global unlock percentages of all achievements for the given
+     * game
+     *
+     * @param int $appId The unique Steam Application ID of the game (e.g.
+     *        <var>440</var> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @return array The symbolic achievement names with the corresponding
+     *         global unlock percentages
+     * @throws WebApiException If a request to Steam's Web API fails
+     */
+    public static function getGlobalPercentages($appId) {
+        $params = array('gameid' => $appId);
+        $data = json_decode(WebApi::getJSON('ISteamUserStats', 'GetGlobalAchievementPercentagesForApp', 1, $params));
+
+        $percentages = array();
+        foreach($data->achievementpercentages->achievements->achievement as $achievementData) {
+            $percentages[$achievementData->name] = (float) $achievementData->percent;
+        }
+
+        return $percentages;
+    }
 
     /**
      * Creates the achievement with the given name for the given user and game

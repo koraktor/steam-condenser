@@ -2,15 +2,22 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 
 /**
  * The GameAchievement class represents a specific achievement for a single game
@@ -29,6 +36,35 @@ public class GameAchievement
     private Date timestamp;
 
     private boolean unlocked;
+
+    /**
+     * Loads the global unlock percentages of all achievements for the given
+     * game
+     *
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @return The symbolic achievement names with the corresponding global
+     *         unlock percentages
+     * @throws JSONException If the JSON data cannot be parsed
+     * @throws WebApiException If a request to Steam's Web API fails
+     */
+    public static Map<String, Double> getGlobalPercentages(int appId)
+            throws JSONException, WebApiException {
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("gameid", appId);
+        JSONObject data = new JSONObject(WebApi.getJSON("ISteamUserStats", "GetGlobalAchievementPercentagesForApp", 1, params));
+
+        HashMap<String, Double> percentages = new HashMap<String, Double>();
+        JSONArray achievementsData = data.getJSONObject("achievementpercentages").getJSONObject("achievements").getJSONArray("achievement");
+        for(int i = 0; i < achievementsData.length(); i ++) {
+            JSONObject achievementData = achievementsData.getJSONObject(i);
+            percentages.put(achievementData.getString("name"), achievementData.getDouble("percent"));
+        }
+
+        return percentages;
+    }
 
     /**
      * Creates the achievement with the given name for the given user and game
