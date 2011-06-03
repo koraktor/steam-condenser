@@ -1,7 +1,7 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2010, Sebastian Staudt
+# Copyright (c) 2010-2011, Sebastian Staudt
 
 require 'json'
 
@@ -28,10 +28,10 @@ class AppNews
   #                be at most +max_length+ characters long plus an ellipsis
   def self.news_for_app(app_id, count = 5, max_length = nil)
     params = { :appid => app_id, :count => count, :maxlength => max_length }
-    data = WebApi.json('ISteamNews', 'GetNewsForApp', 1, params)
+    data = WebApi.json('ISteamNews', 'GetNewsForApp', 2, params)
 
     news_items = []
-    JSON.parse(data, { :symbolize_names => true })[:appnews][:newsitems][:newsitem].each do |news_data|
+    JSON.parse(data, { :symbolize_names => true })[:appnews][:newsitems].each do |news_data|
       news_items << AppNews.new(app_id, news_data)
     end
 

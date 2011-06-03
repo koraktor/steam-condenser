@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community;
@@ -105,10 +105,10 @@ public class AppNews {
         params.put("appid", appId);
         params.put("count", count);
         params.put("maxlength", maxLength);
-        JSONObject data = new JSONObject(WebApi.getJSON("ISteamNews", "GetNewsForApp", 1, params));
+        JSONObject data = new JSONObject(WebApi.getJSON("ISteamNews", "GetNewsForApp", 2, params));
 
         List<AppNews> newsItems = new ArrayList<AppNews>();
-        JSONArray newsData = data.getJSONObject("appnews").getJSONObject("newsitems").getJSONArray("newsitem");
+        JSONArray newsData = data.getJSONObject("appnews").getJSONArray("newsitems");
         for(int i = 0; i < newsData.length(); i ++) {
             newsItems.add(new AppNews(appId, newsData.getJSONObject(i)));
         }
