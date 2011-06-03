@@ -55,7 +55,7 @@ class AppNews
   # [+news_data+] The news data extracted from JSON
   def initialize(app_id, news_data)
     @app_id      = app_id
-    @author      = news_data[:autor]
+    @author      = news_data[:author]
     @contents    = news_data[:contents].strip
     @data        = Time.at(news_data[:date])
     @external    = news_data[:is_external_url]
