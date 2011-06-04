@@ -9,5 +9,6 @@ group :source do
 end
 
 group :development do
-  gem 'yard',  '~> 0.7.1'
+  gem 'rake', '~> 0.9.1'
+  gem 'yard', '~> 0.7.1'
 end

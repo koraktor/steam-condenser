@@ -3,18 +3,13 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'rake/rdoctask'
-require 'rake/gempackagetask'
 require 'rubygems'
+require 'rubygems/package_task'
 
 src_files = Dir.glob(File.join("lib", "**", "*.rb"))
 test_files = Dir.glob(File.join("test", "**", "*.rb"))
 
-begin
-  require 'ore/tasks'
-  Ore::Tasks.new
-rescue LoadError
-  $stderr.puts 'You need ore-tasks to build the gem. Install it using `gem install ore-tasks`.'
+Gem::PackageTask.new Gem::Specification.load 'steam-condenser.gemspec' do |pkg|
 end
 
 # Check if YARD is installed
