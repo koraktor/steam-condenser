@@ -39,8 +39,8 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 		$this->gameDir = $this->contentData->getString();
 		$this->gameDesc = $this->contentData->getString();
 		$this->appId = $this->contentData->getShort();
-		$this->playerNumber = $this->contentData->getByte();
 		$this->maxPlayers = $this->contentData->getByte();
+        $this->numberOfPlayers = $this->contentData->getByte();
 		$this->botNumber = $this->contentData->getByte();
 		$this->dedicated = chr($this->contentData->getByte());
 		$this->operatingSystem = chr($this->contentData->getByte());
