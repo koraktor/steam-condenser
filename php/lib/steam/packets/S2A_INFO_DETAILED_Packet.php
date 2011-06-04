@@ -14,10 +14,10 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
  * This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
  * server
  *
- * This is deprecated by 10/24/2008. GoldSrc servers use the same format as
- * Source servers now (see {@link S2A_INFO2_Packet}).
- *
  * @author     Sebastian Staudt
+ * @deprecated Only outdated GoldSrc servers (before 10/24/2008) use this
+ *             format. Newer ones use the same format as Source servers now
+ *             (see {@link S2A_INFO2_Packet}).
  * @package    steam-condenser
  * @subpackage packets
  * @see GameServer::updateServerInfo()

@@ -17,6 +17,9 @@ import java.util.HashMap;
  * Source servers now (see {@link S2A_INFO2_Packet}).
  *
  * @author Sebastian Staudt
+ * @deprecated Only outdated GoldSrc servers (before 10/24/2008) use this
+ *             format. Newer ones use the same format as Source servers now
+ *             (see {@link S2A_INFO2_Packet}).
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {

@@ -8,10 +8,10 @@ require "steam/packets/s2a_info_base_packet"
 # This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
 # server
 #
-# This is deprecated by 10/24/2008. GoldSrc servers use the same format as
-# Source servers now (see {S2A_INFO2_Packet}).
-#
 # @author Sebastian Staudt
+# @deprecated Only outdated GoldSrc servers (before 10/24/2008) use this
+#             format. Newer ones use the same format as Source servers now (see
+#             {S2A_INFO2_Packet}).
 # @see GameServer#update_server_info
 class S2A_INFO_DETAILED_Packet
 
