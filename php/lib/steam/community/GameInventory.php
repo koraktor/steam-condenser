@@ -28,6 +28,11 @@ abstract class GameInventory {
     private static $attributeSchemas = array();
 
     /**
+     * @var array
+     */
+    public static $cache = array();
+
+    /**
      * @var array
      */
     private static $itemSchemas = array();
@@ -80,8 +85,8 @@ abstract class GameInventory {
      */
     public function cache() {
         $inventoryClass = get_class($this);
-        if(!array_key_exists($this->steamId64, $inventoryClass::$cache)) {
-            $inventoryClass::$cache[$this->steamId64] = $this;
+        if(!array_key_exists($this->steamId64, self::$cache[$inventoryClass])) {
+            self::$cache[$inventoryClass][$this->steamId64] = $this;
         }
     }
 
@@ -89,9 +94,9 @@ abstract class GameInventory {
      * Updates the contents of the backpack using Steam Web API
      */
     public function fetch() {
-        $inventoryClass = get_class($this);
-        $appId = $inventoryClass::APP_ID;
-        $itemClass = $inventoryClass::ITEM_CLASS;
+        $appId = $this->getAppId();
+        $inventoryClass = new ReflectionClass(get_class($this));
+        $itemClass = $inventoryClass->getConstant('ITEM_CLASS');
         $result = WebApi::getJSONData('IEconItems_' . $appId, 'GetPlayerItems', 1, array('SteamID' => $this->steamId64));
 
         $this->items = array();
@@ -111,8 +116,8 @@ abstract class GameInventory {
      * @return int The application ID of the game this inventory belongs to
      */
     private function getAppId() {
-        $inventoryClass = get_class($this);
-        return $inventoryClass::APP_ID;
+        $inventoryClass = new ReflectionClass(get_class($this));
+        return $inventoryClass->getConstant('APP_ID');
     }
 
     /**

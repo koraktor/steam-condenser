@@ -14,6 +14,8 @@
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameInventory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/portal2/Portal2Item.php';
 
+GameInventory::$cache['Portal2Inventory'] = array();
+
 /**
  * Represents the inventory (aka. Robot Enrichment) of a Portal 2 player
  *
@@ -27,15 +29,10 @@ class Portal2Inventory extends GameInventory {
     const ITEM_CLASS = 'Portal2Item';
 
     /**
-     * @var Portal2Inventory[]
-     */
-    protected static $cache = array();
-
-    /**
      * Clears the inventory cache
      */
     public static function clearCache() {
-        self::$cache = array();
+        parent::$cache['Portal2Inventory'] = array();
     }
 
     /**
@@ -48,7 +45,7 @@ class Portal2Inventory extends GameInventory {
      */
     public static function create($steamId64, $fetchNow = true, $bypassCache = false) {
         if(self::isCached($steamId64) && !$bypassCache) {
-            $inventory = self::$cache[$steamId64];
+            $inventory = parent::$cache['Portal2Inventory'][$steamId64];
             if($fetchNow && !$inventory->isFetched()) {
                 $inventory->fetch();
             }
@@ -65,7 +62,7 @@ class Portal2Inventory extends GameInventory {
      * @return bool Whether the inventory of the given user is already cached
      */
     public static function isCached($steamId64) {
-        return array_key_exists($steamId64, self::$cache);
+        return array_key_exists($steamId64, parent::$cache['Portal2Inventory']);
     }
 
 }

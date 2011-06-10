@@ -14,6 +14,8 @@
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Item.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameInventory.php';
 
+GameInventory::$cache['TF2Inventory'] = array();
+
 /**
  * Represents the inventory (aka. Backpack) of a Team Fortress 2 player
  *
@@ -27,15 +29,10 @@ class TF2Inventory extends GameInventory {
     const ITEM_CLASS = 'TF2Item';
 
     /**
-     * @var TF2Inventory[]
-     */
-    protected static $cache = array();
-
-    /**
      * Clears the inventory cache
      */
     public static function clearCache() {
-        self::$cache = array();
+        parent::$cache['TF2Inventory'] = array();
     }
 
         /**
@@ -48,7 +45,7 @@ class TF2Inventory extends GameInventory {
      */
     public static function create($steamId64, $fetchNow = true, $bypassCache = false) {
         if(self::isCached($steamId64) && !$bypassCache) {
-            $inventory = self::$cache[$steamId64];
+            $inventory = parent::$cache['TF2Inventory'][$steamId64];
             if($fetchNow && !$inventory->isFetched()) {
                 $inventory->fetch();
             }
@@ -65,7 +62,7 @@ class TF2Inventory extends GameInventory {
      * @return bool Whether the inventory of the given user is already cached
      */
     public static function isCached($steamId64) {
-        return array_key_exists($steamId64, self::$cache);
+        return array_key_exists($steamId64, parent::$cache['TF2Inventory']);
     }
 
 }
