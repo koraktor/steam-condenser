@@ -83,7 +83,7 @@ class GameAchievement {
         $this->appId     = $appId;
         $this->name      = (string) $achievementData->name;
         $this->steamId64 = $steamId64;
-        $this->unlocked  = (bool) $achievementData->closed;
+        $this->unlocked  = (bool)(int) $achievementData->attributes()->closed;
 
         if($this->unlocked && $achievementData->unlockTimestamp != null) {
             $this->timestamp = (int) $achievementData->unlockTimestamp;

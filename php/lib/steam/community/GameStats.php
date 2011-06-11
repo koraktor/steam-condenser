@@ -116,7 +116,7 @@ class GameStats {
             $this->achievementsDone = 0;
             foreach($this->xmlData->achievements->children() as $achievementData) {
                 $this->achievements[] = new GameAchievement($this->steamId64, $this->appId, $achievementData);
-                if((bool) $achievementData->closed) {
+                if((int) $achievementData->attributes()->closed) {
                     $this->achievementsDone += 1;
                 }
             }
