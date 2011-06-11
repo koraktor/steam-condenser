@@ -25,6 +25,7 @@ included LICENSE file.
 ## Credits
 
 * Sebastian Staudt -- koraktor(at)gmail.com
+* Nicholas Hastings -- nshastings(at)gmail.com
 
 ## See Also
 
