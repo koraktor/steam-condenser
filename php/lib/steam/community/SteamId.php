@@ -187,7 +187,7 @@ class SteamId {
 
         $this->nickname  = (string) $profile->steamID;
         $this->steamId64 = (string) $profile->steamID64;
-        $this->vacBanned = (bool) $profile->vacBanned;
+        $this->vacBanned = (bool)(int) $profile->vacBanned;
 
         if(!empty($profile->privacyMessage)) {
             throw new SteamCondenserException((string) $profile->privacyMessage);
