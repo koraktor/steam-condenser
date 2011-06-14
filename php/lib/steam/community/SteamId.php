@@ -469,6 +469,13 @@ class SteamId {
     }
 
     /**
+     * @return String
+     */
+    public function getSteamId64() {
+        return $this->steamId64;
+    }
+
+    /**
      * Returns the time in minutes this user has played this game in the last
      * two weeks
      *
