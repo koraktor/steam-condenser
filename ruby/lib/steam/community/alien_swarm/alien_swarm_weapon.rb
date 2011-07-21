@@ -1,20 +1,41 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2010, Sebastian Staudt
+# Copyright (c) 2010-2011, Sebastian Staudt
 
 require 'steam/community/game_weapon'
 
-# AlienSwarmWeapon holds statistical information about weapons used by a player
-# in Alien Swarm.
+# This class holds statistical information about weapons used by a player
+# in Alien Swarm
+#
+# @author Sebastian Staudt
 class AlienSwarmWeapon
 
   include GameWeapon
 
-  attr_reader :accuracy, :damage, :friendly_fire, :name, :shots
+  # Returns the accuracy of the player with this weapon
+  #
+  # @return [Float] The accuracy of the player with this weapon
+  attr_reader :accuracy
 
-  # Creates a new instance of AlienSwarmWeapon based on the assigned weapon
-  # XML data
+  # Returns the damage achieved with this weapon
+  #
+  # @return [Fixnum] The damage achieved with this weapon
+  attr_reader :damage
+
+  # Returns the damage dealt to team mates with this weapon
+  #
+  # @return [Fixnum] The damage dealt to team mates with this weapon
+  attr_reader :friendly_fire
+
+  # Returns the name of this weapon
+  #
+  # @return [String] The name of this weapon
+  attr_reader :name
+
+  # Creates a new weapon instance based on the assigned weapon XML data
+  #
+  # @param [REXML::Element] weapon_data The data representing this weapon
   def initialize(weapon_data)
     super
 

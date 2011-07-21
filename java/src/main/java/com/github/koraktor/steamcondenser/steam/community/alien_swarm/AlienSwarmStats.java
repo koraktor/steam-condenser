@@ -17,10 +17,21 @@ import org.w3c.dom.NodeList;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
+/**
+ * This class represents the game statistics for a single user in Alien Swarm
+ *
+ * @author Sebastian Staudt
+ */
 public class AlienSwarmStats extends GameStats {
 
+    /**
+     * The base URL for all images referenced in the stats
+     */
     public static final String BASE_URL = "http://steamcommunity.com/public/images/gamestats/swarm/";
 
+    /**
+     * The names of all weapons in Alien Swarm
+     */
     private static final String[] WEAPONS = { "Autogun", "Cannon_Sentry", "Chainsaw",
         "Flamer", "Grenade_Launcher", "Hand_Grenades", "Hornet_Barrage",
         "Incendiary_Sentry", "Laser_Mines", "Marskman_Rifle", "Minigun",
@@ -38,6 +49,12 @@ public class AlienSwarmStats extends GameStats {
 
     private Map<String, Object> weaponStats;
 
+    /**
+     * Creates a new <code>AlienSwarmStats</code> instance by calling the super
+     * constructor with the game name <code>"alienswarm"</code>
+     *
+     * @param steamId The custom URL or the 64bit Steam ID of the user
+     */
     public AlienSwarmStats(Object steamId) throws SteamCondenserException {
         super(steamId, "alienswarm");
 
@@ -74,10 +91,11 @@ public class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns a Hash of favorites for this user like weapons and marine. If
-     * the favorites haven"t been parsed already, parsing is done now.
+     * Returns the favorites of this user like weapons and marine
+     * <p>
+     * If the favorites haven't been parsed already, parsing is done now.
      *
-     * @return array
+     * @return The favorites of this player
      */
     public Map<String, Object> getFavorites() {
         if(!this.isPublic()) {
@@ -114,11 +132,12 @@ public class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of item stats for this user like ammo deployed and
-     * medkits used. If the items haven"t been parsed already, parsing is done
-     * now.
+     * Returns the item stats for this user like ammo deployed and medkits
+     * used
+     * <p>
+     * If the items haven't been parsed already, parsing is done now.
      *
-     * @return array
+     * @return The item stats of this player
      */
     public Map<String, Object> getItemStats() {
         if(!this.isPublic()) {
@@ -156,11 +175,12 @@ public class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of AlienSwarmMission for this user containing all Alien
-     * Swarm missions. If the missions haven"t been parsed already, parsing is
-     * done now.
+     * Returns the stats for individual missions for this user containing all
+     * Alien Swarm missions
+     * <p>
+     * If the mission stats haven't been parsed already, parsing is done now.
      *
-     * @return array
+     * @return The mission stats for this player
      */
     public Map<String, Object> getMissionStats() {
         if(!this.isPublic()) {
@@ -184,9 +204,12 @@ public class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of AlienSwarmWeapon for this user containing all Alien
-     * Swarm weapons. If the weapons haven"t been parsed already, parsing is
-     * done now.
+     * Returns the stats for individual weapons for this user containing all
+     * Alien Swarm weapons
+     * <p>
+     * If the weapon stats haven't been parsed already, parsing is done now.
+     *
+     * @return The weapon stats for this player
      */
     public Map<String, Object> getWeaponStats() {
         if(!this.isPublic()) {

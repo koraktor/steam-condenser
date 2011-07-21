@@ -13,8 +13,8 @@ import java.util.Map;
 import org.w3c.dom.Element;
 
 /**
- * AlienSwarmMission holds statistical information about missions played by a
- * player in Alien Swarm.
+ * This class holds statistical information about missions played by a player
+ * in Alien Swarm
  *
  * @author Sebastian Staudt
  */
@@ -49,8 +49,9 @@ public class AlienSwarmMission {
     private float totalGamesPercentage;
 
     /**
-     * Creates a new instance of AlienSwarmMission based on the assigned
-     * mission name and XML data
+     * Creates a new mission instance of based on the given XML data
+     *
+     * @param missionData The data representing this mission
      */
     public AlienSwarmMission(Element missionData) {
         this.avgDamageTaken       = Float.valueOf(missionData.getElementsByTagName("damagetakenavg").item(0).getTextContent());
@@ -77,58 +78,137 @@ public class AlienSwarmMission {
         this.time.put("total", missionData.getElementsByTagName("totaltime").item(0).getTextContent());
     }
 
+    /**
+     * Returns the avarage damage taken by the player while playing a round in
+     * this mission
+     *
+     * @return The average damage taken by the player
+     */
     public float getAvgDamageTaken() {
         return this.avgDamageTaken;
     }
 
+    /**
+     * Returns the avarage damage dealt by the player to team mates while
+     * playing a round in this mission
+     *
+     * @return The average damage dealt by the player to team mates
+     */
     public float getAvgFriendlyFire() {
         return this.avgFriendlyFire;
     }
 
+    /**
+     * Returns the avarage number of aliens killed by the player while playing
+     * a round in this mission
+     *
+     * @return The avarage number of aliens killed by the player
+     */
     public float getAvgKills() {
         return this.avgKills;
     }
 
+    /**
+     * Returns the highest difficulty the player has beat this mission in
+     *
+     * @return The highest difficulty the player has beat this mission in
+     */
     public String getBestDifficulty() {
         return this.bestDifficulty;
     }
 
+    /**
+     * Returns the total damage taken by the player in this mission
+     *
+     * @return The total damage taken by the player
+     */
     public int getDamageTaken() {
         return this.damageTaken;
     }
 
+    /**
+     * Returns the total damage dealt by the player to team mates in this
+     * mission
+     *
+     * @return The total damage dealt by the player to team mates
+     */
     public int getFriendlyFire() {
         return this.friendlyFire;
     }
 
+    /**
+     * Returns the number of successful rounds the player played in this
+     * mission
+     *
+     * @return The number of successful rounds of this mission
+     */
     public int getGamesSuccessful() {
         return this.gamesSuccessful;
     }
 
+    /**
+     * Returns the URL to a image displaying the mission
+     *
+     * @return The URL of the mission's image
+     */
     public String getImg() {
         return this.img;
     }
 
+    /**
+     * Returns the total number of aliens killed by the player in this mission
+     *
+     * @return The total number of aliens killed by the player
+     */
     public int getKills() {
         return this.kills;
     }
 
+    /**
+     * Returns the file name of the mission's map
+     *
+     * @return The file name of the mission's map
+     */
     public String getMapName() {
         return this.mapName;
     }
 
+    /**
+     * Returns the name of the mission
+     *
+     * @return The name of the mission
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns various statistics about the times needed to accomplish this
+     * mission
+     *
+     * This includes the best times for each difficulty, the average time and
+     * the total time spent in this mission.
+     *
+     * @return Various time statistics about this mission
+     */
     public Map<String, String> getTime() {
         return this.time;
     }
 
+    /**
+     * Returns the number of games played in this mission
+     *
+     * @return The number of games played in this mission
+     */
     public int getTotalGames() {
         return this.totalGames;
     }
 
+    /**
+     * Returns the percentage of successful games played in this mission
+     *
+     * @return The percentage of successful games played in this mission
+     */
     public float getTotalGamesPercentage() {
         return this.totalGamesPercentage;
     }

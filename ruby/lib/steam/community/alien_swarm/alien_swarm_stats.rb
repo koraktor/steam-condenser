@@ -1,19 +1,25 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2010, Sebastian Staudt
+# Copyright (c) 2010-2011, Sebastian Staudt
 
 require 'steam/community/alien_swarm/alien_swarm_mission'
 require 'steam/community/alien_swarm/alien_swarm_weapon'
 
-# The AlienSwarmStats class represents the game statistics for a single user in
-# Alien Swarm
+# This class represents the game statistics for a single user in Alien Swarm
+#
+# @author Sebastian Staudt
 class AlienSwarmStats < GameStats
 
+  # Returns general stats for the players
+  #
+  # @return [Hash<Symbol, Object>] The stats for the player
   attr_reader :lifetime_stats
 
+  # The base URL for all images referenced in the stats
   BASE_URL = 'http://steamcommunity.com/public/images/gamestats/swarm/'
 
+  # The names of all weapons in Alien Swarm
   WEAPONS = [ 'Autogun', 'Cannon_Sentry', 'Chainsaw', 'Flamer',
               'Grenade_Launcher', 'Hand_Grenades', 'Hornet_Barrage',
               'Incendiary_Sentry', 'Laser_Mines', 'Marskman_Rifle', 'Minigun',
@@ -21,8 +27,11 @@ class AlienSwarmStats < GameStats
               'Rifle', 'Rifle_Grenade', 'Sentry_Gun', 'Shotgun',
               'Tesla_Cannon', 'Vindicator', 'Vindicator_Grenade' ]
 
-  # Creates an AlienSwarmStats object by calling the super constructor with the
-  # game name "alienswarm"
+  # Creates a new `AlienSwarmStats` instance by calling the super constructor
+  # with the game name `'alienswarm'`
+  #
+  # @param [String, Fixnum] id The custom URL or the 64bit Steam ID of the
+  #        user
   def initialize(steam_id)
     super steam_id, 'alienswarm'
 
@@ -54,8 +63,11 @@ class AlienSwarmStats < GameStats
     end
   end
 
-  # Returns a Hash of favorites for this user like weapons and marine.
+  # Returns the favorites of this user like weapons and marine
+  #
   # If the favorites haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<Symbol, Object>] The favorites of this player
   def favorites
     return unless public?
 
@@ -86,8 +98,12 @@ class AlienSwarmStats < GameStats
     @favorites
   end
 
-  # Returns a Hash of item stats for this user like ammo deployed and medkits
-  # used. If the items haven't been parsed already, parsing is done now.
+  # Returns the item stats for this user like ammo deployed and medkits
+  # used
+  #
+  # If the items haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<Symbol, Object>] The item stats of this player
   def item_stats
     return unless public?
 
@@ -119,9 +135,12 @@ class AlienSwarmStats < GameStats
     @item_stats
   end
 
-  # Returns a Hash of AlienSwarmMission for this user containing all Alien
-  # Swarm missions. If the missions haven't been parsed already, parsing is
-  # done now.
+  # Returns the stats for individual missions for this user containing all
+  # Alien Swarm missions
+  #
+  # If the mission stats haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, AlienSwarmMission>] The mission stats for this player
   def mission_stats
     return unless public?
 
@@ -135,8 +154,12 @@ class AlienSwarmStats < GameStats
     @mission_stats
   end
 
-  # Returns a Hash of AlienSwarmWeapon for this user containing all Alien Swarm
-  # weapons. If the weapons haven't been parsed already, parsing is done now.
+  # Returns the stats for individual weapons for this user containing all
+  # Alien Swarm weapons
+  #
+  # If the weapon stats haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, AlienSwarmWeapon>] The weapon stats for this player
   def weapon_stats
     return unless public?
 

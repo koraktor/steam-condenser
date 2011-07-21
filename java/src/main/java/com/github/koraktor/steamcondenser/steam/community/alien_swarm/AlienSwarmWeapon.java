@@ -12,8 +12,10 @@ import org.w3c.dom.Element;
 import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
 
 /**
- * AlienSwarmWeapon holds statistical information about weapons used by a
- * player in Alien Swarm.
+ * This class holds statistical information about weapons used by a player
+ * in Alien Swarm
+ *
+ * @author Sebastian Staudt
  */
 public class AlienSwarmWeapon extends GameWeapon {
 
@@ -26,8 +28,9 @@ public class AlienSwarmWeapon extends GameWeapon {
     private String name;
 
     /**
-     * Creates a new instance of AlienSwarmWeapon based on the assigned weapon
-     * XML data
+     * Creates a new weapon instance based on the assigned weapon XML data
+     *
+     * @param weaponData The data representing this weapon
      */
     public AlienSwarmWeapon(Element weaponData) {
         super(weaponData);
@@ -39,18 +42,38 @@ public class AlienSwarmWeapon extends GameWeapon {
         this.shots        = Integer.parseInt(weaponData.getElementsByTagName("shotsfired").item(0).getTextContent());
     }
 
+    /**
+     * Returns the accuracy of the player with this weapon
+     *
+     * @return The accuracy of the player with this weapon
+     */
     public float getAccuracy() {
         return this.accuracy;
     }
 
+    /**
+     * Returns the damage achieved with this weapon
+     *
+     * @return The damage achieved with this weapon
+     */
     public int getDamage() {
         return this.damage;
     }
 
+    /**
+     * Returns the damage dealt to team mates with this weapon
+     *
+     * @return The damage dealt to team mates with this weapon
+     */
     public int getFriendlyFire() {
         return this.friendlyFire;
     }
 
+    /**
+     * Returns the name of this weapon
+     *
+     * @return The name of this weapon
+     */
     public String getName() {
         return this.name;
     }

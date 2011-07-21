@@ -3,22 +3,31 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/alien_swarm/AlienSwarmMission.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/alien_swarm/AlienSwarmWeapon.php';
 
-
+/**
+ * This class represents the game statistics for a single user in Alien Swarm
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
+ */
 class AlienSwarmStats extends GameStats {
 
+    /**
+     * @var The base URL for all images referenced in the stats
+     */
     const BASE_URL = 'http://steamcommunity.com/public/images/gamestats/swarm/';
 
+    /**
+     * @var The names of all weapons in Alien Swarm
+     */
     private static $WEAPONS = array('Autogun', 'Cannon_Sentry', 'Chainsaw',
         'Flamer', 'Grenade_Launcher', 'Hand_Grenades', 'Hornet_Barrage',
         'Incendiary_Sentry', 'Laser_Mines', 'Marskman_Rifle', 'Minigun',
@@ -51,6 +60,12 @@ class AlienSwarmStats extends GameStats {
      */
     private $weaponStats;
 
+    /**
+     * Creates a new <var>AlienSwarmStats</var> instance by calling the super
+     * constructor with the game name <var>"alienswarm"</var>
+     *
+     * @param mixed $steamId The custom URL or the 64bit Steam ID of the user
+     */
     public function __construct($steamId) {
         parent::__construct($steamId, 'alienswarm');
 
@@ -87,10 +102,11 @@ class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns a Hash of favorites for this user like weapons and marine. If
-     * the favorites haven't been parsed already, parsing is done now.
+     * Returns the favorites of this user like weapons and marine
      *
-     * @return array
+     * If the favorites haven't been parsed already, parsing is done now.
+     *
+     * @return array The favorites of this player
      */
     public function getFavorites() {
         if(!$this->isPublic()) {
@@ -127,11 +143,12 @@ class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of item stats for this user like ammo deployed and
-     * medkits used. If the items haven't been parsed already, parsing is done
-     * now.
+     * Returns the item stats for this user like ammo deployed and medkits
+     * used
      *
-     * @return array
+     * If the items haven't been parsed already, parsing is done now.
+     *
+     * @return array The item stats of this player
      */
     public function getItemStats() {
         if(!$this->isPublic()) {
@@ -169,11 +186,12 @@ class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of AlienSwarmMission for this user containing all Alien
-     * Swarm missions. If the missions haven't been parsed already, parsing is
-     * done now.
+     * Returns the stats for individual missions for this user containing all
+     * Alien Swarm missions
      *
-     * @return array
+     * If the mission stats haven't been parsed already, parsing is done now.
+     *
+     * @return array The mission stats for this player
      */
     public function getMissionStats() {
         if(!$this->isPublic()) {
@@ -191,9 +209,12 @@ class AlienSwarmStats extends GameStats {
     }
 
     /**
-     * Returns an array of AlienSwarmWeapon for this user containing all Alien
-     * Swarm weapons. If the weapons haven't been parsed already, parsing is
-     * done now.
+     * Returns the stats for individual weapons for this user containing all
+     * Alien Swarm weapons
+     *
+     * If the weapon stats haven't been parsed already, parsing is done now.
+     *
+     * @return array The weapon stats for this player
      */
     public function getWeaponStats() {
         if(!$this->isPublic()) {
