@@ -20,7 +20,7 @@ class GameStats
   attr_reader :app_id
   attr_reader :custom_url
   attr_reader :game_friendly_name
-  attr_reader :game_name,
+  attr_reader :game_name
   attr_reader :hours_played
   attr_reader :privacy_state
   attr_reader :steam_id64
