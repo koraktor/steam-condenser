@@ -215,8 +215,8 @@ public class DefenseGridStats extends GameStats {
                     towerData = new ArrayList<float[]>();
                     for(int i = 1; i <= 3; i++) {
                         float[] levelData = new float[2];
-                        levelData[0] = Float.parseFloat(((Element) xpath.evaluate(tower + "[@level=" + i + "/built/value", towersData, XPathConstants.NODE)).getTextContent());
-                        levelData[1] = Float.parseFloat(((Element) xpath.evaluate(tower + "[@level=" + i + "/damage/value", towersData, XPathConstants.NODE)).getTextContent());
+                        levelData[0] = Float.parseFloat(((Element) xpath.evaluate(tower + "[@level=" + i + "]/built/value", towersData, XPathConstants.NODE)).getTextContent());
+                        levelData[1] = Float.parseFloat(((Element) xpath.evaluate(tower + "[@level=" + i + "]/damage/value", towersData, XPathConstants.NODE)).getTextContent());
                         towerData.add(i, levelData);
                     }
                     this.towerStats.put(tower, towerData);
@@ -225,8 +225,8 @@ public class DefenseGridStats extends GameStats {
                 towerData = new ArrayList<float[]>();
                 for(int i = 1; i <= 3; i++) {
                     float[] levelData = new float[2];
-                    levelData[0] = Float.parseFloat(((Element) xpath.evaluate("command[@level=" + i + "/built/value", towersData, XPathConstants.NODE)).getTextContent());
-                    levelData[1] = Float.parseFloat(((Element) xpath.evaluate("command[@level=" + i + "/resource/value", towersData, XPathConstants.NODE)).getTextContent());
+                    levelData[0] = Float.parseFloat(((Element) xpath.evaluate("command[@level=" + i + "]/built/value", towersData, XPathConstants.NODE)).getTextContent());
+                    levelData[1] = Float.parseFloat(((Element) xpath.evaluate("command[@level=" + i + "]/resource/value", towersData, XPathConstants.NODE)).getTextContent());
                     towerData.add(i, levelData);
                 }
                 this.towerStats.put("command", towerData);
@@ -234,7 +234,7 @@ public class DefenseGridStats extends GameStats {
                 towerData = new ArrayList<float[]>();
                 for(int i = 1; i <= 3; i++) {
                     float[] levelData = new float[2];
-                    levelData[0] = Float.parseFloat(((Element) xpath.evaluate("temporal[@level=" + i + "/built/value", towersData, XPathConstants.NODE)).getTextContent());
+                    levelData[0] = Float.parseFloat(((Element) xpath.evaluate("temporal[@level=" + i + "]/built/value", towersData, XPathConstants.NODE)).getTextContent());
                     towerData.add(i, levelData);
                 }
                 this.towerStats.put("temporal", towerData);
