@@ -7,6 +7,8 @@ require 'steam/community/game_inventory'
 require 'steam/community/tf2/tf2_item'
 
 # Represents the inventory (aka. Backpack) of a Team Fortress 2 player
+#
+# @author Sebastian Staudt
 class TF2Inventory
 
   include Cacheable
@@ -14,8 +16,10 @@ class TF2Inventory
 
   include GameInventory
 
+  # The Steam Application ID of Team Fortress 2
   @@app_id = 440
 
+  # The class representing Team Fortress 2 items
   @@item_class = TF2Item
 
 end

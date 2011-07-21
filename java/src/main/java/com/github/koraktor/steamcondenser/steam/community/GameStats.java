@@ -26,8 +26,11 @@ import com.github.koraktor.steamcondenser.steam.community.portal2.Portal2Stats;
 import com.github.koraktor.steamcondenser.steam.community.tf2.TF2Stats;
 
 /**
- * The GameStats class represents the game statistics for a single user and a
- * specific game
+ * This class represents the game statistics for a single user and a specific
+ * game
+ * <p>
+ * It is subclassed for individual games if the games provide special
+ * statistics that are unique to this game.
  *
  * @author Sebastian Staudt
  */
@@ -53,6 +56,14 @@ public class GameStats {
 
     protected Element xmlData;
 
+    /**
+     * Creates a <code>GameStats</code> (or one of its subclasses) instance for
+     * the given user and game
+     *
+     * @param steamId The custom URL or the 64bit Steam ID of the user
+     * @param gameName The friendly name of the game
+     * @return The game stats object for the given user and game
+     */
     public static GameStats createGameStats(Object steamId, String gameName)
 			throws SteamCondenserException {
         if(gameName.equals("cs:s")) {
@@ -74,6 +85,14 @@ public class GameStats {
 		}
 	}
 
+    /**
+     * Creates a <code>GameStats</code> object and fetches data from the Steam
+     * Community for the given user and game
+     *
+     * @param steamId The custom URL or the 64bit Steam ID of the user
+     * @param gameName The friendly name of the game
+     * @throws SteamCondenserException if the stats cannot be fetched
+     */
 	protected GameStats(Object steamId, String gameName)
 			throws SteamCondenserException {
 		if(steamId instanceof String) {
@@ -85,6 +104,12 @@ public class GameStats {
 		this.fetch();
 	}
 
+    /**
+     * Fetches the data for this stats object
+     *
+     * @throws SteamCondenserException if the stats data is not available,
+     *         e.g. when the Steam ID is private or the data cannot be parsed
+     */
 	protected void fetch()
 			throws SteamCondenserException {
 		try {
@@ -122,8 +147,11 @@ public class GameStats {
 	}
 
 	/**
-	 * @return Returns the achievements for this stats' user and game. If the
-	 * achievements haven't been parsed already, parsing is done now.
+     * Returns the achievements for this stats' user and game
+     * <p>
+     * If the achievements' data hasn't been parsed yet, parsing is done now.
+     *
+     * @return All achievements belonging to this game
 	 */
 	public ArrayList<GameAchievement> getAchievements() {
 		if(this.achievements == null) {
@@ -145,10 +173,13 @@ public class GameStats {
 	}
 
     /**
-     * Returns the count of achievements done by this player. If achievements
-     * haven't been parsed yet, parsing is done now.
+     * Returns the number of achievements done by this player
+     * <p>
+     * If achievements haven't been parsed yet for this player and this game,
+     * parsing is done now.
      *
-     * @return The number of unlocked achievements
+     * @return The number of achievements completed
+     * @see #getAchievements
      */
     public int getAchievementsDone() {
         if(this.achievements == null) {
@@ -159,16 +190,24 @@ public class GameStats {
     }
 
     /**
-     * Returns a float value representing the percentage of achievements done by
-     * this player. If achievements haven't been parsed yet, parsing is done
-     * now.
+     * Returns the percentage of achievements done by this player
+     * <p>
+     * If achievements haven't been parsed yet for this player and this game,
+     * parsing is done now.
      *
-     * @return The percentage of unlocked achievements
+     * @return The percentage of achievements completed
+     * @see #getAchievementsDone
      */
     public float getAchievementsPercentage() {
         return (float) this.getAchievementsDone() / this.achievements.size();
     }
 
+    /**
+     * Returns the base Steam Communtiy URL for the stats contained in this
+     * object
+     *
+     * @return [String] The base URL used for queries on these stats
+     */
     public String getBaseUrl() {
         if(this.customUrl == null) {
             return "http://steamcommunity.com/profiles/" + this.steamId64 + "/stats/" + this.gameName;
@@ -177,18 +216,38 @@ public class GameStats {
         }
     }
 
+    /**
+     * Returns the friendly name of the game this stats belong to
+     *
+     * @return The frienldy name of the game
+     */
 	public String getGameFriendlyName() {
 		return this.gameFriendlyName;
 	}
 
+    /**
+     * Returns the full name of the game this stats belong to
+     *
+     * @return The name of the game
+     */
 	public String getGameName() {
 		return this.gameName;
 	}
 
+    /**
+     * Returns the number of hours this game has been played by the player
+     *
+     * @return The number of hours this game has been played
+     */
 	public String getHoursPlayed() {
 		return this.hoursPlayed;
 	}
 
+    /**
+     * Returns whether this Steam ID is publicly accessible
+     *
+     * @return <code>true</code> if this Steam ID is publicly accessible
+     */
 	protected boolean isPublic() {
 		return this.privacyState.equals("public");
 	}

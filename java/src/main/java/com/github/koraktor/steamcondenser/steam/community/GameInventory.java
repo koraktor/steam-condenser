@@ -122,10 +122,11 @@ public abstract class GameInventory {
 
     /**
      * Returns the attribute schema
-     *
+     * <p>
      * The attribute schema is fetched first if not done already
      *
      * @return The attribute schema for the game this inventory belongs to
+     * @see #updateSchema
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
@@ -163,6 +164,7 @@ public abstract class GameInventory {
      * The item schema is fetched first if not done already
      *
      * @return The item schema for the game this inventory belongs to
+     * @see #updateSchema
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
@@ -186,10 +188,11 @@ public abstract class GameInventory {
 
     /**
      * Returns the item quality schema
-     *
+     * <p>
      * The item schema is fetched first if not done already
      *
      * @return The item quality schema for the game this inventory belongs to
+     * @see #updateSchema
      * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */

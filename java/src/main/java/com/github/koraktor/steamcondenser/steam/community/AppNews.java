@@ -19,8 +19,8 @@ import org.json.JSONObject;
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 
 /**
- * The AppNews class is a representation of Steam news and can be used to load
- * current news about specific games
+ * This class represents Steam news and can be used to load a list of current
+ * news about specific games
  *
  * @author Sebastian Staudt
  */
@@ -49,10 +49,10 @@ public class AppNews {
     /**
      * Loads the news for the given game with the given restrictions
      *
-     * @param appId The unique Steam Application ID of the game (e.g. 440 for
-     *              Team Fortress 2). See
-     *              http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *              for all application IDs
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
      * @return A list of news for the specified game with the given options
      * @throws JSONException If the JSON data cannot be parsed
      * @throws WebApiException If a request to Steam's Web API fails
@@ -65,13 +65,13 @@ public class AppNews {
     /**
      * Loads the news for the given game with the given restrictions
      *
-     * @param appId The unique Steam Application ID of the game (e.g. 440 for
-     *              Team Fortress 2). See
-     *              http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *              for all application IDs
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
      * @param count The maximum number of news to load (default: 5). There's no
-     *              reliable way to load all news. Use really a really great
-     *              number instead
+     *        reliable way to load all news. Use really a really great number
+     *        instead
      * @return A list of news for the specified game with the given options
      * @throws JSONException If the JSON data cannot be parsed
      * @throws WebApiException If a request to Steam's Web API fails
@@ -84,17 +84,17 @@ public class AppNews {
     /**
      * Loads the news for the given game with the given restrictions
      *
-     * @param appId The unique Steam Application ID of the game (e.g. 440 for
-     *              Team Fortress 2). See
-     *              http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *              for all application IDs
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
      * @param count The maximum number of news to load (default: 5). There's no
-     *              reliable way to load all news. Use really a really great
-     *              number instead
+     *        reliable way to load all news. Use really a really great number
+     *        instead
      * @param maxLength The maximum content length of the news (default: nil).
-     *                  If a maximum length is defined, the content of the news
-     *                  will only be at most <code>maxLength</code> characters
-     *                  long plus an ellipsis
+     *        If a maximum length is defined, the content of the news will only
+     *        be at most <code>maxLength</code> characters long plus an
+     *        ellipsis
      * @return A list of news for the specified game with the given options
      * @throws JSONException If the JSON data cannot be parsed
      * @throws WebApiException If a request to Steam's Web API fails
@@ -119,10 +119,10 @@ public class AppNews {
     /**
      * Creates a new instance of an AppNews news item with the given data
      *
-     * @param appId The unique Steam Application ID of the game (e.g. 440 for
-     *              Team Fortress 2). See
-     *              http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *              for all application IDs
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
      * @param newsData The news data extracted from JSON
      * @throws JSONException If the JSON data cannot be parsed
      */
@@ -141,16 +141,16 @@ public class AppNews {
     }
 
     /**
-     * Returns the unique Application ID of the game this news is about
+     * Returns the Steam Application ID of the game this news belongs to
      *
-     * @return The Application ID
+     * @return The application ID of the game this news belongs to
      */
     public int getAppId() {
         return this.appId;
     }
 
     /**
-     * Returns the author of this news item
+     * Returns the name of the author of this news
      *
      * @return The author of this news
      */
@@ -159,56 +159,57 @@ public class AppNews {
     }
 
     /**
-     * Returns the content of this news item
+     * Returns the contents of this news
      * <p>
-     * Might be truncated if <code>maxLength</code> is set when using
-     * <code>AppNews.getNewsForApp()</code>
+     * This might contain HTML code.
+     * <p>
+     * <strong>Note:</strong> Depending on the setting for the maximum length
+     * of a news (see {@link #getNewsForApp}, the contents might be truncated.
      *
-     * @return The content of this news
-     * @see #getNewsForApp
+     * @return [String] The contents of this news
      */
     public String getContents() {
         return this.contents;
     }
 
     /**
-     * Returns the date this news item has been posted
+     * Returns the date this news item has been published
      *
-     * @return The date of this news
+     * @return The date this news has been published
      */
     public Date getDate() {
         return this.date;
     }
 
     /**
-     * Returns the label of the category this news has been posted in
+     * Returns the name of the feed this news item belongs to
      *
-     * @return The title of this news' category
+     * @return The name of the feed this news belongs to
      */
     public String getFeedLabel() {
         return this.feedLabel;
     }
 
     /**
-     * Returns the name of the category this news has been posted in
+     * Returns the symbolic name of the feed this news item belongs to
      *
-     * @return The String identifier of this news' category
+     * @return [String] The symbolic name of the feed this news belongs to
      */
     public String getFeedName() {
         return this.feedName;
     }
 
     /**
-     * Returns the global identifier of this news
+     * Returns a unique identifier for this news
      *
-     * @return The GID of this news
+     * @return A unique identifier for this news
      */
     public long getGid() {
         return this.gid;
     }
 
     /**
-     * Returns the title of this news item
+     * Returns the title of this news
      *
      * @return The title of this news
      */
@@ -217,25 +218,35 @@ public class AppNews {
     }
 
     /**
-     * A direct link to the news on the Steam website or a redirecting link to
-     * the external post
+     * Returns the URL of the original news
+     * <p>
+     * This is a direct link to the news on the Steam website or a redirecting
+     * link to the external post.
      *
-     * @return The URL to the original news
+     * @return The URL of the original news
      */
     public String getUrl() {
         return this.url;
     }
 
     /**
-     * Returns whether this news items originates from a source other than Steam
+     * Returns whether this news item originates from a source other than Steam
      * itself (e.g. an external blog)
      *
-     * @return Whether this news has been posted externally
+     * @return <code>true</code> if this news item is from an external source
      */
     public boolean isExternal() {
         return this.external;
     }
 
+    /**
+     * Returns a simple textual representation of this news item
+     * <p>
+     * Will consist of the name of the feed this news belongs to and the title
+     * of the news.
+     *
+     * @return A simple text representing this news
+     */
     public String toString() {
         return this.feedLabel + ": " + this.getTitle();
     }

@@ -1,7 +1,7 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'open-uri'
 require 'rexml/document'
@@ -10,14 +10,32 @@ require 'steam/community/cacheable'
 require 'steam/community/steam_id'
 
 # The SteamGroup class represents a group in the Steam Community
+#
+# @author Sebastian Staudt
 class SteamGroup
 
   include Cacheable
   cacheable_with_ids :custom_url, :group_id64
 
-  attr_reader :custom_url, :group_id64
+  # Returns the custom URL of this group
+  #
+  # The custom URL is a admin specified unique string that can be used instead
+  # of the 64bit SteamID as an identifier for a group.
+  #
+  # @return [String] The custom URL of this group
+  attr_reader :custom_url
 
-  # Creates a SteamGroup object with the given group ID
+  # Returns this group's 64bit SteamID
+  #
+  # @return [Fixnum] This group's 64bit SteamID
+  attr_reader :group_id64
+
+  # Creates a new `SteamGroup` instance for the group with the given ID
+  #
+  # @param [String, Fixnum] id The custom URL of the group specified by the
+  #        group admin or the 64bit group ID
+  # @param [Boolean] fetch if `true` the groups's data is loaded into the
+  #        object
   def initialize(id, fetch = true)
     begin
       if id.is_a? Numeric
@@ -32,7 +50,11 @@ class SteamGroup
     end
   end
 
-  # Returns the URL to the group's Steam Community page
+  # Returns the base URL for this group's page
+  #
+  # This URL is different for groups having a custom URL.
+  #
+  # @return [String] The base URL for this group
   def base_url
     if @custom_url.nil?
       "http://steamcommunity.com/gid/#{@group_id64}"
@@ -41,7 +63,12 @@ class SteamGroup
     end
   end
 
-  # Parses the data about this groups members
+  # Loads the members of this group
+  #
+  # This might take several HTTP requests as the Steam Community splits this
+  # data over several XML documents if the group has lots of members.
+  #
+  # @see Cacheable#fetch
   def fetch
     @members = []
     page = 0
@@ -62,10 +89,13 @@ class SteamGroup
     super
   end
 
-  # Returns the number of members this group has.
-  # If the members have already been fetched with +fetch_members+ the size of
-  # the member array is returned. Otherwise the group size is separately
-  # fetched.
+  # Returns the number of members this group has
+  #
+  # If the members have already been fetched the size of the member array is
+  # returned. Otherwise the group size is separately fetched without needing
+  # multiple requests for big groups.
+  #
+  # @return [Fixnum] The number of this group's members
   def member_count
     if @members.nil?
       url = open("#{base_url}/memberslistxml", {:proxy => true})
@@ -76,7 +106,11 @@ class SteamGroup
   end
 
   # Returns the members of this group
-  # Calls +fetch+ if the members haven't been fetched already.
+  #
+  # If the members haven't been fetched yet, this is done now.
+  #
+  # @return [Array<SteamId>] The Steam ID's of the members of this group
+  # @see #fetch
   def members
     fetch if @members.nil? || @members[0].nil?
     @members

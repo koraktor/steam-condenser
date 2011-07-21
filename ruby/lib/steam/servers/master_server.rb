@@ -60,7 +60,7 @@ class MasterServer
   #
   # @note Please note that this is **not** needed for finding servers using
   #       {#servers}.
-  # @return The challenge number from the master server
+  # @return [Fixnum] The challenge number from the master server
   # @see #send_heartbeat
   def challenge
     failsafe do

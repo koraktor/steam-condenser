@@ -11,7 +11,7 @@ module RequestWithChallenge
 
   # Returns the raw data representing this packet
   #
-  # @return string A string containing the raw data of this request packet
+  # @return [String] A string containing the raw data of this request packet
   def to_s
     [0xFF, 0xFF, 0xFF, 0xFF, @header_data, @content_data.string.to_i].pack('c5l')
   end

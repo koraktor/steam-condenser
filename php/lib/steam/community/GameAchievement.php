@@ -5,20 +5,21 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 
 /**
- * The GameAchievement class represents a specific achievement for a single game
- * and for a single user
+ * The GameAchievement class represents a specific achievement for a single
+ * game and for a single user
  *
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * It also provides the ability to load the global unlock percentages of all
+ * achievements of a specific game.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class GameAchievement {
 
@@ -57,7 +58,7 @@ class GameAchievement {
      *        all application IDs
      * @return array The symbolic achievement names with the corresponding
      *         global unlock percentages
-     * @throws WebApiException If a request to Steam's Web API fails
+     * @throws WebApiException if a request to Steam's Web API fails
      */
     public static function getGlobalPercentages($appId) {
         $params = array('gameid' => $appId);
@@ -75,9 +76,14 @@ class GameAchievement {
      * Creates the achievement with the given name for the given user and game
      * and achievement data
      *
-     * @param String steamId64 The 64bit SteamID of the player
-     * @param int appId The AppID of the game this achievement belongs to
-     * @param SimpleXMLElement achievementData The XML data for this achievement
+     * @param string $steamId64 The 64bit SteamID of the player this
+     *        achievement belongs to
+     * @param int $appId The unique Steam Application ID of the game (e.g.
+     *        <var>440</var> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @param SimpleXMLElement $achievementData The achievement data extracted
+     *        from XML
      */
     public function __construct($steamId64, $appId, $achievementData) {
         $this->appId     = $appId;
@@ -91,9 +97,10 @@ class GameAchievement {
     }
 
     /**
-     * Returns the AppID of the game this achievements belongs to
+     * Return the unique Steam Application ID of the  game this achievement
+     * belongs to
      *
-     * @return int
+     * @return int The Steam Application ID of this achievement's game
      */
     public function getAppId() {
         return $this->appId;
@@ -102,25 +109,25 @@ class GameAchievement {
     /**
      * Returns the name of this achievement
      *
-     * @return String
+     * @return string The name of this achievement
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * Returns the 64bit SteamID of the player this achievement belongs to
+     * Returns the 64bit SteamID of the user who owns this achievement
      *
-     * @return String
+     * @return string The 64bit SteamID of this achievement's owner
      */
     public function getSteamId64() {
         return $this->steamId64;
     }
 
     /**
-     * Returns the timestamp at which this achievement has been unlocked
+     * Returns the time this achievement has been unlocked by its owner
      *
-     * @return int
+     * @return int The time this achievement has been unlocked
      */
     public function getTimestamp() {
         return $this->timestamp;
@@ -129,7 +136,8 @@ class GameAchievement {
     /**
      * Returns whether this achievement has been unlocked by its owner
      *
-     * @return boolean
+     * @return bool <var>true</var> if the achievement has been unlocked by the
+     *         user
      */
     public function isUnlocked() {
         return $this->unlocked;

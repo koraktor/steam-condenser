@@ -263,7 +263,7 @@ public class MasterServer extends Server {
                     throw e;
                 }
             }
-        } while( ! finished);
+        } while(!finished);
 
         return serverArray;
     }

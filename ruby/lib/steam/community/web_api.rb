@@ -9,22 +9,27 @@ require 'open-uri'
 
 require 'exceptions/web_api_exception'
 
-# This adds support for Steam Web API to classes needing this functionality.
+# This module provides functionality for accessing Steam's Web API
+#
 # The Web API requires you to register a domain with your Steam account to
 # acquire an API key. See http://steamcommunity.com/dev for further details.
+#
+# @author Sebastian
 module WebApi
 
-  @@api_key = nil
-
-  # Returns the Steam Web API key
+  # Returns the Steam Web API key currently used by Steam Condenser
+  #
+  # @return [String] The currently active Steam Web API key
   def self.api_key
     @@api_key
   end
 
-  # Sets the Steam Web API key.
+  # Sets the Steam Web API key
   #
-  # [+api_key+] The 128bit API key that has to be requested from
-  #             http://steamcommunity.com/dev
+  # @param [String] api_key The 128bit API key as a hexadecimal string that has
+  #        to be requested from http://steamcommunity.com/dev
+  # @raise [WebApiException] if the given API key is not a valid 128bit
+  #        hexadecimal string
   def self.api_key=(api_key)
     unless api_key.nil? || api_key.match(/^[0-9A-F]{32}$/)
       raise WebApiException.new(:invalid_key)
@@ -37,10 +42,14 @@ module WebApi
   # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a JSON-encoded string.
   #
-  # [+interface+] The Web API interface to call, e.g. +ISteamUser+
-  # [+method+]    The Web API method to call, e.g. +GetPlayerSummaries+
-  # [+version+]   The API method version to use (default: 1)
-  # [+params+]    A Hash of additional parameters to supply via HTTP GET
+  # @param [String] interface The Web API interface to call, e.g. `ISteamUser`
+  # @param [String] method The Web API method to call, e.g.
+  #        `GetPlayerSummaries`
+  # @param [Fixnum] version The API method version to use
+  # @param [Hash<Symbol, Object>] params Additional parameters to supply via
+  #        HTTP GET
+  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @return [String] The raw JSON data replied to the request
   def self.json(interface, method, version = 1, params = nil)
     load(:json, interface, method, version, params)
   end
@@ -49,10 +58,14 @@ module WebApi
   # and version. Additional parameters are supplied via HTTP GET.
   # Data is returned as a Hash containing the JSON data.
   #
-  # [+interface+] The Web API interface to call, e.g. +ISteamUser+
-  # [+method+]    The Web API method to call, e.g. +GetPlayerSummaries+
-  # [+version+]   The API method version to use (default: 1)
-  # [+params+]    A Hash of additional parameters to supply via HTTP GET
+  # @param [String] interface The Web API interface to call, e.g. `ISteamUser`
+  # @param [String] method The Web API method to call, e.g.
+  #        `GetPlayerSummaries`
+  # @param [Fixnum] version The API method version to use
+  # @param [Hash<Symbol, Object>] params Additional parameters to supply via
+  #        HTTP GET
+  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @return [Hash<Symbol, Object>] The JSON data replied to the request
   def self.json!(interface, method, version = 1, params = nil)
     data = json(interface, method, version, params)
     result = JSON.parse(data, { :symbolize_names => true })[:result]
@@ -66,14 +79,19 @@ module WebApi
   end
 
   # Fetches data from Steam Web API using the specified interface, method and
-  # version. Additional parameters are supplied via HTTP GET.
-  # Data is returned as a String in the given format.
+  # version. Additional parameters are supplied via HTTP GET. Data is returned
+  # as a string in the given format.
   #
-  # [+format+]    The format to load from the API ('json', 'vdf', or 'xml')
-  # [+interface+] The Web API interface to call, e.g. +ISteamUser+
-  # [+method+]    The Web API method to call, e.g. +GetPlayerSummaries+
-  # [+version+]   The API method version to use (default: 1)
-  # [+params+]    A Hash of additional parameters to supply via HTTP GET
+  # @param [Symbol] format The format to load from the API (`:json`, `:vdf`, or
+  #        `:xml`)
+  # @param [String] interface The Web API interface to call, e.g. `ISteamUser`
+  # @param [String] method The Web API method to call, e.g.
+  #        `GetPlayerSummaries`
+  # @param [Fixnum] version The API method version to use
+  # @param [Hash<Symbol, Object>] params Additional parameters to supply via
+  #        HTTP GET
+  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @return [String] The data as replied by the Web API in the desired format
   def self.load(format, interface, method, version = 1, params = nil)
     version = version.to_s.rjust(4, '0')
     url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"

@@ -62,7 +62,7 @@ class SourceServer
 
     raise RCONNoAuthException.new if reply.request_id == -1
 
-    reply.request_id == @rcon_request_id
+    @rcon_authenticated = reply.request_id == @rcon_request_id
   end
 
   # Remotely executes a command on the server via RCON

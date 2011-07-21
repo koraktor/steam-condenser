@@ -26,7 +26,7 @@ class M2A_SERVER_BATCH_Packet
   # Creates a new M2A_SERVER_BATCH response object based on the given data
   #
   # @param [String] data The raw packet data replied from the server
-  # @raises PacketFormatException if the packet data is not well formatted
+  # @raise [PacketFormatException] if the packet data is not well formatted
   def initialize(data)
     super M2A_SERVER_BATCH_HEADER, data
 

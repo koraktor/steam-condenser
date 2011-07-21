@@ -8,6 +8,8 @@ require 'steam/community/game_item'
 require 'steam/community/web_api'
 
 # Provides basic functionality to represent an inventory of player in a game
+#
+# @author Sebastian Staudt
 module GameInventory
 
   attr_reader :items, :steam_id64
@@ -20,7 +22,9 @@ module GameInventory
 
   @@schema_language = 'en'
 
-  # Sets the language the schema should be fetched in (default is: +'en'+)
+  # Sets the language the schema should be fetched in (default is: `'en'`)
+  #
+  # @param [String] The ISO 639-1 code of the schema language
   def self.schema_language=(language)
     @@schema_language = language
   end
@@ -28,6 +32,10 @@ module GameInventory
   # Creates a new inventory object for the given AppID and SteamID64. This
   # calls update to fetch the data and create the item instances contained in
   # this players backpack
+  #
+  # @param [Fixnum] steam_id64 The 64bit SteamID of the player to get the
+  #        inventory for
+  # @param [Boolean] fetch_now if `true` the data will be fetched immediately
   def initialize(steam_id64, fetch_now = true)
     @steam_id64 = steam_id64
 
@@ -36,11 +44,15 @@ module GameInventory
 
   # Returns the item at the given position in the inventory. The positions
   # range from 1 to 100 instead of the usual array indices (0 to 99).
+  #
+  # @return [GameItem] The item at the given position in the inventory
   def [](index)
     @items[index - 1]
   end
 
-  # Returns the AppID of the game this inventory class belongs to
+  # Returns the application ID of the game this inventory class belongs to
+  #
+  # @return [Fixnum] The application ID of the game
   def app_id
     self.class.send :class_variable_get, :@@app_id
   end
@@ -48,6 +60,9 @@ module GameInventory
   # Returns the attribute schema
   #
   # The schemas are fetched first if not done already
+  #
+  # @return [Hash] The attribute schema for the game this inventory belongs to
+  # @see #update_schema
   def attribute_schema
     update_schema unless @@attribute_schema.key? app_id
 
@@ -71,6 +86,9 @@ module GameInventory
   # Returns the item schema
   #
   # The schemas are fetched first if not done already
+  #
+  # @return [Hash] The item schema for the game this inventory belongs to
+  # @see #update_schema
   def item_schema
     update_schema unless @@item_schema.key? app_id
 
@@ -80,6 +98,9 @@ module GameInventory
   # Returns the quality schema
   #
   # The schemas are fetched first if not done already
+  #
+  # @return [Hash] The quality schema for this game
+  # @see #update_schema
   def qualities
     update_schema unless @@qualities.key? app_id
 
@@ -87,6 +108,8 @@ module GameInventory
   end
 
   # Returns the number of items in the user's inventory
+  #
+  # @return [Fixnum] The number of items in the inventory
   def size
     @items.size
   end
@@ -94,7 +117,7 @@ module GameInventory
   protected
 
   # Updates the item schema (this includes attributes and qualities) using the
-  # +GetSchema+ method of interface +IEconItems_{AppID}+
+  # `GetSchema` method of interface `IEconItems_[AppID]`
   def update_schema
     params = {}
     params[:language] = @@schema_language unless @@schema_language.nil?

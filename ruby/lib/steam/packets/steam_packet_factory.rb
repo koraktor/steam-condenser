@@ -79,7 +79,7 @@ module SteamPacketFactory
   # packet object
   #
   # @param [Array<String>] split_packets An array of packet data
-  # @param [true, false] is_compressed whether the data of this packet is
+  # @param [Boolean] is_compressed whether the data of this packet is
   #        compressed
   # @param [Fixnum] packet_checksum The CRC32 checksum of the decompressed
   #        packet data

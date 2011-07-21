@@ -8,15 +8,30 @@ require 'rexml/document'
 
 require 'steam/community/game_achievement'
 
-# The GameStats class represents the game statistics for a single user and a
-# specific game
+# This class represents the game statistics for a single user and a specific
+# game
+#
+# It is subclassed for individual games if the games provide special statistics
+# that are unique to this game.
+#
+# @author Sebastian Staudt
 class GameStats
 
-  attr_reader :app_id, :custom_url, :game_friendly_name, :game_name,
-              :hours_played, :privacy_state, :steam_id64
+  attr_reader :app_id
+  attr_reader :custom_url
+  attr_reader :game_friendly_name
+  attr_reader :game_name,
+  attr_reader :hours_played
+  attr_reader :privacy_state
+  attr_reader :steam_id64
 
-  # Creates a GameStats (or one of its subclasses) object for the given user
-  # depending on the game selected
+  # Creates a `GameStats` (or one of its subclasses) instance for the given
+  # user and game
+  #
+  # @param [String, Fixnum] steam_id The custom URL or the 64bit Steam ID of
+  #        the user
+  # @param [String] game_name The friendly name of the game
+  # @return [GameStats] The game stats object for the given user and game
   def self.create_game_stats(steam_id, game_name)
     case game_name
       when 'alienswarm'
@@ -48,8 +63,13 @@ class GameStats
     end
   end
 
-  # Creates a GameStats object and fetches data from the Steam Community for
+  # Creates a `GameStats` object and fetches data from the Steam Community for
   # the given user and game
+  #
+  # @param [String, Fixnum] id The custom URL or the 64bit Steam ID of the
+  #        user
+  # @param [String] game_name The friendly name of the game
+  # @raise [SteamCondenserException] if the stats cannot be fetched
   def initialize(id, game_name)
     if id.is_a? Numeric
       @steam_id64 = id
@@ -74,8 +94,11 @@ class GameStats
     end
   end
 
-  # Returns the achievements for this stats' user and game. If the achievements
-  # haven't been parsed already, parsing is done now.
+  # Returns the achievements for this stats' user and game
+  #
+  # If the achievements' data hasn't been parsed yet, parsing is done now.
+  #
+  # @return [Array<GameAchievement>] All achievements belonging to this game
   def achievements
     return unless public?
 
@@ -91,20 +114,32 @@ class GameStats
     @achievements
   end
 
-  # Returns the count of achievements done by this player. If achievements
-  # haven't been parsed yet, parsing is done now.
+  # Returns the number of achievements done by this player
+  #
+  # If achievements haven't been parsed yet for this player and this game,
+  # parsing is done now.
+  #
+  # @return [Fixnum] The number of achievements completed
+  # @see #achievements
   def achievements_done
     achievements if @achievements_done.nil?
     @achievements_done
   end
 
-  # Returns a float value representing the percentage of achievements done by
-  # this player. If achievements haven't been parsed yet, parsing is done now.
+  # Returns the percentage of achievements done by this player
+  #
+  # If achievements haven't been parsed yet for this player and this game,
+  # parsing is done now.
+  #
+  # @return [Float] The percentage of achievements completed
+  # @see #achievements_done
   def achievements_percentage
     achievements_done.to_f / @achievements.size
   end
 
-  # Returns the base URL for this Steam Communtiy object
+  # Returns the base Steam Communtiy URL for the stats contained in this object
+  #
+  # @return [String] The base URL used for queries on these stats
   def base_url
     if @custom_url.nil?
       "http://steamcommunity.com/profiles/#{@steam_id64}/stats/#{@game_friendly_name}"
@@ -113,6 +148,9 @@ class GameStats
     end
   end
 
+  # Returns whether this Steam ID is publicly accessible
+  #
+  # @return [Boolean] `true` if this Steam ID is publicly accessible
   def public?
     @privacy_state == 'public'
   end

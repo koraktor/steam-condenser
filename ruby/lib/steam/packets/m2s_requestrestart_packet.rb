@@ -12,7 +12,7 @@ require 'steam/packets/steam_packet'
 # outdated.
 #
 # @author Sebastian Staudt
-# @see MasterServer#sendHeartbeat
+# @see MasterServer#send_heartbeat
 class M2S_REQUESTRESTART_Packet
 
   include SteamPacket

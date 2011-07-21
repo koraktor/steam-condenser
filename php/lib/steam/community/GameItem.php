@@ -5,16 +5,17 @@
  *
  * Copyright (c) 2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameItem.php';
 
 /**
  * Provides basic functionality to represent an item in a game
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 abstract class GameItem {
 
@@ -81,8 +82,8 @@ abstract class GameItem {
     /**
      * Creates a new instance of a GameItem with the given data
      *
-     * @param GameInventory inventory The inventory this item is contained in
-     * @param array itemData The data specifying this item
+     * @param GameInventory $inventory The inventory this item is contained in
+     * @param array $itemData The data specifying this item
      * @throws WebApiException on Web API errors
      */
     public function __construct(GameInventory $inventory, $itemData) {

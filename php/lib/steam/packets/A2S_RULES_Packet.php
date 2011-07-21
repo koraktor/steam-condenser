@@ -29,10 +29,10 @@ class A2S_RULES_Packet extends RequestPacketWithChallenge
     /**
      * Creates a new A2S_RULES request object including the challenge number
      *
-     * @param long challengeNumber The challenge number received from the
+     * @param int $challengeNumber The challenge number received from the
      *        server
      */
-	public function __construct($challengeNumber = "\xFF\xFF\xFF\xFF")
+	public function __construct($challengeNumber = 0xFFFFFFFF)
 	{
 		parent::__construct(SteamPacket::A2S_RULES_HEADER, $challengeNumber);
 	}

@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Source Condenser
- * @subpackage Packets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
@@ -27,18 +24,20 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  *
  * Available filters:
  * <ul>
- * 	<li>\type\d: Request only dedicated servers</li>
- *  <li>\secure\1: Request only secure servers</li>
- *  <li>\gamedir\[mod]: Request only servers of a specific mod</li>
- *  <li>\map\[mapname]: Request only servers running a specific map</li>
- *  <li>\linux\1: Request only linux servers</li>
- *  <li>\emtpy\1: Request only <b>non</b>-empty servers</li>
- *  <li>\full\1: Request only servers <b>not</b> full</li>
- *  <li>\proxy\1: Request only spectator proxy servers</li>
+ * 	<li><var>\type\d</var>: Request only dedicated servers</li>
+ *  <li><var>\secure\1</var>: Request only secure servers</li>
+ *  <li><var>\gamedir\[mod]</var>: Request only servers of a specific mod</li>
+ *  <li><var>\map\[mapname]</var>: Request only servers running a specific
+ *      map</li>
+ *  <li><var>\linux\1</var>: Request only linux servers</li>
+ *  <li><var>\emtpy\1</var>: Request only <b>non</b>-empty servers</li>
+ *  <li><var>\full\1</var>: Request only servers <b>not</b> full</li>
+ *  <li><var>\proxy\1</var>: Request only spectator proxy servers</li>
  * </ul>
  *
- * @package Source Condenser
- * @subpackage Packets
+ * @author Sebastian Staudt
+ * @package steam-condenser
+ * @subpackage packets
  * @see MasterServer#getServers
  */
 class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket

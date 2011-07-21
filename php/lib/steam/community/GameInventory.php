@@ -53,7 +53,7 @@ abstract class GameInventory {
     private $fetchDate;
 
     /**
-     * @var GameItem[]
+     * @var array
      */
     private $items;
 
@@ -127,6 +127,7 @@ abstract class GameInventory {
      *
      * @return stdClass The attribute schema for the game this inventory
      *         belongs to
+     * @see updateSchema()
      * @throws WebApiException on Web API errors
      */
     public function getAttributeSchema() {
@@ -154,6 +155,7 @@ abstract class GameInventory {
      * The item schema is fetched first if not done already
      *
      * @return stdClass The item schema for the game this inventory belongs to
+     * @see updateSchema()
      * @throws WebApiException on Web API errors
      */
     public function getItemSchema() {
@@ -167,7 +169,7 @@ abstract class GameInventory {
     /**
      * Returns an array of all items in this players inventory.
      *
-     * @return TF2Item[] All items in the backpack
+     * @return array All items in the backpack
      */
     public function getItems() {
         return $this->items;
@@ -180,6 +182,7 @@ abstract class GameInventory {
      *
      * @return stdClass The item quality schema for the game this inventory
      *         belongs to
+     * @see updateSchema()
      * @throws WebApiException on Web API errors
      */
     public function getQualitySchema() {

@@ -5,13 +5,71 @@
 
 require 'steam/community/web_api'
 
-# Provides basic functionality to represent an item in a game
+# A module implementing basic functionality for classes representing an item in
+# a game
+#
+# @author Sebastian Staudt
 module GameItem
 
-  attr_reader :attributes, :backpack_position, :class, :count, :defindex, :id,
-              :level, :name, :quality, :slot, :type
+  # Return the attributes of this item
+  #
+  # @return [Hash<Symbol, Object>] The attributes of this item
+  attr_reader :attributes
+
+  # Returns the position of this item in the player's inventory
+  #
+  # @return [Fixnum] The position of this item in the player's inventory
+  attr_reader :backpack_position
+
+  # Returns the class of this item
+  #
+  # @return [String] The class of this item
+  attr_reader :class
+
+  # Returns the number of items the player owns of this item
+  #
+  # @return [Fixnum] The quanitity of this item
+  attr_reader :count
+
+  # Returns the index where the item is defined in the schema
+  #
+  # @return [Fixnum] The schema index of this item
+  attr_reader :defindex
+
+  # Returns the ID of this item
+  #
+  # @return [Fixnum] The ID of this item
+  attr_reader :id
+
+  # Returns the level of this item
+  #
+  # @return [Fixnum] The level of this item
+  attr_reader :level
+
+  # Returns the level of this item
+  #
+  # @return [String] The level of this item
+  attr_reader :name
+
+  # Returns the quality of this item
+  #
+  # @return [String] The quality of this item
+  attr_reader :quality
+
+  # Returns the slot where this item can be equipped in
+  #
+  # @return [String] The slot where this item can be equipped in
+  attr_reader :slot
+
+  # Returns the type of this item
+  #
+  # @return [String] The type of this item
+  attr_reader :type
 
   # Creates a new instance of a GameItem with the given data
+  #
+  # @param [GameInventory] inventory The inventory this item is contained in
+  # @param [Hash<Symbol, Object>] item_data The data representing this item
   def initialize(inventory, item_data)
     @defindex          = item_data[:defindex]
     @backpack_position = item_data[:inventory] & 0xffff
@@ -31,6 +89,8 @@ module GameItem
   end
 
   # Returns whether this item is tradeable
+  #
+  # @return [Boolean] `true` if this item is tradeable
   def tradeable?
     @tradeable
   end

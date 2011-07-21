@@ -20,8 +20,11 @@ import org.w3c.dom.NodeList;
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 
 /**
- * The GameAchievement class represents a specific achievement for a single game
- * and for a single user
+ * The GameAchievement class represents a specific achievement for a single
+ * game and for a single user
+ * <p>
+ * It also provides the ability to load the global unlock percentages of all
+ * achievements of a specific game.
  *
  * @author Sebastian Staudt
  */
@@ -47,8 +50,7 @@ public class GameAchievement
      *        all application IDs
      * @return The symbolic achievement names with the corresponding global
      *         unlock percentages
-     * @throws JSONException If the JSON data cannot be parsed
-     * @throws WebApiException If a request to Steam's Web API fails
+     * @throws WebApiException if a request to Steam's Web API fails
      */
     public static Map<String, Double> getGlobalPercentages(int appId)
             throws JSONException, WebApiException {
@@ -70,9 +72,13 @@ public class GameAchievement
      * Creates the achievement with the given name for the given user and game
      * and achievement data
      *
-     * @param steamId64 The 64bit SteamID of the player
-     * @param appId The AppID of the game this achievement belongs to
-     * @param achievementData The XML data for this achievement
+     * @param steamId64 The 64bit SteamID of the player this achievement
+     *        belongs to
+     * @param appId The unique Steam Application ID of the game (e.g.
+     *        <code>440</code> for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @param achievementData The achievement data extracted from XML
      */
     public GameAchievement(long steamId64, int appId, Element achievementData)
     {
@@ -88,9 +94,10 @@ public class GameAchievement
     }
 
     /**
-     * Returns the AppID of the game this achievements belongs to
+     * Return the unique Steam Application ID of the  game this achievement
+     * belongs to
      *
-     * @return The AppID of the game
+     * @return The Steam Application ID of this achievement's game
      */
     public int getAppId(){
         return this.appId;
@@ -99,25 +106,25 @@ public class GameAchievement
     /**
      * Returns the name of this achievement
      *
-     * @return The name of the achievement
+     * @return The name of this achievement
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Returns the 64bit SteamID of the player this achievement belongs to
+     * Returns the 64bit SteamID of the user who owns this achievement
      *
-     * @return The 64bit SteamID of the player
+     * @return The 64bit SteamID of this achievement's owner
      */
     public long getSteamId64() {
         return this.steamId64;
     }
 
     /**
-     * Returns the timestamp at which this achievement has been unlocked
+     * Returns the time this achievement has been unlocked by its owner
      *
-     * @return The unlock timestamp
+     * @return The time this achievement has been unlocked
      */
     public Date getTimestamp() {
         return this.timestamp;
@@ -126,7 +133,8 @@ public class GameAchievement
     /**
      * Returns whether this achievement has been unlocked by its owner
      *
-     * @return If this achievement has been unlocked
+     * @return <code>true</code> if the achievement has been unlocked by
+     *         the user
      */
     public boolean isUnlocked() {
         return this.unlocked;

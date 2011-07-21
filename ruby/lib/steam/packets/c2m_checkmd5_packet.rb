@@ -22,7 +22,7 @@ class C2M_CHECKMD5_Packet
 
   # Returns the raw data representing this packet
   #
-  # @return string A string containing the raw data of this request packet
+  # @return [String] A string containing the raw data of this request packet
   def to_s
     [@header_data, 0xFF].pack('c2')
   end

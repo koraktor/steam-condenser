@@ -33,7 +33,7 @@ abstract class Socket
 	protected $portNumber;
 
 	/**
-	 * @var String
+	 * @var string
 	 */
 	protected $readBuffer = "";
 
@@ -124,7 +124,7 @@ abstract class Socket
      *
      * @param int $timeout The number of milliseconds to wait for data arriving
      *        on this socket before timing out
-     * @return boolean whether data arrived on this socket before the timeout
+     * @return bool whether data arrived on this socket before the timeout
 	 */
 	public function select($timeout = 0)
 	{

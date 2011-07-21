@@ -23,7 +23,8 @@ import org.json.JSONObject;
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 
 /**
- * This adds support for Steam Web API to classes needing this functionality.
+ * This abstract class provides functionality for accessing Steam's Web API
+ * <p>
  * The Web API requires you to register a domain with your Steam account to
  * acquire an API key. See http://steamcommunity.com/dev for further details.
  *
@@ -35,20 +36,21 @@ abstract public class WebApi
     private static String apiKey;
 
     /**
-     * Returns the Steam Web API key
+     * Returns the Steam Web API key currently used by Steam Condenser
      *
-     * @return The current Web API key
+     * @return The currently active Steam Web API key
      */
     public static String getApiKey() {
         return apiKey;
     }
 
     /**
-     * Sets the Steam Web API key.
+     * Sets the Steam Web API key
      *
-     * @param apiKey The 128bit API key that has to be requested from
-     *               http://steamcommunity.com/dev
-     * @throws WebApiException If the given API key is invalid
+     * @param apiKey The 128bit API key as a hexadecimal string that has to be
+     *        requested from http://steamcommunity.com/dev
+     * @throws WebApiException if the given API key is not a valid 128bit
+     *        hexadecimal string
      */
     public static void setApiKey(String apiKey)
             throws WebApiException {

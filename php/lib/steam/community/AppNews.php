@@ -5,20 +5,18 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 
 /**
- * The AppNews class is a representation of Steam news and can be used to load
- * current news about specific games
+ * This class represents Steam news and can be used to load a list of current
+ * news about specific games
  *
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class AppNews {
 
@@ -28,12 +26,12 @@ class AppNews {
     private $appId;
 
     /**
-     * @var String
+     * @var string
      */
     private $author;
 
     /**
-     * @var String
+     * @var string
      */
     private $contents;
 
@@ -48,46 +46,46 @@ class AppNews {
     private $external;
 
     /**
-     * @var String
+     * @var string
      */
     private $feedLabel;
 
     /**
-     * @var String
+     * @var string
      */
     private $feedName;
 
     /**
-     * @var String
+     * @var string
      */
     private $gid;
 
     /**
-     * @var String
+     * @var string
      */
     private $title;
 
     /**
-     * @var String
+     * @var string
      */
     private $url;
 
     /**
      * Loads the news for the given game with the given restrictions
      *
-     * @param int appId The unique Steam Application ID of the game (e.g. 440
-     *                  for Team Fortress 2). See
-     *                  http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *                  for all application IDs
-     * @param int count The maximum number of news to load (default: 5).
-     *                  There's no reliable way to load all news. Use really a
-     *                  really great number instead
-     * @param int maxLength The maximum content length of the news (default:
-     *                      null). If a maximum length is defined, the content
-     *                      of the news will only be at most maxLength
-     *                      characters long plus an ellipsis
-     * @return AppNews[] An array of news items for the specified game with the
-     *                   given options
+     * @param int $appId The unique Steam Application ID of the game (e.g. 440
+     *        for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @param int $count The maximum number of news to load (default: 5).
+     *        There's no reliable way to load all news. Use really a really
+     *        great number instead
+     * @param int $maxLength The maximum content length of the news (default:
+     *        null). If a maximum length is defined, the content of the news
+     *        will only be at most <var>maxLength</var> characters long plus an
+     *        ellipsis
+     * @return array An array of news items for the specified game with the
+     *         given options
      */
     public static function getNewsForApp($appId, $count = 5, $maxLength = null) {
         $params = array('appid' => $appId, 'count' => $count,
@@ -105,11 +103,11 @@ class AppNews {
     /**
      * Creates a new instance of an AppNews news item with the given data
      *
-     * @param int appId The unique Steam Application ID of the game (e.g. 440
-     *                  for Team Fortress 2). See
-     *                  http://developer.valvesoftware.com/wiki/Steam_Application_IDs
-     *                  for all application IDs
-     * @param stdClass newsData The news data extracted from JSON
+     * @param int $appId The unique Steam Application ID of the game (e.g. 440
+     *        for Team Fortress 2). See
+     *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
+     *        all application IDs
+     * @param stdClass $newsData The news data extracted from JSON
      */
     private function __construct($appId, $newsData) {
         $this->appId     = $appId;
@@ -125,9 +123,9 @@ class AppNews {
     }
 
     /**
-     * Returns the unique Application ID of the game this news is about
+     * Returns the Steam Application ID of the game this news belongs to
      *
-     * @return int The Application ID
+     * @return The application ID of the game this news belongs to
      */
     public function getAppId() {
         return $this->appId;
@@ -136,7 +134,7 @@ class AppNews {
     /**
      * Returns the author of this news item
      *
-     * @return String The author of this news
+     * @return string The author of this news
      */
     public function getAuthor() {
         return $this->author;
@@ -145,46 +143,48 @@ class AppNews {
     /**
      * Returns the content of this news item
      *
-     * Might be truncated if maxLength is set when using
-     * AppNews.getNewsForApp()
+     * This might contain HTML code.
      *
-     * @return String The content of this news
+     * <strong>Note:</strong> Depending on the setting for the maximum length
+     * of a news (see {@link #getNewsForApp}, the contents might be truncated.
+     *
+     * @return string The content of this news
      */
     public function getContents() {
         return $this->contents;
     }
 
     /**
-     * Returns the timestamp this news item has been posted
+     * Returns the date this news item has been published
      *
-     * @return int The timestamp of this news
+     * @return int The date this news has been published
      */
     public function getDate() {
         return $this->date;
     }
 
     /**
-     * Returns the label of the category this news has been posted in
+     * Returns the name of the feed this news item belongs to
      *
-     * @return String The title of this news' category
+     * @return string The name of the feed this news belongs to
      */
     public function getFeedLabel() {
         return $this->feedLabel;
     }
 
     /**
-     * Returns the name of the category this news has been posted in
+     * Returns the symbolic name of the feed this news item belongs to
      *
-     * @return String The String identifier of this news' category
+     * @return string The symbolic name of the feed this news belongs to
      */
     public function getFeedName() {
         return $this->feedName;
     }
 
     /**
-     * Returns the global identifier of this news
+     * Returns a unique identifier for this news
      *
-     * @return String The GID of this news
+     * @return string A unique identifier for this news
      */
     public function getGid() {
         return $this->gid;
@@ -193,27 +193,30 @@ class AppNews {
     /**
      * Returns the title of this news item
      *
-     * @return String The title of this news
+     * @return string The title of this news
      */
     public function getTitle() {
         return $this->title;
     }
 
     /**
-     * A direct link to the news on the Steam website or a redirecting link to
-     * the external post
+     * Returns the URL of the original news
      *
-     * @return String The URL to the original news
+     * This is a direct link to the news on the Steam website or a redirecting
+     * link to the external post.
+     *
+     * @return string The URL of the original news
      */
     public function getUrl() {
         return $this->url;
     }
 
     /**
-     * Returns whether this news items originates from a source other than Steam
+     * Returns whether this news item originates from a source other than Steam
      * itself (e.g. an external blog)
      *
-     * @return bool Whether this news has been posted externally
+     * @return boolean <var>true</var> if this news item is from an external
+     *         source
      */
     public function isExternal() {
         return $this->external;

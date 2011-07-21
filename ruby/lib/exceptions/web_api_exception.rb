@@ -31,7 +31,7 @@ class WebApiException < SteamCondenserException
   #          and `status_message`.
   #        * `:unauthorized`: This happens when a Steam Web API request is
   #          rejected as unauthorized. This most likely means that you did not
-  #          specify a valid Web API key using {WebAPI.api_key=}. A Web API key
+  #          specify a valid Web API key using {WebApi.api_key=}. A Web API key
   #          can be obtained from http://steamcommunity.com/dev/apikey.
   #
   #        Other undefined reasons will cause a generic error message.

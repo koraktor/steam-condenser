@@ -5,36 +5,49 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameAchievement.php';
 
 /**
- * The GameStats class represents the game statistics for a single user and a
- * specific game
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * This class represents the game statistics for a single user and a specific
+ * game
+ *
+ * It is subclassed for individual games if the games provide special
+ * statistics that are unique to this game.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class GameStats {
 
+    /**
+     * @var array
+     */
     protected $achievements;
 
+    /**
+     * @var int
+     */
     protected $achievementsDone;
 
     /**
      * Used to cache the XML data of the statistics for this game and this
      * user
-     * @var SimpleXML
+     *
+     * @var SimpleXMLElement
      */
     protected $xmlData;
 
     /**
-     * Creates a GameStats (or one of its subclasses) object for the given user
-     * depending on the game selected
+     * Creates a <var>GameStats</var> (or one of its subclasses) instance for
+     * the given user and game
+     *
+     * @param string $steamId The custom URL or the 64bit Steam ID of the user
+     * @param string $gameName The friendly name of the game
+     * @return GameStats The game stats object for the given user and game
      */
     public static function createGameStats($steamId, $gameName) {
         switch($gameName) {
@@ -68,10 +81,12 @@ class GameStats {
     }
 
     /**
-     * Creates a GameStats object and fetchs data from Steam Community for
-     * the given user and game
-     * @param $steamId
-     * @param $gameName
+     * Creates a <var>GameStats</var> object and fetches data from the Steam
+     * Community for the given user and game
+     *
+     * @param string $steamId The custom URL or the 64bit Steam ID of the user
+     * @param string $gameName The friendly name of the game
+     * @throws SteamCondenserException if the stats cannot be fetched
      */
     protected function __construct($steamId, $gameName) {
         if(is_numeric($steamId)) {
@@ -102,11 +117,12 @@ class GameStats {
     }
 
     /**
-     * Returns the achievements for this stats' user and game. If the achievements
-     * haven't been parsed already, parsing is done now.
+     * Returns the achievements for this stats' user and game
      *
-     * @return GameAchievements[]
-     */
+     * If the achievements' data hasn't been parsed yet, parsing is done now.
+     *
+     * @return array All achievements belonging to this game
+    */
     public function getAchievements() {
         if(!$this->isPublic()) {
             return;
@@ -126,10 +142,13 @@ class GameStats {
     }
 
     /**
-     * Returns the count of achievements done by this player. If achievements
-     * haven't been parsed yet, parsing is done now.
+     * Returns the number of achievements done by this player
      *
-     * @return int The number of unlocked achievements
+     * If achievements haven't been parsed yet for this player and this game,
+     * parsing is done now.
+     *
+     * @return int The number of achievements completed
+     * @see getAchievements()
      */
     public function getAchievementsDone() {
         if(empty($this->achievements)) {
@@ -140,7 +159,10 @@ class GameStats {
     }
 
     /**
-     * @return String
+     * Returns the base Steam Communtiy URL for the stats contained in this
+     * object
+     *
+     * @return string The base URL used for queries on these stats
      */
     public function getBaseUrl() {
         if(empty($this->customUrl)) {
@@ -151,16 +173,23 @@ class GameStats {
     }
 
     /**
-     * Returns a float value representing the percentage of achievements done by
-     * this player. If achievements haven't been parsed yet, parsing is done
-     * now.
+     * Returns the percentage of achievements done by this player
+     * <p>
+     * If achievements haven't been parsed yet for this player and this game,
+     * parsing is done now.
      *
-     * @return float The percentage of unlocked achievements
+     * @return float The percentage of achievements completed
+     * @see #getAchievementsDone
      */
     public function getAchievementsPercentage() {
         return $this->getAchievementsDone() / sizeof($this->achievements);
     }
 
+    /**
+     * Returns whether this Steam ID is publicly accessible
+     *
+     * @return <var>true</var> if this Steam ID is publicly accessible
+     */
     public function isPublic() {
         return $this->privacyState == 'public';
     }

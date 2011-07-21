@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD Lic$
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'exceptions/BufferUnderflowException.php';
@@ -20,22 +20,22 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/BufferUnderflowException.php';
 class ByteBuffer
 {
 	/**
-	 * @var string
+     * @var string The string holding the buffer's bytes
 	 */
 	private $byteArray;
 
 	/**
-	 * @var int
+     * @var int The size of the buffer
 	 */
 	private $capacity;
 
 	/**
-	 * @var int
+     * @var int The limit to which the buffer may be filled
 	 */
 	private $limit;
 
 	/**
-	 * @var int
+     * @var int The current position of the read pointer
 	 */
 	private $position;
 
@@ -186,7 +186,13 @@ class ByteBuffer
 	}
 
 	/**
-	 * @return String
+     * Reads a zero-byte terminated string from the current position of the
+     * byte buffer
+     *
+     * This reads the buffer up until the first occurance of a zero-byte or the
+     * end of the buffer. The zero-byte is not included in the returned string.
+     *
+     * @return string The zero-byte terminated string read from the byte stream
 	 */
 	public function getString()
 	{

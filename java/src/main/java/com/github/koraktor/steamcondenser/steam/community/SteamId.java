@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community;
@@ -25,7 +25,8 @@ import org.w3c.dom.NodeList;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 /**
- * The SteamId class represents a Steam Community profile (also called Steam ID)
+ * The SteamId class represents a Steam Community profile (also called Steam
+ * ID)
  *
  * @author Sebastian Staudt
  */
@@ -60,8 +61,12 @@ public class SteamId {
 	private int visibilityState;
 
     /**
-     * Converts the 64bit SteamID as used and reported by the Steam Community
-     * to a SteamID reported by game servers
+     * Converts a 64bit numeric SteamID as used by the Steam Community to a
+     * SteamID as reported by game servers
+     *
+     * @param communityId The SteamID string as used by the Steam Community
+     * @return The converted SteamID, like <code>STEAM_0:0:12345</code>
+     * @throws SteamCondenserException if the community ID is to small
      */
     public static String convertCommunityIdToSteamId(long communityId)
             throws SteamCondenserException {
@@ -78,7 +83,14 @@ public class SteamId {
     }
 
     /**
-     * Converts the SteamID as reported by game servers to a 64bit SteamID
+     * Converts a SteamID as reported by game servers to a 64bit numeric
+     * SteamID as used by the Steam Community
+     *
+     * @param steamId The SteamID string as used on servers, like
+     *        <code>STEAM_0:0:12345</code>
+     * @return The converted 64bit numeric SteamID
+     * @throws SteamCondenserException if the SteamID doesn't have the correct
+     *         format
      */
     public static long convertSteamIdToCommunityId(String steamId)
             throws SteamCondenserException {
@@ -94,36 +106,102 @@ public class SteamId {
         return Long.valueOf(tmpId[1]) + Long.valueOf(tmpId[2]) * 2 + 76561197960265728L;
     }
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The 64bit SteamID of the player
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(long id)
 	 	throws SteamCondenserException {
 		return SteamId.create((Object) id, true, false);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The 64bit SteamID of the player
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(String id)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, true, false);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The 64bit SteamID of the player
+     * @param fetch if <code>true</code> the profile's data is loaded into the
+     *        object
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(long id, boolean fetch)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, false);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The 64bit SteamID of the player
+     * @param fetch if <code>true</code> the profile's data is loaded into the
+     *        object
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(String id, boolean fetch)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, false);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The 64bit SteamID of the player
+     * @param fetch if <code>true</code> the profile's data is loaded into the
+     *        object
+     * @param bypassCache If <code>true</code> an already cached instance for
+     *        this Steam ID will be ignored and a new one will be created
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(long id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, bypassCache);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The custom URL of the Steam ID specified by player
+     * @param fetch if <code>true</code> the profile's data is loaded into the
+     *        object
+     * @param bypassCache If <code>true</code> an already cached instance for
+     *        this Steam ID will be ignored and a new one will be created
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	public static SteamId create(String id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		return SteamId.create((Object) id, fetch, bypassCache);
 	}
 
+    /**
+     * Creates a new <code>SteamID</code> instance or gets an existing one
+     * from the cache for the profile with the given ID
+     *
+     * @param id The custom URL of the Steam ID specified by player or the 64bit
+     *        SteamID
+     * @param fetch if <code>true</code> the profile's data is loaded into the
+     *        object
+     * @param bypassCache If <code>true</code> an already cached instance for
+     *        this Steam ID will be ignored and a new one will be created
+     * @return The <code>SteamId</code> instance of the requested profile
+     */
 	private static SteamId create(Object id, boolean fetch, boolean bypassCache)
 		throws SteamCondenserException {
 		if(SteamId.isCached(id) && !bypassCache) {
@@ -137,20 +215,26 @@ public class SteamId {
 		}
 	}
 
+    /**
+     * Returns whether the requested Steam ID is already cached
+     *
+     * @param id The custom URL of the Steam ID specified by the player or the
+     *        64bit SteamID
+     * @return <code>true</code> if this Steam ID is already cached
+     */
 	public static boolean isCached(Object id) {
 		return SteamId.steamIds.containsKey(id);
 	}
 
 	/**
-	 * Creates a new SteamId object for the given ID and fetches the data if
-	 * fetchData is set to true
-	 *
-	 * @param id
-	 *            Either the custom URL or numeric ID of the SteamID
-	 * @param fetchData
-	 *            If set to true, the data of this SteamID will be fetched from
-	 *            Steam Community
-	 * @throws SteamCondenserException
+     * Creates a new <code>SteamId</code> instance for the given ID
+     *
+     * @param id The custom URL of the group specified by the player or the
+     *        64bit SteamID
+     * @param fetchData if <code>true</code> the profile's data is loaded into
+     *        the object
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
 	 */
 	private SteamId(Object id, boolean fetchData)
 			throws SteamCondenserException {
@@ -167,6 +251,11 @@ public class SteamId {
 		this.cache();
 	}
 
+    /**
+     * Saves this <code>SteamId</code> instance in the cache
+     *
+     * @return <code>false</code> if this group is already cached
+     */
 	public boolean cache() {
 		if(!SteamId.steamIds.containsKey(this.steamId64)) {
 			SteamId.steamIds.put(this.steamId64, this);
@@ -179,10 +268,12 @@ public class SteamId {
 	}
 
 	/**
-	 * This method fetches the data of this person's SteamID
-	 *
-	 * @throws SteamCondenserException
-	 */
+     * Fetchs data from the Steam Community by querying the XML version of the
+     * profile specified by the ID of this Steam ID
+     *
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private, or when it cannot be parsed
+     */
 	public void fetchData()
 			throws SteamCondenserException {
 		try {
@@ -267,9 +358,15 @@ public class SteamId {
 	}
 
 	/**
-	 * Fetches the friends of this user
-	 *
-	 * @throws SteamCondenserException
+     * Fetches the friends of this user
+     * <p>
+     * This creates a new <code>SteamId</code> instance for each of the friends
+     * without fetching their data.
+     *
+     * @see #getFriends
+     * @see SteamId()
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
 	 */
 	private void fetchFriends()
 			throws SteamCondenserException {
@@ -291,9 +388,15 @@ public class SteamId {
 	}
 
 	/**
-	 * Fetches the games this user owns
-	 *
-	 * @throws SteamCondenserException
+     * Fetches the games this user owns
+     * <p>
+     * This fills the game hash with the names of the games as keys. The values
+     * will either be `false` if the game does not have stats or the game's
+     * "friendly name".
+     *
+     * @see #getGames
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
 	 */
 	private void fetchGames()
 			throws SteamCondenserException {
@@ -325,18 +428,40 @@ public class SteamId {
 		}
 	}
 
+    /**
+     * Returns the URL of the full-sized version of this user's avatar
+     *
+     * @return The URL of the full-sized avatar
+     */
 	public String getAvatarFullUrl() {
 		return this.imageUrl + "_full.jpg";
 	}
 
+    /**
+     * Returns the URL of the icon version of this user's avatar
+     *
+     * @return The URL of the icon-sized avatar
+     */
 	public String getAvatarIconUrl() {
 		return this.imageUrl + ".jpg";
 	}
 
+    /**
+     * Returns the URL of the medium-sized version of this user's avatar
+     *
+     * @return The URL of the medium-sized avatar
+     */
 	public String getAvatarMediumUrl() {
 		return this.imageUrl + "_medium.jpg";
 	}
 
+    /**
+     * Returns the base URL for this Steam ID
+     * <p>
+     * This URL is different for Steam IDs having a custom URL.
+     *
+     * @return The base URL for this SteamID
+     */
 	public String getBaseUrl() {
 		if(this.customUrl == null) {
 			return "http://steamcommunity.com/profiles/" + this.steamId64;
@@ -345,22 +470,59 @@ public class SteamId {
 		}
 	}
 
+    /**
+     * Returns the custom URL of this Steam ID
+     * <p>
+     * The custom URL is a user specified unique string that can be used
+     * instead of the 64bit SteamID as an identifier for a Steam ID.
+     * <p>
+     * <strong>Note:</strong> The custom URL is not necessarily the same as the
+     * user's nickname.
+     *
+     * @return The custom URL of this Steam ID
+     */
 	public String getCustomUrl() {
 		return this.customUrl;
 	}
 
+    /**
+     * Returns the favorite game of this user
+     *
+     * @deprecated The favorite game is no longer listed for new users
+     * @return The favorite game of this user
+     */
 	public String getFavoriteGame() {
 		return this.favoriteGame;
 	}
 
+    /**
+     * Returns the number of hours that this user played his/her favorite game
+     * in the last two weeks
+     *
+     * @deprecated The favorite game is no longer listed for new users
+     * @return The number of hours the favorite game has been played recently
+     */
 	public float getFavoriteGameHoursPlayed() {
 		return this.favoriteGameHoursPlayed;
 	}
 
+    /**
+     * Returns the time this group has been fetched
+     *
+     * @return The timestamp of the last fetch time
+     */
 	public long getFetchTime() {
 		return this.fetchTime;
 	}
 
+    /**
+     * Returns the Steam Community friends of this user
+     * <p>
+     * If the friends haven't been fetched yet, this is done now.
+     *
+     * @return The friends of this user
+     * @see #fetchFriends
+     */
 	public SteamId[] getFriends()
 			throws SteamCondenserException {
 		if(this.friends == null) {
@@ -369,6 +531,17 @@ public class SteamId {
 		return this.friends;
 	}
 
+    /**
+     * Returns the games this user owns
+     * <p>
+     * The keys of the hash are the games' names and the values are the
+     * "friendly names" used for stats or `false` if the games has no stats.
+     * <p>
+     * If the friends haven't been fetched yet, this is done now.
+     *
+     * @return Pairs of game names and friendly names
+     * @see #fetchGames
+     */
 	public Map<String, String> getGames()
 			throws SteamCondenserException {
 		if(this.games == null) {
@@ -377,6 +550,15 @@ public class SteamId {
 		return this.games;
 	}
 
+    /**
+     * Returns the stats for the given game for the owner of this SteamID
+     *
+     * @param gameName The friendly name of the game stats should be fetched
+     *        for
+     * @return The statistics for the game with the given name
+     * @throws SteamCondenserException if the user does not own this game or it
+     *         does not have any stats
+     */
 	public GameStats getGameStats(String gameName)
 			throws SteamCondenserException {
 		String friendlyName;
@@ -398,22 +580,51 @@ public class SteamId {
 		}
 	}
 
+    /**
+     * Returns the groups this user is a member of
+     *
+     * @return The groups this user is a member of
+     */
 	public SteamGroup[] getGroups() {
 		return this.groups;
 	}
 
+    /**
+     * Returns the headline specified by the user
+     *
+     * @return The headline specified by the user
+     */
 	public String getHeadLine() {
 		return this.headLine;
 	}
 
+    /**
+     * Returns the number of hours that this user played a game in the last two
+     * weeks
+     *
+     * @return The number of hours the user has played recently
+     */
 	public float getHoursPlayed() {
 		return this.hoursPlayed;
 	}
 
+    /**
+     * Returns the links that this user has added to his/her Steam ID
+     * <p>
+     * The keys of the hash contain the titles of the links while the values
+     * contain the corresponding URLs.
+     *
+     * @return The links of this user
+     */
 	public Map<String, String> getLinks() {
 		return this.links;
 	}
 
+    /**
+     * Returns the location of the user
+     *
+     * @return The location of the user
+     */
 	public String getLocation() {
 		return this.location;
 	}
@@ -428,64 +639,104 @@ public class SteamId {
 		return this.memberSince;
 	}
 
+    /**
+     * Returns the Steam nickname of the user
+     *
+     * @return The Steam nickname of the user
+     */
 	public String getNickname() {
 		return this.nickname;
 	}
 
+    /**
+     * Returns the real name of this user
+     *
+     * @return The real name of this user
+     */
 	public String getRealName() {
 		return this.realName;
 	}
 
+    /**
+     * Returns the message corresponding to this user's online state
+     *
+     * @return The message corresponding to this user's online state
+     * @see #isInGame
+     * @see #isOnline
+     */
 	public String getStateMessage() {
 		return this.stateMessage;
 	}
 
+    /**
+     * Returns this user's 64bit SteamID
+     *
+     * @return This user's 64bit SteamID
+     */
 	public long getSteamId64() {
 		return this.steamId64;
 	}
 
+    /**
+     * Returns the Steam rating calculated over the last two weeks' activity
+     *
+     * @return The Steam rating of this user
+     */
 	public float getSteamRating() {
 		return this.steamRating;
 	}
 
-	public String getSteamRatingText() {
-		return this.steamRatingText;
-	}
-
+    /**
+     * Returns the summary this user has provided
+     *
+     * @return This user's summary
+     */
 	public String getSummary() {
 		return this.summary;
 	}
 
-	public boolean getVacBanned() {
-		return this.vacBanned;
-	}
-
+    /**
+     * Returns the visibility state of this Steam ID
+     *
+     * @return This Steam ID's visibility State
+     */
 	public int getVisibilityState() {
 		return this.visibilityState;
 	}
 
 	/**
-	 * Returns whether the owner of this SteamID is VAC banned
+     * Returns whether the owner of this Steam ID is VAC banned
+     *
+     * @return <code>true</code> if the user has been banned by VAC
 	 */
 	public boolean isBanned() {
 		return this.vacBanned;
 	}
 
+    /**
+     * Returns whether the data for this Steam ID has already been fetched
+     *
+     * @return <code>true</code> if the Steam ID's data has been
+     *         fetched
+     */
 	public boolean isFetched() {
 		return this.fetchTime != 0;
 	}
 
 	/**
-	 * Returns whether the owner of this SteamId is playing a game
+    * Returns whether the owner of this Steam ID is playing a game
+     *
+     * @return <code>true</code> if the user is in-game
 	 */
 	public boolean isInGame() {
 		return this.onlineState.equals("in-game");
 	}
 
 	/**
-	 * Returns whether the owner of this SteamID is currently logged into Steam
+     * Returns whether the owner of this Steam ID is currently logged into
+     * Steam
 	 *
-	 * @return True if the user is currenly online or false otherwise
+     * @return <code>true</code> if the user is online
 	 */
 	public boolean isOnline() {
 		return (this.onlineState.equals("online") || this.onlineState.equals("in-game"));

@@ -10,6 +10,9 @@ require 'steam/community/web_api'
 # Represents the special Team Fortress 2 item Golden Wrench. It includes the
 # ID of the item, the serial number of the wrench, a reference to the SteamId
 # of the owner and the date this player crafted the wrench
+#
+# @deprecated The Web API for Team Fortress 2's Golden Wrenches is no longer
+#             available.
 class TF2GoldenWrench
 
   attr_reader :date, :id, :number, :owner
