@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.tf2;
@@ -10,9 +10,10 @@ package com.github.koraktor.steamcondenser.steam.community.tf2;
 import org.w3c.dom.Element;
 
 /**
- * Represents the stats for the Team Fortress 2 engineer class for a specific
+ * Represents the stats for the Team Fortress 2 Engineer class for a specific
  * user
- * @author  Sebastian Staudt
+ *
+ * @author     Sebastian Staudt
  */
 public class TF2Engineer extends TF2Class
 {
@@ -23,8 +24,9 @@ public class TF2Engineer extends TF2Class
     private int maxTeleports;
 
     /**
-     * Creates a new instance of TF2Engineer based on the assigned XML data
-     * @param classData
+     * Creates a new instance of the Engineer class based on the given XML data
+     *
+     * @param classData The XML data for this Engineer
      */
     public TF2Engineer(Element classData)
     {
@@ -35,16 +37,34 @@ public class TF2Engineer extends TF2Class
 	this.maxTeleports      = Integer.parseInt(classData.getElementsByTagName("inumteleports").item(0).getTextContent());
     }
 
+    /**
+     * Returns the maximum number of buildings built by the player in a single
+     * life as an Engineer
+     *
+     * @return Maximum number of buildings built
+     */
     public int getMaxBuildingsBuilt()
     {
 	return this.maxBuildingsBuilt;
     }
 
+    /**
+     * Returns the maximum number of enemies killed by sentry guns built by the
+     * player in a single life as an Engineer
+     *
+     * @return Maximum number of sentry kills
+     */
     public int getMaxSentryKills()
     {
 	return this.maxSentryKills;
     }
 
+    /**
+     * Returns the maximum number of teammates teleported by teleporters built
+     * by the player in a single life as an Engineer
+     *
+     * @return Maximum number of teleports
+     */
     public int getMaxTeleports()
     {
 	return this.maxTeleports;

@@ -9,18 +9,23 @@ package com.github.koraktor.steamcondenser.steam.community.tf2;
 import org.w3c.dom.Element;
 
 /**
- * The TF2ClassFactory is used to created instances of TF2Class based on the
- * XML input data
- * @author  Sebastian Staudt
+ * The <code>TF2ClassFactory</code> is used to created instances of
+ * <code>TF2Class</code> based on the XML input data
+ *
+ * @author Sebastian Staudt
  */
 abstract class TF2ClassFactory
 {
     /**
-     * Creates a new instance of TF2Class storing the statistics for a Team
-     * Fortress 2 class with the assigned XML data
-     * @param classData
-     * @return An instance of TF2Class or its subclasses TF2Engineer, TF2Medic,
-     *         TF2Sniper or TF2Spy depending on the given XML data
+     * Creates a new instance of a TF2 class instance based on the given XML
+     * data
+     *
+     * This returns an instance of <code>TF2Class</code> or its subclasses
+     * <code>TF2Engineer</code>, <code>TF2Medic</code>, <code>TF2Sniper</code>
+     * or <code>TF2Spy</code> depending on the given XML data.
+     *
+     * @param classData The XML data for the class
+     * @return The statistics for the given class data
      */
     public static TF2Class getTF2Class(Element classData)
     {

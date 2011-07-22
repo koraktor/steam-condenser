@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Item.php';
@@ -19,8 +16,9 @@ GameInventory::$cache['TF2Inventory'] = array();
 /**
  * Represents the inventory (aka. Backpack) of a Team Fortress 2 player
  *
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class TF2Inventory extends GameInventory {
 
@@ -35,7 +33,7 @@ class TF2Inventory extends GameInventory {
         parent::$cache['TF2Inventory'] = array();
     }
 
-        /**
+    /**
      * This checks the cache for an existing inventory. If it exists it is
      * returned. Otherwise a new inventory is created.
      *

@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
@@ -16,11 +13,12 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 
 /**
  * Represents the special Team Fortress 2 item Golden Wrench. It includes the
- * ID of the item, the serial number of the wrench, a reference to the SteamId
+ * ID of the item, the serial number of the wrench, a reference to the SteamID
  * of the owner and the date this player crafted the wrench
  *
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class TF2GoldenWrench {
 
@@ -50,11 +48,9 @@ class TF2GoldenWrench {
     private $owner;
 
     /**
-     * Returns an array of all golden wrenches (as instances of
-     * TF2GoldenWrench)
+     * Returns all Golden Wrenches
      *
-     * @return TF2GoldenWrench[] An array containing all golden wrenches
-     * @throws JSONException On JSON errors
+     * @return All Golden Wrenches
      * @throws SteamCondenserException If an error occurs querying the Web API
      *                                 or the Steam Community
      */
@@ -72,9 +68,11 @@ class TF2GoldenWrench {
     }
 
     /**
-     * Creates a new instance of TF2GoldenWrench with the given data
+     * Creates a new instance of a Golden Wrench with the given data
      *
      * @param stdClass $wrenchData The JSON data for this wrench
+     * @throws SteamCondenserException If the SteamId for the owner of the
+     *                                 wrench cannot be created
      */
     private function __construct($wrenchData) {
         $this->date   = (int) $wrenchData->timestamp;
@@ -111,7 +109,7 @@ class TF2GoldenWrench {
     }
 
     /**
-     * Returns the SteamId of the owner of this Golden Wrench
+     * Returns the SteamID of the owner of this Golden Wrench
      *
      * @return SteamId The owner of this wrench
      */

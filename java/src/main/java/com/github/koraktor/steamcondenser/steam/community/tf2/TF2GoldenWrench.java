@@ -21,7 +21,7 @@ import com.github.koraktor.steamcondenser.steam.community.WebApi;
 
 /**
  * Represents the special Team Fortress 2 item Golden Wrench. It includes the
- * ID of the item, the serial number of the wrench, a reference to the SteamId
+ * ID of the item, the serial number of the wrench, a reference to the SteamID
  * of the owner and the date this player crafted the wrench
  *
  * @author Sebastian Staudt
@@ -39,9 +39,9 @@ public class TF2GoldenWrench {
     private SteamId owner;
 
     /**
-     * Returns a Set of all golden wrenches (as instances of TF2GoldenWrench)
+     * Returns all Golden Wrenches
      *
-     * @return A Set containing all golden wrenches
+     * @return All Golden Wrenches
      * @throws JSONException On JSON errors
      * @throws SteamCondenserException If an error occurs querying the Web API
      *                                 or the Steam Community
@@ -62,7 +62,7 @@ public class TF2GoldenWrench {
     }
 
     /**
-     * Creates a new instance of TF2GoldenWrench with the given data
+     * Creates a new instance of a Golden Wrench with the given data
      *
      * @param wrenchData The JSON data for this wrench
      * @throws JSONException If some attribute is missing from the JSON data
@@ -105,10 +105,9 @@ public class TF2GoldenWrench {
     }
 
     /**
-     * Returns the SteamId of the owner of this Golden Wrench
+     * Returns the SteamID of the owner of this Golden Wrench
      *
      * @return The owner of this wrench
-     * @see SteamId
      */
     public SteamId getOwner() {
         return this.owner;

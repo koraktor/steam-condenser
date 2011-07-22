@@ -3,26 +3,32 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Class.php';
 
 /**
- * Represents the stats for the Team Fortress 2 sniper class for a specific user
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * Represents the stats for the Team Fortress 2 Sniper class for a specific
+ * user
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class TF2Sniper extends TF2Class
 {
+    /**
+     * @var int
+     */
+     private $maxHeadshots;
+
 	/**
-	 * Creates a new instance of TF2Sniper based on the assigned XML data
-	 * @param $classData
+     * Creates a new instance of the Sniper class based on the given XML data
+     *
+     * @param SimpleXMLElement $classData The XML data for this Sniper
 	 */
 	public function __construct($classData)
 	{
@@ -30,5 +36,15 @@ class TF2Sniper extends TF2Class
 
 		$this->maxHeadshots = (int) $classData->iheadshots;
 	}
+
+    /**
+     * Returns the maximum number enemies killed with a headshot by the player
+     * in single life as a Sniper
+     *
+     * @return int Maximum number of headshots
+     */
+    public function getMaxHeadshots() {
+        return $this->maxHeadshots;
+    }
 }
 ?>

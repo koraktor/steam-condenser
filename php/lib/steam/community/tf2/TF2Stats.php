@@ -3,12 +3,9 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
@@ -16,10 +13,12 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2ClassFactory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Inventory.php';
 
 /**
- * The TF2Stats class represents the game statistics for a single user in Team
- * Fortress 2
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * This class represents the game statistics for a single user in Team Fortress
+ * 2
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class TF2Stats extends GameStats {
 
@@ -39,10 +38,10 @@ class TF2Stats extends GameStats {
     private $inventory;
 
     /**
-     * Creates a TF2Stats object by calling the super constructor with the game
-     * name "TF2"
+     * Creates a new <var>TF2Stats</var> instance by calling the super
+     * constructor with the game name <var>"tf2"</var>
      *
-     * @param $steamId The custom URL or 64bit Steam ID of the user
+     * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, "TF2");
@@ -62,11 +61,12 @@ class TF2Stats extends GameStats {
     }
 
     /**
-     * Returns a Hash of TF2Class for this user containing all Team Fortress 2
-     * classes. If the classes haven't been parsed already, parsing is done now.
+     * Returns the statistics for all Team Fortress 2 classes for this user
      *
-     * @return array An array storing individual TF2Class objects for each Team
-     *               Fortress 2 class
+     * If the classes haven't been parsed already, parsing is done now.
+     *
+     * @return array An array storing individual stats for each Team Fortress 2
+     *         class
      */
     public function getClassStats() {
         if(!$this->isPublic()) {

@@ -69,7 +69,7 @@ public class TF2Item extends GameItem {
     /**
      * Returns whether this item is equipped by this player at all
      *
-     * @return Whether this item is equipped by this player at all
+     * @return <code>true</code> if the player has equipped this item at all
      */
     public boolean isEquipped() {
         return this.equipped.containsValue(true);

@@ -19,8 +19,8 @@ import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
 /**
- * The TF2Stats class represents the game statistics for a single user in Team
- * Fortress 2
+ * This class represents the game statistics for a single user in Team Fortress
+ * 2
  *
  * @author Sebastian Staudt
  */
@@ -33,9 +33,9 @@ public class TF2Stats extends GameStats {
     private TF2Inventory inventory;
 
 	/**
-	 * Creates a new object holding Team Fortress 2 statistics for the given
-	 * user
-
+     * Creates a new <code>TF2Stats</code> instance by calling the super
+     * constructor with the game name <code>"tf2"</code>
+     *
      * @param steamId The custom URL or 64bit Steam ID of the user
      * @throws SteamCondenserException If an error occurs while fetching the
      *                                 stats data
@@ -48,6 +48,7 @@ public class TF2Stats extends GameStats {
 			this.accumulatedPoints = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("accumulatedPoints").item(0).getTextContent());
 		}
 	}
+
     /**
      * Returns the total points this player has achieved in his career
      *
@@ -59,9 +60,10 @@ public class TF2Stats extends GameStats {
 
 	/**
 	 * Returns the statistics for all Team Fortress 2 classes for this user
+     * <p>
+     * If the classes haven't been parsed already, parsing is done now.
      *
-	 * @return An array storing individual TF2Class objects for each Team
-	 *         Fortress 2 class
+	 * @return An array storing individual stats for each Team Fortress 2 class
 	 */
 	public ArrayList<TF2Class> getClassStats() {
 		if(!this.isPublic()) {
