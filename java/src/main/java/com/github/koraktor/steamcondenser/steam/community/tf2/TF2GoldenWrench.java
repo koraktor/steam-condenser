@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.tf2;
@@ -51,8 +51,8 @@ public class TF2GoldenWrench {
         if(goldenWrenches == null) {
             goldenWrenches = new HashSet<TF2GoldenWrench>();
 
-            JSONObject data = new JSONObject(WebApi.getJSON("ITFItems_440", "GetGoldenWrenches"));
-            JSONArray wrenches = data.getJSONObject("results").getJSONObject("wrenches").getJSONArray("wrench");
+            JSONObject data = new JSONObject(WebApi.getJSON("ITFItems_440", "GetGoldenWrenches", 2));
+            JSONArray wrenches = data.getJSONObject("results").getJSONArray("wrenches");
             for(int i = 0; i < wrenches.length(); i ++) {
                 goldenWrenches.add(new TF2GoldenWrench(wrenches.getJSONObject(i)));
             }

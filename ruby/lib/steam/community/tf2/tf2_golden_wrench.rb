@@ -1,7 +1,7 @@
 # This code is free software; you can redistribute it and/or modify it under the
 # terms of the new BSD License.
 #
-# Copyright (c) 2010, Sebastian Staudt
+# Copyright (c) 2010-2011, Sebastian Staudt
 
 require 'json'
 require 'steam/community/steam_id'
@@ -10,9 +10,6 @@ require 'steam/community/web_api'
 # Represents the special Team Fortress 2 item Golden Wrench. It includes the
 # ID of the item, the serial number of the wrench, a reference to the SteamId
 # of the owner and the date this player crafted the wrench
-#
-# @deprecated The Web API for Team Fortress 2's Golden Wrenches is no longer
-#             available.
 class TF2GoldenWrench
 
   attr_reader :date, :id, :number, :owner
@@ -24,8 +21,8 @@ class TF2GoldenWrench
     if @@golden_wrenches.nil?
       @@golden_wrenches = []
 
-      data = JSON.parse(WebApi.json('ITFItems_440', 'GetGoldenWrenches'), { :symbolize_names => true })
-      data[:results][:wrenches][:wrench].each do |wrench_data|
+      data = JSON.parse(WebApi.json('ITFItems_440', 'GetGoldenWrenches', 2), { :symbolize_names => true })
+      data[:results][:wrenches].each do |wrench_data|
         @@golden_wrenches << TF2GoldenWrench.new(wrench_data)
       end
     end
