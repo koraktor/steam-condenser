@@ -3,8 +3,7 @@
 #
 # Copyright (c) 2010-2011, Sebastian Staudt
 
-Bundler.require :webapi
-
+require 'json'
 require 'open-uri'
 
 require 'exceptions/web_api_exception'

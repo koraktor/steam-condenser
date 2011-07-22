@@ -1,12 +1,7 @@
 source :rubygems
 
-group :webapi do
-  gem 'json', '~> 1.5.1'
-end
-
-group :source do
-  gem 'bzip2-ruby', '~> 0.2.7'
-end
+gem 'bzip2-ruby', '~> 0.2.7'
+gem 'json', '~> 1.5.1'
 
 group :development do
   gem 'rake', '~> 0.9.1'

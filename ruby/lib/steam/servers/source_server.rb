@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-Bundler.require :source
+require 'bzip2-ruby'
 
 require 'exceptions/rcon_no_auth_exception'
 require 'steam/packets/rcon/rcon_auth_request'
