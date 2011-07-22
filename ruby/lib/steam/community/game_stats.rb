@@ -17,12 +17,39 @@ require 'steam/community/game_achievement'
 # @author Sebastian Staudt
 class GameStats
 
+  # Returns the Steam application ID of the game these stats belong to
+  #
+  # @return [Fixnum] The Steam application ID of the game
   attr_reader :app_id
+
+  # Returns the custom URL of the player these stats belong to
+  #
+  # @return [String] The custom URL of the player
   attr_reader :custom_url
+
+  # Returns the friendly name of the game these stats belong to
+  #
+  # @return [String ]The frienldy name of the game
   attr_reader :game_friendly_name
+
+  # Returns the full name of the game these stats belong to
+  #
+  # @return [String] The name of the game
   attr_reader :game_name
+
+  # Returns the number of hours this game has been played by the player
+  #
+  # @return [String] The number of hours this game has been played
   attr_reader :hours_played
+
+  # Returns the privacy setting of the Steam ID profile
+  #
+  # @return [String] The privacy setting of the Steam ID
   attr_reader :privacy_state
+
+  # Returns the 64bit numeric SteamID of the player these stats belong to
+  #
+  # @return [Fixnum] The 64bit numeric SteamID of the player
   attr_reader :steam_id64
 
   # Creates a `GameStats` (or one of its subclasses) instance for the given

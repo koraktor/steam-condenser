@@ -159,6 +159,28 @@ class GameStats {
     }
 
     /**
+     * Returns the percentage of achievements done by this player
+     * <p>
+     * If achievements haven't been parsed yet for this player and this game,
+     * parsing is done now.
+     *
+     * @return float The percentage of achievements completed
+     * @see #getAchievementsDone
+     */
+    public function getAchievementsPercentage() {
+        return $this->getAchievementsDone() / sizeof($this->achievements);
+    }
+
+    /**
+     * Returns the Steam application ID of the game these stats belong to
+     *
+     * @return int The Steam application ID of the game
+     */
+    public function getAppId() {
+        return $this->appId;
+    }
+
+    /**
      * Returns the base Steam Communtiy URL for the stats contained in this
      * object
      *
@@ -173,17 +195,59 @@ class GameStats {
     }
 
     /**
-     * Returns the percentage of achievements done by this player
-     * <p>
-     * If achievements haven't been parsed yet for this player and this game,
-     * parsing is done now.
+     * Returns the custom URL of the player these stats belong to
      *
-     * @return float The percentage of achievements completed
-     * @see #getAchievementsDone
+     * @return string The custom URL of the player
      */
-    public function getAchievementsPercentage() {
-        return $this->getAchievementsDone() / sizeof($this->achievements);
+    public function getCustomUrl() {
+        return $this->customUrl;
     }
+
+    /**
+     * Returns the friendly name of the game these stats belong to
+     *
+     * @return string The frienldy name of the game
+     */
+    public function getGameFriendlyName() {
+        return $this->gameFriendlyName;
+    }
+
+    /**
+     * Returns the full name of the game these stats belong to
+     *
+     * @return string The name of the game
+     */
+    public function getGameName() {
+        return $this->gameName;
+    }
+
+    /**
+     * Returns the privacy setting of the Steam ID profile
+     *
+     * @return string The privacy setting of the Steam ID
+     */
+    public function getPrivacyState() {
+        return $this->privacyState;
+    }
+
+    /**
+     * Returns the number of hours this game has been played by the player
+     *
+     * @return string The number of hours this game has been played
+     */
+    public function getHoursPlayed() {
+        return $this->hoursPlayed;
+    }
+
+    /**
+     * Returns the 64bit numeric SteamID of the player these stats belong to
+     *
+     * @return string The 64bit numeric SteamID of the player
+     */
+    public function getSteamId64() {
+        return $this->steamId64;
+    }
+
 
     /**
      * Returns whether this Steam ID is publicly accessible

@@ -101,17 +101,7 @@ public class GameStats {
 			this.steamId64 = (Long) steamId;
 		}
 		this.gameName = gameName;
-		this.fetch();
-	}
 
-    /**
-     * Fetches the data for this stats object
-     *
-     * @throws SteamCondenserException if the stats data is not available,
-     *         e.g. when the Steam ID is private or the data cannot be parsed
-     */
-	protected void fetch()
-			throws SteamCondenserException {
 		try {
             String url = this.getBaseUrl() + "?xml=all";
 
@@ -203,10 +193,19 @@ public class GameStats {
     }
 
     /**
+     * Returns the Steam application ID of the game these stats belong to
+     *
+     * @return The Steam application ID of the game
+     */
+    public int getAppId() {
+        return this.appId;
+    }
+
+    /**
      * Returns the base Steam Communtiy URL for the stats contained in this
      * object
      *
-     * @return [String] The base URL used for queries on these stats
+     * @return The base URL used for queries on these stats
      */
     public String getBaseUrl() {
         if(this.customUrl == null) {
@@ -216,8 +215,18 @@ public class GameStats {
         }
     }
 
+
     /**
-     * Returns the friendly name of the game this stats belong to
+     * Returns the custom URL of the player these stats belong to
+     *
+     * @return The custom URL of the player
+     */
+    public String getCustomUrl() {
+        return this.customUrl;
+    }
+
+    /**
+     * Returns the friendly name of the game these stats belong to
      *
      * @return The frienldy name of the game
      */
@@ -226,13 +235,22 @@ public class GameStats {
 	}
 
     /**
-     * Returns the full name of the game this stats belong to
+     * Returns the full name of the game these stats belong to
      *
      * @return The name of the game
      */
 	public String getGameName() {
 		return this.gameName;
 	}
+
+    /**
+     * Returns the privacy setting of the Steam ID profile
+     *
+     * @return The privacy setting of the Steam ID
+     */
+    public String getPrivacyState() {
+        return this.privacyState;
+    }
 
     /**
      * Returns the number of hours this game has been played by the player
@@ -242,6 +260,15 @@ public class GameStats {
 	public String getHoursPlayed() {
 		return this.hoursPlayed;
 	}
+
+    /**
+     * Returns the 64bit numeric SteamID of the player these stats belong to
+     *
+     * @return The 64bit numeric SteamID of the player
+     */
+    public long getSteamId64() {
+        return this.steamId64;
+    }
 
     /**
      * Returns whether this Steam ID is publicly accessible
