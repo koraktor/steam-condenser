@@ -11,6 +11,7 @@ require 'steam/packets/rcon/rcon_auth_response'
 require 'steam/packets/rcon/rcon_exec_request'
 require 'steam/packets/rcon/rcon_terminator'
 require 'steam/servers/game_server'
+require 'steam/servers/master_server'
 require 'steam/sockets/rcon_socket'
 require 'steam/sockets/source_socket'
 
@@ -26,6 +27,14 @@ require 'steam/sockets/source_socket'
 class SourceServer
 
   include GameServer
+
+  # Returns a master server instance for the default master server for Source
+  # games
+  #
+  # @return [MasterServer] The Source master server
+  def self.master
+    MasterServer.new *MasterServer::GOLDSRC_MASTER_SERVER
+  end
 
   # Creates a new instance of a server object representing a Source server,
   # i.e. SrcDS instance

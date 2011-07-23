@@ -14,6 +14,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONAuthResponse.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONExecRequest.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONTerminator.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/MasterServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/RCONSocket.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
 
@@ -36,6 +37,16 @@ class SourceServer extends GameServer
      * @var long The request ID used for RCON request
      */
     private $rconRequestId;
+
+    /**
+     * Returns a master server instance for the default master server for
+     * Source games
+     *
+     * @return The Source master server
+     */
+    public function getMaster() {
+        return new MasterServer(MasterServer::SOURCE_MASTER_SERVER);
+    }
 
     /**
      * Initializes the sockets to communicate with the Source server

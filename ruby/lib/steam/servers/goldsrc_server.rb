@@ -4,6 +4,7 @@
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/servers/game_server'
+require 'steam/servers/master_server'
 require 'steam/sockets/goldsrc_socket'
 
 # This class represents a GoldSrc game server and can be used to query
@@ -18,6 +19,14 @@ require 'steam/sockets/goldsrc_socket'
 class GoldSrcServer
 
   include GameServer
+
+  # Returns a master server instance for the default master server for GoldSrc
+  # games
+  #
+  # @return [MasterServer] The GoldSrc master server
+  def self.master
+    MasterServer.new *MasterServer::GOLDSRC_MASTER_SERVER
+  end
 
   # Creates a new instance of a GoldSrc server object
   #

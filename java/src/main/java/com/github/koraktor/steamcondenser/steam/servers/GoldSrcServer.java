@@ -32,6 +32,19 @@ public class GoldSrcServer extends GameServer {
 	private String rconPassword;
 
     /**
+     * Returns a master server instance for the default master server for
+     * GoldSrc games
+     *
+     * @return The GoldSrc master server
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
+     */
+    public MasterServer getMaster()
+            throws IOException, SteamCondenserException {
+        return new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
+    }
+
+    /**
      * Creates a new instance of a GoldSrc server object
      *
      * @param address Either an IP address, a DNS name or one of them combined

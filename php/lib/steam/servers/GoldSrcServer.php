@@ -9,6 +9,7 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GameServer.php';
+require_once STEAM_CONDENSER_PATH . 'steam/servers/MasterServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/GoldSrcSocket.php';
 
 /**
@@ -30,6 +31,16 @@ class GoldSrcServer extends GameServer {
      * @var bool
      */
     private $isHLTV;
+
+    /**
+     * Returns a master server instance for the default master server for
+     * GoldSrc games
+     *
+     * @return The GoldSrc master server
+     */
+    public function getMaster() {
+        return new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
+    }
 
     /**
      * Creates a new instance of a GoldSrc server object

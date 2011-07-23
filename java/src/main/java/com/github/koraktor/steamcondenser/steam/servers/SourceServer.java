@@ -40,6 +40,19 @@ public class SourceServer extends GameServer {
 	protected RCONSocket rconSocket;
 
     /**
+     * Returns a master server instance for the default master server for
+     * Source games
+     *
+     * @return The Source master server
+     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if an host name cannot be resolved
+     */
+    public MasterServer getMaster()
+            throws IOException, SteamCondenserException {
+        return new MasterServer(MasterServer.SOURCE_MASTER_SERVER);
+    }
+
+    /**
      * Creates a new instance of a server object representing a Source server,
      * i.e. SrcDS instance
      *
