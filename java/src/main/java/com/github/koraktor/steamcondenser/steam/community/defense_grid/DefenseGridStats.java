@@ -1,8 +1,8 @@
-/*
- * This code is free software; you can redistribute it and/or modify it under the
- * terms of the new BSD License.
+/**
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.defense_grid;
@@ -18,8 +18,10 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
 /**
+ * This class represents the game statistics for a single user in Defense Grid:
+ * The Awakening
  *
- * @author koraktor
+ * @author Sebastian Staudt
  */
 public class DefenseGridStats extends GameStats {
     private HashMap<String, int[]> alienStats;
@@ -47,6 +49,13 @@ public class DefenseGridStats extends GameStats {
     private float orbitalLaserDamage;
     private HashMap<String, ArrayList<float[]>> towerStats;
 
+    /**
+     * Creates a <code>DefenseGridStats</code> object by calling the super
+     * constructor with the game name <code>"defensegrid:awakening"</code>
+     *
+     * @param steamId The custom URL or the 64bit Steam ID of the user
+     * @throws SteamCondenserException if the stats cannot be parsed
+     */
     public DefenseGridStats(Object steamId)
             throws SteamCondenserException {
         super(steamId, "defensegrid:awakening");
@@ -84,6 +93,16 @@ public class DefenseGridStats extends GameStats {
         }
     }
 
+    /**
+     * Returns stats about the aliens encountered by the player
+     *
+     * The map returned uses the names of the aliens as keys. Every value of
+     * the map is an array containing the number of aliens encountered as the
+     * first element and the number of aliens killed as the second element.
+     *
+     * @return array Stats about the aliens encountered
+     * @throws SteamCondenserException if the stats cannot be parsed
+     */
     public HashMap<String, int[]> getAlienStats()
             throws SteamCondenserException {
         if(!this.isPublic()) {
@@ -113,90 +132,219 @@ public class DefenseGridStats extends GameStats {
         return this.alienStats;
     }
 
+    /**
+     * Returns the bronze medals won by this player
+     *
+     * @return Bronze medals won
+     */
     public int getBronzeMedals() {
         return bronzeMedals;
     }
 
+    /**
+     * Returns the damage done by this player
+     *
+     * @return Damage done
+     */
     public float getDamage() {
         return damage;
     }
 
+    /**
+     * Returns the damage done during the campaign by this player
+     *
+     * @return Damage done during the campaign
+     */
     public float getDamageCampaign() {
         return damageCampaign;
     }
 
+    /**
+     * Returns the damage done during challenges by this player
+     *
+     * @return Damage done during challenges
+     */
     public float getDamageChallenge() {
         return damageChallenge;
     }
 
+    /**
+     * Returns the aliens encountered by this player
+     *
+     * @return Aliens encountered
+     */
     public int getEncountered() {
         return encountered;
     }
 
+    /**
+     * Returns the gold medals won by this player
+     *
+     * @return Gold medals won
+     */
     public int getGoldMedals() {
         return goldMedals;
     }
 
+    /**
+     * Returns the heat damage done by this player
+     *
+     * @return Heat damage done
+     */
     public float getHeatDamage() {
         return heatDamage;
     }
 
+    /**
+     * Returns the interest gained by the player
+     *
+     * @return Interest gained
+     */
     public float getInterest() {
         return interest;
     }
 
+    /**
+     * Returns the aliens killed by the player
+     *
+     * @return Aliens killed
+     */
     public int getKilled() {
         return killed;
     }
 
+    /**
+     * Returns the aliens killed during the campaign by the player
+     *
+     * @return Aliens killed during the campaign
+     */
     public int getKilledCampaign() {
         return killedCampaign;
     }
 
+    /**
+     * Returns the aliens killed during challenges by the player
+     *
+     * @return Aliens killed during challenges
+     */
     public int getKilledChallenge() {
         return killedChallenge;
     }
 
+    /**
+     * Returns the number of levels played by the player
+     *
+     * @return Number of levels played
+     */
     public int getLevelsPlayed() {
         return levelsPlayed;
     }
 
+    /**
+     * Returns the number of levels played during the campaign by the player
+     *
+     * @return Number of levels played during the campaign
+     */
     public int getLevelsPlayedCampaign() {
         return levelsPlayedCampaign;
     }
 
+    /**
+     * Returns the number of levels played during challenges by the player
+     *
+     * @return Number of levels played during challenges
+     */
     public int getLevelsPlayedChallenge() {
         return levelsPlayedChallenge;
     }
 
+    /**
+     * Returns the number of levels won by the player
+     *
+     * @return Number of levels won
+     */
     public int getLevelsWon() {
         return levelsWon;
     }
 
+    /**
+     * Returns the number of levels won during the campaign by the player
+     *
+     * @return Number of levels during the campaign won
+     */
     public int getLevelsWonCampaign() {
         return levelsWonCampaign;
     }
 
+    /**
+     * Returns the number of levels won during challenges by the player
+     *
+     * @return Number of levels during challenges won
+     */
     public int getLevelsWonChallenge() {
         return levelsWonChallenge;
     }
 
+    /**
+     * Returns the damage dealt by the orbital laser
+     *
+     * @return Damage dealt by the orbital laser
+     */
     public float getOrbitalLaserDamage() {
         return orbitalLaserDamage;
     }
 
+    /**
+     * Returns the number of times the orbital lasers has been fired by the player
+     *
+     * @return Number of times the orbital laser has been fired
+     */
     public int getOrbitalLaserFired() {
         return orbitalLaserFired;
     }
 
+    /**
+     * Returns the amount of resources harvested by the player
+     *
+     * @return Resources harvested by the player
+     */
     public float getResources() {
         return resources;
     }
 
+    /**
+     * Returns the silver medals won by this player
+     *
+     * @return Silver medals won
+     */
     public int getSilverMedals() {
         return silverMedals;
     }
 
+    /**
+     * Returns the time played in seconds by the player
+     *
+     * @return Time played
+     */
+    public float getTimePlayed() {
+        return timePlayed;
+    }
+
+    /**
+     * Returns stats about the towers built by the player
+     *
+     * The map returned uses the names of the towers as keys. Every value of
+     * the map is another map using the keys 1 to 3 for different tower levels.
+     * The values of these maps are an array containing the number of towers
+     * built as the first element and the damage dealt by this specific tower
+     * type as the second element.
+     *
+     * The Command tower uses the resources gained as second element.
+     * The Temporal tower doesn't have a second element.
+     *
+     * @return Stats about the towers built
+     * @throws SteamCondenserException if the stats cannot be parsed
+     */
     public HashMap<String, ArrayList<float[]>> getTowerStats()
             throws SteamCondenserException {
         if(!this.isPublic()) {
@@ -244,10 +392,6 @@ public class DefenseGridStats extends GameStats {
         }
 
         return this.towerStats;
-    }
-
-    public float getTimePlayed() {
-        return timePlayed;
     }
 
 }

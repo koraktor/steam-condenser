@@ -1,57 +1,150 @@
 <?php
 /**
- * This code is free software; you can redistribute it and/or modify it under the
- * terms of the new BSD License.
+ * This code is free software; you can redistribute it and/or modify it under
+ * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
 
 /**
- * The DefenseGridStats class represents the game statistics for a single user
- * in Defense Grid: The Awakening
+ * This class represents the game statistics for a single user in Defense Grid:
+ * The Awakening
  *
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class DefenseGridStats extends GameStats {
+
     /**
      * @var array
      */
-    public $towerStats;
+    private $alienStats;
+
+    /**
+     * @var int
+     */
+    private $bronzeMedals;
+
+    /**
+     * @var float
+     */
+    private $damage;
+
+    /**
+     * @var float
+     */
+    private $damageCampaign;
+
+    /**
+     * @var float
+     */
+    private $damageChallenge;
+
+    /**
+     * @var int
+     */
+    private $encountered;
+
+    /**
+     * @var int
+     */
+    private $goldMedals;
+
+    /**
+     * @var float
+     */
+    private $heatDamage;
+
+    /**
+     * @var int
+     */
+    private $interest;
+
+    /**
+     * @var int
+     */
+    private $killed;
+
+    /**
+     * @var int
+     */
+    private $killedCampaign;
+
+    /**
+     * @var int
+     */
+    private $killedChallenge;
+
+    /**
+     * @var int
+     */
+    private $levelsPlayed;
+
+    /**
+     * @var int
+     */
+    private $levelsPlayedCampaign;
+
+    /**
+     * @var int
+     */
+    private $levelsPlayedChallenge;
+
+    /**
+     * @var int
+     */
+    private $levelsWon;
+
+    /**
+     * @var int
+     */
+    private $levelsWonCampaign;
+
+    /**
+     * @var int
+     */
+    private $levelsWonChallenge;
+
+    /**
+     * @var int
+     */
+    private $silverMedals;
+
+    /**
+     * @var float
+     */
+    private $orbitalLaserDamage;
+
+    /**
+     * @var int
+     */
+    private $orbitalLaserFired;
+
+    /**
+     * @var int
+     */
+    private $resources;
+
+    /**
+     * @var float
+     */
+    private $timePlayed;
+
     /**
      * @var array
      */
-    public $alienStats;
+    private $towerStats;
 
     /**
-     * @var int
-     */
-    public $goldMedals;
-
-    /**
+     * Creates a <var>DefenseGridStats</var> object by calling the super
+     * constructor with the game name <var>"defensegrid:awakening"</var>
      *
-     * @var int
-     */
-    public $silverMedals;
-
-    /**
-     *
-     * @var int
-     */
-    public $bronzeMedals;
-
-    /**
-     * Creates a DefenseGridStats object by calling the super constructor with
-     * the game name "defensegrid:awakening"
-     *
-     * @param String $steamId
+     * @param String $steamId The custom URL or the 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'defensegrid:awakening');
@@ -85,11 +178,13 @@ class DefenseGridStats extends GameStats {
     }
 
     /**
-     * Returns stats about the towers built
+     * Returns stats about the aliens encountered by the player
      *
      * The array returned uses the names of the aliens as keys. Every value of
      * the array is an array containing the number of aliens encountered as the
      * first element and the number of aliens killed as the second element.
+     *
+     * @return array Stats about the aliens encountered
      */
     public function getAlienStats() {
         if(!$this->isPublic()) {
@@ -115,19 +210,217 @@ class DefenseGridStats extends GameStats {
     }
 
     /**
-     * Returns stats about the towers built
+     * Returns the bronze medals won by this player
      *
-     * The Hash returned uses the names of the towers as keys. Every value of
-     * the Hash is another Hash using the keys 1 to 3 for different tower
+     * @return int Bronze medals won
+     */
+    public function getBronzeMedals() {
+        return $this->bronzeMedals;
+    }
+
+    /**
+     * Returns the damage done by this player
+     *
+     * @return float Damage done
+     */
+    public function getDamage() {
+        return $this->damage;
+    }
+
+    /**
+     * Returns the damage done during the campaign by this player
+     *
+     * @return float Damage done during the campaign
+     */
+    public function getDamageCampaign() {
+        return $this->damageCampaign;
+    }
+
+    /**
+     * Returns the damage done during challenges by this player
+     *
+     * @return float Damage done during challenges
+     */
+    public function getDamageChallenge() {
+        return $this->damageChallenge;
+    }
+
+    /**
+     * Returns the aliens encountered by this player
+     *
+     * @return int Aliens encountered
+     */
+    public function getEncountered() {
+        return $this->encountered;
+    }
+
+    /**
+     * Returns the gold medals won by this player
+     *
+     * @return int Gold medals won
+     */
+    public function getGoldMedals() {
+        return $this->goldMedals;
+    }
+
+    /**
+     * Returns the heat damage done by this player
+     *
+     * @return float Heat damage done
+     */
+    public function getHeatDamage() {
+        return $this->heatDamage;
+    }
+
+    /**
+     * Returns the interest gained by the player
+     *
+     * @return int Interest gained
+     */
+    public function getInterest() {
+        return $this->interest;
+    }
+
+    /**
+     * Returns the aliens killed by the player
+     *
+     * @return int Aliens killed
+     */
+    public function getKilled() {
+        return $this->killed;
+    }
+
+    /**
+     * Returns the aliens killed during the campaign by the player
+     *
+     * @return int Aliens killed during the campaign
+     */
+    public function getKilledCampaign() {
+        return $this->killedCampaign;
+    }
+
+    /**
+     * Returns the aliens killed during challenges by the player
+     *
+     * @return int Aliens killed during challenges
+     */
+    public function getKilledChallenge() {
+        return $this->killedChallenge;
+    }
+
+    /**
+     * Returns the number of levels played by the player
+     *
+     * @return int Number of levels played
+     */
+    public function getLevelsPlayed() {
+        return $this->levelsPlayed;
+    }
+
+    /**
+     * Returns the number of levels played during the campaign by the player
+     *
+     * @return int Number of levels played during the campaign
+     */
+    public function getLevelsPlayedCampaign() {
+        return $this->levelsPlayedCampaign;
+    }
+
+    /**
+     * Returns the number of levels played during challenges by the player
+     *
+     * @return int Number of levels played during challenges
+     */
+    public function getLevelsPlayedChallenge() {
+        return $this->levelsPlayedChallenge;
+    }
+
+    /**
+     * Returns the number of levels won by the player
+     *
+     * @return int Number of levels won
+     */
+    public function getLevelsWon() {
+        return $this->levelsWon;
+    }
+
+    /**
+     * Returns the number of levels won during the campaign by the player
+     *
+     * @return int Number of levels during the campaign won
+     */
+    public function getLevelsWonCampaign() {
+        return $this->levelsWonCampaign;
+    }
+
+    /**
+     * Returns the number of levels won during challenges by the player
+     *
+     * @return int Number of levels during challenges won
+     */
+    public function getLevelsWonChallenge() {
+        return $this->levelsWonChallenge;
+    }
+
+    /**
+     * Returns the damage dealt by the orbital laser
+     *
+     * @return float Damage dealt by the orbital laser
+     */
+    public function getOrbitalLaserDamage() {
+        return $this->orbitalLaserDamage;
+    }
+
+    /**
+     * Returns the number of times the orbital lasers has been fired by the player
+     *
+     * @return int Number of times the orbital laser has been fired
+     */
+    public function getOrbitalLaserFired() {
+        return $this->orbitalLaserFired;
+    }
+
+    /**
+     * Returns the amount of resources harvested by the player
+     *
+     * @return int Resources harvested by the player
+     */
+    public function getResources() {
+        return $this->resources;
+    }
+
+    /**
+     * Returns the silver medals won by this player
+     *
+     * @return int Silver medals won
+     */
+    public function getSilverMedals() {
+        return $this->silverMedals;
+    }
+
+    /**
+     * Returns the time played in seconds by the player
+     *
+     * @return float Time played
+     */
+    public function getTimePlayed() {
+        return $this->timePlayed;
+    }
+
+    /**
+     * Returns stats about the towers built by the player
+     *
+     * The array returned uses the names of the towers as keys. Every value of
+     * the array is another array using the keys 1 to 3 for different tower
      * levels.
-     * The values of these Hash is an Array containing the number of towers
+     * The values of these arrays is an array containing the number of towers
      * built as the first element and the damage dealt by this specific tower
      * type as the second element.
      *
      * The Command tower uses the resources gained as second element.
      * The Temporal tower doesn't have a second element.
      *
-     * @return array
+     * @return array Stats about the towers built
      */
     public function getTowerStats() {
         if(!$this->isPublic()) {
