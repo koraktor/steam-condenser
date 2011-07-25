@@ -9,6 +9,12 @@ package com.github.koraktor.steamcondenser.steam.community.l4d;
 
 import org.w3c.dom.Element;
 
+/**
+ * This class represents the statistics of a single weapon for a user in
+ * Left4Dead 2
+ *
+ * @author Sebastian Staudt
+ */
 public class L4D2Weapon extends AbtractL4DWeapon {
 
     private int damage;
@@ -16,9 +22,9 @@ public class L4D2Weapon extends AbtractL4DWeapon {
     private String weaponGroup;
 
     /**
-     * Creates a new instance of L4D2Weapon based on the assigned XML data
+     * Creates a new instance of a weapon based on the given XML data
      *
-     * @param weaponData
+     * @param weaponData The XML data of this weapon
      */
     public L4D2Weapon(Element weaponData) {
         super(weaponData);
@@ -30,10 +36,20 @@ public class L4D2Weapon extends AbtractL4DWeapon {
         this.weaponGroup = weaponData.getAttribute("group");
     }
 
+    /**
+     * Returns the amount of damage done by the player with this weapon
+     *
+     * @return The damage done by this weapon
+     */
     public int getDamage() {
         return this.damage;
     }
 
+    /**
+     * Returns the weapon group this weapon belongs to
+     *
+     * @return The group this weapon belongs to
+     */
     public String getWeaponGroup() {
         return this.weaponGroup;
     }

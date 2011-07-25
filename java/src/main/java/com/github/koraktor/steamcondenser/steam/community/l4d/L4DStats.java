@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009-2010, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.l4d;
@@ -16,13 +16,19 @@ import org.w3c.dom.NodeList;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
 
+/**
+ * This class represents the game statistics for a single user in Left4Dead
+ *
+ * @author Sebastian Staudt
+ */
 public class L4DStats extends AbstractL4DStats {
 
 	/**
-	 * Creates a L4DStats object by calling the super constructor with the game
-	 * name "l4d"
-	 * @param steamId The custom URL or the 64bit Steam ID of the user
-     * @throws SteamCondenserException If an error occurs
+     * Creates a <code>L4DStats</code> object by calling the super constructor
+     * with the game name <code>"l4d"</code>
+     *
+     * @param steamId The custom URL or 64bit Steam ID of the user
+     * @throws SteamCondenserException if an error occurs
 	 */
 	public L4DStats(Object steamId)
 			throws SteamCondenserException {
@@ -30,10 +36,13 @@ public class L4DStats extends AbstractL4DStats {
 	}
 
 	/**
-	 * @return A HashMap of Survival statistics for this user like revived
-	 * teammates.
-	 * If the Survival statistics haven't been parsed already, parsing is done
-	 * now.
+     * Returns a map of Survival statistics for this user like revived
+     * teammates
+     * <p>
+     * If the Survival statistics haven't been parsed already, parsing is done
+     * now.
+     *
+     * @return The stats for the Survival mode
 	 */
 	public HashMap<String, Object> getSurvivalStats()
             throws SteamCondenserException {
@@ -57,9 +66,12 @@ public class L4DStats extends AbstractL4DStats {
 	}
 
 	/**
-	 * @return A HashMap of L4DWeapon for this user containing all Left4Dead
-	 * weapons.
-  	 * If the weapons haven't been parsed already, parsing is done now.
+     * Returns a map of <code>L4DWeapon</code> for this user containing all
+     * Left4Dead weapons
+     * <p>
+     * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return The weapon statistics
 	 */
 	public HashMap<String, GameWeapon> getWeaponStats() {
 		if(!this.isPublic()) {

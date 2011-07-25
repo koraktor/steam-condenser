@@ -3,25 +3,27 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/AbstractL4DWeapon.php';
 
 /**
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * This class represents the statistics of a single weapon for a user in
+ * Left4Dead
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class L4DWeapon extends AbstractL4DWeapon {
 
     /**
-     * Creates a new instance of L4DWeapon based on the assigned XML data
-     * @param $weaponData
+     * Creates a new instance of a weapon based on the given XML data
+     *
+     * @param SimpleXMLElement $weaponData The XML data for this weapon
      */
     public function __construct($weaponData) {
         parent::__construct($weaponData);

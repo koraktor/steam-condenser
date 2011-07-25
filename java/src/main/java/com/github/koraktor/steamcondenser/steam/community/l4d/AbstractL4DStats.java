@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.l4d;
@@ -18,9 +18,11 @@ import com.github.koraktor.steamcondenser.steam.community.GameStats;
 import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
 
 /**
- * AbstractL4DStats is an abstract base class for statistics for Left4Dead and
+ * This abstract class is a base class for statistics for Left4Dead and
  * Left4Dead 2. As both games have more or less the same statistics available
  * in the Steam Community the code for both is pretty much the same.
+ *
+ * @author Sebastian Staudt
  */
 public abstract class AbstractL4DStats extends GameStats {
 
@@ -39,13 +41,12 @@ public abstract class AbstractL4DStats extends GameStats {
 	protected HashMap<String, GameWeapon> weaponStats;
 
 	/**
-	 * AbstractL4DStats is an abstract base class for statistics for Left4Dead
-     * and Left4Dead 2. As both games have more or less the same statistics
-     * available in the Steam Community the code for both is pretty much the
-     * same.
+     * Creates a new instance of statistics for both, Left4Dead and Left4Dead 2
+     * parsing basic common data
      *
-	 * @param steamId The custom URL or the 64bit Steam ID of the user
-	 * @throws SteamCondenserException
+     * @param steamId The custom URL or 64bit Steam ID of the user
+     * @param gameName The name of the game
+     * @throws SteamCondenserException if an error occurs
 	 */
 	public AbstractL4DStats(Object steamId, String gameName)
 			throws SteamCondenserException {
@@ -64,8 +65,11 @@ public abstract class AbstractL4DStats extends GameStats {
 	}
 
 	/**
-	 * @return A HashMap of favorites for this user like weapons and character.
-	 * If the favorites haven't been parsed already, parsing is done now.
+     * Returns a map of favorites for this user like weapons and character
+     * <p>
+     * If the favorites haven't been parsed already, parsing is done now.
+     *
+     * @return The favorites of this user
 	 */
 	public HashMap<String, Object> getFavorites() {
 		if(!this.isPublic()) {
@@ -89,10 +93,12 @@ public abstract class AbstractL4DStats extends GameStats {
 	}
 
 	/**
-	 * @return A HashMap of lifetime statistics for this user like the time
-	 * played.
-	 * If the lifetime statistics haven't been parsed already, parsing is done
-	 * now.
+     * Returns a map of lifetime statistics for this user like the time played
+     * <p>
+     * If the lifetime statistics haven't been parsed already, parsing is done
+     * now.
+     *
+     * @return The lifetime statistics for this user
 	 */
 	public HashMap<String, Object> getLifetimeStats() {
 		if(!this.isPublic()) {
@@ -118,10 +124,13 @@ public abstract class AbstractL4DStats extends GameStats {
 	}
 
 	/**
-	 * @return A HashMap of Survival statistics for this user like revived
-	 * teammates.
-	 * If the Survival statistics haven't been parsed already, parsing is done
-	 * now.
+     * Returns a map of Survival statistics for this user like revived
+     * teammates
+     * <p>
+     * If the Survival statistics haven't been parsed already, parsing is done
+     * now.
+     *
+     * @return The Survival statistics for this user
 	 */
 	public HashMap<String, Object> getSurvivalStats()
             throws SteamCondenserException {
@@ -151,10 +160,13 @@ public abstract class AbstractL4DStats extends GameStats {
 	}
 
 	/**
-	 * @return A HashMap of teamplay statistics for this user like revived
-	 * teammates.
-	 * If the teamplay statistics haven't been parsed already, parsing is done
-	 * now.
+     * Returns a map of teamplay statistics for this user like revived
+     * teammates
+     * <p>
+     * If the teamplay statistics haven't been parsed already, parsing is done
+     * now.
+     *
+     * @return The teamplay statistics for this
 	 */
 	public HashMap<String, Object> getTeamplayStats() {
 		if(!this.isPublic()) {
@@ -181,10 +193,13 @@ public abstract class AbstractL4DStats extends GameStats {
 	}
 
 	/**
-	 * @return A HashMap of Versus statistics for this user like percentage of
-	 * rounds won.
-	 * If the Versus statistics haven't been parsed already, parsing is done
+     * Returns a map of Versus statistics for this user like percentage of
+     * rounds won
+     * <p>
+     * If the Versus statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return The Versus statistics for this user
 	 */
 	public HashMap<String, Object> getVersusStats() {
 		if(!this.isPublic()) {

@@ -3,41 +3,71 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
 
 /**
- * AbstractL4DStats is an abstract base class for statistics for Left4Dead and
+ * This abstract class is a base class for statistics for Left4Dead and
  * Left4Dead 2. As both games have more or less the same statistics available
  * in the Steam Community the code for both is pretty much the same.
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 abstract class AbstractL4DStats extends GameStats {
 
+    /**
+     * @var array The names of the special infected in Left4Dead
+     */
     protected static $SPECIAL_INFECTED = array('boomer', 'hunter', 'smoker', 'tank');
 
+    /**
+     * @var array
+     */
     protected $favorites;
 
+    /**
+     * @var array
+     */
     protected $lifetimeStats;
 
+    /**
+     * @var array
+     */
     protected $mostRecentGame;
 
+    /**
+     * @var array
+     */
     protected $survivalStats;
 
+    /**
+     * @var array
+     */
     protected $teamplayStats;
 
+    /**
+     * @var array
+     */
     protected $versusStats;
 
+    /**
+     * @var array
+     */
     protected $weaponStats;
 
+    /**
+     * Creates a new instance of statistics for both, Left4Dead and Left4Dead 2
+     * parsing basic common data
+     *
+     * @param string $steamId The custom URL or 64bit Steam ID of the user
+     * @param string $gameName The name of the game
+     */
     public function __construct($steamId, $gameName) {
         parent::__construct($steamId, $gameName);
 
@@ -50,8 +80,11 @@ abstract class AbstractL4DStats extends GameStats {
     }
 
     /**
-     * Returns an array of favorites for this user like weapons and character.
+     * Returns an array of favorites for this user like weapons and character
+     *
      * If the favorites haven't been parsed already, parsing is done now.
+     *
+     * @return array The favorites of this user
      */
     public function getFavorites() {
         if(!$this->isPublic()) {
@@ -75,9 +108,12 @@ abstract class AbstractL4DStats extends GameStats {
 
     /**
      * Returns an array of lifetime statistics for this user like the time
-     * played.
+     * played
+     *
      * If the lifetime statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return array The lifetime statistics for this user
      */
     public function getLifetimeStats() {
         if(!$this->isPublic()) {
@@ -103,9 +139,12 @@ abstract class AbstractL4DStats extends GameStats {
 
     /**
      * Returns an array of Survival statistics for this user like revived
-     * teammates.
-      * If the Survival statistics haven't been parsed already, parsing is done
-      * now.
+     * teammates
+     *
+     * If the Survival statistics haven't been parsed already, parsing is done
+     * now.
+     *
+     * @return array The Survival statistics for this user
      */
     public function getSurvivalStats() {
         if(!$this->isPublic()) {
@@ -126,9 +165,12 @@ abstract class AbstractL4DStats extends GameStats {
 
     /**
      * Returns an array of teamplay statistics for this user like revived
-     * teammates.
+     * teammates
+     *
      * If the teamplay statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return array The teamplay statistics for this
      */
     public function getTeamplayStats() {
         if(!$this->isPublic()) {
@@ -155,9 +197,12 @@ abstract class AbstractL4DStats extends GameStats {
 
     /**
      * Returns an array of Versus statistics for this user like percentage of
-     * rounds won.
+     * rounds won
+     *
      * If the Versus statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return array The Versus statistics for this user
      */
     public function getVersusStats() {
         if(!$this->isPublic()) {
@@ -188,7 +233,11 @@ abstract class AbstractL4DStats extends GameStats {
     }
 
     /**
+     * Returns the names of the special infected in Left4Dead
+     *
      * Hacky workaround for PHP not allowing arrays as class constants
+     *
+     * @return array The names of the special infected in Left4Dead
      */
     protected function SPECIAL_INFECTED() {
         return self::$SPECIAL_INFECTED;

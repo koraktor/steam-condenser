@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.l4d;
@@ -15,15 +15,20 @@ import org.w3c.dom.NodeList;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
 
+/**
+ * This class represents the game statistics for a single user in Left4Dead 2
+ *
+ * @author Sebastian Staudt
+ */
 public class L4D2Stats extends AbstractL4DStats {
 
     private HashMap<String, Object> scavengeStats;
 
     /**
-     * Creates a L4D2Stats object by calling the super constructor with the game
-     * name "l4d2"
-     * @param steamId The custom URL or the 64bit Steam ID of the user
-     * @throws SteamCondenserException
+     * Creates a <code>L4D2Stats</code> object by calling the super constructor
+     * with the game name <code>"l4d2"</code>
+     *
+     * @param steamId The custom URL or 64bit Steam ID of the user
      */
     public L4D2Stats(Object steamId)
             throws SteamCondenserException {
@@ -31,14 +36,17 @@ public class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
-     * @return A HashMap of lifetime statistics for this user like the time
-     * played.
+     * Returns a map of lifetime statistics for this user like the time played
+     * <p>
      * If the lifetime statistics haven't been parsed already, parsing is done
      * now.
-     *
+     * <p>
      * There are only a few additional lifetime statistics for Left4Dead 2
      * which are not generated for Left4Dead, so this calls
-     * AbstractL4DStats#getLifetimeStats() first and adds some additional stats.
+     * <code>AbstractL4DStats#getLifetimeStats()</code> first and adds some
+     * additional stats.
+     *
+     * @return array The lifetime statistics of the player in Left4Dead 2
      */
     public HashMap<String, Object> getLifetimeStats() {
         if(!this.isPublic()) {
@@ -57,10 +65,13 @@ public class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
-     * @return A HashMap of Scavenge statistics for this user like the number of
-     * Scavenge rounds played.
+     * Returns a map of Scavenge statistics for this user like the number of
+     * Scavenge rounds played
+     * <p>
      * If the Scavenge statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return The Scavenge statistics of the player
      */
     public HashMap<String, Object> getScavengeStats() {
         if(!this.isPublic()) {
@@ -98,15 +109,19 @@ public class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
-     * @return A HashMap of Survival statistics for this user like revived
-     * teammates.
+     * Returns a map of Survival statistics for this user like revived
+     * teammates
+     * <p>
      * If the Survival statistics haven't been parsed already, parsing is done
      * now.
      *
      * The XML layout for the Survival statistics for Left4Dead 2 differs a bit
      * from Left4Dead's Survival statistics. So we have to use a different way
-     * of parsing for the maps and we use a different map class (L4D2Map) which
-     * holds the additional information provided in Left4Dead 2's statistics.
+     * of parsing for the maps and we use a different map class
+     * (<code>L4D2Map</code>) which holds the additional information provided
+     * in Left4Dead 2's statistics.
+     *
+     * @return The Survival statistics of the player
      */
     public HashMap<String, Object> getSurvivalStats()
             throws SteamCondenserException {
@@ -130,9 +145,12 @@ public class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
-     * @return A HashMap of L4D2Weapon for this user containing all Left4Dead 2
-     * weapons.
+     * Returns a map of <code>L4D2Weapon</code> for this user containing all
+     * Left4Dead 2 weapons
+     * <p>
      * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return The weapon statistics for this player
      */
     public HashMap<String, GameWeapon> getWeaponStats() {
         if(!this.isPublic()) {

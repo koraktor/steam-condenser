@@ -1,17 +1,25 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2009-2010, Sebastian Staudt
+# Copyright (c) 2009-2011, Sebastian Staudt
 
 require 'steam/community/game_stats'
 
-# AbstractL4DStats is an abstract base class for statistics for Left4Dead and
-# Left4Dead 2. As both games have more or less the same statistics available in
-# the Steam Community the code for both is pretty much the same.
+# This module is a base for statistics for Left4Dead and Left4Dead 2. As both
+# games have more or less the same statistics available in the Steam Community
+# the code for both is pretty much the same.
+#
+# @author Sebastian Staudt
 module AbstractL4DStats
 
+  # The names of the special infected in Left4Dead
   SPECIAL_INFECTED = %w(boomer hunter smoker tank)
 
+  # Creates a new instance of statistics for both, Left4Dead and Left4Dead 2
+  # parsing basic common data
+  #
+  # @param [String] steam_id The custom URL or 64bit Steam ID of the user
+  # @param [String] game_name The name of the game
   def initialize(steam_id, game_name)
     super steam_id, game_name
 
@@ -26,8 +34,11 @@ module AbstractL4DStats
     end
   end
 
-  # Returns a Hash of favorites for this user like weapons and character.
+  # Returns a hash of favorites for this user like weapons and character
+  #
   # If the favorites haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The favorites of this user
   def favorites
     return unless public?
 
@@ -46,8 +57,12 @@ module AbstractL4DStats
     @favorites
   end
 
-  # Returns a Hash of lifetime statistics for this user like the time played.
-  # If the lifetime statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of lifetime statistics for this user like the time played
+  #
+  # If the lifetime statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # @return [Hash<String, Object>] The lifetime statistics for this user
   def lifetime_stats
     return unless public?
 
@@ -69,8 +84,12 @@ module AbstractL4DStats
     @lifetime_stats
   end
 
-  # Returns a Hash of Survival statistics for this user like revived teammates.
-  # If the Survival statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of Survival statistics for this user like revived teammates
+  #
+  # If the Survival statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # @return [Hash<String, Object>] The Survival statistics for this user
   def survival_stats
     return unless public?
 
@@ -86,8 +105,12 @@ module AbstractL4DStats
     @survival_stats
   end
 
-  # Returns a Hash of teamplay statistics for this user like revived teammates.
-  # If the teamplay statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of teamplay statistics for this user like revived teammates
+  #
+  # If the teamplay statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # @return [Hash<String, Object>] The teamplay statistics for this
   def teamplay_stats
     return unless public?
 
@@ -109,9 +132,12 @@ module AbstractL4DStats
     @teamplay_stats
   end
 
-  # Returns a Hash of Versus statistics for this user like percentage of rounds
-  # won.
+  # Returns a hash of Versus statistics for this user like percentage of rounds
+  # won
+  #
   # If the Versus statistics haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The Versus statistics for this user
   def versus_stats
     return unless public?
 

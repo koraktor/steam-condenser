@@ -1,25 +1,34 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2009-2010, Sebastian Staudt
+# Copyright (c) 2009-2011, Sebastian Staudt
 
 require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d_explosive'
 require 'steam/community/l4d/l4d_map'
 require 'steam/community/l4d/l4d_weapon'
 
+# This class represents the game statistics for a single user in Left4Dead
+#
+# @author Sebastian Staudt
 class L4DStats < GameStats
 
   include AbstractL4DStats
 
-  # Creates a L4DStats object by calling the super constructor with the game
-  # name "l4d".
+  # Creates a `L4DStats` object by calling the super constructor
+  # with the game name `'l4d'`
+  #
+  # @param [String] steam_id The custom URL or 64bit Steam ID of the user
   def initialize(steam_id)
     super steam_id, 'l4d'
   end
 
-  # Returns a Hash of Survival statistics for this user like revived teammates.
-  # If the Survival statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of Survival statistics for this user like revived teammates
+  #
+  # If the Survival statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # @return [Hash<String, Object>] The stats for the Survival mode
   def survival_stats
     return unless public?
 
@@ -34,8 +43,12 @@ class L4DStats < GameStats
     @survival_stats
   end
 
-  # Returns a Hash of L4DWeapon for this user containing all Left4Dead weapons.
+  # Returns a hash of `L4DWeapon` for this user containing all Left4Dead
+  # weapons
+  #
   # If the weapons haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The weapon statistics
   def weapon_stats
     return unless public?
 

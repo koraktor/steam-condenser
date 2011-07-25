@@ -3,12 +3,9 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/AbstractL4DStats.php';
@@ -17,33 +14,47 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4D2Weapon.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/l4d/L4DExplosive.php';
 
 /**
- * The L4DStats class represents the game statistics for a single user in
- * Left4Dead
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * This class represents the game statistics for a single user in Left4Dead 2
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class L4D2Stats extends AbstractL4DStats {
 
+    /**
+     * @var array The names of the special infected in Left4Dead 2
+     */
     protected static $SPECIAL_INFECTED = array('boomer', 'charger', 'hunter', 'jockey', 'smoker', 'spitter', 'tank');
 
+    /**
+     * @var array
+     */
     private $scavengeStats;
 
     /**
-     * Creates a L4D2Stats object by calling the super constructor with the game
-     * name "l4d2"
+     * Creates a <var>L4D2Stats</var> object by calling the super constructor
+     * with the game name <var>"l4d2"</var>
+     *
+     * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'l4d2');
     }
 
     /**
-     * Returns a Hash of lifetime statistics for this user like the time played.
+     * Returns an array of lifetime statistics for this user like the time
+     * played
+     *
      * If the lifetime statistics haven't been parsed already, parsing is done
      * now.
      *
      * There are only a few additional lifetime statistics for Left4Dead 2
      * which are not generated for Left4Dead, so this calls
-     * AbstractL4DStats#getLifetimeStats() first and adds some additional stats.
+     * <var>AbstractL4DStats#getLifetimeStats()</var> first and adds some
+     * additional stats.
+     *
+     * @return array The lifetime statistics of the player in Left4Dead 2
      */
     public function getLifetimeStats() {
         if(!$this->isPublic()) {
@@ -60,10 +71,14 @@ class L4D2Stats extends AbstractL4DStats {
         return $this->lifetimeStats;
     }
 
-    /* Returns a Hash of Scavenge statistics for this user like the number of
-     * Scavenge rounds played.
+    /**
+     * Returns an array of Scavenge statistics for this user like the number of
+     * Scavenge rounds played
+     *
      * If the Scavenge statistics haven't been parsed already, parsing is done
      * now.
+     *
+     * @return array The Scavenge statistics of the player
      */
     public function getScavengeStats() {
         if(!$this->isPublic()) {
@@ -106,14 +121,18 @@ class L4D2Stats extends AbstractL4DStats {
 
     /**
      * Returns an array of Survival statistics for this user like revived
-     * teammates.
+     * teammates
+     *
      * If the Survival statistics haven't been parsed already, parsing is done
      * now.
      *
      * The XML layout for the Survival statistics for Left4Dead 2 differs a bit
      * from Left4Dead's Survival statistics. So we have to use a different way
-     * of parsing for the maps and we use a different map class (L4D2Map) which
-     * holds the additional information provided in Left4Dead 2's statistics.
+     * of parsing for the maps and we use a different map class
+     * (<var>L4D2Map</var>) which holds the additional information provided in
+     * Left4Dead 2's statistics.
+     *
+     * @return array The Survival statistics of the player
      */
     public function getSurvivalStats() {
         if(!$this->isPublic()) {
@@ -133,9 +152,12 @@ class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
-     * Returns a Hash of L4D2Weapon for this user containing all Left4Dead 2
-     * weapons.
+     * Returns an array of <var>L4D2Weapon</var> for this user containing all
+     * Left4Dead 2 weapons
+     *
      * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return array The weapon statistics for this player
      */
     public function getWeaponStats() {
         if(!$this->isPublic()) {
@@ -165,7 +187,11 @@ class L4D2Stats extends AbstractL4DStats {
     }
 
     /**
+     * Returns the names of the special infected in Left4Dead 2
+     *
      * Hacky workaround for PHP not allowing arrays as class constants
+     *
+     * @return array The names of the special infected in Left4Dead 2
      */
     protected function SPECIAL_INFECTED() {
         return self::$SPECIAL_INFECTED;

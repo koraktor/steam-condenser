@@ -1,30 +1,41 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2009-2010, Sebastian Staudt
+# Copyright (c) 2009-2011, Sebastian Staudt
 
 require 'steam/community/l4d/abstract_l4d_stats'
 require 'steam/community/l4d/l4d2_map'
 require 'steam/community/l4d/l4d2_weapon'
 
+# This class represents the game statistics for a single user in Left4Dead 2
+#
+# @author Sebastian Staudt
 class L4D2Stats < GameStats
 
   include AbstractL4DStats
 
+  # The names of the special infected in Left4Dead 2
   SPECIAL_INFECTED = SPECIAL_INFECTED + %w{charger jockey spitter}
 
-  # Creates a L4D2Stats object by calling the super constructor with the game
-  # name "l4d2"
+  # Creates a `L4D2Stats` object by calling the super constructor with the game
+  # name `'l4d2'`
+  #
+  # @param [String] steam_id The custom URL or 64bit Steam ID of the user
   def initialize(steam_id)
     super steam_id, 'l4d2'
   end
 
-  # Returns a Hash of lifetime statistics for this user like the time played.
-  # If the lifetime statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of lifetime statistics for this user like the time played
   #
-  # There are only a few additional lifetime statistics for Left4Dead 2 which
-  # are not generated for Left4Dead, so this calls
-  # AbstractL4DStats#lifetime_stats first and adds some additional stats.
+  # If the lifetime statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # There are only a few additional lifetime statistics for Left4Dead 2
+  # which are not generated for Left4Dead, so this calls
+  # {AbstractL4DStats#lifetime_stats} first and adds some additional stats.
+  #
+  # @return [Hash<String, Object>] The lifetime statistics of the player in
+  #         Left4Dead 2
   def lifetime_stats
     return unless public?
 
@@ -38,9 +49,13 @@ class L4D2Stats < GameStats
     @lifetime_stats
   end
 
-  # Returns a Hash of Scavenge statistics for this user like the number of
-  # Scavenge rounds played.
-  # If the Scavenge statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of Scavenge statistics for this user like the number of
+  # Scavenge rounds played
+  #
+  # If the Scavenge statistics haven't been parsed already, parsing is done
+  # now.
+  #
+  # @return [Hash<String, Object>] The Scavenge statistics of the player
   def scavenge_stats
     return unless public?
 
@@ -78,13 +93,18 @@ class L4D2Stats < GameStats
     @scavenge_stats
   end
 
-  # Returns a Hash of Survival statistics for this user like revived teammates.
-  # If the Survival statistics haven't been parsed already, parsing is done now.
+  # Returns a hash of Survival statistics for this user like revived teammates
+  #
+  # If the Survival statistics haven't been parsed already, parsing is done
+  # now.
   #
   # The XML layout for the Survival statistics for Left4Dead 2 differs a bit
-  # from Left4Dead's Survival statistics. So we have to use a different way of
-  # parsing for the maps and we use a different map class (L4D2Map) which holds
-  # the additional information provided in Left4Dead 2's statistics.
+  # from Left4Dead's Survival statistics. So we have to use a different way
+  # of parsing for the maps and we use a different map class
+  # (`L4D2Map`) which holds the additional information provided in
+  # Left4Dead 2's statistics.
+  #
+  # @return [Hash<String, Object>] The Survival statistics of the player
   def survival_stats
     return unless public?
 
@@ -100,9 +120,12 @@ class L4D2Stats < GameStats
     @survival_stats
   end
 
-  # Returns a Hash of L4D2Weapon for this user containing all Left4Dead 2
-  # weapons.
+  # Returns a hash of `L4D2Weapon` for this user containing all Left4Dead 2
+  # weapons
+  #
   # If the weapons haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The weapon statistics for this player
   def weapon_stats
     return unless public?
 
