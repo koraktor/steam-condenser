@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.dods;
@@ -17,8 +17,8 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
 /**
- * The DoDSStats class represents the game statistics for a single user in Day
- * of Defeat: Source
+ * The is class represents the game statistics for a single user in Day of
+ * Defeat: Source
  *
  * @author Sebastian Staudt
  */
@@ -28,13 +28,11 @@ public class DoDSStats extends GameStats {
 	private HashMap<String, DoDSWeapon> weaponStats;
 
 	/**
-	 * Creates a DoDSStats object by calling the super constructor with the game
-	 * name "DoD:S"
-	 *
-	 * @param steamId
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
+     * Creates a <code>DoDSStats</code> instance by calling the super constructor
+     * with the game name <code>"DoD:S"</code>
+     *
+     * @param steamId The custom URL or 64bit Steam ID of the user
+     * @throws SteamCondenserException if an error occurs
 	 */
 	public DoDSStats(Object steamId)
 			throws SteamCondenserException {
@@ -42,11 +40,12 @@ public class DoDSStats extends GameStats {
 	}
 
 	/**
-	 * Returns an associative array of DoDSClass for this user containing all
-	 * Day of Defeat: Source classes. If the classes haven't been parsed
-	 * already, parsing is done now.
-	 *
-	 * @return DoDSClass[]
+     * Returns a map of <code>DoDSClass</code> for this user containing all
+     * DoD:S classes.
+     * <p>
+     * If the classes haven't been parsed already, parsing is done now.
+     *
+     * @return The class statistics for this user
 	 */
 	public HashMap<String, DoDSClass> getClassStats() {
 		if(!this.isPublic()) {
@@ -67,11 +66,12 @@ public class DoDSStats extends GameStats {
 	}
 
 	/**
-	 * Returns an associative array of DoDSWeapon for this user containing all
-	 * DoD:S weapons. If the weapons haven't been parsed already, parsing is
-	 * done now.
-	 *
-	 * @return DoDSWeapon[]
+     * Returns a map of <code>DoDSWeapon</code> for this user containing all
+     * DoD:S weapons.
+     * <p>
+     * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return The weapon statistics for this user
 	 */
 	public HashMap<String, DoDSWeapon> getWeaponStats() {
 		if(!this.isPublic()) {

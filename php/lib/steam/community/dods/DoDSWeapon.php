@@ -3,35 +3,43 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameWeapon.php';
 
 /**
  * Represents the stats for a Day of Defeat: Source weapon for a specific user
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class DoDSWeapon extends GameWeapon {
 
-    private $avgHitsPerKill;
-
-    private $headshotPercentage;
-
+    /**
+     * @var int
+     */
     private $headshots;
 
+    /**
+     * @var int
+     */
     private $hits;
 
-    private $hitPercentage;
-
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * Creates a new instance of a Day of Defeat: Source weapon based on the
+     * given XML data
+     *
+     * @param SimpleXMLElement $weaponData The XML data of the class
+     */
     public function __construct($weaponData) {
         parent::__construct($weaponData);
 
@@ -43,33 +51,28 @@ class DoDSWeapon extends GameWeapon {
     }
 
     /**
-     * Returns the average number of hits needed for a kill with this weapon.
-     * Calculates the value if needed.
-     * @return float
+     * Returns the average number of hits needed for a kill with this weapon
+     *
+     * @return float The average number of hits needed for a kill
      */
     public function getAvgHitsPerKill() {
-        if(empty($this->avgHitsPerKill)) {
-            $this->avgHitsPerKill = $this->hits / $this->kills;
-        }
-
-        return $this->avgHitsPerKill;
+        return $this->hits / $this->kills;
     }
 
     /**
      * Returns the percentage of headshots relative to the shots hit with this
-     * weapon. Calculates the value if needed.
-     * @return float
+     * weapon
+     *
+     * @return float The percentage of headshots
      */
     public function getHeadshotPercentage() {
-        if(empty($this->headshotPercentage)) {
-            $this->headshotPercentage = $this->headshots / $this->hits;
-        }
-
-        return $this->headshotPercentage;
+        return $this->headshots / $this->hits;
     }
 
     /**
-     * @return int
+     * Returns the number of headshots achieved with this weapon
+     *
+     * @return int The number of headshots achieved
      */
     public function getHeadshots() {
         return $this->headshots;
@@ -77,30 +80,30 @@ class DoDSWeapon extends GameWeapon {
 
     /**
      * Returns the percentage of hits relative to the shots fired with this
-     * weapon. Calculates the value if needed.
-     * @return float
+     * weapon
+     *
+     * @return float The percentage of hits
      */
     public function getHitPercentage() {
-        if(empty($this->hitPercentage)) {
-            $this->hitPercentage = $this->hits / $this->shots;
-        }
-
-        return $this->hitPercentage;
+        return$this->hits / $this->shots;
     }
 
     /**
-     * @return String
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @return int
+     * Returns the number of hits achieved with this weapon
+     *
+     * @return int The number of hits achieved
      */
     public function getHits() {
         return $this->hits;
     }
 
+    /**
+     * Returns the name of this weapon
+     *
+     * @return string The name of this weapon
+     */
+    public function getName() {
+        return $this->name;
+    }
 }
 ?>

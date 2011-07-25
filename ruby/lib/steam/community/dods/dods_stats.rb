@@ -1,21 +1,31 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2009-2010, Sebastian Staudt
+# Copyright (c) 2009-2011, Sebastian Staudt
 
 require 'steam/community/dods/dods_weapon'
 require 'steam/community/game_stats'
 
+# The is class represents the game statistics for a single user in Day of
+# Defeat: Source
+#
+# @author Sebastian Staudt
 class DoDSStats < GameStats
 
-  # Creates a DoDSStats object by calling the super constructor with the game
-  # name "DoD:S"
+  # Creates a `DoDSStats` instance by calling the super constructor with the
+  # game name `'DoD:S'`
+  #
+  # @param [String, Fixnum] steam_id The custom URL or 64bit Steam ID of the
+  #        user
   def initialize(steam_id)
     super steam_id, 'DoD:S'
   end
 
-  # Returns a Hash of DoDSClass for this user containing all DoD:S classes.
+  # Returns a hash of `DoDSClass` for this user containing all DoD:S classes.
+  #
   # If the classes haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, DoDSClass>] The class statistics for this user
   def class_stats
     return unless public?
 
@@ -29,8 +39,11 @@ class DoDSStats < GameStats
     @class_stats
   end
 
-  # Returns a Hash of DoDSWeapon for this user containing all DoD:S weapons.
+  # Returns a Hash of `DoDSWeapon` for this user containing all DoD:S weapons.
+  #
   # If the weapons haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, DoDSWeapon>] The weapon statistics for this user
   def weapon_stats
     return unless public?
 
