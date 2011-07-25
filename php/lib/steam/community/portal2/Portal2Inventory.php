@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameInventory.php';
@@ -19,8 +16,9 @@ GameInventory::$cache['Portal2Inventory'] = array();
 /**
  * Represents the inventory (aka. Robot Enrichment) of a Portal 2 player
  *
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class Portal2Inventory extends GameInventory {
 
@@ -42,6 +40,7 @@ class Portal2Inventory extends GameInventory {
      * @param string $steamId64 The 64bit Steam ID of the user
      * @param bool $fetchNow Whether the data should be fetched now
      * @param bool $bypassCache Whether the cache should be bypassed
+     * @return Portal2Inventory The inventory created from the given options
      */
     public static function create($steamId64, $fetchNow = true, $bypassCache = false) {
         if(self::isCached($steamId64) && !$bypassCache) {

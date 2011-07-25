@@ -5,21 +5,18 @@
  *
  * Copyright (c) 2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/portal2/Portal2Inventory.php';
 
 /**
- * The Portal2Stats class represents the game statistics for a single user in
- * Portal 2
+ * This class represents the game statistics for a single user in Portal 2
  *
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class Portal2Stats extends GameStats {
 
@@ -29,10 +26,10 @@ class Portal2Stats extends GameStats {
     private $inventory;
 
     /**
-     * Creates a Portal2Stats object by calling the super constructor with the
-     * game name "portal2"
+     * Creates a <var>Portal2Stats</var> object by calling the super
+     * constructor with the game name <var>"portal2"</var>
      *
-     * @param $steamId The custom URL or 64bit Steam ID of the user
+     * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, "portal2");

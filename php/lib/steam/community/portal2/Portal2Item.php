@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameItem.php';
@@ -17,10 +14,15 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/portal2/Portal2Inventory.ph
 /**
  * Represents a Portal 2 item
  *
- * @author Sebastian Staudt
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class Portal2Item extends GameItem {
 
+    /**
+     * @var array The names of the bots available in Portal 2
+     */
     private static $BOTS = array("pbody", "atlas");
 
     /**

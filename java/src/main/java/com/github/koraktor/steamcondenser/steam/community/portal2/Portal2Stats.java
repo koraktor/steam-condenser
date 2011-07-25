@@ -39,7 +39,7 @@ public class Portal2Stats extends GameStats {
      * Returns the current Portal 2 inventory (a.k.a. Robot Enrichment) of this
      * player
      *
-     * @return This player's Portal 2 backpack
+     * @return This player's Portal 2 inventory
      * @throws JSONException If the received data could not be parsed
      * @throws WebApiException If an error occured while querying Steam's Web
      *                         API

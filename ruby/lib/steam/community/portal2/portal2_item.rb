@@ -6,13 +6,20 @@
 require 'steam/community/game_item'
 
 # Represents a Portal 2 item
+#
+# @author Sebastian Staudt
 class Portal2Item
 
   include GameItem
 
+  # The names of the bots available in Portal 2
   BOTS = [ :pbody, :atlas ]
 
-  # Creates a new instance of a Portal2Item with the given data
+  # Creates a new instance of a Portal 2 item with the given data
+  #
+  # @param [Portal2Inventory] inventory The inventory this item is contained in
+  # @param [Hash<Symbol, Object>] item_data The data specifying this item
+  # @raise [WebApiException] on Web API errors
   def initialize(inventory, item_data)
     super
 
@@ -23,11 +30,16 @@ class Portal2Item
   end
 
   # Returns the symbols for each bot this player has equipped this item
+  #
+  # @return [Array<String>] The names of the bots this player has equipped this
+  #         item
   def bots_equipped?
     @equipped.reject { |bot_id, equipped| !equipped }
   end
 
   # Returns whether this item is equipped by this player at all
+  #
+  # @return [Boolean] `true` if the player has equipped this item at all
   def equipped?
     @equipped.has_value? true
   end

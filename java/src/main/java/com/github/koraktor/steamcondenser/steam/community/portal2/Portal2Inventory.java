@@ -23,7 +23,7 @@ import com.github.koraktor.steamcondenser.steam.community.GameItem;
  */
 public class Portal2Inventory extends GameInventory {
 
-    public static Map<Long, Portal2Inventory> cache = new HashMap<Long, Portal2Inventory>();
+    private static Map<Long, Portal2Inventory> cache = new HashMap<Long, Portal2Inventory>();
 
     /**
      * Returns whether the requested inventory is already cached
@@ -102,6 +102,7 @@ public class Portal2Inventory extends GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @throws JSONException on invalid JSON data
+     * @throws WebApiException on Web API errors
      */
     public Portal2Inventory(long steamId64)
             throws JSONException, WebApiException {
@@ -114,6 +115,7 @@ public class Portal2Inventory extends GameInventory {
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
      * @throws JSONException on invalid JSON data
+     * @throws WebApiException on Web API errors
      */
     public Portal2Inventory(long steamId64, boolean fetchNow)
             throws JSONException, WebApiException {
