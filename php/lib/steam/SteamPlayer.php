@@ -11,8 +11,10 @@
 require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
 
 /**
- * @author     Sebastian Staudt
- * @package    steam-condeser
+ * This class represents a player connected to a game server
+ *
+ * @author  Sebastian Staudt
+ * @package steam-condeser
  */
 class SteamPlayer
 {
@@ -82,11 +84,13 @@ class SteamPlayer
     private $steamId;
 
     /**
-     * Creates a new SteamPlayer object with the given information
-     * @param int $playerId
-     * @param string $playerName
-     * @param int $playerPoints
-     * @param float $playerConnectTime
+     * Creates a new player instancewith the given information
+     *
+     * @param int $playerId The ID of the player on the server
+     * @param string $playerName The name of the player
+     * @param int $playerPoints The score of the player
+     * @param float $playerConnectTime The time the player is connected to the
+     *        server
      */
     public function __construct($id, $name, $score, $connectTime)
     {
@@ -123,7 +127,8 @@ class SteamPlayer
      *
      * @param string $playerData The player data retrieved from
      *        <var>rcon status</var>
-     * @throws SteamCondenserException
+     * @throws SteamCondenserException if the information belongs to another
+     *         player
      */
     public function addInformation($playerData) {
         if($playerData['name'] != $this->name) {
@@ -155,7 +160,8 @@ class SteamPlayer
 
     /**
      * Returns the client port of this player
-     * @return int
+     *
+     * @return int The client port of the player
      */
     public function getClientPort()
     {
@@ -164,7 +170,8 @@ class SteamPlayer
 
     /**
      * Returns the time this player is connected to the server
-     * @return float
+     *
+     * @return float The connection time of the player
      */
     public function getConnectTime()
     {
@@ -173,7 +180,8 @@ class SteamPlayer
 
     /**
      * Returns the ID of this player
-     * @return int
+     *
+     * @return int The ID of this player
      */
     public function getId()
     {
@@ -182,7 +190,8 @@ class SteamPlayer
 
     /**
      * Returns the IP address of this player
-     * @return string
+     *
+     * @return string The IP address of this player
      */
     public function getIpAddress()
     {
@@ -190,8 +199,18 @@ class SteamPlayer
     }
 
     /**
+     * Returns the packet loss of this player's connection
+     *
+     * @return string The packet loss of this player's connection
+     */
+    public function getLoss() {
+        return $this->loss;
+    }
+
+    /**
      * Returns the nickname of this player
-     * @return string
+     *
+     * @return string The name of this player
      */
     public function getName()
     {
@@ -200,7 +219,8 @@ class SteamPlayer
 
     /**
      * Returns the ping of this player
-     * @return int
+     *
+     * @return int The ping of this player
      */
     public function getPing()
     {
@@ -208,7 +228,9 @@ class SteamPlayer
     }
 
     /**
-     * @return Returns the rate of this player
+     * Returns the rate of this player
+     *
+     * @return int The rate of this player
      */
     public function getRate() {
         return $this->rate;
@@ -216,7 +238,8 @@ class SteamPlayer
 
     /**
      * Returns the real ID (as used on the server) of this player
-     * @return int
+     *
+     * @return int The real ID of this player
      */
     public function getRealId()
     {
@@ -225,7 +248,8 @@ class SteamPlayer
 
     /**
      * Returns the score of this player
-     * @return int
+     *
+     * @return int The score of this player
      */
     public function getScore()
     {
@@ -234,7 +258,8 @@ class SteamPlayer
 
     /**
      * Returns the connection state of this player
-     * @return string
+     *
+     * @return string The connection state of this player
      */
     public function getState()
     {
@@ -243,7 +268,8 @@ class SteamPlayer
 
     /**
      * Returns the SteamID of this player
-     * @return string
+     *
+     * @return string The SteamID of this player
      */
     public function getSteamId()
     {
@@ -251,8 +277,9 @@ class SteamPlayer
     }
 
     /**
-     * Returns whether this player object has extended information
-     * @return bool
+     * Returns whether this player is a bot
+     *
+     * @return bool <var>true</var> if this player is a bot
      */
     public function isBot() {
         return $this->steamId == 'BOT';
@@ -261,7 +288,9 @@ class SteamPlayer
     /**
      * Returns whether this player object has extended information gathered
      * using RCON
-     * @return bool
+     *
+     * @return bool <var>true</var> if extended information for this player
+     *         is available
      */
     public function isExtended()
     {
@@ -269,8 +298,9 @@ class SteamPlayer
     }
 
     /**
-     * Returns a String representation of this player
-     * @return string
+     * Returns a string representation of this player
+     *
+     * @return string A string representing this player
      */
     public function __toString()
     {

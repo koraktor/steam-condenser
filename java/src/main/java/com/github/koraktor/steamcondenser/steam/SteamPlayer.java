@@ -13,8 +13,9 @@ import java.util.Map;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 /**
- * A player on a GameServer
- * @author Sebastian Staudt
+ * This class represents a player connected to a game server
+ *
+ * @author  Sebastian Staudt
  */
 public class SteamPlayer {
 
@@ -33,11 +34,12 @@ public class SteamPlayer {
     private String steamId;
 
     /**
-     * Creates a new SteamPlayer object with the given information
-     * @param id The ID of the player
-     * @param name The nickname of the player
-     * @param score The score of the player
-     * @param connectTime The time the player is connected to the server
+     * Creates a new player instancewith the given information
+     *
+     * @param int id The ID of the player on the server
+     * @param string name The name of the player
+     * @param int score The score of the player
+     * @param float connectTime The time the player is connected to the server
      */
     public SteamPlayer(int id, String name, int score, float connectTime) {
         this.connectTime = connectTime;
@@ -51,9 +53,10 @@ public class SteamPlayer {
      * Extends a player object with information retrieved from a RCON call to
      * the status command
      *
-     * @param playerData The player data retrieved from
-     *        <code>rcon status</code>
-     * @throws SteamCondenserException
+     * @param playerData The player data retrieved from <code>rcon
+     *        status</code>
+     * @throws SteamCondenserException if the information belongs to another
+     *         player
      */
     public void addInformation(Map<String, String> playerData)
             throws SteamCondenserException {
@@ -87,7 +90,8 @@ public class SteamPlayer {
 
     /**
      * Returns the client port of this player
-     * @return int
+     *
+     * @return The client port of the player
      */
     public int getClientPort()
     {
@@ -95,49 +99,63 @@ public class SteamPlayer {
     }
 
     /**
-     * @return Returns the time this player is connected to the server
+     * Returns the time this player is connected to the server
+     *
+     * @return The connection time of the player
      */
     public float getConnectTime() {
         return this.connectTime;
     }
 
     /**
-     * @return Returns the ID of this player
+     * Returns the ID of this player
+     *
+     * @return The ID of this player
      */
     public int getId() {
         return this.id;
     }
 
     /**
-     * @return Returns the IP address this player
+     * Returns the IP address of this player
+     *
+     * @return The IP address of this player
      */
     public String getIpAddress() {
         return this.ipAddress;
     }
 
     /**
-     * @return Returns the packet loss of this player
+     * Returns the packet loss of this player's connection
+     *
+     * @return The packet loss of this player's connection
      */
     public int getLoss() {
         return this.loss;
     }
 
     /**
-     * @return Returns the nickname of this player
+     * Returns the nickname of this player
+     *
+     * @return The name of this player
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * @return Returns the ping of this player
+     * Returns the ping of this player
+     *
+     * @return The ping of this player
      */
     public int getPing() {
         return this.ping;
     }
 
     /**
-     * @return Returns the rate of this player
+     * Returns the rate of this player
+     *
+     * @return The rate of this player
      */
     public int getRate() {
         return this.rate;
@@ -145,6 +163,8 @@ public class SteamPlayer {
 
     /**
      * Returns the real ID (as used on the server) of this player
+     *
+     * @return The real ID of this player
      */
     public int getRealId()
     {
@@ -152,14 +172,18 @@ public class SteamPlayer {
     }
 
     /**
-     * @return Returns the score of this player
+     * Returns the score of this player
+     *
+     * @return The score of this player
      */
     public int getScore() {
         return this.score;
     }
 
     /**
-     * @return Returns the connection state of this player
+     * Returns the connection state of this player
+     *
+     * @return The connection state of this player
      */
     public String getState() {
         return this.state;
@@ -167,6 +191,8 @@ public class SteamPlayer {
 
     /**
      * Returns the SteamID of this player
+     *
+     * @return The SteamID of this player
      */
     public String getSteamId()
     {
@@ -175,13 +201,19 @@ public class SteamPlayer {
 
     /**
      * Returns whether this player is a bot
+     *
+     * @return <code>true</code> if this player is a bot
      */
     public boolean isBot() {
         return this.steamId.equals("BOT");
     }
 
     /**
-     * Returns whether this player object has extended information
+     * Returns whether this player object has extended information gathered
+     * using RCON
+     *
+     * @return <code>true</code> if extended information for this player is
+     *         available
      */
     public boolean isExtended()
     {
@@ -189,7 +221,9 @@ public class SteamPlayer {
     }
 
     /**
-     * @return A String representation of this player
+     * Returns a string representation of this player
+     *
+     * @return A string representing this player
      */
     @Override
     public String toString() {
