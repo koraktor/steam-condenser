@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameItem.php';
@@ -17,8 +14,9 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 /**
  * Provides basic functionality to represent an inventory of player in a game
  *
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 abstract class GameInventory {
 
@@ -41,7 +39,7 @@ abstract class GameInventory {
      * @var array
      */
     private static $qualitySchemas = array();
-	
+
 	/**
 	 * @var string
 	 */

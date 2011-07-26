@@ -32,7 +32,7 @@ public abstract class AbtractL4DWeapon extends GameWeapon {
      * Creates a new instance of weapon from the given XML data and parses
      * common data for both, <code>L4DWeapon</code> and <code>L4D2Weapon</code>
      *
-     * @param SimpleXMLElement $weaponData The XML data for this weapon
+     * @param weaponData The XML data for this weapon
      */
     public AbtractL4DWeapon(Element weaponData) {
         super(weaponData);

@@ -17,7 +17,7 @@ public class PacketFormatException extends SteamCondenserException
 {
 
     /**
-     * Creates a new <var>PacketFormatException</var> instance
+     * Creates a new <code>PacketFormatException</code> instance
      *
      * @param message The message to attach to the exception
      */

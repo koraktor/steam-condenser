@@ -20,7 +20,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
  * @author Sebastian Staudt
  * @package steam-condenser
  * @subpackage rcon-packets
- * @see SourceServer#rcon_auth
+ * @see SourceServer::rconAuth()
  */
 class RCONAuthResponse extends RCONPacket
 {

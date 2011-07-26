@@ -76,7 +76,7 @@ abstract class SteamSocket
     /**
      * Closes the underlying socket
      *
-     * @see UDPSocket#close()
+     * @see UDPSocket::close()
      */
     public function close() {
         $this->socket->close();
@@ -130,7 +130,7 @@ abstract class SteamSocket
      * the socket.
      *
      * @param SteamPacket $dataPacket The packet to send to the server
-     * @see SteamPacket#__toString()
+     * @see SteamPacket::__toString()
 	 */
 	public function send(SteamPacket $dataPacket)
 	{

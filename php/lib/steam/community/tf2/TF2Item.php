@@ -21,7 +21,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Inventory.php';
 class TF2Item extends GameItem {
 
     /**
-     * @var array
+     * @var array The names of the Team Fortress 2 classes
      */
     private static $CLASSES = array('scout', 'sniper', 'soldier', 'demoman',
                                     'medic', 'heavy', 'pyro', 'spy');

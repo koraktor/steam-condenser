@@ -40,6 +40,7 @@ class TF2Inventory extends GameInventory {
      * @param string $steamId64 The 64bit Steam ID of the user
      * @param bool $fetchNow Whether the data should be fetched now
      * @param bool $bypassCache Whether the cache should be bypassed
+     * @return TF2Inventory The inventory created from the given options
      */
     public static function create($steamId64, $fetchNow = true, $bypassCache = false) {
         if(self::isCached($steamId64) && !$bypassCache) {

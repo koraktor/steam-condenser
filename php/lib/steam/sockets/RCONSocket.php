@@ -55,7 +55,7 @@ class RCONSocket extends SteamSocket
     /**
      * Closes the underlying TCP socket if it exists
      *
-     * @see SteamSocket#close()
+     * @see SteamSocket::close()
      */
     public function close() {
         if(!empty($this->socket)) {

@@ -38,7 +38,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @author Sebastian Staudt
  * @package steam-condenser
  * @subpackage packets
- * @see MasterServer#getServers
+ * @see MasterServer::getServers()
  */
 class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
 {
@@ -51,9 +51,9 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
      * given paramters
      *
      * @param int $regionCode The region code to filter servers by region.
-     * @param String $startIp This should be the last IP received from the
+     * @param string $startIp This should be the last IP received from the
      *        master server or 0.0.0.0
-     * @param String $filter The filters to apply in the form
+     * @param string $filter The filters to apply in the form
      *        ("\filtername\value...")
      */
     public function __construct($regionCode = MasterServer::REGION_ALL, $startIp = "0.0.0.0", $filter = "")

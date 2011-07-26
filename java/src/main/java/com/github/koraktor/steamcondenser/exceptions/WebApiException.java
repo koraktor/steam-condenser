@@ -23,10 +23,10 @@ public class WebApiException extends SteamCondenserException {
 
     /**
      * Creates a new WebApiException with an error message according to the
-     * given <code>$cause</code>. If this cause is <code>STATUS_BAD</code> (which
-     * will origin from the Web API itself) or <code>HTTP_ERROR</code> the
-     * details about this failed request will be taken from
-     * <code>$statusCode</code> and <code>$statusMessage</code>.
+     * given <code>cause</code>. If this cause is <code>STATUS_BAD</code>
+     * (which will origin from the Web API itself) or <code>HTTP_ERROR</code>
+     * the details about this failed request will be taken from
+     * <code>statusCode</code> and <code>statusMessage</code>.
      *
      * @param cause An integer indicating the problem which caused this
      *        exception:

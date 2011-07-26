@@ -18,8 +18,6 @@
  */
 abstract class GameWeapon {
 
-    private $avgShotsPerKill;
-
     protected $kills;
 
     protected $id;
@@ -56,7 +54,7 @@ abstract class GameWeapon {
     /**
      * Returns the number of kills achieved with this weapon
      *
-     + @return int The number of kills achieved
+     * @return int The number of kills achieved
      */
     public function getKills() {
         return $this->kills;

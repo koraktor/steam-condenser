@@ -48,7 +48,7 @@ class TF2Spy extends TF2Class
      *
      * @return int Maximum health leeched
      */
-    public int getMaxBackstabs() {
+    public function getMaxBackstabs() {
         return $this->maxBackstabs;
     }
 
@@ -58,7 +58,7 @@ class TF2Spy extends TF2Class
      *
      * @return int Maximum health leeched
      */
-    public int getMaxHealthLeeched() {
+    public function getMaxHealthLeeched() {
         return $this->maxHealthLeeched;
     }
 }

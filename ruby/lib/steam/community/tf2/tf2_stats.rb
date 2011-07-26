@@ -18,8 +18,8 @@ class TF2Stats < GameStats
   # @return [Fixnum] This player's accumulated points
   attr_reader :accumulated_points
 
-  # Creates a TF2Stats object by calling the super constructor with the game
-  # name "tf2"
+  # Creates a `TF2Stats` instance by calling the super constructor with the
+  # game name `'tf2'`
   #
   # @param [String, Fixnum] steam_id The custom URL or 64bit Steam ID of the
   #        user

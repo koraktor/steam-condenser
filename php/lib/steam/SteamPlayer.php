@@ -14,7 +14,7 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * This class represents a player connected to a game server
  *
  * @author  Sebastian Staudt
- * @package steam-condeser
+ * @package steam-condenser
  */
 class SteamPlayer
 {

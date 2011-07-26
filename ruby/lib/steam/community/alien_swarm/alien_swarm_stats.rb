@@ -30,8 +30,8 @@ class AlienSwarmStats < GameStats
   # Creates a new `AlienSwarmStats` instance by calling the super constructor
   # with the game name `'alienswarm'`
   #
-  # @param [String, Fixnum] id The custom URL or the 64bit Steam ID of the
-  #        user
+  # @param [String, Fixnum] steam_id The custom URL or the 64bit Steam ID of
+  #        the user
   def initialize(steam_id)
     super steam_id, 'alienswarm'
 

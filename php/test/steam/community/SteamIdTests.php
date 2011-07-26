@@ -3,11 +3,9 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2009, Sebastian Staudt
+ * Copyright (c) 2009-2011, Sebastian Staudt
  *
- * @author  Sebastian Staudt
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package Steam Condenser (PHP)
  */
 
 error_reporting(E_ALL & ~E_USER_NOTICE);
@@ -17,8 +15,9 @@ require_once dirname(__FILE__) . "/../../../lib/steam-condenser.php";
 require_once "PHPUnit/Framework.php";
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage Tests
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage tests
  */
 class SteamIdTests extends PHPUnit_Framework_TestCase {
 

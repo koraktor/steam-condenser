@@ -53,7 +53,7 @@ public class GoldSrcSocket extends QuerySocket
      *
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
-     * @param isHTLV <code>true</code> if the target server is a HTLV instance.
+     * @param isHLTV <code>true</code> if the target server is a HTLV instance.
      *        HLTV behaves slightly different for RCON commands, this flag
      *        increases compatibility.
      * @throws IOException if the socket cannot be opened
@@ -189,7 +189,7 @@ public class GoldSrcSocket extends QuerySocket
      * Requests a challenge number from the server to be used for further
      * requests
      *
-     * @see #rconSend()
+     * @see #rconSend
      * @throws IOException if an error occurs while communicating with the
      *         server
      * @throws NumberFormatException if the received response is not a valid
@@ -215,7 +215,7 @@ public class GoldSrcSocket extends QuerySocket
      * Wraps the given command in a RCON request packet and send it to the
      * server
      *
-     * @param string $command The RCON command to send to the server
+     * @param command The RCON command to send to the server
      * @throws IOException if an error occured while writing to the socket
      */
     private void rconSend(String command)

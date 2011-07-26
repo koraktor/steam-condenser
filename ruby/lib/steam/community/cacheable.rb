@@ -30,6 +30,10 @@ module Cacheable
     end
   end
 
+  # This module implements functionality to access the cache of a class that
+  # includes the {Cacheable} module as class methods
+  #
+  # @author Sebastian Staudt
   module ClassMethods
 
     # Defines wich instance variables which should be used to index the cached

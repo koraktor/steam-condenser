@@ -15,8 +15,8 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * game server you're trying to send commands via RCON
  *
  * @author Sebastian Staudt
- * @package Steam Condenser (PHP)
- * @subpackage Exceptions
+ * @package steam-condenser
+ * @subpackage exceptions
  * @see GameServer::rconAuth()
  * @see GameServer::rconExec()
  */

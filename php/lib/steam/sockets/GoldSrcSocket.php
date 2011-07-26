@@ -41,7 +41,7 @@ class GoldSrcSocket extends SteamSocket
      * @param string $ipAddress Either the IP address or the DNS name of the
      *        server
      * @param int $portNumber The port the server is listening on
-     * @param bool $isHTLV <var>true</var> if the target server is a HTLV
+     * @param bool $isHLTV <var>true</var> if the target server is a HTLV
      *        instance. HLTV behaves slightly different for RCON commands, this
      *        flag increases compatibility.
      */
@@ -109,8 +109,8 @@ class GoldSrcSocket extends SteamSocket
      * @param string $password The password to authenticate with the server
      * @param string $command The command to execute on the server
      * @return RCONGoldSrcResponse The response replied by the server
-     * @see #rconChallenge()
-     * @see #rconSend()
+     * @see rconChallenge()
+     * @see rconSend()
      * @throws RCONBanException if the IP of the local machine has been banned
      *         on the game server
      * @throws RCONNoAuthException if the password is incorrect
@@ -156,7 +156,7 @@ class GoldSrcSocket extends SteamSocket
      *
      * @throws RCONBanException if the IP of the local machine has been banned
      *         on the game server
-     * @see #rconSend()
+     * @see rconSend()
      */
     public function rconGetChallenge()
     {
