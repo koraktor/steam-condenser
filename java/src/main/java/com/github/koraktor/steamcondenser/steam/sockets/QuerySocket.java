@@ -16,8 +16,22 @@ import java.util.logging.Logger;
 
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 
+/**
+ * This class implements basic functionality for UDP based sockets
+ *
+ * @author Sebastian Staudt
+ */
 public abstract class QuerySocket extends SteamSocket
 {
+
+    /**
+     * Creates a new socket to communicate with the server on the given IP
+     * address and port
+     *
+     * @param ipAddress Either the IP address or the DNS name of the server
+     * @param portNumber The port the server is listening on
+     * @throws IOException if the socket cannot be opened
+     */
     protected QuerySocket(InetAddress ipAddress, int portNumber)
             throws IOException {
         super(ipAddress, portNumber);
@@ -27,8 +41,9 @@ public abstract class QuerySocket extends SteamSocket
     }
 
     /**
-     * Checks whether a packet in the buffer is split or not
-     * @return true if the packet is split, otherwise false
+     * Returns whether a packet in the buffer is split
+     *
+     * @return <code>true</code> if the packet is split
      */
     protected boolean packetIsSplit()
     {
@@ -36,10 +51,11 @@ public abstract class QuerySocket extends SteamSocket
     }
 
     /**
-     * Reads an UDP packet into an existing buffer
+     * Reads an UDP packet into the buffer
+     *
      * @return The number of bytes received
-     * @throws IOException
-     * @throws TimeoutException
+     * @throws IOException if an error occured while reading from the socket
+     * @throws TimeoutException if no UDP packet was received
      */
     protected int receivePacket()
             throws IOException, TimeoutException
@@ -48,9 +64,10 @@ public abstract class QuerySocket extends SteamSocket
     }
 
     /**
-     * Sends a SteamPacket object over the UDP channel to the remote end
-     * @param dataPacket The {@link com.github.koraktor.steamcondenser.steam.packets.SteamPacket
-     *        SteamPacket} to send to the remote end
+     * Sends the given packet to the server
+     *
+     * @param dataPacket The packet to send to the server
+     * @throws IOException if an error occured while writing to the socket
      */
     public void send(SteamPacket dataPacket)
             throws IOException

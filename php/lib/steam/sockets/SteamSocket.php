@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
@@ -17,13 +14,17 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/TimeoutException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * This abstract class implements common functionality for sockets used to
+ * connect to game and master servers
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage sockets
  */
 abstract class SteamSocket
 {
     /**
-     * @var int
+     * @var int The default socket timeout
      */
     private static $timeout = 1000;
 
@@ -38,20 +39,26 @@ abstract class SteamSocket
     protected $socket;
 
     /**
-     * Sets the timeout for socket operations. This usually only affects
-     * timeouts, i.e. when a server does not respond in time.
+     * Sets the timeout for socket operations
      *
-     * Due to the server-side implementation of the RCON protocol, each RCON
-     * request will also wait this amount of time after execution. So if you
-     * need RCON requests to execute fast, you should set this to a adequatly
-     * low value.
+     * Any request that takes longer than this time will cause a {@link
+     * TimeoutException}.
      *
-     * @param $timeout The amount of milliseconds before a request times out
+     * @param int $timeout The amount of milliseconds before a request times
+     *        out
      */
     public static function setTimeout($timeout) {
         self::$timeout = $timeout;
     }
 
+    /**
+     * Creates a new UDP socket to communicate with the server on the given IP
+     * address and port
+     *
+     * @param string $ipAddress Either the IP address or the DNS name of the
+     *        server
+     * @param int $portNumber The port the server is listening on
+     */
     public function __construct($ipAddress, $portNumber = 27015) {
         $this->socket = new UDPSocket();
         $this->socket->connect($ipAddress, $portNumber);
@@ -60,29 +67,37 @@ abstract class SteamSocket
     /**
      * Closes this socket
      *
-     * @see #close
+     * @see #close()
      */
     public function __destruct() {
         $this->close();
     }
 
     /**
-     * Closes the underlying UDPSocket
+     * Closes the underlying socket
      *
-     * @see UDPSocket#close
+     * @see UDPSocket#close()
      */
     public function close() {
         $this->socket->close();
     }
 
 	/**
-	 * Abstract getReplyData() method
-	 * @return byte[]
+     * Subclasses have to implement this method for their individual packet
+     * formats
+     *
+     * @return SteamPacket The packet replied from the server
 	 */
 	abstract public function getReply();
 
 	/**
-	 * @return int
+     * Reads the given amount of data from the socket and wraps it into the
+     * buffer
+     *
+     * @param int $bufferLength The data length to read from the socket
+     * @throws TimeoutException if no packet is received on time
+     * @return int The number of bytes that have been read from the socket
+     * @see ByteBuffer
 	 */
 	public function receivePacket($bufferLength = 0)
 	{
@@ -109,7 +124,13 @@ abstract class SteamSocket
 	}
 
 	/**
-	 *
+     * Sends the given packet to the server
+     *
+     * This converts the packet into a byte stream first before writing it to
+     * the socket.
+     *
+     * @param SteamPacket $dataPacket The packet to send to the server
+     * @see SteamPacket#__toString()
 	 */
 	public function send(SteamPacket $dataPacket)
 	{

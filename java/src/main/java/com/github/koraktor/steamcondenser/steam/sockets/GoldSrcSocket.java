@@ -22,6 +22,9 @@ import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcRequestP
 import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcResponsePacket;
 
 /**
+ * This class represents a socket used to communicate with game servers based
+ * on the GoldSrc engine (e.g. Half-Life, Counter-Strike)
+ *
  * @author Sebastian Staudt
  */
 public class GoldSrcSocket extends QuerySocket
@@ -30,10 +33,12 @@ public class GoldSrcSocket extends QuerySocket
     private long rconChallenge = -1;
 
     /**
+     * Creates a new socket to communicate with the server on the given IP
+     * address and port
      *
-     * @param ipAddress
-     * @param portNumber
-     * @throws IOException
+     * @param ipAddress Either the IP address or the DNS name of the server
+     * @param portNumber The port the server is listening on
+     * @throws IOException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber)
             throws IOException
@@ -43,11 +48,15 @@ public class GoldSrcSocket extends QuerySocket
     }
 
     /**
+     * Creates a new socket to communicate with the server on the given IP
+     * address and port
      *
-     * @param ipAddress
-     * @param portNumber
-     * @param isHLTV
-     * @throws IOException
+     * @param ipAddress Either the IP address or the DNS name of the server
+     * @param portNumber The port the server is listening on
+     * @param isHTLV <code>true</code> if the target server is a HTLV instance.
+     *        HLTV behaves slightly different for RCON commands, this flag
+     *        increases compatibility.
+     * @throws IOException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber, boolean isHLTV)
             throws IOException
@@ -57,10 +66,17 @@ public class GoldSrcSocket extends QuerySocket
     }
 
     /**
-     * @return The SteamPacket received from the server
-     * @throws IOException
-     * @throws com.github.koraktor.steamcondenser.exceptions.SteamCondenserException
-     * @throws TimeoutException
+     * Reads a packet from the socket
+     * <p>
+     * The Source query protocol specifies a maximum packet size of 1,400
+     * bytes. Bigger packets will be split over several UDP packets. This
+     * method reassembles split packets into single packet objects.
+     *
+     * @return The packet replied from the server
+     * @throws IOException if an error occurs while communicating with the
+     *         server
+     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
             throws IOException, SteamCondenserException, TimeoutException
@@ -78,13 +94,11 @@ public class GoldSrcSocket extends QuerySocket
             ArrayList<byte[]> splitPackets = new ArrayList<byte[]>();
 
             do {
-                // Parsing of split packet headers
                 requestId = Integer.reverseBytes(this.buffer.getInt());
                 packetNumberAndCount = this.buffer.get();
                 packetCount = packetNumberAndCount & 0xF;
                 packetNumber = (packetNumberAndCount >> 4) + 1;
 
-                // Caching of split packet Data
                 splitData = new byte[this.buffer.remaining()];
                 this.buffer.get(splitData);
                 splitPackets.ensureCapacity(packetCount);
@@ -92,7 +106,6 @@ public class GoldSrcSocket extends QuerySocket
 
                 Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 
-                // Receiving the next packet
                 if(splitPackets.size() < packetCount) {
                     try {
                         bytesRead = this.receivePacket();
@@ -118,13 +131,20 @@ public class GoldSrcSocket extends QuerySocket
     }
 
     /**
-     * Sends a RCON command with the specified password to a GoldSrc server
-     * @param password RCON password to use
-     * @param command RCON command to send to the server
-     * @return The response send by the server
-     * @throws IOException
-     * @throws TimeoutException
-     * @throws SteamCondenserException
+     * Executes the given command on the server via RCON
+     *
+     * @param password The password to authenticate with the server
+     * @param command The command to execute on the server
+     * @return The response replied by the server
+     * @see #rconChallenge
+     * @see #rconSend
+     * @throws IOException if an error occurs while communicating with the
+     *         server
+     * @throws RCONBanException if the IP of the local machine has been banned
+     *         on the game server
+     * @throws RCONNoAuthException if the password is incorrect
+     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws TimeoutException if the request times out
      */
     public String rconExec(String password, String command)
             throws IOException, TimeoutException, SteamCondenserException
@@ -166,9 +186,17 @@ public class GoldSrcSocket extends QuerySocket
     }
 
     /**
-     * @throws SteamCondenserException
-     * @throws NumberFormatException
+     * Requests a challenge number from the server to be used for further
+     * requests
      *
+     * @see #rconSend()
+     * @throws IOException if an error occurs while communicating with the
+     *         server
+     * @throws NumberFormatException if the received response is not a valid
+     *         challenge number
+     * @throws RCONBanException if the IP of the local machine has been banned
+     *         on the game server
+     * @throws TimeoutException if the request times out
      */
     public void rconGetChallenge()
             throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
@@ -183,6 +211,13 @@ public class GoldSrcSocket extends QuerySocket
         this.rconChallenge = Long.valueOf(response.substring(14));
     }
 
+    /**
+     * Wraps the given command in a RCON request packet and send it to the
+     * server
+     *
+     * @param string $command The RCON command to send to the server
+     * @throws IOException if an error occured while writing to the socket
+     */
     private void rconSend(String command)
             throws IOException
     {

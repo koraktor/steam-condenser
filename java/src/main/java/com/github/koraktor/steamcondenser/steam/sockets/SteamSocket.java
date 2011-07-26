@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2010, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.sockets;
@@ -24,8 +24,9 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacketFactory;
 
 /**
- * Defines common methods for sockets used to connect to game and master
- * servers.
+ * This abstract class implements common functionality for sockets used to
+ * connect to game and master servers
+ *
  * @author Sebastian Staudt
  */
 abstract public class SteamSocket
@@ -37,13 +38,10 @@ abstract public class SteamSocket
     protected InetSocketAddress remoteSocket;
 
     /**
-     * Sets the timeout for socket operations. This usually only affects
-     * timeouts, i.e. when a server does not respond in time.
-     *
-     * Due to the server-side implementation of the RCON protocol, each RCON
-     * request will also wait this amount of time after execution. So if you
-     * need RCON requests to execute fast, you should set this to a adequatly
-     * low value.
+     * Sets the timeout for socket operations
+     * <p>
+     * Any request that takes longer than this time will cause a {@link
+     * TimeoutException}.
      *
      * @param timeout The amount of milliseconds before a request times out
      */
@@ -52,10 +50,11 @@ abstract public class SteamSocket
     }
 
     /**
-     * Creates a new SteamSocket used to connect to the given IP address and
-     * port number
-     * @param ipAddress The IP of the server to connect to
-     * @param portNumber The port number of the server
+     * Creates a new UDP socket to communicate with the server on the given IP
+     * address and port
+     *
+     * @param ipAddress Either the IP address or the DNS name of the server
+     * @param portNumber The port the server is listening on
      */
     protected SteamSocket(InetAddress ipAddress, int portNumber)
     {
@@ -66,10 +65,10 @@ abstract public class SteamSocket
     }
 
     /**
-     * Reads a single packet from the buffer into a SteamPacket object
-     * @return The SteamPacket object created from the data in the buffer
-     * @throws com.github.koraktor.steamcondenser.exceptions.PacketFormatException When the SteamPacket could not be created
-     *         because of an format error
+     * Reads a single packet from the buffer into a packet object
+     *
+     * @return The packet object created from the data in the buffer
+     * @throws PacketFormatException if the data is not formatted correctly
      */
     protected SteamPacket getPacketFromData()
             throws PacketFormatException
@@ -82,22 +81,25 @@ abstract public class SteamSocket
 
     /**
      * Subclasses have to implement this method for their individual packet
-     * format
-     * @return The SteamPacket received
-     * @throws IOException
-     * @throws Exception
+     * formats
+     *
+     * @return The packet replied from the server
+     * @throws IOException if an error occurs while communicating with the
+     *         server
+     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws TimeoutException if the request times out
      */
     abstract public SteamPacket getReply()
             throws IOException, TimeoutException, SteamCondenserException;
 
     /**
-     * Reads an UDP packet into an existing or a new buffer
-     * @param bufferLength The length of the new buffer to created or 0 to use
-     *        the existing buffer
-     * @return The number of bytes received
-     * @throws IOException
-     * @throws TimeoutException
-     * TODO select() seems to "miss" some packets (e.g. long RCON responses)
+     * Reads the given amount of data from the socket and wraps it into the
+     * buffer
+     *
+     * @param bufferLength The data length to read from the socket
+     * @throws TimeoutException if no packet is received on time
+     * @return int The number of bytes that have been read from the socket
+     * @see ByteBuffer
      */
     protected int receivePacket(int bufferLength)
             throws IOException, TimeoutException
@@ -141,7 +143,7 @@ abstract public class SteamSocket
     }
 
     /**
-     * Closes the underlying {@link java.nio.channels.DatagramChannel}
+     * Closes the underlying socket
      *
      * @see SelectableChannel#close
      */

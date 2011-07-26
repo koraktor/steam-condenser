@@ -3,32 +3,40 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * This class represents a socket used to communicate with game servers based
+ * on the Source engine (e.g. Team Fortress 2, Counter-Strike: Source)
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage sockets
  */
 class SourceSocket extends SteamSocket
 {
     /**
-     * @return byte[]
+     * Reads a packet from the socket
+     *
+     * The Source query protocol specifies a maximum packet size of 1,400
+     * bytes. Bigger packets will be split over several UDP packets. This
+     * method reassembles split packets into single packet objects.
+     * Additionally Source may compress big packets using bzip2. Those packets
+     * will be compressed.
+     *
+     * @return SteamPacket The packet replied from the server
      */
     public function getReply()
     {
         $bytesRead = $this->receivePacket(1400);
         $isCompressed = false;
 
-        // Check wether it is a split packet
         if($this->buffer->getLong() == -2) {
             do {
                 $requestId = $this->buffer->getLong();
@@ -44,12 +52,10 @@ class SourceSocket extends SteamSocket
                     $splitSize = $this->buffer->getShort();
                 }
 
-                // Caching of split packet Data
                 $splitPackets[$packetNumber] = $this->buffer->get();
 
                 trigger_error("Received packet $packetNumber of $packetCount for request #$requestId");
 
-                // Receiving the next packet
                 if(sizeof($splitPackets) < $packetCount) {
                     try {
                         $bytesRead = $this->receivePacket();

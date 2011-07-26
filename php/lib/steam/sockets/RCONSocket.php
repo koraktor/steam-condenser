@@ -5,10 +5,7 @@
  *
  * Copyright (c) 2008-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'TCPSocket.php';
@@ -19,8 +16,15 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacketFactory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 
 /**
- * @package    Steam Condenser (PHP)
- * @subpackage Sockets
+ * This class represents a socket used for RCON communication with game servers
+ * based on the Source engine (e.g. Team Fortress 2, Counter-Strike: Source)
+ *
+ * The Source engine uses a stateful TCP connection for RCON communication and
+ * uses an additional socket of this type to handle RCON requests.
+ *
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage sockets
  */
 class RCONSocket extends SteamSocket
 {
@@ -34,7 +38,14 @@ class RCONSocket extends SteamSocket
      */
     private $portNumber;
 
-
+    /**
+     * Creates a new TCP socket to communicate with the server on the given IP
+     * address and port
+     *
+     * @param string $ipAddress Either the IP address or the DNS name of the
+     *        server
+     * @param int $portNumber The port the server is listening on
+     */
     public function __construct($ipAddress, $portNumber) {
         $this->buffer = ByteBuffer::allocate(1400);
         $this->ipAddress = $ipAddress;
@@ -42,9 +53,9 @@ class RCONSocket extends SteamSocket
     }
 
     /**
-     * Closes the underlying TCPSocket if it exists
+     * Closes the underlying TCP socket if it exists
      *
-     * @see SteamSocket#close
+     * @see SteamSocket#close()
      */
     public function close() {
         if(!empty($this->socket)) {
@@ -52,6 +63,11 @@ class RCONSocket extends SteamSocket
         }
     }
 
+    /**
+     * Sends the given RCON packet to the server
+     *
+     * @param RCONPacket $dataPacket The RCON packet to send to the server
+     */
     public function send(RCONPacket $dataPacket) {
         if(empty($this->socket)) {
             $this->socket = new TCPSocket();
@@ -61,6 +77,17 @@ class RCONSocket extends SteamSocket
         $this->socket->send($dataPacket->__toString());
     }
 
+    /**
+     * Reads a packet from the socket
+     *
+     * The Source RCON protocol allows packets of an arbitrary sice transmitted
+     * using multiple TCP packets. The data is received in chunks and
+     * concatenated into a single response packet.
+     *
+     * @return SteamPacket The packet replied from the server
+     * @throws RCONBanException if the IP of the local machine has been banned
+     *         on the game server
+     */
     public function getReply() {
         if($this->receivePacket(4) == 0) {
             throw new RCONBanException();

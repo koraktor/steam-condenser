@@ -1,21 +1,27 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2008-2010, Sebastian Staudt
+# Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'stringio_additions'
 require 'steam/sockets/steam_socket'
 
-# The SourceSocket class is a sub class of SteamSocket respecting the
-# specifications of the Source query protocol.
+# This class represents a socket used to communicate with game servers based on
+# the Source engine (e.g. Team Fortress 2, Counter-Strike: Source)
+#
+# @author Sebastian Staudt
 class SourceSocket
 
   include SteamSocket
 
-  # Reads a packet from the channel. The Source query protocol specifies a
-  # maximum packet size of 1400 byte. Greater packets will be split over several
-  # UDP packets. This method reassembles split packets into single packet
-  # objects.
+  # Reads a packet from the socket
+  #
+  # The Source query protocol specifies a maximum packet size of 1,400 bytes.
+  # Bigger packets will be split over several UDP packets. This method
+  # reassembles split packets into single packet objects. Additionally Source
+  # may compress big packets using bzip2. Those packets will be compressed.
+  #
+  # @return [SteamPacket] The packet replied from the server
   def reply
     bytes_read = receive_packet 1400
     is_compressed = false

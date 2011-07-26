@@ -1,5 +1,5 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
@@ -9,36 +9,34 @@ require 'socket'
 require 'stringio_additions'
 require 'exceptions/timeout_exception'
 
-# This module defines common methods for sockets used to connect to game and
-# master servers.
+# This module implements common functionality for sockets used to connect to
+# game and master servers
 #
 # @author Sebastian Staudt
-# @see GoldSrcSocket
-# @see MasterServerSocket
-# @see RCONSocket
-# @see SourceSocket
-# @since 0.5.0
 module SteamSocket
 
-  # The default timeout
-  # @since 0.11.0
+  # The default socket timeout
   @@timeout = 1000
 
-  # Sets the timeout for socket operations. This usually only affects timeouts,
-  # i.e. when a server does not respond in time.
+  # Sets the timeout for socket operations
   #
-  # Due to the server-side implementation of the RCON protocol, each RCON
-  # request will also wait this amount of time after execution. So if you need
-  # RCON requests to execute fast, you should set this to a adequatly low
-  # value.
+  # Any request that takes longer than this time will cause a
+  # {TimeoutException}.
   #
-  # +timeout+ The amount of milliseconds before a request times out
+  # @param [Fixnum] timeout The amount of milliseconds before a request times
+  #        out
   def self.timeout=(timeout)
     @@timeout = timeout
   end
 
+  # Creates a new UDP socket to communicate with the server on the given IP
+  # address and port
+  #
+  # @param [String] ipaddress Either the IP address or the DNS name of the
+  #        server
+  # @param [Fixnum] port_number The port the server is listening on
   def initialize(ip_address, port = 27015)
-    @socket       = UDPSocket.new
+    @socket = UDPSocket.new
     @socket.connect ip_address, port
   end
 
@@ -47,6 +45,12 @@ module SteamSocket
     @socket.close
   end
 
+  # Reads the given amount of data from the socket and wraps it into the buffer
+  #
+  # @param [Fixnum] buffer_length The data length to read from the socket
+  # @raise [TimeoutException] if no packet is received on time
+  # @return [Fixnum] The number of bytes that have been read from the socket
+  # @see StringIO
   def receive_packet(buffer_length = 0)
     if select([@socket], nil, nil, @@timeout / 1000.0).nil?
       raise TimeoutException
@@ -66,6 +70,13 @@ module SteamSocket
     bytes_read
   end
 
+  # Sends the given packet to the server
+  #
+  # This converts the packet into a byte stream first before writing it to the
+  # socket.
+  #
+  # @param [SteamPacket] data_packet The packet to send to the server
+  # @see SteamPacket#to_s
   def send(data_packet)
     puts "Sending data packet of type \"#{data_packet.class.to_s}\"." if $DEBUG
 
