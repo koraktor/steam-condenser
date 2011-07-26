@@ -1,29 +1,44 @@
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
 # Copyright (c) 2010, Sebastian Staudt
 
 require 'steam/community/css/css_map'
 require 'steam/community/css/css_weapon'
 
-# The CSSStats class represents the game statistics for a single user in
+# The is class represents the game statistics for a single user in
 # Counter-Strike: Source
+#
+# @author Sebastian Staudt
 class CSSStats < GameStats
 
+  # The names of the maps in Counter-Strike: Source
   MAPS = [ 'cs_assault', 'cs_compound', 'cs_havana', 'cs_italy', 'cs_militia',
            'cs_office', 'de_aztec', 'de_cbble', 'de_chateau', 'de_dust',
            'de_dust2', 'de_inferno', 'de_nuke', 'de_piranesi', 'de_port',
            'de_prodigy', 'de_tides', 'de_train' ]
 
+  # The names of the weapons in Counter-Strike: Source
   WEAPONS = [ 'deagle', 'usp', 'glock', 'p228', 'elite', 'fiveseven', 'awp',
               'ak47', 'm4a1', 'aug', 'sg552', 'sg550', 'galil', 'famas',
               'scout', 'g3sg1', 'p90', 'mp5navy', 'tmp', 'mac10', 'ump45',
               'm3', 'xm1014', 'm249', 'knife', 'grenade' ]
 
-  attr_reader :last_match_stats, :total_stats
+  # Returns statistics about the last match the player played
+  #
+  # @return [Hash<Symbol, Object>] The stats of the last match
+  attr_reader :last_match_stats
 
-  # Creates a CSSStats object by calling the super constructor with the game
-  # name "cs:s"
+  # Returns overall statistics of this player
+  #
+  # @return [Hash<Symbol, Object>] The overall statistics
+  attr_reader :total_stats
+
+  # Creates a <var>CSSStats</var> instance by calling the super constructor
+  # with the game name <var>"cs:s"</var>
+  #
+  # @param [String, Fixnum] steam_id The custom URL or 64bit Steam ID of the
+  #        user
   def initialize(steam_id)
     super steam_id, 'cs:s'
 
@@ -78,8 +93,11 @@ class CSSStats < GameStats
     end
   end
 
-  # Returns a Hash of CSSMap for this user containing all Counter-Strike:
-  # Source maps. If the maps haven't been parsed already, parsing is done now.
+  # Returns a map of `CSSMap` for this user containing all CS:S maps.
+  #
+  # If the maps haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The map statistics for this user
   def map_stats
     return unless public?
 
@@ -95,9 +113,11 @@ class CSSStats < GameStats
     @map_stats
   end
 
-  # Returns a Hash of CSSWeapon for this user containing all Counter-Strike:
-  # Source weapons. If the weapons haven't been parsed already, parsing is done
-  # now.
+  # Returns a map of `CSSWeapon` for this user containing all CS:S weapons.
+  #
+  # If the weapons haven't been parsed already, parsing is done now.
+  #
+  # @return [Hash<String, Object>] The weapon statistics for this user
   def weapon_stats
     return unless public?
 

@@ -3,32 +3,36 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  *
- * @author     Sebastian Staudt
- * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package    Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/css/CSSMap.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/css/CSSWeapon.php';
 
 /**
- * The CSSStats class represents the game statistics for a single user in
+ * The is class represents the game statistics for a single user in
  * Counter-Strike: Source
  *
- * @package Steam Condenser (PHP)
- * @subpackage Steam Community
+ * @author     Sebastian Staudt
+ * @package    steam-condenser
+ * @subpackage community
  */
 class CSSStats extends GameStats {
 
+    /**
+     * @var array The names of the maps in Counter-Strike: Source
+     */
     protected static $MAPS = array( 'cs_assault', 'cs_compound',
            'cs_havana', 'cs_italy', 'cs_militia', 'cs_office', 'de_aztec',
            'de_cbble', 'de_chateau', 'de_dust', 'de_dust2', 'de_inferno',
            'de_nuke', 'de_piranesi', 'de_port', 'de_prodigy', 'de_tides',
            'de_train' );
 
+    /**
+     * @var array The names of the weapons in Counter-Strike: Source
+     */
     protected static $WEAPONS = array( 'deagle', 'usp', 'glock', 'p228',
             'elite', 'fiveseven', 'awp', 'ak47', 'm4a1', 'aug', 'sg552',
             'sg550', 'galil', 'famas', 'scout', 'g3sg1', 'p90', 'mp5navy',
@@ -40,10 +44,10 @@ class CSSStats extends GameStats {
     private $totalStats;
 
     /**
-     * Creates a CSSStats object by calling the super constructor with the game
-     * name "cs:s"
-     * @param steamId The custom URL or the 64bit Steam ID of the user
-     * @throws SteamCondenserException If an error occurs
+     * Creates a <var>CSSStats</var> instance by calling the super constructor
+     * with the game name <var>"cs:s"</var>
+     *
+     * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'cs:s');
@@ -100,10 +104,23 @@ class CSSStats extends GameStats {
         }
     }
 
+    /**
+     * Returns statistics about the last match the player played
+     *
+     * @return array The stats of the last match
+     */
     public function getLastMatchStats() {
         return $this->lastMatchStats;
     }
 
+    /**
+     * Returns a map of <var>CSSMap</var> for this user containing all CS:S
+     * maps.
+     *
+     * If the maps haven't been parsed already, parsing is done now.
+     *
+     * @return array The map statistics for this user
+    */
     public function getMapStats() {
         if(!$this->isPublic()) {
             return null;
@@ -121,10 +138,23 @@ class CSSStats extends GameStats {
         return $this->mapStats;
     }
 
+    /**
+     * Returns overall statistics of this player
+     *
+     * @return array The overall statistics
+     */
     public function getTotalStats() {
         return $this->totalStats;
     }
 
+    /**
+     * Returns a map of <var>CSSWeapon</var> for this user containing all CS:S
+     * weapons.
+     *
+     * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return array The weapon statistics for this user
+    */
     public function getWeaponStats() {
         if(!$this->isPublic()) {
             return null;

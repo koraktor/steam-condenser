@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community.css;
@@ -15,17 +15,25 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameStats;
 
 /**
- * The CSSStats class represents the game statistics for a single user in
+ * The is class represents the game statistics for a single user in
  * Counter-Strike: Source
+ *
+ * @author Sebastian Staudt
  */
 public class CSSStats extends GameStats {
 
+    /**
+     * The names of the maps in Counter-Strike: Source
+     */
     private static final String[] MAPS = { "cs_assault", "cs_compound",
            "cs_havana", "cs_italy", "cs_militia", "cs_office", "de_aztec",
            "de_cbble", "de_chateau", "de_dust", "de_dust2", "de_inferno",
            "de_nuke", "de_piranesi", "de_port", "de_prodigy", "de_tides",
            "de_train" } ;
 
+    /**
+     * The names of the weapons in Counter-Strike: Source
+     */
     private static final String[] WEAPONS = { "deagle", "usp", "glock", "p228",
             "elite", "fiveseven", "awp", "ak47", "m4a1", "aug", "sg552",
             "sg550", "galil", "famas", "scout", "g3sg1", "p90", "mp5navy",
@@ -41,10 +49,11 @@ public class CSSStats extends GameStats {
     private Map<String, CSSWeapon> weaponStats;
 
     /**
-     * Creates a CSSStats object by calling the super constructor with the game
-     * name "cs:s"
-     * @param steamId The custom URL or the 64bit Steam ID of the user
-     * @throws SteamCondenserException If an error occurs
+     * Creates a <code>CSSStats</code> instance by calling the super
+     * constructor with the game name <code>"cs:s"</code>
+     *
+     * @param steamId The custom URL or 64bit Steam ID of the user
+     * @throws SteamCondenserException if an error occurs
      */
     public CSSStats(Object steamId) throws SteamCondenserException {
         super(steamId, "cs:s");
@@ -116,10 +125,23 @@ public class CSSStats extends GameStats {
         }
     }
 
+    /**
+     * Returns statistics about the last match the player played
+     *
+     * @return The stats of the last match
+     */
     public Map<String, Object> getLastMatchStats() {
         return this.lastMatchStats;
     }
 
+    /**
+     * Returns a map of <code>CSSMap</code> for this user containing all
+     * CS:S maps.
+     * <p>
+     * If the maps haven't been parsed already, parsing is done now.
+     *
+     * @return The map statistics for this user
+    */
     public Map<String, CSSMap> getMapStats() {
         if(!this.isPublic()) {
             return null;
@@ -137,10 +159,23 @@ public class CSSStats extends GameStats {
         return this.mapStats;
     }
 
+    /**
+     * Returns overall statistics of this player
+     *
+     * @return The overall statistics
+     */
     public Map<String, Object> getTotalStats() {
         return this.totalStats;
     }
 
+    /**
+     * Returns a map of <code>CSSWeapon</code> for this user containing all
+     * CS:S weapons.
+     * <p>
+     * If the weapons haven't been parsed already, parsing is done now.
+     *
+     * @return The weapon statistics for this user
+    */
     public Map<String, CSSWeapon> getWeaponStats() {
         if(!this.isPublic()) {
             return null;
