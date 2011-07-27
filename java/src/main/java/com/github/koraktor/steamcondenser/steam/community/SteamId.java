@@ -114,7 +114,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(long id)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, true, false);
     }
 
@@ -126,7 +126,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(String id)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, true, false);
     }
 
@@ -140,7 +140,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(long id, boolean fetch)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, fetch, false);
     }
 
@@ -154,7 +154,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(String id, boolean fetch)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, fetch, false);
     }
 
@@ -170,7 +170,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(long id, boolean fetch, boolean bypassCache)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, fetch, bypassCache);
     }
 
@@ -186,7 +186,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     public static SteamId create(String id, boolean fetch, boolean bypassCache)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         return SteamId.create((Object) id, fetch, bypassCache);
     }
 
@@ -203,7 +203,7 @@ public class SteamId {
      * @return The <code>SteamId</code> instance of the requested profile
      */
     private static SteamId create(Object id, boolean fetch, boolean bypassCache)
-        throws SteamCondenserException {
+            throws SteamCondenserException {
         if(SteamId.isCached(id) && !bypassCache) {
             SteamId steamId = SteamId.steamIds.get(id);
             if(fetch && !steamId.isFetched()) {

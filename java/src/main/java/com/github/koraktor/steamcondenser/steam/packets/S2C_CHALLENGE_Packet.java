@@ -17,15 +17,14 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateChallengeNumber
  */
-public class S2C_CHALLENGE_Packet extends SteamPacket
-{
+public class S2C_CHALLENGE_Packet extends SteamPacket {
+
     /**
      * Creates a new S2C_CHALLENGE response object based on the given data
      *
      * @param challengeNumberBytes The raw packet data replied from the server
      */
-    public S2C_CHALLENGE_Packet(byte[] challengeNumberBytes)
-    {
+    public S2C_CHALLENGE_Packet(byte[] challengeNumberBytes) {
         super(SteamPacket.S2C_CHALLENGE_HEADER, challengeNumberBytes);
     }
 
@@ -34,8 +33,7 @@ public class S2C_CHALLENGE_Packet extends SteamPacket
      *
      * @return The challenge number provided by the game server
     */
-    public int getChallengeNumber()
-    {
+    public int getChallengeNumber() {
         return Integer.reverseBytes(this.contentData.getInt());
     }
 }

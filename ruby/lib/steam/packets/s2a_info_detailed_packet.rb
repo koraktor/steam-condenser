@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011 Sebastian Staudt
 
-require "steam/packets/s2a_info_base_packet"
+require 'steam/packets/s2a_info_base_packet'
 
 # This class represents a S2A_INFO_DETAILED response packet sent by a GoldSrc
 # server

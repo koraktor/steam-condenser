@@ -24,6 +24,7 @@ import com.github.koraktor.steamcondenser.steam.community.GameStats;
  * @author Sebastian Staudt
  */
 public class DefenseGridStats extends GameStats {
+
     private HashMap<String, int[]> alienStats;
     private int bronzeMedals;
     private int silverMedals;
@@ -138,7 +139,7 @@ public class DefenseGridStats extends GameStats {
      * @return Bronze medals won
      */
     public int getBronzeMedals() {
-        return bronzeMedals;
+        return this.bronzeMedals;
     }
 
     /**
@@ -147,7 +148,7 @@ public class DefenseGridStats extends GameStats {
      * @return Damage done
      */
     public float getDamage() {
-        return damage;
+        return this.damage;
     }
 
     /**
@@ -156,7 +157,7 @@ public class DefenseGridStats extends GameStats {
      * @return Damage done during the campaign
      */
     public float getDamageCampaign() {
-        return damageCampaign;
+        return this.damageCampaign;
     }
 
     /**
@@ -165,7 +166,7 @@ public class DefenseGridStats extends GameStats {
      * @return Damage done during challenges
      */
     public float getDamageChallenge() {
-        return damageChallenge;
+        return this.damageChallenge;
     }
 
     /**
@@ -174,7 +175,7 @@ public class DefenseGridStats extends GameStats {
      * @return Aliens encountered
      */
     public int getEncountered() {
-        return encountered;
+        return this.encountered;
     }
 
     /**
@@ -183,7 +184,7 @@ public class DefenseGridStats extends GameStats {
      * @return Gold medals won
      */
     public int getGoldMedals() {
-        return goldMedals;
+        return this.goldMedals;
     }
 
     /**
@@ -192,7 +193,7 @@ public class DefenseGridStats extends GameStats {
      * @return Heat damage done
      */
     public float getHeatDamage() {
-        return heatDamage;
+        return this.heatDamage;
     }
 
     /**
@@ -201,7 +202,7 @@ public class DefenseGridStats extends GameStats {
      * @return Interest gained
      */
     public float getInterest() {
-        return interest;
+        return this.interest;
     }
 
     /**
@@ -210,7 +211,7 @@ public class DefenseGridStats extends GameStats {
      * @return Aliens killed
      */
     public int getKilled() {
-        return killed;
+        return this.killed;
     }
 
     /**
@@ -219,7 +220,7 @@ public class DefenseGridStats extends GameStats {
      * @return Aliens killed during the campaign
      */
     public int getKilledCampaign() {
-        return killedCampaign;
+        return this.killedCampaign;
     }
 
     /**
@@ -228,7 +229,7 @@ public class DefenseGridStats extends GameStats {
      * @return Aliens killed during challenges
      */
     public int getKilledChallenge() {
-        return killedChallenge;
+        return this.killedChallenge;
     }
 
     /**
@@ -237,7 +238,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels played
      */
     public int getLevelsPlayed() {
-        return levelsPlayed;
+        return this.levelsPlayed;
     }
 
     /**
@@ -246,7 +247,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels played during the campaign
      */
     public int getLevelsPlayedCampaign() {
-        return levelsPlayedCampaign;
+        return this.levelsPlayedCampaign;
     }
 
     /**
@@ -255,7 +256,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels played during challenges
      */
     public int getLevelsPlayedChallenge() {
-        return levelsPlayedChallenge;
+        return this.levelsPlayedChallenge;
     }
 
     /**
@@ -264,7 +265,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels won
      */
     public int getLevelsWon() {
-        return levelsWon;
+        return this.levelsWon;
     }
 
     /**
@@ -273,7 +274,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels during the campaign won
      */
     public int getLevelsWonCampaign() {
-        return levelsWonCampaign;
+        return this.levelsWonCampaign;
     }
 
     /**
@@ -282,7 +283,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of levels during challenges won
      */
     public int getLevelsWonChallenge() {
-        return levelsWonChallenge;
+        return this.levelsWonChallenge;
     }
 
     /**
@@ -291,7 +292,7 @@ public class DefenseGridStats extends GameStats {
      * @return Damage dealt by the orbital laser
      */
     public float getOrbitalLaserDamage() {
-        return orbitalLaserDamage;
+        return this.orbitalLaserDamage;
     }
 
     /**
@@ -300,7 +301,7 @@ public class DefenseGridStats extends GameStats {
      * @return Number of times the orbital laser has been fired
      */
     public int getOrbitalLaserFired() {
-        return orbitalLaserFired;
+        return this.orbitalLaserFired;
     }
 
     /**
@@ -309,7 +310,7 @@ public class DefenseGridStats extends GameStats {
      * @return Resources harvested by the player
      */
     public float getResources() {
-        return resources;
+        return this.resources;
     }
 
     /**
@@ -318,7 +319,7 @@ public class DefenseGridStats extends GameStats {
      * @return Silver medals won
      */
     public int getSilverMedals() {
-        return silverMedals;
+        return this.silverMedals;
     }
 
     /**
@@ -327,7 +328,7 @@ public class DefenseGridStats extends GameStats {
      * @return Time played
      */
     public float getTimePlayed() {
-        return timePlayed;
+        return this.timePlayed;
     }
 
     /**

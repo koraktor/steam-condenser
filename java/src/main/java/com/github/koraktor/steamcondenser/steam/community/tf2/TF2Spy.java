@@ -14,8 +14,8 @@ import org.w3c.dom.Element;
  *
  * @author Sebastian Staudt
  */
-public class TF2Spy extends TF2Class
-{
+public class TF2Spy extends TF2Class {
+
     private int maxBackstabs;
 
     private int maxHealthLeeched;
@@ -25,8 +25,7 @@ public class TF2Spy extends TF2Class
      *
      * @param classData The XML data for this Spy
      */
-    public TF2Spy(Element classData)
-    {
+    public TF2Spy(Element classData) {
         super(classData);
 
         this.maxBackstabs      = Integer.parseInt(classData.getElementsByTagName("ibackstabs").item(0).getTextContent());
@@ -39,8 +38,7 @@ public class TF2Spy extends TF2Class
      *
      * @return Maximum health leeched
      */
-    public int getMaxBackstabs()
-    {
+    public int getMaxBackstabs() {
         return this.maxBackstabs;
     }
 
@@ -50,8 +48,7 @@ public class TF2Spy extends TF2Class
      *
      * @return Maximum health leeched
      */
-    public int getMaxHealthLeeched()
-    {
+    public int getMaxHealthLeeched() {
         return this.maxHealthLeeched;
     }
 }

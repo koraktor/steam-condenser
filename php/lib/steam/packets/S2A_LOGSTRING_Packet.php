@@ -17,8 +17,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @author     Sebastian Staudt
  */
-class S2A_LOGSTRING_Packet extends SteamPacket
-{
+class S2A_LOGSTRING_Packet extends SteamPacket {
 
     /**
      * @var string The log message contained in this packet

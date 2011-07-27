@@ -5,8 +5,9 @@
 
 $:.push File.join(File.dirname(__FILE__), '..', '..', '..', 'lib')
 
-require "steam/community/steam_group"
-require "test/unit"
+require 'test/unit'
+
+require 'steam/community/steam_group'
 
 class SteamGroupTests < Test::Unit::TestCase
 

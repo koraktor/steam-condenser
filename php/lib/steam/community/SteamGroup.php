@@ -99,8 +99,7 @@ class SteamGroup {
     public function __construct($id, $fetch = true) {
         if(is_numeric($id)) {
             $this->groupId64 = $id;
-        }
-        else {
+        } else {
             $this->customUrl = $id;
         }
 
@@ -214,6 +213,7 @@ class SteamGroup {
         if(empty($this->members)) {
             $url = $this->getBaseUrl() . '/memberslistxml';
             $memberData = new SimpleXMLElement(file_get_contents($url));
+
             return (int) $memberData->memberCount;
         } else {
             return sizeof($this->members);
@@ -232,6 +232,7 @@ class SteamGroup {
         if(empty($this->members) || empty($this->members[0])) {
             $this->fetchMembers();
         }
+
         return $this->members;
     }
 

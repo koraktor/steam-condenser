@@ -24,8 +24,8 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class RCONTests
-{
+public class RCONTests {
+
     private InetAddress goldSrcServerAddress;
     private int goldSrcServerPort;
     private InetAddress sourceServerAddress;
@@ -37,39 +37,33 @@ public class RCONTests
      */
     @Before
     public void setUp()
-        throws UnknownHostException
-    {
+            throws UnknownHostException {
         Properties testFixtures = new Properties();
         try {
             testFixtures.load(new FileInputStream("test-fixtures.properties"));
-        }
-        catch(IOException e) {}
+        } catch(IOException e) {}
 
         if(testFixtures.containsKey("goldSrcServerAddress")) {
             this.goldSrcServerAddress = InetAddress.getByName(testFixtures.getProperty("goldSrcServerAddress"));
-        }
-        else {
+        } else {
             this.goldSrcServerAddress = InetAddress.getLocalHost();
         }
 
         if(testFixtures.containsKey("goldSrcServerPort")) {
             this.goldSrcServerPort = Integer.valueOf(testFixtures.getProperty("goldSrcServerPort"));
-        }
-        else {
+        } else {
             this.goldSrcServerPort = 27015;
         }
 
         if(testFixtures.containsKey("sourceServerAddress")) {
             this.sourceServerAddress = InetAddress.getByName(testFixtures.getProperty("sourceServerAddress"));
-        }
-        else {
+        } else {
             this.sourceServerAddress = InetAddress.getLocalHost();
         }
 
         if(testFixtures.containsKey("sourceServerPort")) {
             this.sourceServerPort = Integer.valueOf(testFixtures.getProperty("sourceServerPort"));
-        }
-        else {
+        } else {
             this.sourceServerPort = 27015;
         }
     }
@@ -82,8 +76,7 @@ public class RCONTests
      */
     @Test
     public void rconLongGoldSrcServer()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         GoldSrcServer server = new GoldSrcServer(this.goldSrcServerAddress, this.goldSrcServerPort);
         server.rconAuth("test");
         String rconReply = server.rconExec("cvarlist");
@@ -103,8 +96,7 @@ public class RCONTests
      */
     @Test
     public void rconLongSourceServer()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         SourceServer server = new SourceServer(this.sourceServerAddress, this.sourceServerPort);
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("cvarlist");
@@ -124,8 +116,7 @@ public class RCONTests
      */
     @Test
     public void rconShortGoldSrcServer()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         GoldSrcServer server = new GoldSrcServer(this.goldSrcServerAddress, this.goldSrcServerPort);
         server.rconAuth("test");
         String rconReply = server.rconExec("version");
@@ -147,8 +138,7 @@ public class RCONTests
      */
     @Test
     public void rconShortSourceServer()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         SourceServer server = new SourceServer(this.sourceServerAddress, this.sourceServerPort);
         if (server.rconAuth("test")) {
             String rconReply = server.rconExec("version");

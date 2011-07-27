@@ -36,8 +36,8 @@ import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
  * @author Sebastian Staudt
  * @see MasterServer#getServers(byte, String)
  */
-public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
-{
+public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket {
+
     private String filter;
     private byte regionCode;
     private String startIp;
@@ -46,8 +46,7 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
      * Creates a new A2M_GET_SERVERS_BATCH2 request object without applying any
      * filters
      */
-    public A2M_GET_SERVERS_BATCH2_Paket()
-    {
+    public A2M_GET_SERVERS_BATCH2_Paket() {
         this(MasterServer.REGION_ALL, "0.0.0.0:0", "");
     }
 
@@ -60,8 +59,7 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
      *        server or 0.0.0.0
      * @param filter The filters to apply in the form ("\filtername\value...")
      */
-    public A2M_GET_SERVERS_BATCH2_Paket(byte regionCode, String startIp, String filter)
-    {
+    public A2M_GET_SERVERS_BATCH2_Paket(byte regionCode, String startIp, String filter) {
         super(SteamPacket.A2M_GET_SERVERS_BATCH2_HEADER);
 
         this.filter = filter;
@@ -75,8 +73,7 @@ public class A2M_GET_SERVERS_BATCH2_Paket extends SteamPacket
      * @return A byte array containing the raw data of this request packet
      */
     @Override
-    public byte[] getBytes()
-    {
+    public byte[] getBytes() {
         byte[] bytes, filterBytes, startIpBytes;
 
         filterBytes = (this.filter + "\0").getBytes();

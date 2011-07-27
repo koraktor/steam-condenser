@@ -31,7 +31,7 @@ module WebApi
   #        hexadecimal string
   def self.api_key=(api_key)
     unless api_key.nil? || api_key.match(/^[0-9A-F]{32}$/)
-      raise WebApiException.new(:invalid_key)
+      raise WebApiException, :invalid_key
     end
 
     @@api_key = api_key
@@ -50,7 +50,7 @@ module WebApi
   # @raise [WebApiException] if the request to Steam's Web API fails
   # @return [String] The raw JSON data replied to the request
   def self.json(interface, method, version = 1, params = nil)
-    load(:json, interface, method, version, params)
+    get(:json, interface, method, version, params)
   end
 
   # Fetches JSON data from Steam Web API using the specified interface, method
@@ -71,7 +71,7 @@ module WebApi
 
     status = result[:status]
     if status != 1
-      raise WebApiException.new(:status_bad, status, result[:statusDetail])
+      raise WebApiException.new :status_bad, status, result[:statusDetail]
     end
 
     result
@@ -91,7 +91,7 @@ module WebApi
   #        HTTP GET
   # @raise [WebApiException] if the request to Steam's Web API fails
   # @return [String] The data as replied by the Web API in the desired format
-  def self.load(format, interface, method, version = 1, params = nil)
+  def self.get(format, interface, method, version = 1, params = nil)
     version = version.to_s.rjust(4, '0')
     url = "http://api.steampowered.com/#{interface}/#{method}/v#{version}/"
     params = {} unless params.is_a?(Hash)
@@ -107,8 +107,8 @@ module WebApi
     rescue OpenURI::HTTPError
       status = $!.io.status[0]
       status = [status, ''] unless status.is_a? Array
-      raise WebApiException.new(:unauthorized) if status[0].to_i == 401
-      raise WebApiException.new(:http_error, status[0].to_i, status[1])
+      raise WebApiException, :unauthorized if status[0].to_i == 401
+      raise WebApiException.new :http_error, status[0].to_i, status[1]
     end
   end
 

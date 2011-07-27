@@ -10,9 +10,9 @@
 
 error_reporting(E_ALL & ~E_USER_NOTICE);
 
-require_once dirname(__FILE__) . "/../lib/steam-condenser.php";
+require_once dirname(__FILE__) . '/../lib/steam-condenser.php';
 
-require_once "PHPUnit/Framework.php";
+require_once 'PHPUnit/Framework.php';
 
 /**
  * @author     Sebastian Staudt

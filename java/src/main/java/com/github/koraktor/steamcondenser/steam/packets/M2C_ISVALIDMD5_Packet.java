@@ -16,8 +16,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * @author Sebastian Staudt
  * @see    com.github.koraktor.steamcondenser.steam.servers.MasterServer#getChallenge
  */
-public class M2C_ISVALIDMD5_Packet extends SteamPacket
-{
+public class M2C_ISVALIDMD5_Packet extends SteamPacket {
 
     private int challenge;
 

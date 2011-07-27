@@ -18,7 +18,7 @@ class QueryTests < Test::Unit::TestCase
   # This test tries to initialize an invalid GoldSrc server
   def test_invalid_goldsrc_server
     assert_raise TimeoutException do
-      invalid_server = GoldSrcServer.new IPAddr.new("1.0.0.0")
+      invalid_server = GoldSrcServer.new IPAddr.new('1.0.0.0')
       invalid_server.ping
     end
   end
@@ -26,7 +26,7 @@ class QueryTests < Test::Unit::TestCase
   # This test tries to initialize an invalid Source server
   def test_invalid_source_server
     assert_raise TimeoutException do
-      invalid_server = SourceServer.new IPAddr.new("1.0.0.0")
+      invalid_server = SourceServer.new IPAddr.new('1.0.0.0')
       invalid_server.ping
     end
   end
@@ -36,9 +36,9 @@ class QueryTests < Test::Unit::TestCase
   def test_random_goldsrc_server
     assert_nothing_raised do
       master_server = MasterServer.new(*MasterServer::GOLDSRC_MASTER_SERVER)
-      servers = master_server.servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve"
+      servers = master_server.servers MasterServer::REGION_ALL, '\type\d\empty\1\full\1\gamedir\valve'
 
-      assert !servers.empty?, "Got no servers from master server."
+      assert !servers.empty?, 'Got no servers from master server.'
 
       server = GoldSrcServer.new(*servers[rand(servers.length)])
       server.init
@@ -54,9 +54,9 @@ class QueryTests < Test::Unit::TestCase
   def test_random_source_server
     assert_nothing_raised do
       master_server = MasterServer.new(*MasterServer::SOURCE_MASTER_SERVER)
-      servers = master_server.servers MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf"
+      servers = master_server.servers MasterServer::REGION_ALL, '\type\d\empty\1\full\1\gamedir\tf'
 
-      assert !servers.empty?, "Got no servers from master server."
+      assert !servers.empty?, 'Got no servers from master server.'
 
       server = SourceServer.new(*servers[rand(servers.length)])
       server.init

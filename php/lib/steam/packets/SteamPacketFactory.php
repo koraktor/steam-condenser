@@ -35,8 +35,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_LOGSTRING_Packet.php';
  * @subpackage packets
  * @see        SteamPacket
  */
-abstract class SteamPacketFactory
-{
+abstract class SteamPacketFactory {
+
     /**
      * Creates a new packet object based on the header byte of the given raw
      * data
@@ -45,13 +45,11 @@ abstract class SteamPacketFactory
      * @throws PacketFormatException if the packet header is not recognized
      * @return SteamPacket The packet object generated from the packet data
      */
-    public static function getPacketFromData($rawData)
-    {
+    public static function getPacketFromData($rawData) {
         $header = ord($rawData[0]);
         $data = substr($rawData, 1);
 
-        switch($header)
-        {
+        switch($header) {
             case SteamPacket::S2A_INFO_DETAILED_HEADER:
                 return new S2A_INFO_DETAILED_Packet($data);
 
@@ -100,7 +98,7 @@ abstract class SteamPacketFactory
                 return new S2A_LOGSTRING_Packet($data);
 
             default:
-                throw new PacketFormatException("Unknown packet with header 0x" . dechex($header) . " received.");
+                throw new PacketFormatException('Unknown packet with header 0x' . dechex($header) . ' received.');
         }
     }
 
@@ -117,26 +115,21 @@ abstract class SteamPacketFactory
      * @return SteamPacket The reassembled packet
      * @see packetFromData()
      */
-    public static function reassemblePacket($splitPackets, $isCompressed = false, $packetChecksum = 0)
-    {
-        $packetData = "";
+    public static function reassemblePacket($splitPackets, $isCompressed = false, $packetChecksum = 0) {
+        $packetData = '';
 
-        foreach($splitPackets as $splitPacket)
-        {
+        foreach($splitPackets as $splitPacket) {
             $packetData .= $splitPacket;
         }
 
-        if($isCompressed)
-        {
+        if($isCompressed) {
             $packetData = bzdecompress($packetData);
 
-            if(crc32($packetData) != $packetChecksum)
-            {
-                throw new PacketFormatException("CRC32 checksum mismatch of uncompressed packet data.");
+            if(crc32($packetData) != $packetChecksum) {
+                throw new PacketFormatException('CRC32 checksum mismatch of uncompressed packet data.');
             }
         }
 
-        // Omit leading 0xFFFFFFFF
         $packetData = substr($packetData, 4);
 
         return self::getPacketFromData($packetData);

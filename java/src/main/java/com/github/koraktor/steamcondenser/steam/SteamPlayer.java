@@ -93,8 +93,7 @@ public class SteamPlayer {
      *
      * @return The client port of the player
      */
-    public int getClientPort()
-    {
+    public int getClientPort() {
         return this.clientPort;
     }
 
@@ -166,8 +165,7 @@ public class SteamPlayer {
      *
      * @return The real ID of this player
      */
-    public int getRealId()
-    {
+    public int getRealId() {
         return this.realId;
     }
 
@@ -194,8 +192,7 @@ public class SteamPlayer {
      *
      * @return The SteamID of this player
      */
-    public String getSteamId()
-    {
+    public String getSteamId() {
         return this.steamId;
     }
 
@@ -215,8 +212,7 @@ public class SteamPlayer {
      * @return <code>true</code> if extended information for this player is
      *         available
      */
-    public boolean isExtended()
-    {
+    public boolean isExtended() {
         return this.extended;
     }
 
@@ -229,8 +225,7 @@ public class SteamPlayer {
     public String toString() {
         if(this.extended) {
             return "#" + this.realId + " \"" + this.name + "\", SteamID: " + this.steamId + ", Score: " + this.score + ", Time: " + this.connectTime;
-        }
-        else {
+        } else {
             return "#" + this.id + " \"" + this.name + "\", Score: " + this.score + ", Time: " + this.connectTime;
         }
     }

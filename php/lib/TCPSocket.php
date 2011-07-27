@@ -18,8 +18,8 @@ require_once STEAM_CONDENSER_PATH . 'Socket.php';
  * @author  Sebastian Staudt
  * @package steam-condenser
  */
-class TCPSocket extends Socket
-{
+class TCPSocket extends Socket {
+
     /**
      * Connects the TCP socket to the host with the given IP address and port
      * number
@@ -36,24 +36,18 @@ class TCPSocket extends Socket
         $this->ipAddress = $ipAddress;
         $this->portNumber = $portNumber;
 
-        if($this->socketsEnabled)
-        {
-            if(!$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))
-            {
+        if($this->socketsEnabled) {
+            if(!$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
                 $errorCode = socket_last_error($this->socket);
-                throw new Exception("Could not create socket: " . socket_strerror($errorCode));
+                throw new Exception('Could not create socket: ' . socket_strerror($errorCode));
             }
-            if(@!socket_connect($this->socket, $ipAddress, $portNumber))
-            {
+            if(@!socket_connect($this->socket, $ipAddress, $portNumber)) {
                 $errorCode = socket_last_error($this->socket);
-                throw new Exception("Could not connect socket: " . socket_strerror($errorCode));
+                throw new Exception('Could not connect socket: ' . socket_strerror($errorCode));
             }
-        }
-        else
-        {
-            if(!$this->socket = fsockopen("tcp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
-            {
-                throw new Exception("Could not create socket: $socketErrstr");
+        } else {
+            if(!$this->socket = fsockopen("tcp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2)) {
+                throw new Exception('Could not create socket: $socketErrstr');
             }
             stream_set_blocking($this->socket, true);
         }

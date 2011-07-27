@@ -15,7 +15,6 @@ package com.github.koraktor.steamcondenser.exceptions;
  */
 public class PacketFormatException extends SteamCondenserException
 {
-
     /**
      * Creates a new <code>PacketFormatException</code> instance
      *
@@ -24,5 +23,4 @@ public class PacketFormatException extends SteamCondenserException
     public PacketFormatException(String message) {
         super(message);
     }
-
 }

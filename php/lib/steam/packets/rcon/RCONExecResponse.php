@@ -22,8 +22,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
  * @subpackage rcon-packets
  * @see SourceServer::rconExec()
  */
-class RCONExecResponse extends RCONPacket
-{
+class RCONExecResponse extends RCONPacket {
+
     /**
      * Creates a RCON command response for the given request ID and command
      * output
@@ -32,8 +32,7 @@ class RCONExecResponse extends RCONPacket
      * @param string $commandResponse The output of the command executed on the
      *        server
      */
-    public function __construct($requestId, $commandResponse)
-    {
+    public function __construct($requestId, $commandResponse) {
         parent::__construct($requestId, RCONPacket::SERVERDATA_RESPONSE_VALUE, $commandResponse);
     }
 
@@ -42,8 +41,7 @@ class RCONExecResponse extends RCONPacket
      *
      * @return string The output of the command
      */
-    public function getResponse()
-    {
+    public function getResponse() {
         $response = $this->contentData->_array();
         return substr($response, 0, strlen($response) - 2);
     }

@@ -16,16 +16,15 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @package    steam-condenser
  * @subpackage packets
  */
-abstract class RequestPacketWithChallenge extends SteamPacket
-{
+abstract class RequestPacketWithChallenge extends SteamPacket {
+
     /**
      * Returns the raw data representing this packet
      *
      * @return string A string containing the raw data of this request packet
      */
-    public function __toString()
-    {
-        return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData->_array());
+    public function __toString() {
+        return pack('cccccV', 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData->_array());
     }
 }
 ?>

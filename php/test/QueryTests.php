@@ -10,39 +10,36 @@
 
 error_reporting(E_ALL & ~E_USER_NOTICE);
 
-require_once dirname(__FILE__) . "/../lib/steam-condenser.php";
+require_once dirname(__FILE__) . '/../lib/steam-condenser.php';
 
-require_once "PHPUnit/Framework.php";
+require_once 'PHPUnit/Framework.php';
 
 /**
  * @author     Sebastian Staudt
  * @package    steam-condenser
  * @subpackage tests
  */
-class QueryTests extends PHPUnit_Framework_TestCase
-{
+class QueryTests extends PHPUnit_Framework_TestCase {
+
     /**
      * @expectedException TimeoutException
      */
-    public function testInvalidGoldSrcServer()
-    {
-        $server = new GoldSrcServer(new InetAddress("1.0.0.0"), 27015);
+    public function testInvalidGoldSrcServer() {
+        $server = new GoldSrcServer(new InetAddress('1.0.0.0'), 27015);
         $server->getPing();
     }
 
     /**
      * @expectedException TimeoutException
      */
-    public function testInvalidSourceServer()
-    {
-        $server = new SourceServer(new InetAddress("1.0.0.0"), 27015);
+    public function testInvalidSourceServer() {
+        $server = new SourceServer(new InetAddress('1.0.0.0'), 27015);
         $server->getPing();
     }
 
-    public function testRandomGoldsrcServer()
-    {
+    public function testRandomGoldsrcServer() {
         $masterServer = new MasterServer(MasterServer::GOLDSRC_MASTER_SERVER);
-        $serverArray = $masterServer->getServers(MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve");
+        $serverArray = $masterServer->getServers(MasterServer::REGION_ALL, '\type\d\empty\1\full\1\gamedir\valve');
         $serverAddress = $serverArray[array_rand($serverArray)];
         $server = new GoldSrcServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
         $server->initialize();
@@ -57,10 +54,9 @@ class QueryTests extends PHPUnit_Framework_TestCase
         echo $server;
     }
 
-    public function testRandomSourceServer()
-    {
+    public function testRandomSourceServer() {
         $masterServer = new MasterServer(MasterServer::SOURCE_MASTER_SERVER);
-        $serverArray = $masterServer->getServers(MasterServer::REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf");
+        $serverArray = $masterServer->getServers(MasterServer::REGION_ALL, '\type\d\empty\1\full\1\gamedir\tf');
         $serverAddress = $serverArray[array_rand($serverArray)];
         $server = new SourceServer(new InetAddress($serverAddress[0]), $serverAddress[1]);
         $server->initialize();

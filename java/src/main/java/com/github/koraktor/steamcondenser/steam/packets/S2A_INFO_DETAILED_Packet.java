@@ -20,6 +20,7 @@ import java.util.HashMap;
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
+
     protected boolean isMod;
     protected HashMap<String, Object> modInfo;
     protected String serverIp;
@@ -45,12 +46,12 @@ public class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
         this.passwordProtected = this.contentData.getByte() == 1;
         this.isMod = this.contentData.getByte() == 1;
 
-        if (this.isMod) {
+        if(this.isMod) {
             this.modInfo = new HashMap<String, Object>(6);
             this.modInfo.put("urlInfo", this.contentData.getString());
             this.modInfo.put("urlDl", this.contentData.getString());
             this.contentData.getByte();
-            if (this.contentData.remaining() == 12) {
+            if(this.contentData.remaining() == 12) {
                 this.modInfo.put("modVersion", Integer.reverseBytes(this.contentData.getInt()));
                 this.modInfo.put("modSize", Integer.reverseBytes(this.contentData.getInt()));
                 this.modInfo.put("svOnly", this.contentData.getByte() == 1);

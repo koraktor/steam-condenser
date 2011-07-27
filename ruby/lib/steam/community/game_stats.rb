@@ -109,7 +109,7 @@ class GameStats
     @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
 
     error = @xml_data.elements['error']
-    raise SteamCondenserException.new(error.text) unless error.nil?
+    raise SteamCondenserException, error.text unless error.nil?
 
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?

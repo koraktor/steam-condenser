@@ -6,9 +6,6 @@
 require 'rubygems'
 require 'rubygems/package_task'
 
-src_files = Dir.glob(File.join("lib", "**", "*.rb"))
-test_files = Dir.glob(File.join("test", "**", "*.rb"))
-
 Gem::PackageTask.new Gem::Specification.load 'steam-condenser.gemspec' do |pkg|
 end
 
@@ -31,8 +28,8 @@ rescue LoadError
 end
 
 # Task for cleaning documentation and package directories
-desc "Clean documentation and package directories"
+desc 'Clean documentation and package directories'
 task :clean do
-  FileUtils.rm_rf "doc"
-  FileUtils.rm_rf "pkg"
+  FileUtils.rm_rf 'doc'
+  FileUtils.rm_rf 'pkg'
 end

@@ -20,8 +20,8 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
  *
  * @author     Sebastian Staudt
  */
-public class MasterServerSocket extends QuerySocket
-{
+public class MasterServerSocket extends QuerySocket {
+
     /**
      * Creates a new socket to communicate with the server on the given IP
      * address and port
@@ -31,8 +31,7 @@ public class MasterServerSocket extends QuerySocket
      * @throws IOException if the socket cannot be opened
      */
     public MasterServerSocket(InetAddress ipAddress, int portNumber)
-    throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
     }
 
@@ -47,12 +46,10 @@ public class MasterServerSocket extends QuerySocket
      * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
-    throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         this.receivePacket(1500);
 
-        if(this.buffer.getInt() != -1)
-        {
+        if(this.buffer.getInt() != -1) {
             throw new PacketFormatException("Master query response has wrong packet header.");
         }
 

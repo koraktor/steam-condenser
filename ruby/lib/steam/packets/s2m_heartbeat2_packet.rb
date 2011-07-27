@@ -51,7 +51,7 @@ class S2M_HEARTBEAT2_Packet
     data = DEFAULT_DATA.merge data
 
     if data[:challenge].nil?
-      raise SteamCondenserException.new 'You have to provide a challenge number when sending a heartbeat to a master server.'
+      raise SteamCondenserException, 'You have to provide a challenge number when sending a heartbeat to a master server.'
     end
 
     bytes = 0x0A.chr

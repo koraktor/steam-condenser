@@ -14,8 +14,8 @@ import org.w3c.dom.Element;
  *
  * @author Sebastian Staudt
  */
-public class TF2Medic extends TF2Class
-{
+public class TF2Medic extends TF2Class {
+
     private int maxHealthHealed;
 
     private int maxUbercharges;
@@ -25,8 +25,7 @@ public class TF2Medic extends TF2Class
      *
      * @param classData The XML data for this Medic
      */
-    public TF2Medic(Element classData)
-    {
+    public TF2Medic(Element classData) {
         super(classData);
 
         this.maxHealthHealed = Integer.parseInt(classData.getElementsByTagName("ihealthpointshealed").item(0).getTextContent());
@@ -39,8 +38,7 @@ public class TF2Medic extends TF2Class
      *
      * @return Maximum health healed
      */
-    public int getMaxHealthHealed()
-    {
+    public int getMaxHealthHealed() {
         return this.maxHealthHealed;
     }
 
@@ -50,8 +48,7 @@ public class TF2Medic extends TF2Class
      *
      * @return Maximum number of ÜberCharges
      */
-    public int getMaxUbercharges()
-    {
+    public int getMaxUbercharges() {
         return this.maxUbercharges;
     }
 }

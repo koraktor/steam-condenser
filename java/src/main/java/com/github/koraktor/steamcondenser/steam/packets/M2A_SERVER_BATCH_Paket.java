@@ -21,8 +21,8 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#getServers
  */
-public class M2A_SERVER_BATCH_Paket extends SteamPacket
-{
+public class M2A_SERVER_BATCH_Paket extends SteamPacket {
+
     private Vector<String> serverArray;
 
     /**
@@ -32,20 +32,17 @@ public class M2A_SERVER_BATCH_Paket extends SteamPacket
      * @throws PacketFormatException if the packet data is not well formatted
      */
     public M2A_SERVER_BATCH_Paket(byte[] data)
-    throws PacketFormatException
-    {
+            throws PacketFormatException {
         super(SteamPacket.M2A_SERVER_BATCH_HEADER, data);
 
-        if(this.contentData.getByte() != 0x0A)
-        {
+        if(this.contentData.getByte() != 0x0A) {
             throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
         }
 
         int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
         this.serverArray = new Vector<String>();
 
-        do
-        {
+        do {
             firstOctet = this.contentData.getByte() & 0xFF;
             secondOctet = this.contentData.getByte() & 0xFF;
             thirdOctet = this.contentData.getByte() & 0xFF;
@@ -53,8 +50,7 @@ public class M2A_SERVER_BATCH_Paket extends SteamPacket
             portNumber = this.contentData.getShort() & 0xFFFF;
 
             this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
-        }
-        while(this.contentData.remaining() > 0);
+        } while(this.contentData.remaining() > 0);
     }
 
     /**
@@ -62,8 +58,7 @@ public class M2A_SERVER_BATCH_Paket extends SteamPacket
      *
      * @return An array of server addresses (i.e. IP addresses + port numbers)
      */
-    public Vector<String> getServers()
-    {
+    public Vector<String> getServers() {
         return this.serverArray;
     }
 }

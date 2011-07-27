@@ -40,8 +40,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see MasterServer::getServers()
  */
-class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
-{
+class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket {
+
     private $filter;
     private $regionCode;
     private $startIp;
@@ -56,8 +56,7 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
      * @param string $filter The filters to apply in the form
      *        ("\filtername\value...")
      */
-    public function __construct($regionCode = MasterServer::REGION_ALL, $startIp = "0.0.0.0", $filter = "")
-    {
+    public function __construct($regionCode = MasterServer::REGION_ALL, $startIp = '0.0.0.0', $filter = '') {
         parent::__construct(SteamPacket::A2M_GET_SERVERS_BATCH2_HEADER);
 
         $this->filter = $filter;
@@ -70,8 +69,7 @@ class A2M_GET_SERVERS_BATCH2_Packet extends SteamPacket
      *
      * @return string A string containing the raw data of this request packet
      */
-    public function __toString()
-    {
+    public function __toString() {
         return chr($this->headerData) . chr($this->regionCode) . $this->startIp . "\0" . $this->filter . "\0";
     }
 }

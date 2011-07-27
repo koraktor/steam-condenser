@@ -69,7 +69,7 @@ class SourceServer
     @rcon_socket.reply
     reply = @rcon_socket.reply
 
-    raise RCONNoAuthException.new if reply.request_id == -1
+    raise RCONNoAuthException if reply.request_id == -1
 
     @rcon_authenticated = reply.request_id == @rcon_request_id
   end
@@ -86,7 +86,7 @@ class SourceServer
     response = ''
     begin
       response_packet = @rcon_socket.reply
-      raise RCONNoAuthException.new if response_packet.is_a? RCONAuthResponse
+      raise RCONNoAuthException if response_packet.is_a? RCONAuthResponse
       response << response_packet.response
     end while response.length == 0 || response_packet.response.size > 0
 

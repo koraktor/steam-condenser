@@ -21,16 +21,14 @@ import com.github.koraktor.steamcondenser.Helper;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRulesInfo()
  */
-public class A2S_RULES_Packet extends SteamPacket
-{
+public class A2S_RULES_Packet extends SteamPacket {
 
     /**
      * Creates a new A2S_RULES request object including the challenge number
      *
      * @param challengeNumber The challenge number received from the server
      */
-    public A2S_RULES_Packet(int challengeNumber)
-    {
+    public A2S_RULES_Packet(int challengeNumber) {
         super(SteamPacket.A2S_RULES_HEADER, Helper.byteArrayFromInteger(Integer.reverseBytes(challengeNumber)));
     }
 }

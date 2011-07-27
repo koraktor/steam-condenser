@@ -48,6 +48,7 @@ class Portal2Inventory extends GameInventory {
             if($fetchNow && !$inventory->isFetched()) {
                 $inventory->fetch();
             }
+
             return $inventory;
         } else {
             return new Portal2Inventory($steamId64, $fetchNow);

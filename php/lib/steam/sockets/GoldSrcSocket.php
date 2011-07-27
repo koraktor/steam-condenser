@@ -22,8 +22,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
  * @package    steam-condenser
  * @subpackage sockets
  */
-class GoldSrcSocket extends SteamSocket
-{
+class GoldSrcSocket extends SteamSocket {
+
     /**
      * @var boolean
      */
@@ -45,8 +45,7 @@ class GoldSrcSocket extends SteamSocket
      *        instance. HLTV behaves slightly different for RCON commands, this
      *        flag increases compatibility.
      */
-    public function __construct($ipAddress, $portNumber = 27015, $isHLTV = false)
-    {
+    public function __construct($ipAddress, $portNumber = 27015, $isHLTV = false) {
         parent::__construct($ipAddress, $portNumber);
         $this->isHLTV = $isHLTV;
     }
@@ -60,14 +59,11 @@ class GoldSrcSocket extends SteamSocket
      *
      * @return SteamPacket The packet replied from the server
      */
-    public function getReply()
-    {
+    public function getReply() {
         $bytesRead = $this->receivePacket(1400);
 
-        if($this->buffer->getLong() == -2)
-        {
-            do
-            {
+        if($this->buffer->getLong() == -2) {
+            do {
                 $requestId = $this->buffer->getLong();
                 $packetCountAndNumber = $this->buffer->getByte();
                 $packetCount = $packetCountAndNumber & 0xF;
@@ -80,21 +76,16 @@ class GoldSrcSocket extends SteamSocket
                 if(sizeof($splitPackets) < $packetCount) {
                     try {
                         $bytesRead = $this->receivePacket();
-                    }
-                    catch(TimeoutException $e) {
+                    } catch(TimeoutException $e) {
                         $bytesRead = 0;
                     }
-                }
-                else {
+                } else {
                     $bytesRead = 0;
                 }
-            }
-            while($bytesRead > 0 && $this->buffer->getLong() == -2);
+            } while($bytesRead > 0 && $this->buffer->getLong() == -2);
 
             $packet = SteamPacketFactory::reassemblePacket($splitPackets);
-        }
-        else
-        {
+        } else {
             $packet = SteamPacketFactory::getPacketFromData($this->buffer->get());
         }
 
@@ -115,10 +106,8 @@ class GoldSrcSocket extends SteamSocket
      *         on the game server
      * @throws RCONNoAuthException if the password is incorrect
      */
-    public function rconExec($password, $command)
-    {
-        if($this->rconChallenge == -1 || $this->isHLTV)
-        {
+    public function rconExec($password, $command) {
+        if($this->rconChallenge == -1 || $this->isHLTV) {
             $this->rconGetChallenge();
         }
 
@@ -127,18 +116,16 @@ class GoldSrcSocket extends SteamSocket
         if($this->isHLTV) {
             try {
                 $response = $this->getReply()->getResponse();
+            } catch(TimeoutException $e) {
+                $response = '';
             }
-            catch(TimeoutException $e) {
-                $response = "";
-            }
-        }
-        else {
+        } else {
             $response = $this->getReply()->getResponse();
         }
 
-        if(trim($response) == "Bad rcon_password.") {
+        if(trim($response) == 'Bad rcon_password.') {
             throw new RCONNoAuthException();
-        } elseif(trim($response) == "You have been banned from this server.") {
+        } elseif(trim($response) == 'You have been banned from this server.') {
             throw new RCONBanException();
         }
 
@@ -158,12 +145,11 @@ class GoldSrcSocket extends SteamSocket
      *         on the game server
      * @see rconSend()
      */
-    public function rconGetChallenge()
-    {
-        $this->rconSend("challenge rcon");
+    public function rconGetChallenge() {
+        $this->rconSend('challenge rcon');
         $response = trim($this->getReply()->getResponse());
 
-        if($response == "You have been banned from this server.") {
+        if($response == 'You have been banned from this server.') {
             throw new RCONBanException();
         }
 
@@ -176,8 +162,7 @@ class GoldSrcSocket extends SteamSocket
      *
      * @param string $command The RCON command to send to the server
      */
-    public function rconSend($command)
-    {
+    public function rconSend($command) {
         $this->send(new RCONGoldSrcRequest($command));
     }
 }

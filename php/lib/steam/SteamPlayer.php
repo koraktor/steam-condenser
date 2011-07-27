@@ -16,8 +16,8 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * @author  Sebastian Staudt
  * @package steam-condenser
  */
-class SteamPlayer
-{
+class SteamPlayer {
+
     /**
      * @var int
      */
@@ -86,32 +86,27 @@ class SteamPlayer
     /**
      * Creates a new player instancewith the given information
      *
-     * @param int $playerId The ID of the player on the server
-     * @param string $playerName The name of the player
-     * @param int $playerPoints The score of the player
-     * @param float $playerConnectTime The time the player is connected to the
+     * @param int $id The ID of the player on the server
+     * @param string $name The name of the player
+     * @param int $score The score of the player
+     * @param float $connectTime The time the player is connected to the
      *        server
      */
-    public function __construct($id, $name, $score, $connectTime)
-    {
-        if(!is_int($id) || $id < 0)
-        {
-            throw new Exception("Player ID has to be a number greater than or equal 0.");
+    public function __construct($id, $name, $score, $connectTime) {
+        if(!is_int($id) || $id < 0) {
+            throw new Exception('Player ID has to be a number greater than or equal 0.');
         }
 
-        if(!is_string($name))
-        {
-            throw new Exception("Player name has to be a string.");
+        if(!is_string($name)) {
+            throw new Exception('Player name has to be a string.');
         }
 
-        if(!is_int($score))
-        {
-            throw new Exception("Player points have to be a number.");
+        if(!is_int($score)) {
+            throw new Exception('Player points have to be a number.');
         }
 
-        if(!is_float($connectTime))
-        {
-            throw new Exception("Player connection time has to be a floating-point integer.");
+        if(!is_float($connectTime)) {
+            throw new Exception('Player connection time has to be a floating-point integer.');
         }
 
         $this->connectTime = $connectTime;
@@ -163,8 +158,7 @@ class SteamPlayer
      *
      * @return int The client port of the player
      */
-    public function getClientPort()
-    {
+    public function getClientPort() {
         return $this->clientPort;
     }
 
@@ -173,8 +167,7 @@ class SteamPlayer
      *
      * @return float The connection time of the player
      */
-    public function getConnectTime()
-    {
+    public function getConnectTime() {
         return $this->connectTime;
     }
 
@@ -183,8 +176,7 @@ class SteamPlayer
      *
      * @return int The ID of this player
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -193,8 +185,7 @@ class SteamPlayer
      *
      * @return string The IP address of this player
      */
-    public function getIpAddress()
-    {
+    public function getIpAddress() {
         return $this->ipAddress;
     }
 
@@ -212,8 +203,7 @@ class SteamPlayer
      *
      * @return string The name of this player
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -222,8 +212,7 @@ class SteamPlayer
      *
      * @return int The ping of this player
      */
-    public function getPing()
-    {
+    public function getPing() {
         return $this->ping;
     }
 
@@ -241,8 +230,7 @@ class SteamPlayer
      *
      * @return int The real ID of this player
      */
-    public function getRealId()
-    {
+    public function getRealId() {
         return $this->realId;
     }
 
@@ -251,8 +239,7 @@ class SteamPlayer
      *
      * @return int The score of this player
      */
-    public function getScore()
-    {
+    public function getScore() {
         return $this->score;
     }
 
@@ -261,8 +248,7 @@ class SteamPlayer
      *
      * @return string The connection state of this player
      */
-    public function getState()
-    {
+    public function getState() {
         return $this->state;
     }
 
@@ -271,8 +257,7 @@ class SteamPlayer
      *
      * @return string The SteamID of this player
      */
-    public function getSteamId()
-    {
+    public function getSteamId() {
         return $this->steamId;
     }
 
@@ -292,8 +277,7 @@ class SteamPlayer
      * @return bool <var>true</var> if extended information for this player
      *         is available
      */
-    public function isExtended()
-    {
+    public function isExtended() {
         return $this->extended;
     }
 
@@ -302,12 +286,10 @@ class SteamPlayer
      *
      * @return string A string representing this player
      */
-    public function __toString()
-    {
+    public function __toString() {
         if($this->extended) {
             return "#{$this->realId} \"{$this->name}\", SteamID: {$this->steamId} Score: {$this->score}, Time: {$this->connectTime}";
-        }
-        else {
+        } else {
             return "#{$this->id} \"{$this->name}\", Score: {$this->score}, Time: {$this->connectTime}";
         }
     }

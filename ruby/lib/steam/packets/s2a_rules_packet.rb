@@ -25,7 +25,9 @@ class S2A_RULES_Packet
   #
   # @param [String] content_data The raw packet data sent by the server
   def initialize(content_data)
-    raise Exception.new('Wrong formatted S2A_RULES response packet.') if content_data.nil?
+    if content_data.nil?
+      raise PacketFormatException, 'Wrong formatted S2A_RULES response packet.'
+    end
 
     super SteamPacket::S2A_RULES_HEADER, content_data
 
@@ -37,8 +39,7 @@ class S2A_RULES_Packet
       rule  = @content_data.cstring
       value = @content_data.cstring
 
-      # This is a workaround for servers sending corrupt replies
-      break if rule.empty? or value.empty?
+      break if rule.empty? || value.empty?
 
       @rules_hash[rule] = value
     end

@@ -212,7 +212,7 @@ module GameServer
           request_packet = A2S_RULES_Packet.new(@challenge_number)
           expected_response = S2A_RULES_Packet
         else
-          raise SteamCondenserException.new("Called with wrong request type.")
+          raise SteamCondenserException, 'Called with wrong request type.'
       end
 
       send_request request_packet
@@ -227,7 +227,7 @@ module GameServer
       elsif response_packet.kind_of? S2C_CHALLENGE_Packet
         @challenge_number = response_packet.challenge_number
       else
-        raise SteamCondenserException.new("Response of type #{response_packet.class} cannot be handled by this method.")
+        raise SteamCondenserException, "Response of type #{response_packet.class} cannot be handled by this method."
       end
 
       unless response_packet.kind_of? expected_response

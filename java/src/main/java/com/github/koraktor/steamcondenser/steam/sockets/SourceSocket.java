@@ -23,8 +23,8 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacketFactory;
  *
  * @author Sebastian Staudt
  */
-public class SourceSocket extends QuerySocket
-{
+public class SourceSocket extends QuerySocket {
+
     /**
      * Creates a new socket to communicate with the server on the given IP
      * address and port
@@ -34,8 +34,7 @@ public class SourceSocket extends QuerySocket
      * @throws IOException if the socket cannot be opened
      */
     public SourceSocket(InetAddress ipAddress, int portNumber)
-            throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
     }
 
@@ -55,8 +54,7 @@ public class SourceSocket extends QuerySocket
      * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         int bytesRead;
         boolean isCompressed = false;
         SteamPacket packet;
@@ -78,8 +76,7 @@ public class SourceSocket extends QuerySocket
                 if(isCompressed) {
                     splitSize = Integer.reverseBytes(this.buffer.getInt());
                     packetChecksum = Integer.reverseBytes(this.buffer.getInt());
-                }
-                else {
+                } else {
                     splitSize = Short.reverseBytes(this.buffer.getShort());
                 }
 
@@ -91,12 +88,10 @@ public class SourceSocket extends QuerySocket
                 if(splitPackets.size() < packetCount) {
                     try {
                         bytesRead = this.receivePacket();
-                    }
-                    catch(TimeoutException e) {
+                    } catch(TimeoutException e) {
                         bytesRead = 0;
                     }
-                }
-                else {
+                } else {
                     bytesRead = 0;
                 }
 
@@ -105,12 +100,10 @@ public class SourceSocket extends QuerySocket
 
             if(isCompressed) {
                 packet = SteamPacketFactory.reassemblePacket(splitPackets, true, splitSize, packetChecksum);
-            }
-            else {
+            } else {
                 packet = SteamPacketFactory.reassemblePacket(splitPackets);
             }
-        }
-        else {
+        } else {
             packet = this.getPacketFromData();
         }
 
@@ -118,8 +111,7 @@ public class SourceSocket extends QuerySocket
 
         if(isCompressed) {
             Logger.getLogger("global").info("Received compressed reply of type \"" + packet.getClass().getSimpleName() + "\"");
-        }
-        else {
+        } else {
             Logger.getLogger("global").info("Received reply of type \"" + packet.getClass().getSimpleName() + "\"");
         }
 

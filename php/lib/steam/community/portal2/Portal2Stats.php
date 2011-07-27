@@ -32,7 +32,7 @@ class Portal2Stats extends GameStats {
      * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
-        parent::__construct($steamId, "portal2");
+        parent::__construct($steamId, 'portal2');
     }
 
     /**

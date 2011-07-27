@@ -27,28 +27,18 @@ abstract class TF2ClassFactory
      * @param classData The XML data for the class
      * @return The statistics for the given class data
      */
-    public static TF2Class getTF2Class(Element classData)
-    {
+    public static TF2Class getTF2Class(Element classData) {
         String className = classData.getElementsByTagName("className").item(0).getTextContent();
 
-        if(className.equals("Engineer"))
-        {
+        if(className.equals("Engineer")) {
             return new TF2Engineer(classData);
-        }
-        else if(className.equals("Medic"))
-        {
+        } else if(className.equals("Medic")) {
             return new TF2Medic(classData);
-        }
-        else if(className.equals("Sniper"))
-        {
+        } else if(className.equals("Sniper")) {
             return new TF2Sniper(classData);
-        }
-        else if(className.equals("Spy"))
-        {
+        } else if(className.equals("Spy")) {
             return new TF2Spy(classData);
-        }
-        else
-        {
+        } else {
             return new TF2Class(classData);
         }
     }

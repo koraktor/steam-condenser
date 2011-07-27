@@ -22,8 +22,8 @@
  * @package steam-condenser
  * @subpackage exceptions
  */
-class TimeoutException extends Exception
-{
+class TimeoutException extends Exception {
+
     /**
      * Creates a new <var>TimeoutException</var> instance
      */

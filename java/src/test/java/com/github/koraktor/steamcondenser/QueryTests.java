@@ -21,16 +21,15 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class QueryTests
-{
+public class QueryTests {
+
     /**
      * This test tries to initialize an invalid GoldSrc server
      * @throws Exception
      */
     @Test(expected = TimeoutException.class)
     public void invalidGoldSrcServer()
-            throws Exception
-    {
+            throws Exception {
         GoldSrcServer invalidServer = new GoldSrcServer(InetAddress.getByName("1.0.0.0"), 27015);
         invalidServer.initialize();
     }
@@ -41,8 +40,7 @@ public class QueryTests
      */
     @Test(expected = TimeoutException.class)
     public void invalidSourceServer()
-            throws Exception
-    {
+            throws Exception {
         SourceServer invalidServer = new SourceServer(InetAddress.getByName("1.0.0.0"), 27015);
         invalidServer.initialize();
     }
@@ -54,8 +52,7 @@ public class QueryTests
      */
     @Test
     public void randomGoldSrcServer()
-            throws Exception
-    {
+            throws Exception {
         Random randomizer = new Random();
         MasterServer masterServer = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
         Vector<InetSocketAddress> servers = masterServer.getServers(MasterServer.REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve");
@@ -76,8 +73,7 @@ public class QueryTests
      */
     @Test
     public void randomSourceServer()
-            throws Exception
-    {
+            throws Exception {
         Random randomizer = new Random();
         MasterServer masterServer = new MasterServer(MasterServer.SOURCE_MASTER_SERVER);
         Vector<InetSocketAddress> servers = masterServer.getServers(MasterServer.REGION_ALL, "\\type\\d\\empty\\1\\full\\1\\gamedir\\tf");

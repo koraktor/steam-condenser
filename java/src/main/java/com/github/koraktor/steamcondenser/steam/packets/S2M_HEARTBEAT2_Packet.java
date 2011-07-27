@@ -20,8 +20,8 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#sendHeartbeat
  */
-public class S2M_HEARTBEAT2_Packet extends SteamPacket
-{
+public class S2M_HEARTBEAT2_Packet extends SteamPacket {
+
     /**
      * Default data to send with a S2M_HEARTBEAT2 packet
      */

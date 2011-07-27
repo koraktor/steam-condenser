@@ -24,11 +24,12 @@ class GoldSrcSocket
   # @param [String] ipaddress Either the IP address or the DNS name of the
   #        server
   # @param [Fixnum] port_number The port the server is listening on
-  # @param [Boolean] is_htlv `true` if the target server is a HTLV instance.
+  # @param [Boolean] is_hltv `true` if the target server is a HTLV instance.
   #        HLTV behaves slightly different for RCON commands, this flag
   #        increases compatibility.
   def initialize(ipaddress, port_number = 27015, is_hltv = false)
     super ipaddress, port_number
+
     @is_hltv = is_hltv
   end
 
@@ -40,7 +41,7 @@ class GoldSrcSocket
   #
   # @return [SteamPacket] The packet replied from the server
   def reply
-    bytes_read = receive_packet 1400
+    receive_packet 1400
 
     if @buffer.long == 0xFFFFFFFE
       split_packets = []
@@ -86,7 +87,7 @@ class GoldSrcSocket
   # @see #rcon_challenge
   # @see #rcon_send
   def rcon_exec(password, command)
-    rcon_challenge if @rcon_challenge.nil? or @is_hltv
+    rcon_challenge if @rcon_challenge.nil? || @is_hltv
 
     rcon_send "rcon #{@rcon_challenge} #{password} #{command}"
     rcon_send "rcon #{@rcon_challenge} #{password}"
@@ -123,7 +124,7 @@ class GoldSrcSocket
     rcon_send 'challenge rcon'
     response = reply.response.strip
 
-    if response == 'You have been banned from this server.'
+    if response.strip == 'You have been banned from this server.'
       raise RCONBanException
     end
 

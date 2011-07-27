@@ -17,13 +17,12 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateChallengeNumber()
  */
-public class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket
-{
+public class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket {
+
     /**
      * Creates a new A2S_SERVERQUERY_GETCHALLENGE request object
      */
-    public A2S_SERVERQUERY_GETCHALLENGE_Packet()
-    {
+    public A2S_SERVERQUERY_GETCHALLENGE_Packet() {
         super(SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER);
     }
 }

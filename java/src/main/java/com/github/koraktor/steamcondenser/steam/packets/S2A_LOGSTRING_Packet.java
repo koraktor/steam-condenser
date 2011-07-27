@@ -12,8 +12,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  *
  * @author Sebastian Staudt
  */
-public class S2A_LOGSTRING_Packet extends SteamPacket
-{
+public class S2A_LOGSTRING_Packet extends SteamPacket {
 
     /**
      * The log message contained in this packet

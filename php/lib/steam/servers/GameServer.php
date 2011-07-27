@@ -159,6 +159,7 @@ abstract class GameServer extends Server {
         if($this->ping == null) {
             $this->updatePing();
         }
+
         return $this->ping;
     }
 
@@ -182,6 +183,7 @@ abstract class GameServer extends Server {
         if($this->playerHash == null) {
             $this->updatePlayers($rconPassword);
         }
+
         return $this->playerHash;
     }
 
@@ -203,6 +205,7 @@ abstract class GameServer extends Server {
         if($this->rulesHash == null) {
             $this->updateRules();
         }
+
         return $this->rulesHash;
     }
 
@@ -224,6 +227,7 @@ abstract class GameServer extends Server {
         if($this->infoHash == null) {
             $this->updateServerInfo();
         }
+
         return $this->infoHash;
     }
 
@@ -268,23 +272,23 @@ abstract class GameServer extends Server {
         try {
             switch($requestType) {
                 case self::REQUEST_CHALLENGE:
-                    $expectedResponse = "S2C_CHALLENGE_Packet";
+                    $expectedResponse = 'S2C_CHALLENGE_Packet';
                     $requestPacket    = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
                     break;
                 case self::REQUEST_INFO:
-                    $expectedResponse = "S2A_INFO_BasePacket";
+                    $expectedResponse = 'S2A_INFO_BasePacket';
                     $requestPacket    = new A2S_INFO_Packet();
                     break;
                 case self::REQUEST_PLAYER:
-                    $expectedResponse = "S2A_PLAYER_Packet";
+                    $expectedResponse = 'S2A_PLAYER_Packet';
                     $requestPacket    = new A2S_PLAYER_Packet($this->challengeNumber);
                     break;
                 case self::REQUEST_RULES:
-                    $expectedResponse = "S2A_RULES_Packet";
+                    $expectedResponse = 'S2A_RULES_Packet';
                     $requestPacket    = new A2S_RULES_Packet($this->challengeNumber);
                     break;
                 default:
-                    throw new SteamCondenserException("Called with wrong request type.");
+                    throw new SteamCondenserException('Called with wrong request type.');
             }
 
             $this->sendRequest($requestPacket);
@@ -292,31 +296,30 @@ abstract class GameServer extends Server {
             $responsePacket = $this->getReply();
 
             switch(get_class($responsePacket)) {
-                case "S2A_INFO_DETAILED_Packet":
-                case "S2A_INFO2_Packet":
+                case 'S2A_INFO_DETAILED_Packet':
+                case 'S2A_INFO2_Packet':
                     $this->infoHash = $responsePacket->getInfoHash();
                     break;
-                case "S2A_PLAYER_Packet":
+                case 'S2A_PLAYER_Packet':
                     $this->playerHash = $responsePacket->getPlayerHash();
                     break;
-                case "S2A_RULES_Packet":
+                case 'S2A_RULES_Packet':
                     $this->rulesHash = $responsePacket->getRulesArray();
                     break;
-                case "S2C_CHALLENGE_Packet":
+                case 'S2C_CHALLENGE_Packet':
                     $this->challengeNumber = $responsePacket->getChallengeNumber();
                     break;
                 default:
-                    throw new SteamCondenserException("Response of type " . get_class($responsePacket) . " cannot be handled by this method.");
+                    throw new SteamCondenserException('Response of type ' . get_class($responsePacket) . ' cannot be handled by this method.');
             }
 
             if(!is_a($responsePacket, $expectedResponse)) {
-                trigger_error("Expected {$expectedResponse}, got " . get_class($responsePacket) . ".");
+                trigger_error("Expected {$expectedResponse}, got " . get_class($responsePacket) . '.');
                 if($repeatOnFailure) {
                     $this->handleResponseForRequest($requestType, false);
                 }
             }
-        }
-        catch(TimeoutException $e) {
+        } catch(TimeoutException $e) {
             trigger_error("Expected {$expectedResponse}, but timed out. The server is probably offline.");
         }
     }
@@ -465,7 +468,7 @@ abstract class GameServer extends Server {
      *         human-readable format
      */
     public function __toString() {
-        $returnString = "";
+        $returnString = '';
 
         $returnString .= "Ping: {$this->ping}\n";
         $returnString .= "Challenge number: {$this->challengeNumber}\n";
@@ -478,8 +481,7 @@ abstract class GameServer extends Server {
                     foreach($value as $subKey => $subValue) {
                         $returnString .= "    {$subKey} = {$subValue}\n";
                     }
-                }
-                else {
+                } else {
                     $returnString .= "  {$key}: {$value}\n";
                 }
             }

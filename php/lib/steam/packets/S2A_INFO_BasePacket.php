@@ -20,8 +20,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @see        S2A_INFO_DETAILED_Packet
  * @see        S2A_INFO2_Packet
  */
-abstract class S2A_INFO_BasePacket extends SteamPacket
-{
+abstract class S2A_INFO_BasePacket extends SteamPacket {
+
     /**
      * @var String
      */
@@ -43,9 +43,8 @@ abstract class S2A_INFO_BasePacket extends SteamPacket
      *
      * @return array The information provided by the server
      */
-    public function getInfoHash()
-    {
-        return array_diff_key(get_object_vars($this), array("contentData" => null, "headerData" => null));
+    public function getInfoHash() {
+        return array_diff_key(get_object_vars($this), array('contentData' => null, 'headerData' => null));
     }
 }
 ?>

@@ -18,8 +18,7 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * @package steam-condenser
  * @subpackage exceptions
  */
-class PacketFormatException extends SteamCondenserException
-{
+class PacketFormatException extends SteamCondenserException {
 
     /**
      * Creates a new <var>PacketFormatException</var> instance

@@ -16,8 +16,8 @@ import com.github.koraktor.steamcondenser.PacketBuffer;
  * @author Sebastian Staudt
  * @see SteamPacketFactory
  */
-abstract public class SteamPacket
-{
+abstract public class SteamPacket {
+
     public static final byte A2S_INFO_HEADER = 0x54;
     public static final byte S2A_INFO2_HEADER = 0x49;
     public static final byte S2A_INFO_DETAILED_HEADER = 0x6D;
@@ -54,8 +54,7 @@ abstract public class SteamPacket
      *
      * @param headerData The packet header
      */
-    protected SteamPacket(byte headerData)
-    {
+    protected SteamPacket(byte headerData) {
         this(headerData, new byte[0]);
     }
 
@@ -65,8 +64,7 @@ abstract public class SteamPacket
      * @param headerData The packet header
      * @param contentBytes The raw data of the packet
      */
-    protected SteamPacket(byte headerData, byte[] contentBytes)
-    {
+    protected SteamPacket(byte headerData, byte[] contentBytes) {
         this.contentData = new PacketBuffer(contentBytes);
         this.headerData = headerData;
     }
@@ -76,8 +74,7 @@ abstract public class SteamPacket
      *
      * @return A byte array containing the raw data of this request packet
      */
-    public byte[] getBytes()
-    {
+    public byte[] getBytes() {
         byte[] bytes = new byte[this.contentData.getLength() + 5];
         bytes[0] = (byte) 0xFF;
         bytes[1] = (byte) 0xFF;

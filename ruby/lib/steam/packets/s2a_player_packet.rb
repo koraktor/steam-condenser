@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'exceptions/packet_format_exception'
 require 'steam/packets/steam_packet'
 
 # This class represents a S2A_PLAYER response sent by a game server
@@ -24,7 +25,9 @@ class S2A_PLAYER_Packet
   #
   # @param [String] content_data The raw packet data sent by the server
   def initialize(content_data)
-    raise Exception.new('Wrong formatted S2A_PLAYER packet.') if content_data.nil?
+    if content_data.nil?
+      raise PacketFormatException, 'Wrong formatted S2A_PLAYER packet.'
+    end
 
     super S2A_PLAYER_HEADER, content_data
 

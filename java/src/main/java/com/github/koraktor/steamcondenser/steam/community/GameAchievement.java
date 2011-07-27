@@ -28,8 +28,8 @@ import com.github.koraktor.steamcondenser.exceptions.WebApiException;
  *
  * @author Sebastian Staudt
  */
-public class GameAchievement
-{
+public class GameAchievement {
+
     private int appId;
 
     private String name;
@@ -80,8 +80,7 @@ public class GameAchievement
      *        all application IDs
      * @param achievementData The achievement data extracted from XML
      */
-    public GameAchievement(long steamId64, int appId, Element achievementData)
-    {
+    public GameAchievement(long steamId64, int appId, Element achievementData) {
         this.appId     = appId;
         this.name      = achievementData.getElementsByTagName("name").item(0).getTextContent();
         this.steamId64 = steamId64;
@@ -99,7 +98,7 @@ public class GameAchievement
      *
      * @return The Steam Application ID of this achievement's game
      */
-    public int getAppId(){
+    public int getAppId() {
         return this.appId;
     }
 

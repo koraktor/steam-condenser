@@ -46,7 +46,7 @@ class SteamGroup
 
       super(fetch)
     rescue REXML::ParseException
-      raise SteamCondenserException.new('Group could not be loaded.')
+      raise SteamCondenserException, 'Group could not be loaded.'
     end
   end
 

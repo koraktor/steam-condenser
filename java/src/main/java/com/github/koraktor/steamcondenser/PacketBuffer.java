@@ -16,8 +16,8 @@ import java.nio.ByteOrder;
  *
  * @author Sebastian Staudt
  */
-public class PacketBuffer
-{
+public class PacketBuffer {
+
     private ByteBuffer byteBuffer;
 
     /**
@@ -25,8 +25,7 @@ public class PacketBuffer
      *
      * @param data The data wrap into the underlying byte buffer
      */
-    public PacketBuffer(byte[] data)
-    {
+    public PacketBuffer(byte[] data) {
         this.byteBuffer = ByteBuffer.wrap(data);
     }
 
@@ -35,8 +34,7 @@ public class PacketBuffer
      *
      * @return The backing byte array
      */
-    public byte[] array()
-    {
+    public byte[] array() {
         return this.byteBuffer.array();
     }
 
@@ -45,8 +43,7 @@ public class PacketBuffer
      *
      * @return A byte
      */
-    public byte getByte()
-    {
+    public byte getByte() {
         return this.byteBuffer.get();
     }
 
@@ -55,8 +52,7 @@ public class PacketBuffer
      *
      * @return A floating-point value
      */
-    public float getFloat()
-    {
+    public float getFloat() {
         return this.byteBuffer.getFloat();
     }
 
@@ -65,8 +61,7 @@ public class PacketBuffer
      *
      * @return An integer value
      */
-    public int getInt()
-    {
+    public int getInt() {
         return this.byteBuffer.getInt();
     }
 
@@ -75,8 +70,7 @@ public class PacketBuffer
      *
      * @return The length of this buffer
      */
-    public int getLength()
-    {
+    public int getLength() {
         return this.byteBuffer.capacity();
     }
 
@@ -85,8 +79,7 @@ public class PacketBuffer
      *
      * @return A short integer value
      */
-    public short getShort()
-    {
+    public short getShort() {
         return this.byteBuffer.getShort();
     }
 
@@ -98,8 +91,7 @@ public class PacketBuffer
      *
      * @return A string value
      */
-    public String getString()
-    {
+    public String getString() {
         byte[] remainingBytes = new byte[this.byteBuffer.remaining()];
         this.byteBuffer.slice().get(remainingBytes);
         String dataString = new String(remainingBytes);
@@ -120,8 +112,7 @@ public class PacketBuffer
      *
      * @param byteOrder The byte-order to use in the underlying byte buffer
      */
-    public PacketBuffer order(ByteOrder byteOrder)
-    {
+    public PacketBuffer order(ByteOrder byteOrder) {
         this.byteBuffer.order(byteOrder);
         return this;
     }
@@ -132,8 +123,7 @@ public class PacketBuffer
      *
      * @return The number of bytes remaining in this buffer
      */
-    public int remaining()
-    {
+    public int remaining() {
         return this.byteBuffer.remaining();
     }
 
@@ -143,8 +133,7 @@ public class PacketBuffer
      *
      * @return <code>true</code> if there's at least one byte left remaining
      */
-    public boolean hasRemaining()
-    {
+    public boolean hasRemaining() {
         return this.byteBuffer.hasRemaining();
     }
 }

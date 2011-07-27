@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
  * @author Sebastian Staudt
  */
 public class L4DMap {
+
     public static int GOLD   = 1;
     public static int SILVER = 2;
     public static int BRONZE = 3;

@@ -18,8 +18,7 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer#rconExec
  */
-public class RCONGoldSrcRequestPacket extends SteamPacket
-{
+public class RCONGoldSrcRequestPacket extends SteamPacket {
     /**
      * Creates a request for the given request string
      * <p>
@@ -28,8 +27,7 @@ public class RCONGoldSrcRequestPacket extends SteamPacket
      *
      * @param request The request string to send to the server
      */
-    public RCONGoldSrcRequestPacket(String request)
-    {
+    public RCONGoldSrcRequestPacket(String request) {
         super((byte) 0, request.getBytes());
     }
 
@@ -38,8 +36,7 @@ public class RCONGoldSrcRequestPacket extends SteamPacket
      *
      * @return A byte array containing the raw data of this request packet
      */
-    public byte[] getBytes()
-    {
+    public byte[] getBytes() {
         byte[] bytes = new byte[this.contentData.getLength() + 4];
 
         System.arraycopy(Helper.byteArrayFromInteger(0xFFFFFFFF), 0, bytes, 0, 4);

@@ -19,8 +19,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
  * @package    steam-condenser
  * @subpackage sockets
  */
-class SourceSocket extends SteamSocket
-{
+class SourceSocket extends SteamSocket {
+
     /**
      * Reads a packet from the socket
      *
@@ -32,9 +32,8 @@ class SourceSocket extends SteamSocket
      *
      * @return SteamPacket The packet replied from the server
      */
-    public function getReply()
-    {
-        $bytesRead = $this->receivePacket(1400);
+    public function getReply() {
+        $this->receivePacket(1400);
         $isCompressed = false;
 
         if($this->buffer->getLong() == -2) {
@@ -47,8 +46,7 @@ class SourceSocket extends SteamSocket
                 if($isCompressed) {
                     $splitSize = $this->buffer->getLong();
                     $packetChecksum = $this->buffer->getUnsignedLong();
-                }
-                else {
+                } else {
                     $splitSize = $this->buffer->getShort();
                 }
 
@@ -59,32 +57,26 @@ class SourceSocket extends SteamSocket
                 if(sizeof($splitPackets) < $packetCount) {
                     try {
                         $bytesRead = $this->receivePacket();
-                    }
-                    catch(TimeoutException $e) {
+                    } catch(TimeoutException $e) {
                         $bytesRead = 0;
                     }
-                }
-                else {
+                } else {
                     $bytesRead = 0;
                 }
-            }
-            while($bytesRead > 0 && $this->buffer->getLong() == -2);
+            } while($bytesRead > 0 && $this->buffer->getLong() == -2);
 
             if($isCompressed) {
                 $packet = SteamPacketFactory::reassemblePacket($splitPackets, true, $packetChecksum);
-            }
-            else {
+            } else {
                 $packet = SteamPacketFactory::reassemblePacket($splitPackets);
             }
-        }
-        else {
+        } else {
             $packet = SteamPacketFactory::getPacketFromData($this->buffer->get());
         }
 
         if($isCompressed) {
             trigger_error("Received compressed reply of type \"" . get_class($packet) . "\"");
-        }
-        else {
+        } else {
             trigger_error("Received reply of type \"" . get_class($packet) . "\"");
         }
 

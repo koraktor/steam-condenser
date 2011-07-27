@@ -46,19 +46,18 @@ class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
         $this->isMod = $this->contentData->getByte() == 1;
 
         if($this->isMod) {
-            $this->modInfo["urlInfo"] = $this->contentData->getString();
-            $this->modInfo["urlDl"] = $this->contentData->getString();
+            $this->modInfo['urlInfo'] = $this->contentData->getString();
+            $this->modInfo['urlDl'] = $this->contentData->getString();
             $this->contentData->getByte();
             if($this->contentData->remaining() == 12) {
-                $this->modInfo["modVersion"] = $this->contentData->getLong();
-                $this->modInfo["modSize"] = $this->contentData->getLong();
-                $this->modInfo["svOnly"] = ($this->contentData->getByte() == 1);
-                $this->modInfo["clDll"] = ($this->contentData->getByte() == 1);
+                $this->modInfo['modVersion'] = $this->contentData->getLong();
+                $this->modInfo['modSize'] = $this->contentData->getLong();
+                $this->modInfo['svOnly'] = ($this->contentData->getByte() == 1);
+                $this->modInfo['clDll'] = ($this->contentData->getByte() == 1);
                 $this->secure = $this->contentData->getByte() == 1;
                 $this->numberOfBots = $this->contentData->getByte();
             }
-        }
-        else {
+        } else {
             $this->secure = $this->contentData->getByte() == 1;
             $this->numberOfBots = $this->contentData->getByte();
         }

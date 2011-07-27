@@ -15,8 +15,8 @@ package com.github.koraktor.steamcondenser.exceptions;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.community.WebApi
  */
-public class WebApiException extends SteamCondenserException {
-
+public class WebApiException extends SteamCondenserException
+{
     public enum Cause { HTTP_ERROR, INVALID_KEY, STATUS_BAD, UNAUTHORIZED }
 
     private String message;

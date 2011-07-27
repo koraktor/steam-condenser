@@ -170,6 +170,7 @@ public class MasterServer extends Server {
     public int getChallenge()
             throws IOException, SteamCondenserException, TimeoutException {
         this.socket.send(new C2M_CHECKMD5_Packet());
+
         return ((M2C_ISVALIDMD5_Packet) this.socket.getReply()).getChallenge();
     }
 
@@ -188,8 +189,7 @@ public class MasterServer extends Server {
      * @throws TimeoutException if the request times out
      */
     public Vector<InetSocketAddress> getServers()
-            throws IOException, SteamCondenserException, TimeoutException
-    {
+            throws IOException, SteamCondenserException, TimeoutException {
         return this.getServers(MasterServer.REGION_ALL, "");
     }
 
@@ -230,8 +230,7 @@ public class MasterServer extends Server {
      * @throws TimeoutException if the request times out
      */
     public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
-            throws IOException, SteamCondenserException, TimeoutException
-    {
+            throws IOException, SteamCondenserException, TimeoutException {
         int failCount    = 0;
         boolean finished = false;
         int portNumber   = 0;
@@ -256,8 +255,7 @@ public class MasterServer extends Server {
                     }
                 }
                 failCount = 0;
-            }
-            catch(TimeoutException e) {
+            } catch(TimeoutException e) {
                 failCount ++;
                 if(failCount == 3) {
                     throw e;

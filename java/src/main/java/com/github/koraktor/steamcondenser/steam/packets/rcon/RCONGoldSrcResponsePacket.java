@@ -18,15 +18,14 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer#rconExec
  */
-public class RCONGoldSrcResponsePacket extends SteamPacket
-{
+public class RCONGoldSrcResponsePacket extends SteamPacket {
+
     /**
      * Creates a RCON command response for the given command output
      *
      * @param commandResponse The output of the command executed on the server
      */
-    public RCONGoldSrcResponsePacket(byte[] commandResponse)
-    {
+    public RCONGoldSrcResponsePacket(byte[] commandResponse) {
         super(SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER, commandResponse);
     }
 
@@ -35,8 +34,7 @@ public class RCONGoldSrcResponsePacket extends SteamPacket
      *
      * @return The output of the command
      */
-    public String getResponse()
-    {
+    public String getResponse() {
         return this.contentData.getString();
     }
 }

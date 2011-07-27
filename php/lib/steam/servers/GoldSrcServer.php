@@ -79,6 +79,7 @@ class GoldSrcServer extends GameServer {
      */
     public function rconAuth($password) {
         $this->rconPassword = $password;
+
         return true;
     }
 

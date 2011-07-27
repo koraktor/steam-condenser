@@ -29,8 +29,8 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacketFactory;
  *
  * @author Sebastian Staudt
  */
-abstract public class SteamSocket
-{
+abstract public class SteamSocket {
+
     private static int timeout = 1000;
 
     protected ByteBuffer buffer;
@@ -56,8 +56,7 @@ abstract public class SteamSocket
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
      */
-    protected SteamSocket(InetAddress ipAddress, int portNumber)
-    {
+    protected SteamSocket(InetAddress ipAddress, int portNumber) {
         this.buffer = ByteBuffer.allocate(1400);
         this.buffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -71,8 +70,7 @@ abstract public class SteamSocket
      * @throws PacketFormatException if the data is not formatted correctly
      */
     protected SteamPacket getPacketFromData()
-            throws PacketFormatException
-    {
+            throws PacketFormatException {
         byte[] packetData = new byte[this.buffer.remaining()];
         this.buffer.get(packetData);
 
@@ -102,8 +100,7 @@ abstract public class SteamSocket
      * @see ByteBuffer
      */
     protected int receivePacket(int bufferLength)
-            throws IOException, TimeoutException
-    {
+            throws IOException, TimeoutException {
         Selector selector = Selector.open();
         this.channel.register(selector, SelectionKey.OP_READ);
 

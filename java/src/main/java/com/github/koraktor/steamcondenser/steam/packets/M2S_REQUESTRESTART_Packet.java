@@ -17,8 +17,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#sendHeartbeat
  */
-public class M2S_REQUESTRESTART_Packet extends SteamPacket
-{
+public class M2S_REQUESTRESTART_Packet extends SteamPacket {
 
     private int challenge;
 
@@ -38,8 +37,7 @@ public class M2S_REQUESTRESTART_Packet extends SteamPacket
      *
      * @return The challenge number
      */
-    public int getChallenge()
-    {
+    public int getChallenge() {
         return this.challenge;
     }
 

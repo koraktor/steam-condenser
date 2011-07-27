@@ -20,8 +20,8 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRulesInfo
  */
-public class S2A_RULES_Packet extends SteamPacket
-{
+public class S2A_RULES_Packet extends SteamPacket {
+
     private HashMap<String, String> rulesHash;
 
     /**

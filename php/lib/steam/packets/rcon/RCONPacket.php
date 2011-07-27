@@ -22,8 +22,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage rcon-packets
  * @see RCONPacketFactory
  */
-abstract class RCONPacket extends SteamPacket
-{
+abstract class RCONPacket extends SteamPacket {
+
     /**
      * @var int Header for authentication requests
      */
@@ -57,8 +57,7 @@ abstract class RCONPacket extends SteamPacket
      * @param int $rconHeader The header for the packet type
      * @param string $rconData The raw packet data
      */
-    public function __construct($requestId, $rconHeader, $rconData = null)
-    {
+    public function __construct($requestId, $rconHeader, $rconData = null) {
         parent::__construct($rconHeader, "$rconData\0\0");
 
         $this->requestId = $requestId;
@@ -69,8 +68,7 @@ abstract class RCONPacket extends SteamPacket
      *
      * @return long The request ID used to identify the RCON communication
      */
-    public function getRequestId()
-    {
+    public function getRequestId() {
         return $this->requestId;
     }
 
@@ -79,10 +77,9 @@ abstract class RCONPacket extends SteamPacket
      *
      * @return string A string containing the raw data of this RCON packet
      */
-    public function __toString()
-    {
+    public function __toString() {
         $contentData = $this->contentData->_array();
-        return pack("V3a*", strlen($contentData) + 8, $this->requestId, $this->headerData, $contentData);
+        return pack('V3a*', strlen($contentData) + 8, $this->requestId, $this->headerData, $contentData);
     }
 }
 ?>

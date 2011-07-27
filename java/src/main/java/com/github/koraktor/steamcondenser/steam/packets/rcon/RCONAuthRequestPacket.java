@@ -16,8 +16,8 @@ package com.github.koraktor.steamcondenser.steam.packets.rcon;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.SourceServer#rconAuth
  */
-public class RCONAuthRequestPacket extends RCONPacket
-{
+public class RCONAuthRequestPacket extends RCONPacket {
+
     /**
      * Creates a RCON authentication request for the given request ID and RCON
      * password
@@ -25,8 +25,7 @@ public class RCONAuthRequestPacket extends RCONPacket
      * @param requestId The request ID of the RCON connection
      * @param rconPassword The RCON password of the server
      */
-    public RCONAuthRequestPacket(int requestId, String rconPassword)
-    {
+    public RCONAuthRequestPacket(int requestId, String rconPassword) {
         super(requestId, RCONPacket.SERVERDATA_AUTH, rconPassword);
     }
 }

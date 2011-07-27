@@ -20,14 +20,13 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * @see GameServer::rconAuth()
  * @see GameServer::rconExec()
  */
-class RCONNoAuthException extends SteamCondenserException
-{
+class RCONNoAuthException extends SteamCondenserException {
+
     /**
      * Creates a new <var>RCONNoAuthException</var> instance
      */
-    public function __construct()
-    {
-        parent::__construct("Not authenticated yet.");
+    public function __construct() {
+        parent::__construct('Not authenticated yet.');
     }
 }
 ?>

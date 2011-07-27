@@ -21,8 +21,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see        MasterServer::getChallenge()
  */
-class M2C_ISVALIDMD5_Packet extends SteamPacket
-{
+class M2C_ISVALIDMD5_Packet extends SteamPacket {
 
     /**
      * @var int

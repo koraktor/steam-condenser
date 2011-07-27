@@ -21,8 +21,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see        GameServer::updatePlayerInfo()
  */
-class S2A_PLAYER_Packet extends SteamPacket
-{
+class S2A_PLAYER_Packet extends SteamPacket {
+
     /**
      * @var array
      */
@@ -33,19 +33,16 @@ class S2A_PLAYER_Packet extends SteamPacket
      *
      * @param string $contentData The raw packet data sent by the server
      */
-    public function __construct($contentData)
-    {
-        if(empty($contentData))
-        {
-            throw new Exception("Wrong formatted S2A_PLAYER packet.");
+    public function __construct($contentData) {
+        if(empty($contentData)) {
+            throw new Exception('Wrong formatted S2A_PLAYER packet.');
         }
         parent::__construct(SteamPacket::S2A_PLAYER_HEADER, $contentData);
 
         $this->contentData->getByte();
 
         $this->playerHash = array();
-        while($this->contentData->remaining() > 0)
-        {
+        while($this->contentData->remaining() > 0) {
             $playerData = array($this->contentData->getByte(), $this->contentData->getString(), $this->contentData->getLong(), $this->contentData->getFloat());
             $this->playerHash[$playerData[1]] = new SteamPlayer($playerData[0], $playerData[1], $playerData[2], $playerData[3]);
         }
@@ -56,8 +53,7 @@ class S2A_PLAYER_Packet extends SteamPacket
      *
      * @return array All active players on the server
      */
-    public function getPlayerHash()
-    {
+    public function getPlayerHash() {
         return $this->playerHash;
     }
 }

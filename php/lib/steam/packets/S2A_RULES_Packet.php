@@ -21,8 +21,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see GameServer::updateRulesInfo()
  */
-class S2A_RULES_Packet extends SteamPacket
-{
+class S2A_RULES_Packet extends SteamPacket {
+
     /**
      * @var array
      */
@@ -33,23 +33,20 @@ class S2A_RULES_Packet extends SteamPacket
      *
      * @param string $contentData The raw packet data sent by the server
      */
-    public function __construct($contentData)
-    {
-        if(empty($contentData))
-        {
-            throw new Exception("Wrong formatted S2A_RULES packet.");
+    public function __construct($contentData) {
+        if(empty($contentData)) {
+            throw new Exception('Wrong formatted S2A_RULES packet.');
         }
         parent::__construct(SteamPacket::S2A_RULES_HEADER);
 
-        $contentData = unpack("vrulesNumber/a*rulesData", $contentData);
-        $tmpRulesArray = explode("\0", $contentData["rulesData"]);
+        $contentData = unpack('vrulesNumber/a*rulesData', $contentData);
+        $tmpRulesArray = explode("\0", $contentData['rulesData']);
 
         if(sizeof($tmpRulesArray) % 2) {
             array_pop($tmpRulesArray);
         }
 
-        for($x = 0; $x < sizeof($tmpRulesArray); $x++)
-        {
+        for($x = 0; $x < sizeof($tmpRulesArray); $x++) {
             $this->rulesArray[$tmpRulesArray[$x]] = $tmpRulesArray[++$x];
         }
     }
@@ -59,8 +56,7 @@ class S2A_RULES_Packet extends SteamPacket
      *
      * @return array A list of server rules
      */
-    public function getRulesArray()
-    {
+    public function getRulesArray() {
         return $this->rulesArray;
     }
 }

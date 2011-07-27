@@ -18,8 +18,8 @@ import java.util.HashMap;
  * @see S2A_INFO_DETAILED_Packet
  * @see S2A_INFO2_Packet
  */
-public abstract class S2A_INFO_BasePacket extends SteamPacket
-{
+public abstract class S2A_INFO_BasePacket extends SteamPacket {
+
     protected byte dedicated;
     protected String gameDescription;
     protected String gameDir;
@@ -33,8 +33,7 @@ public abstract class S2A_INFO_BasePacket extends SteamPacket
     protected boolean secure;
     protected String serverName;
 
-    S2A_INFO_BasePacket(byte headerByte, byte[] dataBytes)
-    {
+    S2A_INFO_BasePacket(byte headerByte, byte[] dataBytes) {
         super(headerByte, dataBytes);
     }
 
@@ -44,23 +43,18 @@ public abstract class S2A_INFO_BasePacket extends SteamPacket
      *
      * @return The information provided by the server
      */
-    public HashMap<String, Object> getInfoHash()
-    {
+    public HashMap<String, Object> getInfoHash() {
         HashMap<String, Object> infoHash = new HashMap<String, Object>();
 
-        try
-        {
-            for(Field field : this.getClass().getSuperclass().getDeclaredFields())
-            {
-            infoHash.put(field.getName(), field.get(this));
+        try {
+            for(Field field : this.getClass().getSuperclass().getDeclaredFields()) {
+                infoHash.put(field.getName(), field.get(this));
             }
 
-            for(Field field : this.getClass().getDeclaredFields())
-            {
-            infoHash.put(field.getName(), field.get(this));
+            for(Field field : this.getClass().getDeclaredFields()) {
+                infoHash.put(field.getName(), field.get(this));
             }
-        }
-        catch(IllegalAccessException e){}
+        } catch(IllegalAccessException e){}
 
         return infoHash;
     }

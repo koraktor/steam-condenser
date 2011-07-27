@@ -12,16 +12,15 @@ package com.github.koraktor.steamcondenser;
  *
  * @author Sebastian Staudt
  */
-public abstract class Helper
-{
+public abstract class Helper {
+
     /**
      * Convert an integer value into the corresponding byte array
      *
      * @param integer The integer to convert
      * @return The byte array representing the given integer
      */
-    public static byte[] byteArrayFromInteger(int integer)
-    {
+    public static byte[] byteArrayFromInteger(int integer) {
         return new byte[] {
             (byte) (integer >> 24),
             (byte) (integer >> 16),
@@ -36,8 +35,7 @@ public abstract class Helper
      * @param byteArray The byte array to convert
      * @return The integer represented by the byte array
      */
-    public static int integerFromByteArray(byte[] byteArray)
-    {
+    public static int integerFromByteArray(byte[] byteArray) {
         return byteArray[0] << 24 |
                (byteArray[1] & 0xff) << 16 |
                (byteArray[2] & 0xff) << 8 |

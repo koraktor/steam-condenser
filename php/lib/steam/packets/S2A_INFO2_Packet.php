@@ -22,15 +22,14 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
  * @subpackage packets
  * @see        GameServer::updateServerInfo()
  */
-class S2A_INFO2_Packet extends S2A_INFO_BasePacket
-{
+class S2A_INFO2_Packet extends S2A_INFO_BasePacket {
+
     /**
      * Creates a new S2A_INFO2 response object based on the given data
      *
      * @param string $data The raw packet data replied from the server
      */
-    public function __construct($data)
-    {
+    public function __construct($data) {
         parent::__construct(SteamPacket::S2A_INFO2_HEADER, $data);
 
         $this->networkVersion = $this->contentData->getByte();
@@ -48,12 +47,10 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
         $this->secureServer = $this->contentData->getByte() == 1;
         $this->gameVersion = $this->contentData->getString();
 
-        if($this->contentData->remaining() > 0)
-        {
+        if($this->contentData->remaining() > 0) {
             $extraDataFlag = $this->contentData->getByte();
 
-            if($extraDataFlag & 0x80)
-            {
+            if($extraDataFlag & 0x80) {
                 $this->serverPort = $this->contentData->getShort();
             }
 
@@ -61,14 +58,12 @@ class S2A_INFO2_Packet extends S2A_INFO_BasePacket
                 $this->serverId = $this->contentData->getUnsignedLong() | ($this->contentData->getUnsignedLong() << 32);
             }
 
-            if($extraDataFlag & 0x40)
-            {
+            if($extraDataFlag & 0x40) {
                 $this->tvPort = $this->contentData->getShort();
                 $this->tvName = $this->contentData->getString();
             }
 
-            if($extraDataFlag & 0x20)
-            {
+            if($extraDataFlag & 0x20) {
                 $this->serverTags = $this->contentData->getString();
             }
         }

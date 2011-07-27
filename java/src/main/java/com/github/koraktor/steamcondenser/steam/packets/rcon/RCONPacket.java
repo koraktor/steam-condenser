@@ -20,8 +20,8 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
  * @author Sebastian Staudt
  * @see RCONPacketFactory
  */
-abstract public class RCONPacket extends SteamPacket
-{
+abstract public class RCONPacket extends SteamPacket {
+
     /**
      * Header for authentication requests
      */
@@ -60,8 +60,7 @@ abstract public class RCONPacket extends SteamPacket
      * @param rconHeader The header for the packet type
      * @param rconData The raw packet data
      */
-    protected RCONPacket(int requestId, int rconHeader, String rconData)
-    {
+    protected RCONPacket(int requestId, int rconHeader, String rconData) {
         super((byte) 0, (rconData + "\0\0").getBytes());
 
         this.header = rconHeader;
@@ -73,8 +72,7 @@ abstract public class RCONPacket extends SteamPacket
      *
      * @return A byte array containing the raw data of this RCON packet
      */
-    public byte[] getBytes()
-    {
+    public byte[] getBytes() {
         byte[] bytes = new byte[this.contentData.getLength() + 12];
 
         System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(bytes.length - 4)), 0, bytes, 0, 4);
@@ -90,8 +88,7 @@ abstract public class RCONPacket extends SteamPacket
      *
      * @return The request ID used to identify the RCON communication
      */
-    public int getRequestId()
-    {
+    public int getRequestId() {
         return this.requestId;
     }
 

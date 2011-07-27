@@ -16,8 +16,8 @@ package com.github.koraktor.steamcondenser.steam.packets.rcon;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.SourceServer#rconExec
  */
-public class RCONExecRequestPacket extends RCONPacket
-{
+public class RCONExecRequestPacket extends RCONPacket {
+
     /**
      * Creates a RCON command execution request for the given request ID and
      * command
@@ -25,8 +25,7 @@ public class RCONExecRequestPacket extends RCONPacket
      * @param requestId The request ID of the RCON connection
      * @param rconCommand The command to execute on the server
      */
-    public RCONExecRequestPacket(int requestId, String rconCommand)
-    {
+    public RCONExecRequestPacket(int requestId, String rconCommand) {
         super(requestId, RCONPacket.SERVERDATA_EXECCOMMAND, rconCommand);
     }
 }

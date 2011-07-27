@@ -17,8 +17,8 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/BufferUnderflowException.php';
  * @author  Sebastian Staudt
  * @package steam-condenser
  */
-class ByteBuffer
-{
+class ByteBuffer {
+
     /**
      * @var string The string holding the buffer's bytes
      */
@@ -46,8 +46,7 @@ class ByteBuffer
      * @param  $length The size of the byte buffer
      * @return ByteBuffer The new byte buffer object
      */
-    public static function allocate($length)
-    {
+    public static function allocate($length) {
         return new ByteBuffer(str_repeat("\0", $length));
     }
 
@@ -58,8 +57,7 @@ class ByteBuffer
      *         byte buffer
      * @return ByteBuffer The new ByteBuffer object
      */
-    public static function wrap($byteArray)
-    {
+    public static function wrap($byteArray) {
         return new ByteBuffer($byteArray);
     }
 
@@ -69,8 +67,7 @@ class ByteBuffer
      * @param string $byteArray The string to encapsulate into the
      *        byte buffer
      */
-    public function __construct($byteArray)
-    {
+    public function __construct($byteArray) {
         $this->byteArray = $byteArray;
         $this->capacity = strlen($byteArray);
         $this->limit = $this->capacity;
@@ -82,8 +79,7 @@ class ByteBuffer
      *
      * @return string The string encapsulated in this byte buffer
      */
-    public function _array()
-    {
+    public function _array() {
         return $this->byteArray;
     }
 
@@ -93,8 +89,7 @@ class ByteBuffer
      * Sets the <var>limit</var> to the <var>capacity</var> of the buffer and
      * resets the <var>position</var>.
      */
-    public function clear()
-    {
+    public function clear() {
         $this->limit = $this->capacity;
         $this->position = 0;
     }
@@ -105,8 +100,7 @@ class ByteBuffer
      *
      * @return ByteBuffer This byte buffer
      */
-    public function flip()
-    {
+    public function flip() {
         $this->limit = $this->position;
         $this->position = 0;
 
@@ -122,14 +116,10 @@ class ByteBuffer
      *        read
      * @return string The data read from the buffer
      */
-    public function get($length = null)
-    {
-        if($length === null)
-        {
+    public function get($length = null) {
+        if($length === null) {
             $length = $this->limit - $this->position;
-        }
-        elseif($length > $this->remaining())
-        {
+        } elseif($length > $this->remaining()) {
             throw new BufferUnderFlowException();
         }
 
@@ -144,8 +134,7 @@ class ByteBuffer
      *
      * @return int The byte at the current position
      */
-    public function getByte()
-    {
+    public function getByte() {
         return ord($this->get(1));
     }
 
@@ -155,9 +144,9 @@ class ByteBuffer
      * @return float The floating point number, i.e. four bytes converted to a
      *         <var>float</var> read at the current position
      */
-    public function getFloat()
-    {
-        $data = unpack("f", $this->get(4));
+    public function getFloat() {
+        $data = unpack('f', $this->get(4));
+
         return $data[1];
     }
 
@@ -167,9 +156,9 @@ class ByteBuffer
      * @return long The long integer, i.e. four bytes converted to a
      *         <var>long</var> read at the current position
      */
-    public function getLong()
-    {
-        $data = unpack("l", $this->get(4));
+    public function getLong() {
+        $data = unpack('l', $this->get(4));
+
         return $data[1];
     }
 
@@ -179,9 +168,9 @@ class ByteBuffer
      * @return short The short integer, i.e. two bytes converted to a
      *         <var>short</var> read at the current position
      */
-    public function getShort()
-    {
-        $data = unpack("v", $this->get(2));
+    public function getShort() {
+        $data = unpack('v', $this->get(2));
+
         return $data[1];
     }
 
@@ -194,17 +183,14 @@ class ByteBuffer
      *
      * @return string The zero-byte terminated string read from the byte stream
      */
-    public function getString()
-    {
+    public function getString() {
         $zeroByteIndex = strpos($this->byteArray, "\0", $this->position);
-        if($zeroByteIndex === false)
-        {
-            return "";
-        }
-        else
-        {
+        if($zeroByteIndex === false) {
+            return '';
+        } else {
             $dataString = $this->get($zeroByteIndex - $this->position);
             $this->position ++;
+
             return $dataString;
         }
     }
@@ -215,9 +201,9 @@ class ByteBuffer
      * @return long The long integer, i.e. four bytes converted to an
      *         unsigned <var>float</var> read at the current position
      */
-    public function getUnsignedLong()
-    {
-        $data = unpack("V", $this->get(4));
+    public function getUnsignedLong() {
+        $data = unpack('V', $this->get(4));
+
         return $data[1];
     }
 
@@ -227,14 +213,10 @@ class ByteBuffer
      * @param int $newLimit Sets the buffer's <var>limit</var> to this value
      * @return int If no new <var>limit</var> value is given, the current value
      */
-    public function limit($newLimit = null)
-    {
-        if($newLimit == null)
-        {
+    public function limit($newLimit = null) {
+        if($newLimit == null) {
             return $this->limit;
-        }
-        else
-        {
+        } else {
             $this->limit = $newLimit;
         }
     }
@@ -244,8 +226,7 @@ class ByteBuffer
      *
      * @return int The current <var>position</var> of the buffer
      */
-    public function position()
-    {
+    public function position() {
         return $this->position;
     }
 
@@ -256,8 +237,7 @@ class ByteBuffer
      * @param string $sourceByteArray The string to take bytes from
      * @return ByteBuffer This byte buffer
      */
-    public function put($sourceByteArray)
-    {
+    public function put($sourceByteArray) {
         $newPosition = min($this->remaining(), strlen($sourceByteArray));
         $this->byteArray = substr_replace($this->byteArray, $sourceByteArray, $this->position, $newPosition);
         $this->position = $newPosition;
@@ -271,8 +251,7 @@ class ByteBuffer
      *
      * @return int The number of bytes remaining in the buffer
      */
-    public function remaining()
-    {
+    public function remaining() {
         return $this->limit - $this->position;
     }
 
@@ -281,8 +260,7 @@ class ByteBuffer
      *
      * @return ByteBuffer This byte buffer
      */
-    public function rewind()
-    {
+    public function rewind() {
         $this->position = 0;
 
         return $this;

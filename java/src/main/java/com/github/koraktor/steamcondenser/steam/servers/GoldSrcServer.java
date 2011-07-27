@@ -158,6 +158,7 @@ public class GoldSrcServer extends GameServer {
      */
     public boolean rconAuth(String password) {
         this.rconPassword = password;
+
         return true;
     }
 

@@ -24,8 +24,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/RequestPacketWithChallenge.ph
  * @subpackage packets
  * @see        GameServer::updateRulesInfo()
  */
-class A2S_RULES_Packet extends RequestPacketWithChallenge
-{
+class A2S_RULES_Packet extends RequestPacketWithChallenge {
     /**
      * Creates a new A2S_RULES request object including the challenge number
      *

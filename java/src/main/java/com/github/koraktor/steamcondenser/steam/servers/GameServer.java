@@ -151,6 +151,7 @@ public abstract class GameServer extends Server {
         if(this.ping == 0) {
             this.updatePing();
         }
+
         return this.ping;
     }
 
@@ -200,6 +201,7 @@ public abstract class GameServer extends Server {
         if(this.playerHash == null) {
             this.updatePlayers(rconPassword);
         }
+
         return this.playerHash;
     }
 
@@ -226,6 +228,7 @@ public abstract class GameServer extends Server {
         if(this.rulesHash == null) {
             this.updateRules();
         }
+
         return this.rulesHash;
     }
 
@@ -252,6 +255,7 @@ public abstract class GameServer extends Server {
         if(this.serverInfo == null) {
             this.updateServerInfo();
         }
+
         return this.serverInfo;
     }
 

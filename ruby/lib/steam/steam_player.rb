@@ -92,7 +92,7 @@ class SteamPlayer
   #         player
   def add_info(player_data)
     unless player_data[:name] == @name
-      raise SteamCondenserException.new('Information to add belongs to a different player.')
+      raise SteamCondenserException, 'Information to add belongs to a different player.'
     end
 
     @extended = true

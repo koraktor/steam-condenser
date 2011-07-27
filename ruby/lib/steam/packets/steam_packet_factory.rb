@@ -3,6 +3,9 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'bzip2-ruby'
+require 'zlib'
+
 require 'exceptions/steam_condenser_exception'
 require 'steam/packets/s2a_info_detailed_packet'
 require 'steam/packets/a2s_info_packet'
@@ -71,7 +74,7 @@ module SteamPacketFactory
       when SteamPacket::S2A_LOGSTRING_HEADER
         return S2A_LOGSTRING_Packet.new(data)
       else
-        raise SteamCondenserException.new("Unknown packet with header 0x#{header.to_s(16)} received.")
+        raise SteamCondenserException, "Unknown packet with header 0x#{header.to_s(16)} received."
     end
   end
 
@@ -92,16 +95,10 @@ module SteamPacketFactory
     packet_data = split_packets.join ''
 
     if is_compressed
-      require 'zlib'
-
-      begin
-        packet_data = BZ2.uncompress(packet_data)
-      rescue LoadError
-        raise SteamCondenserException.new('You need to install the libbzip2 interface for Ruby.')
-      end
+      packet_data = Bzip2.decompress packet_data
 
       unless Zlib.crc32(packet_data) == packet_checksum
-        raise PacketFormatException.new('CRC32 checksum mismatch of uncompressed packet data.')
+        raise PacketFormatException, 'CRC32 checksum mismatch of uncompressed packet data.'
       end
     end
 

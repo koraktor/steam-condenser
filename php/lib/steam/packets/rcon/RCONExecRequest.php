@@ -21,8 +21,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
  * @subpackage rcon-packets
  * @see SourceServer::rconExec()
  */
-class RCONExecRequest extends RCONPacket
-{
+class RCONExecRequest extends RCONPacket {
+
     /**
      * Creates a RCON command execution request for the given request ID and
      * command
@@ -30,8 +30,7 @@ class RCONExecRequest extends RCONPacket
      * @param int $requestId The request ID of the RCON connection
      * @param string $command The command to execute on the server
      */
-    public function __construct($requestId, $command)
-    {
+    public function __construct($requestId, $command) {
         parent::__construct($requestId, RCONPacket::SERVERDATA_EXECCOMMAND, $command);
     }
 }

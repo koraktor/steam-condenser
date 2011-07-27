@@ -44,7 +44,7 @@ class TF2Stats extends GameStats {
      * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
     public function __construct($steamId) {
-        parent::__construct($steamId, "TF2");
+        parent::__construct($steamId, 'TF2');
 
         if($this->isPublic()) {
             $this->accumulatedPoints = intval($this->xmlData->stats->accumulatedPoints);

@@ -19,8 +19,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see        MasterServer::sendHeartbeat()
  */
-class S2M_HEARTBEAT2_Packet extends SteamPacket
-{
+class S2M_HEARTBEAT2_Packet extends SteamPacket {
+
     /**
      * @var array Default data to send with a S2M_HEARTBEAT2 packet
      */
@@ -77,7 +77,7 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket
      * @return string A string containing the raw data of this request packet
      */
     public function __toString() {
-        return pack("ca*", $this->headerData, $this->contentData->_array());
+        return pack('ca*', $this->headerData, $this->contentData->_array());
     }
 
 }

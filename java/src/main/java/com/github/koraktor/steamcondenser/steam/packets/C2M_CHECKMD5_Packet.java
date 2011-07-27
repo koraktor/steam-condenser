@@ -15,8 +15,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#getChallenge()
  */
-public class C2M_CHECKMD5_Packet extends SteamPacket
-{
+public class C2M_CHECKMD5_Packet extends SteamPacket {
 
     /**
      * Creates a new C2M_CHECKMD% request object

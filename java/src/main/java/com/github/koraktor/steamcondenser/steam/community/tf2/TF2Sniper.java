@@ -15,8 +15,8 @@ import org.w3c.dom.Element;
  *
  * @author  Sebastian Staudt
  */
-public class TF2Sniper extends TF2Class
-{
+public class TF2Sniper extends TF2Class {
+
     private int maxHeadshots;
 
     /**
@@ -24,8 +24,7 @@ public class TF2Sniper extends TF2Class
      *
      * @param classData The XML data for this Sniper
      */
-    public TF2Sniper(Element classData)
-    {
+    public TF2Sniper(Element classData) {
         super(classData);
 
         this.maxHeadshots = Integer.parseInt(classData.getElementsByTagName("iheadshots").item(0).getTextContent());
@@ -37,8 +36,7 @@ public class TF2Sniper extends TF2Class
      *
      * @return Maximum number of headshots
      */
-    public int getMaxHeadshots()
-    {
+    public int getMaxHeadshots() {
         return this.maxHeadshots;
     }
 }

@@ -27,8 +27,8 @@ import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONGoldSrcResponse
  *
  * @author Sebastian Staudt
  */
-public class GoldSrcSocket extends QuerySocket
-{
+public class GoldSrcSocket extends QuerySocket {
+
     private boolean isHLTV;
     private long rconChallenge = -1;
 
@@ -41,8 +41,7 @@ public class GoldSrcSocket extends QuerySocket
      * @throws IOException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber)
-            throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
         this.isHLTV = false;
     }
@@ -59,8 +58,7 @@ public class GoldSrcSocket extends QuerySocket
      * @throws IOException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber, boolean isHLTV)
-            throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
         this.isHLTV = isHLTV;
     }
@@ -79,8 +77,7 @@ public class GoldSrcSocket extends QuerySocket
      * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
-            throws IOException, SteamCondenserException, TimeoutException
-    {
+            throws IOException, SteamCondenserException, TimeoutException {
         int bytesRead;
         SteamPacket packet;
 
@@ -109,19 +106,16 @@ public class GoldSrcSocket extends QuerySocket
                 if(splitPackets.size() < packetCount) {
                     try {
                         bytesRead = this.receivePacket();
-                    }
-                    catch(TimeoutException e) {
+                    } catch(TimeoutException e) {
                         bytesRead = 0;
                     }
-                }
-                else {
+                } else {
                     bytesRead = 0;
                 }
             } while(bytesRead > 0 && this.packetIsSplit());
 
             packet = SteamPacketFactory.reassemblePacket(splitPackets);
-        }
-        else {
+        } else {
             packet = this.getPacketFromData();
         }
 
@@ -147,8 +141,7 @@ public class GoldSrcSocket extends QuerySocket
      * @throws TimeoutException if the request times out
      */
     public String rconExec(String password, String command)
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         if(this.rconChallenge == -1 || this.isHLTV) {
             this.rconGetChallenge();
         }
@@ -159,12 +152,10 @@ public class GoldSrcSocket extends QuerySocket
         if(this.isHLTV) {
             try {
                 response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
-            }
-            catch(TimeoutException e) {
+            } catch(TimeoutException e) {
                 response = "";
             }
-        }
-        else {
+        } else {
             response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
         }
 
@@ -176,7 +167,6 @@ public class GoldSrcSocket extends QuerySocket
         }
 
         String responsePart;
-
         do {
             responsePart = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse();
             response += responsePart;
@@ -199,8 +189,8 @@ public class GoldSrcSocket extends QuerySocket
      * @throws TimeoutException if the request times out
      */
     public void rconGetChallenge()
-            throws IOException, TimeoutException, NumberFormatException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, NumberFormatException,
+                   SteamCondenserException {
         this.rconSend("challenge rcon");
 
         String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse().trim();
@@ -219,8 +209,7 @@ public class GoldSrcSocket extends QuerySocket
      * @throws IOException if an error occured while writing to the socket
      */
     private void rconSend(String command)
-            throws IOException
-    {
+            throws IOException {
         this.send(new RCONGoldSrcRequestPacket(command));
     }
 }

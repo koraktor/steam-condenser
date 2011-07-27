@@ -12,7 +12,15 @@ require 'steam/community/web_api'
 # @author Sebastian Staudt
 module GameInventory
 
-  attr_reader :items, :steam_id64
+  # Returns an array of all items in this players inventory.
+  #
+  # @return [Array<GameItem>] All items in the backpack
+  attr_reader :items
+
+  # Returns the 64bit SteamID of the player owning this inventory
+  #
+  # @return [String] The 64bit SteamID
+  attr_reader :steam_id64
 
   @@attribute_schema = {}
 
@@ -61,7 +69,8 @@ module GameInventory
   #
   # The schemas are fetched first if not done already
   #
-  # @return [Hash] The attribute schema for the game this inventory belongs to
+  # @return [Hash<String, Hash<String, Object>>] The attribute schema for the
+  #         game this inventory belongs to
   # @see #update_schema
   def attribute_schema
     update_schema unless @@attribute_schema.key? app_id
@@ -87,8 +96,9 @@ module GameInventory
   #
   # The schemas are fetched first if not done already
   #
-  # @return [Hash] The item schema for the game this inventory belongs to
-  # @see #update_schema
+  # @return [Hash<Fixnum, Hash<String, Object>>] The item schema for the game
+  #         this inventory belongs to
+  # @see #upde_schema
   def item_schema
     update_schema unless @@item_schema.key? app_id
 
@@ -99,7 +109,7 @@ module GameInventory
   #
   # The schemas are fetched first if not done already
   #
-  # @return [Hash] The quality schema for this game
+  # @return [Hash<Fixnum, String>] The quality schema for this game
   # @see #update_schema
   def qualities
     update_schema unless @@qualities.key? app_id

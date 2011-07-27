@@ -80,8 +80,8 @@ class DoDSClass
     @dominations   = class_data.elements['dominations'].text.to_i
     @key           = class_data.attributes['key']
     @kills         = class_data.elements['kills'].text.to_i
-    @name          = class_data.elements["name"].text
-    @play_time     = class_data.elements["playtime"].text.to_i
+    @name          = class_data.elements['name'].text
+    @play_time     = class_data.elements['playtime'].text.to_i
     @rounds_lost   = class_data.elements['roundslost'].text.to_i
     @rounds_won    = class_data.elements['roundswon'].text.to_i
     @revenges      = class_data.elements['revenges'].text.to_i

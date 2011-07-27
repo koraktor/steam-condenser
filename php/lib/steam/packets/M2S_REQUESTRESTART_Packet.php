@@ -22,8 +22,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see MasterServer::sendHeartbeat
  */
-class M2S_REQUESTRESTART_Packet extends SteamPacket
-{
+class M2S_REQUESTRESTART_Packet extends SteamPacket {
 
     /**
      * @var int
@@ -46,8 +45,7 @@ class M2S_REQUESTRESTART_Packet extends SteamPacket
      *
      * @return long The challenge number
      */
-    public function getChallenge()
-    {
+    public function getChallenge() {
         return $this->challenge;
     }
 

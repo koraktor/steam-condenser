@@ -20,7 +20,9 @@ class MasterServerSocket
   def reply
     receive_packet 1500
 
-    raise PacketFormatException.new("Master query response has wrong packet header.") unless @buffer.long == 0xFFFFFFFF
+    unless @buffer.long == 0xFFFFFFFF
+      raise PacketFormatException, 'Master query response has wrong packet header.'
+    end
 
     SteamPacketFactory.packet_from_data(@buffer.get)
   end

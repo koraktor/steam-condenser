@@ -36,7 +36,7 @@ module RCONPacketFactory
       when RCONPacket::SERVERDATA_RESPONSE_VALUE then
         return RCONExecResponse.new(request_id, data)
       else
-        raise PacketFormatException.new("Unknown packet with header #{header.to_s(16)} received.")
+        raise PacketFormatException, "Unknown packet with header #{header.to_s(16)} received."
     end
   end
 

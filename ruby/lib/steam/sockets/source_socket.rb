@@ -23,13 +23,12 @@ class SourceSocket
   #
   # @return [SteamPacket] The packet replied from the server
   def reply
-    bytes_read = receive_packet 1400
+    receive_packet 1400
     is_compressed = false
 
     if @buffer.long == 0xFFFFFFFE
       split_packets = []
       begin
-        # Parsing of split packet headers
         request_id = @buffer.long
         is_compressed = ((request_id & 0x80000000) != 0)
         packet_count = @buffer.byte
@@ -42,12 +41,10 @@ class SourceSocket
           @buffer.short
         end
 
-        # Caching of split packet data
         split_packets[packet_number - 1] = @buffer.get
 
         puts "Received packet #{packet_number} of #{packet_count} for request ##{request_id}" if $DEBUG
 
-        # Receiving the next packet
         if split_packets.size < packet_count
           begin
             bytes_read = receive_packet

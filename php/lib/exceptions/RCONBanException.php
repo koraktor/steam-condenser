@@ -21,13 +21,12 @@ require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
  * @subpackage exceptions
  * @see GameServer::rconAuth()
  */
-class RCONBanException extends SteamCondenserException
-{
+class RCONBanException extends SteamCondenserException {
+
     /**
      * Creates a new <var>RCONBanException</var> instance
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct('You have been banned from this server.');
     }
 }

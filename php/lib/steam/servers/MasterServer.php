@@ -31,12 +31,12 @@ class MasterServer extends Server {
     /**
      * @var string The master server address to query for GoldSrc game servers
      */
-    const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+    const GOLDSRC_MASTER_SERVER = 'hl1master.steampowered.com:27010';
 
     /**
      * @var string The master server address to query for GoldSrc game servers
      */
-    const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
+    const SOURCE_MASTER_SERVER = 'hl2master.steampowered.com:27011';
 
     /**
      * @var int The region code for the US east coast
@@ -151,12 +151,12 @@ class MasterServer extends Server {
      *         reply
      * @throws TimeoutException if the request times out
      */
-    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
+    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = '')
     {
         $failCount  = 0;
         $finished   = false;
         $portNumber = 0;
-        $hostName   = "0.0.0.0";
+        $hostName   = '0.0.0.0';
 
         while(true) {
             try {
@@ -166,11 +166,11 @@ class MasterServer extends Server {
                         $serverStringArray = $this->socket->getReply()->getServers();
 
                         foreach($serverStringArray as $serverString) {
-                            $serverString = explode(":", $serverString);
+                            $serverString = explode(':', $serverString);
                             $hostName = $serverString[0];
                             $portNumber = $serverString[1];
 
-                            if($hostName != "0.0.0.0" && $portNumber != 0) {
+                            if($hostName != '0.0.0.0' && $portNumber != 0) {
                                 $serverArray[] = array($hostName, $portNumber);
                             } else {
                                 $finished = true;

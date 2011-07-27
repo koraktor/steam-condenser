@@ -11,114 +11,114 @@ require 'steam/community/game_stats'
 # @author Sebastian Staudt
 class DefenseGridStats < GameStats
 
-  # Returns the
+  # Returns the bronze medals won by this player
   #
-  # @return []
+  # @return [Fixnum] Bronze medals won
   attr_reader :bronze_medals
 
-  # Returns the
+  # Returns the damage done by this player
   #
-  # @return []
+  # @return [Float] Damage done
   attr_reader :damage_done
 
-  # Returns the
+  # Returns the damage done during the campaign by this player
   #
-  # @return []
+  # @return [Float] Damage done during the campaign
   attr_reader :damage_campaign
 
-  # Returns the
+  # Returns the damage done during challenges by this player
   #
-  # @return []
+  # @return [Float] Damage done during challenges
   attr_reader :damage_challenge
 
-  # Returns the
+  # Returns the aliens encountered by this player
   #
-  # @return []
+  # @return [Fixnum] Aliens encountered
   attr_reader :encountered
 
-  # Returns the
+  # Returns the gold medals won by this player
   #
-  # @return []
+  # @return [Fixnum] Gold medals won
   attr_reader :gold_medals
 
-  # Returns the
+  # Returns the heat damage done by this player
   #
-  # @return []
+  # @return [Float] Heat damage done
   attr_reader :heat_damage
 
-  # Returns the
+  # Returns the interest gained by the player
   #
-  # @return []
+  # @return [Fixnum] Interest gained
   attr_reader :interest
 
-  # Returns the
+  # Returns the aliens killed by the player
   #
-  # @return []
+  # @return [Fixnum] Aliens killed
   attr_reader :killed
 
-  # Returns the
+  # Returns the aliens killed during the campaign by the player
   #
-  # @return []
+  # @return [Fixnum] Aliens killed during the campaign
   attr_reader :killed_campaign
 
-  # Returns the
+  # Returns the aliens killed during challenges by the player
   #
-  # @return []
+  # @return [Fixnum] Aliens killed during challenges
   attr_reader :killed_challenge
 
-  # Returns the
+  # Returns the number of levels played by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels played
   attr_reader :levels_played
 
-  # Returns the
+  # Returns the number of levels played during the campaign by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels played during the campaign
   attr_reader :levels_played_campaign
 
-  # Returns the
+  # Returns the number of levels played during challenges by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels played during challenges
   attr_reader :levels_played_challenge
 
-  # Returns the
+  # Returns the number of levels won by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels won
   attr_reader :levels_won
 
-  # Returns the
+  # Returns the number of levels won during the campaign by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels during the campaign won
   attr_reader :levels_won_campaign
 
-  # Returns the
+  # Returns the number of levels won during challenges by the player
   #
-  # @return []
+  # @return [Fixnum] Number of levels during challenges won
   attr_reader :levels_won_challenge
 
-  # Returns the
+  # Returns the damage dealt by the orbital laser
   #
-  # @return []
+  # @return [Float] Damage dealt by the orbital laser
   attr_reader :orbital_laser_fired
 
-  # Returns the
+  # Returns the number of times the orbital lasers has been fired by the player
   #
-  # @return []
+  # @return [Fixnum] Number of times the orbital laser has been fired
   attr_reader :orbital_laser_damage
 
-  # Returns the
+  # Returns the amount of resources harvested by the player
   #
-  # @return []
+  # @return [Fixnum] Resources harvested by the player
   attr_reader :resources
 
-  # Returns the
+  # Returns the silver medals won by this player
   #
-  # @return []
+  # @return [Fixnum] Silver medals won
   attr_reader :silver_medals
 
-  # Returns the
+  # Returns the time played in seconds by the player
   #
-  # @return []
+  # @return [Float] Time played
   attr_reader :time_played
 
   # Creates a `DefenseGridStats` instance by calling the super constructor with

@@ -26,8 +26,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
  * @package    steam-condenser
  * @subpackage sockets
  */
-class RCONSocket extends SteamSocket
-{
+class RCONSocket extends SteamSocket {
+
     /**
      * @var string
      */
@@ -101,8 +101,7 @@ class RCONSocket extends SteamSocket
             $receivedBytes = $this->receivePacket($remainingBytes);
             $remainingBytes -= $receivedBytes;
             $packetData .= substr($this->buffer->_array(), 0, $this->buffer->limit());
-        }
-        while($remainingBytes > 0);
+        } while($remainingBytes > 0);
 
         return RCONPacketFactory::getPacketFromData($packetData);
     }

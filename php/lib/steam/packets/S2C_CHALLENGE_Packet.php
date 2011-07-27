@@ -22,16 +22,15 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see GameServer::updateChallengeNumber()
  */
-class S2C_CHALLENGE_Packet extends SteamPacket
-{
+class S2C_CHALLENGE_Packet extends SteamPacket {
+
     /**
      * Creates a new S2C_CHALLENGE response object based on the given data
      *
      * @param string $challengeNumber The raw packet data replied from the
      *        server
      */
-    public function __construct($challengeNumber)
-    {
+    public function __construct($challengeNumber) {
         parent::__construct(SteamPacket::S2C_CHALLENGE_HEADER, $challengeNumber);
     }
 
@@ -40,8 +39,7 @@ class S2C_CHALLENGE_Packet extends SteamPacket
      *
      * @return long The challenge number provided by the game server
      */
-    public function getChallengeNumber()
-    {
+    public function getChallengeNumber() {
         return $this->contentData->rewind()->getLong();
     }
 }

@@ -17,8 +17,8 @@ package com.github.koraktor.steamcondenser.steam.packets.rcon;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.SourceServer#rconExec
  */
-public class RCONExecResponsePacket extends RCONPacket
-{
+public class RCONExecResponsePacket extends RCONPacket {
+
     /**
      * Creates a RCON command response for the given request ID and command
      * output
@@ -26,8 +26,7 @@ public class RCONExecResponsePacket extends RCONPacket
      * @param requestId The request ID of the RCON connection
      * @param commandReturn The output of the command executed on the server
      */
-    public RCONExecResponsePacket(int requestId, String commandReturn)
-    {
+    public RCONExecResponsePacket(int requestId, String commandReturn) {
         super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn);
     }
 
@@ -36,8 +35,7 @@ public class RCONExecResponsePacket extends RCONPacket
      *
      * @return The output of the command
      */
-    public String getResponse()
-    {
+    public String getResponse() {
         String response = new String(this.contentData.array());
         return response.substring(0, response.length() - 2);
     }

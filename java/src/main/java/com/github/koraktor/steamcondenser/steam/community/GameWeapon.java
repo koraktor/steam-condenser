@@ -17,8 +17,6 @@ import org.w3c.dom.Element;
  */
 public abstract class GameWeapon {
 
-    private float avgShotsPerKill;
-
     protected int kills;
 
     protected String id;

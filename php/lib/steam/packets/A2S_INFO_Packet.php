@@ -21,13 +21,12 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see        GameServer::updateServerInfo()
  */
-class A2S_INFO_Packet extends SteamPacket
-{
+class A2S_INFO_Packet extends SteamPacket {
+
     /**
      * Creates a new A2S_INFO request object
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct(SteamPacket::A2S_INFO_HEADER, "Source Engine Query\0");
     }
 }

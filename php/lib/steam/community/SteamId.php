@@ -141,6 +141,7 @@ class SteamId {
             if($fetch && !$steamId->isFetched()) {
                 $steamId->fetchMembers();
             }
+
             return $steamId;
         } else {
             return new SteamId($id, $fetch);
@@ -179,8 +180,7 @@ class SteamId {
     public function __construct($id, $fetch = true) {
         if(is_numeric($id)) {
             $this->steamId64 = $id;
-        }
-        else {
+        } else {
             $this->customUrl = strtolower($id);
         }
 
@@ -212,7 +212,7 @@ class SteamId {
      *         e.g. when it is private, or when it cannot be parsed
      */
     public function fetchData() {
-        $url = $this->getBaseUrl() . "?xml=1";
+        $url = $this->getBaseUrl() . '?xml=1';
         $profile = new SimpleXMLElement(file_get_contents($url));
 
         if(!empty($profile->error)) {
@@ -233,7 +233,7 @@ class SteamId {
         $this->stateMessage = (string) $profile->stateMessage;
         $this->visibilityState = (int) $profile->visibilityState;
 
-        if($this->privacyState == "public") {
+        if($this->privacyState == 'public') {
             $this->customUrl = strtolower((string) $profile->customURL);
             $this->favoriteGame = (string) $profile->favoriteGame->name;
             $this->favoriteGameHoursPlayed = (string) $profile->favoriteGame->hoursPlayed2wk;
@@ -302,7 +302,7 @@ class SteamId {
     private function fetchGames() {
         $this->games = array();
 
-        $url = $this->getBaseUrl() . "/games?xml=1";
+        $url = $this->getBaseUrl() . '/games?xml=1';
         $gamesData = new SimpleXMLElement(file_get_contents($url));
 
         foreach($gamesData->games->game as $game) {
@@ -326,8 +326,7 @@ class SteamId {
     public function getBaseUrl() {
         if(empty($this->customUrl)) {
             return "http://steamcommunity.com/profiles/{$this->steamId64}";
-        }
-        else {
+        } else {
             return "http://steamcommunity.com/id/{$this->customUrl}";
         }
     }
@@ -353,6 +352,7 @@ class SteamId {
         if(empty($this->friends)) {
             $this->fetchFriends();
         }
+
         return $this->friends;
     }
 
@@ -362,7 +362,7 @@ class SteamId {
      * @return string The URL of the full-sized avatar
      */
     public function getFullAvatarUrl() {
-        return $this->imageUrl . "_full.jpg";
+        return $this->imageUrl . '_full.jpg';
     }
 
     /**
@@ -396,18 +396,15 @@ class SteamId {
     public function getGameStats($gameName) {
         if(in_array($gameName, array_values($this->getGames()))) {
             $friendlyName = $gameName;
-        }
-        else if(array_key_exists(strtolower($gameName), $this->getGames())) {
+        } else if(array_key_exists(strtolower($gameName), $this->getGames())) {
             $friendlyName = $this->games[strtolower($gameName)];
-        }
-        else {
+        } else {
             throw new SteamCondenserException("Stats for game {$gameName} do not exist.");
         }
 
         if(empty($this->customUrl)) {
             return GameStats::createGameStats($this->steamId64, $friendlyName);
-        }
-        else {
+        } else {
             return GameStats::createGameStats($this->customUrl, $friendlyName);
         }
     }
@@ -418,7 +415,7 @@ class SteamId {
      * @return The URL of the icon-sized avatar
      */
     public function getIconAvatarUrl() {
-        return $this->imageUrl . ".jpg";
+        return $this->imageUrl . '.jpg';
     }
 
     /**
@@ -427,7 +424,7 @@ class SteamId {
      * @return The URL of the medium-sized avatar
      */
     public function getMediumAvatarUrl() {
-        return $this->imageUrl . "_medium.jpg";
+        return $this->imageUrl . '_medium.jpg';
     }
 
     /**
@@ -464,7 +461,7 @@ class SteamId {
      * @return <var>true</var> if the user is in-game
      */
     public function isInGame() {
-        return $this->onlineState == "in-game";
+        return $this->onlineState == 'in-game';
     }
 
     /**
@@ -474,7 +471,7 @@ class SteamId {
      * @return <var>true</var> if the user is online
      */
     public function isOnline() {
-        return ($this->onlineState == "online") || ($this->onlineState == "in-game");
+        return ($this->onlineState == 'online') || ($this->onlineState == 'in-game');
     }
 }
 ?>

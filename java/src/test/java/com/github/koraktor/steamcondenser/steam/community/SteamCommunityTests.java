@@ -15,6 +15,7 @@ import com.github.koraktor.steamcondenser.steam.community.tf2.TF2Stats;
  * @author Sebastian Staudt
  */
 public class SteamCommunityTests {
+
     @Test
     public void getGames() throws Exception {
         SteamId steamId = SteamId.create("koraktor");

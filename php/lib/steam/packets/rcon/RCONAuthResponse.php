@@ -22,8 +22,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/rcon/RCONPacket.php';
  * @subpackage rcon-packets
  * @see SourceServer::rconAuth()
  */
-class RCONAuthResponse extends RCONPacket
-{
+class RCONAuthResponse extends RCONPacket {
+
     /**
      * Creates a RCON authentication response for the given request ID
      *
@@ -32,8 +32,7 @@ class RCONAuthResponse extends RCONPacket
      *
      * @param int $requestId The request ID of the RCON connection
      */
-    public function __construct($requestId)
-    {
+    public function __construct($requestId) {
         parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH_RESPONSE);
     }
 }

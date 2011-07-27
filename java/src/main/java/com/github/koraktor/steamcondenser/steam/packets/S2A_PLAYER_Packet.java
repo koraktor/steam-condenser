@@ -19,8 +19,8 @@ import com.github.koraktor.steamcondenser.steam.SteamPlayer;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updatePlayerInfo
  */
-public class S2A_PLAYER_Packet extends SteamPacket
-{
+public class S2A_PLAYER_Packet extends SteamPacket {
+
     private HashMap<String, SteamPlayer> playerHash;
 
     /**
@@ -29,19 +29,16 @@ public class S2A_PLAYER_Packet extends SteamPacket
      * @param dataBytes The raw packet data sent by the server
      */
     public S2A_PLAYER_Packet(byte[] dataBytes)
-    throws PacketFormatException
-    {
+            throws PacketFormatException {
         super(SteamPacket.S2A_PLAYER_HEADER, dataBytes);
 
-        if(this.contentData.getLength() == 0)
-        {
+        if(this.contentData.getLength() == 0) {
             throw new PacketFormatException("Wrong formatted S2A_PLAYER response packet.");
         }
 
         this.playerHash = new HashMap<String, SteamPlayer>(this.contentData.getByte());
 
-        while(this.contentData.hasRemaining())
-        {
+        while(this.contentData.hasRemaining()) {
             byte playerId = this.contentData.getByte();
             String playerName = this.contentData.getString();
             this.playerHash.put(playerName, new SteamPlayer(
@@ -58,8 +55,7 @@ public class S2A_PLAYER_Packet extends SteamPacket
      *
      * @return All active players on the server
      */
-    public HashMap<String, SteamPlayer> getPlayerHash()
-    {
+    public HashMap<String, SteamPlayer> getPlayerHash() {
         return this.playerHash;
     }
 }

@@ -43,54 +43,54 @@ public abstract class SteamPacketFactory {
         byte[] data = new byte[rawData.length - 1];
         System.arraycopy(rawData, 1, data, 0, rawData.length - 1);
 
-        switch (header) {
-        case SteamPacket.A2S_INFO_HEADER:
-            return new A2S_INFO_Packet();
+        switch(header) {
+            case SteamPacket.A2S_INFO_HEADER:
+                return new A2S_INFO_Packet();
 
-        case SteamPacket.S2A_INFO_DETAILED_HEADER:
-            return new S2A_INFO_DETAILED_Packet(data);
+            case SteamPacket.S2A_INFO_DETAILED_HEADER:
+                return new S2A_INFO_DETAILED_Packet(data);
 
-        case SteamPacket.S2A_INFO2_HEADER:
-            return new S2A_INFO2_Packet(data);
+            case SteamPacket.S2A_INFO2_HEADER:
+                return new S2A_INFO2_Packet(data);
 
-        case SteamPacket.A2S_PLAYER_HEADER:
-            return new A2S_PLAYER_Packet(Helper.integerFromByteArray(data));
+            case SteamPacket.A2S_PLAYER_HEADER:
+                return new A2S_PLAYER_Packet(Helper.integerFromByteArray(data));
 
-        case SteamPacket.S2A_PLAYER_HEADER:
-            return new S2A_PLAYER_Packet(data);
+            case SteamPacket.S2A_PLAYER_HEADER:
+                return new S2A_PLAYER_Packet(data);
 
-        case SteamPacket.A2S_RULES_HEADER:
-            return new A2S_RULES_Packet(Helper.integerFromByteArray(data));
+            case SteamPacket.A2S_RULES_HEADER:
+                return new A2S_RULES_Packet(Helper.integerFromByteArray(data));
 
-        case SteamPacket.S2A_RULES_HEADER:
-            return new S2A_RULES_Packet(data);
+            case SteamPacket.S2A_RULES_HEADER:
+                return new S2A_RULES_Packet(data);
 
-        case SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER:
-            return new A2S_SERVERQUERY_GETCHALLENGE_Packet();
+            case SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER:
+                return new A2S_SERVERQUERY_GETCHALLENGE_Packet();
 
-        case SteamPacket.S2C_CHALLENGE_HEADER:
-            return new S2C_CHALLENGE_Packet(data);
+            case SteamPacket.S2C_CHALLENGE_HEADER:
+                return new S2C_CHALLENGE_Packet(data);
 
-        case SteamPacket.M2A_SERVER_BATCH_HEADER:
-            return new M2A_SERVER_BATCH_Paket(data);
+            case SteamPacket.M2A_SERVER_BATCH_HEADER:
+                return new M2A_SERVER_BATCH_Paket(data);
 
-        case SteamPacket.M2C_ISVALIDMD5_HEADER:
-            return new M2C_ISVALIDMD5_Packet(data);
+            case SteamPacket.M2C_ISVALIDMD5_HEADER:
+                return new M2C_ISVALIDMD5_Packet(data);
 
-        case SteamPacket.M2S_REQUESTRESTART_HEADER:
-            return new M2S_REQUESTRESTART_Packet(data);
+            case SteamPacket.M2S_REQUESTRESTART_HEADER:
+                return new M2S_REQUESTRESTART_Packet(data);
 
-        case SteamPacket.RCON_GOLDSRC_CHALLENGE_HEADER:
-        case SteamPacket.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
-        case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
-            return new RCONGoldSrcResponsePacket(data);
+            case SteamPacket.RCON_GOLDSRC_CHALLENGE_HEADER:
+            case SteamPacket.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
+            case SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER:
+                return new RCONGoldSrcResponsePacket(data);
 
-        case SteamPacket.S2A_LOGSTRING_HEADER:
-            return new S2A_LOGSTRING_Packet(data);
+            case SteamPacket.S2A_LOGSTRING_HEADER:
+                return new S2A_LOGSTRING_Packet(data);
 
-        default:
-            throw new PacketFormatException("Unknown packet with header 0x"
-                    + Integer.toHexString(header) + " received.");
+            default:
+                throw new PacketFormatException("Unknown packet with header 0x"
+                        + Integer.toHexString(header) + " received.");
         }
     }
 

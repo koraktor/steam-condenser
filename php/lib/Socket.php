@@ -16,8 +16,8 @@
  * @author  Sebastian Staudt
  * @package steam-condenser
  */
-abstract class Socket
-{
+abstract class Socket {
+
     /**
      * The IP address the socket is connected to
      *
@@ -35,7 +35,7 @@ abstract class Socket
     /**
      * @var string
      */
-    protected $readBuffer = "";
+    protected $readBuffer = '';
 
     /**
      * The socket itself
@@ -55,9 +55,8 @@ abstract class Socket
      * This will check if PHP's sockets extension is loaded which might be used
      * for socket communication.
      */
-    public function __construct()
-    {
-        $this->socketsEnabled = extension_loaded("sockets");
+    public function __construct() {
+        $this->socketsEnabled = extension_loaded('sockets');
     }
 
     /**
@@ -99,20 +98,15 @@ abstract class Socket
      * @return string The data read from the socket
      * @throws Exception if reading from the socket fails
      */
-    public function recv($length = 128)
-    {
-        if($this->socketsEnabled)
-        {
+    public function recv($length = 128) {
+        if($this->socketsEnabled) {
             $data = @socket_read($this->socket, $length, PHP_BINARY_READ);
-        }
-        else
-        {
+        } else {
             $data = fread($this->socket, $length);
         }
 
-        if(!$data)
-        {
-            throw new Exception("Could not read from socket.");
+        if(!$data) {
+            throw new Exception('Could not read from socket.');
         }
 
         return $data;
@@ -126,18 +120,14 @@ abstract class Socket
      *        on this socket before timing out
      * @return bool whether data arrived on this socket before the timeout
      */
-    public function select($timeout = 0)
-    {
+    public function select($timeout = 0) {
         $read = array($this->socket);
         $write = null;
         $except = null;
 
-        if($this->socketsEnabled)
-        {
+        if($this->socketsEnabled) {
             $select = socket_select($read, $write, $except, 0, $timeout * 1000);
-        }
-        else
-        {
+        } else {
             $select = stream_select($read, $write, $except, 0, $timeout * 1000);
         }
 
@@ -150,20 +140,15 @@ abstract class Socket
      * @param string $data The data to send to the connected peer
      * @throws Exception if sending fails
      */
-    public function send($data)
-    {
-        if($this->socketsEnabled)
-        {
+    public function send($data) {
+        if($this->socketsEnabled) {
             $sendResult = socket_send($this->socket, $data, strlen($data), 0);
-        }
-        else
-        {
+        } else {
             $sendResult = fwrite($this->socket, $data, strlen($data));
         }
 
-        if(!$sendResult)
-        {
-            throw new Exception("Could not send data.");
+        if(!$sendResult) {
+            throw new Exception('Could not send data.');
         }
     }
 
@@ -172,8 +157,7 @@ abstract class Socket
      *
      * @return resource The underlying socket descriptor
      */
-    public function socket()
-    {
+    public function socket() {
         return $this->socket;
     }
 }

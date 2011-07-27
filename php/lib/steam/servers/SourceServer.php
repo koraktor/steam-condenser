@@ -31,8 +31,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SourceSocket.php';
  * @subpackage servers
  * @see        GoldSrcServer
  */
-class SourceServer extends GameServer
-{
+class SourceServer extends GameServer {
+
     /**
      * @var long The request ID used for RCON request
      */
@@ -108,7 +108,6 @@ class SourceServer extends GameServer
 
             $response .= $responsePacket->getResponse();
         } while(strlen($response) == 0 || strlen($responsePacket->getResponse()) > 0);
-
 
         return trim($response);
     }

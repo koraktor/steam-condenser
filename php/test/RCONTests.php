@@ -10,63 +10,59 @@
 
 error_reporting(E_ALL & ~E_USER_NOTICE);
 
-require_once dirname(__FILE__) . "/../lib/steam-condenser.php";
+require_once dirname(__FILE__) . '/../lib/steam-condenser.php';
 
-require_once "PHPUnit/Framework.php";
+require_once 'PHPUnit/Framework.php';
 
 /**
  * @author     Sebastian Staudt
  * @package    steam-condenser
  * @subpackage tests
  */
-class RCONTests extends PHPUnit_Framework_TestCase
-{
-    public function testRconLongGoldSrcServer()
-    {
-        $server = new GoldSrcServer(new InetAddress("127.0.0.1"));
-        $server->rconAuth("test");
-        $rconReply = $server->rconExec("cvarlist");
+class RCONTests extends PHPUnit_Framework_TestCase {
+
+    public function testRconLongGoldSrcServer() {
+        $server = new GoldSrcServer(new InetAddress('127.0.0.1'));
+        $server->rconAuth('test');
+        $rconReply = $server->rconExec('cvarlist');
         echo "$rconReply\n";
         $this->assertTrue(
-            strpos($rconReply, "CvarList ? for syntax") !== false,
-            "Did not receive complete cvarlist.");
+            strpos($rconReply, 'CvarList ? for syntax') !== false,
+            'Did not receive complete cvarlist.');
     }
 
-    public function testRconLongSourceServer()
-    {
-        $server = new SourceServer(new InetAddress("127.0.0.1"));
-        $server->rconAuth("test");
-        $rconReply = $server->rconExec("cvarlist");
+    public function testRconLongSourceServer() {
+        $server = new SourceServer(new InetAddress('127.0.0.1'));
+        $server->rconAuth('test');
+        $rconReply = $server->rconExec('cvarlist');
         echo "$rconReply\n";
         $this->assertTrue(
-            strpos($rconReply, "total convars/concommands") !== false,
-            "Did not receive complete cvarlist.");
+            strpos($rconReply, 'total convars/concommands') !== false,
+            'Did not receive complete cvarlist.');
     }
 
-    public function testRconShortGoldSrcServer()
-    {
-        $server = new GoldSrcServer(new InetAddress("127.0.0.1"));
-        $server->rconAuth("test");
-        $rconReply = $server->rconExec("version");
+    public function testRconShortGoldSrcServer() {
+        $server = new GoldSrcServer(new InetAddress('127.0.0.1'));
+        $server->rconAuth('test');
+        $rconReply = $server->rconExec('version');
         echo "$rconReply\n";
         $this->assertTrue(
-            strpos($rconReply, "Protocol version") !== false &&
-            strpos($rconReply, "Exe version") !== false &&
-            strpos($rconReply, "Exe build") !== false,
-            "Did not receive correct version response.");
+            strpos($rconReply, 'Protocol version') !== false &&
+            strpos($rconReply, 'Exe version') !== false &&
+            strpos($rconReply, 'Exe build') !== false,
+            'Did not receive correct version response.');
     }
 
-    public function testRconShortSourceServer()
-    {
-        $server = new SourceServer(new InetAddress("127.0.0.1"));
-        $server->rconAuth("test");
-        $rconReply = $server->rconExec("version");
+    public function testRconShortSourceServer() {
+        $server = new SourceServer(new InetAddress('127.0.0.1'));
+        $server->rconAuth('test');
+        $rconReply = $server->rconExec('version');
         echo "$rconReply\n";
         $this->assertTrue(
-            strpos($rconReply, "Protocol version") !== false &&
-            strpos($rconReply, "Exe version") !== false &&
-            strpos($rconReply, "Exe build") !== false,
-            "Did not receive correct version response.");
+            strpos($rconReply, 'Protocol version') !== false &&
+            strpos($rconReply, 'Exe version') !== false &&
+            strpos($rconReply, 'Exe build') !== false,
+            'Did not receive correct version response.');
     }
 }
 ?>

@@ -144,7 +144,7 @@ class DefenseGridStats extends GameStats {
      * Creates a <var>DefenseGridStats</var> object by calling the super
      * constructor with the game name <var>"defensegrid:awakening"</var>
      *
-     * @param String $steamId The custom URL or the 64bit Steam ID of the user
+     * @param string $steamId The custom URL or the 64bit Steam ID of the user
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'defensegrid:awakening');
@@ -372,7 +372,8 @@ class DefenseGridStats extends GameStats {
     }
 
     /**
-     * Returns the number of times the orbital lasers has been fired by the player
+     * Returns the number of times the orbital lasers has been fired by the
+     * player
      *
      * @return int Number of times the orbital laser has been fired
      */

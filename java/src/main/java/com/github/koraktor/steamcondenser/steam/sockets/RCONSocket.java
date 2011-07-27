@@ -29,8 +29,8 @@ import com.github.koraktor.steamcondenser.steam.packets.rcon.RCONPacketFactory;
  *
  * @author Sebastian Staudt
  */
-public class RCONSocket extends SteamSocket
-{
+public class RCONSocket extends SteamSocket {
+
     /**
      * Creates a new TCP socket to communicate with the server on the given IP
      * address and port
@@ -39,8 +39,7 @@ public class RCONSocket extends SteamSocket
      * @param portNumber The port the server is listening on
      */
     public RCONSocket(InetAddress ipAddress, int portNumber)
-            throws IOException
-    {
+            throws IOException {
         super(ipAddress, portNumber);
         this.channel = SocketChannel.open();
     }
@@ -64,8 +63,7 @@ public class RCONSocket extends SteamSocket
      * @throws IOException if an error occured while writing to the socket
      */
     public void send(RCONPacket dataPacket)
-            throws IOException
-    {
+            throws IOException {
         if(!((SocketChannel)this.channel).isConnected()) {
             ((SocketChannel)this.channel).connect(this.remoteSocket);
             this.channel.configureBlocking(false);
@@ -91,8 +89,7 @@ public class RCONSocket extends SteamSocket
      * @throws TimeoutException if the request times out
      */
     public RCONPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException
-    {
+            throws IOException, TimeoutException, SteamCondenserException {
         if(this.receivePacket(4) <= 0) {
             throw new RCONBanException();
         }

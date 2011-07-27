@@ -20,8 +20,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  * @subpackage packets
  * @see        MasterServer::getChallenge()
  */
-class C2M_CHECKMD5_Packet extends SteamPacket
-{
+class C2M_CHECKMD5_Packet extends SteamPacket {
 
     /**
      * Creates a new C2M_CHECKMD% request object
@@ -35,8 +34,7 @@ class C2M_CHECKMD5_Packet extends SteamPacket
      *
      * @return string A string containing the raw data of this request packet
      */
-    public function __toString()
-    {
+    public function __toString() {
         return chr($this->headerData) . "\xFF";
     }
 

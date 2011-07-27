@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'exceptions/packet_format_exception'
 require 'steam/packets/steam_packet'
 
 # This packet class represents a M2A_SERVER_BATCH response replied by a master
@@ -31,7 +32,7 @@ class M2A_SERVER_BATCH_Packet
     super M2A_SERVER_BATCH_HEADER, data
 
     unless @content_data.byte == 0x0A
-      raise PacketFormatException.new('Master query response is missing additional 0x0A byte.')
+      raise PacketFormatException, 'Master query response is missing additional 0x0A byte.'
     end
 
     @servers = []

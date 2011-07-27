@@ -21,8 +21,7 @@ import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
  *
  * @author Sebastian Staudt
  */
-public abstract class QuerySocket extends SteamSocket
-{
+public abstract class QuerySocket extends SteamSocket {
 
     /**
      * Creates a new socket to communicate with the server on the given IP
@@ -45,8 +44,7 @@ public abstract class QuerySocket extends SteamSocket
      *
      * @return <code>true</code> if the packet is split
      */
-    protected boolean packetIsSplit()
-    {
+    protected boolean packetIsSplit() {
         return (Integer.reverseBytes(this.buffer.getInt()) == 0xFFFFFFFE);
     }
 
@@ -58,8 +56,7 @@ public abstract class QuerySocket extends SteamSocket
      * @throws TimeoutException if no UDP packet was received
      */
     protected int receivePacket()
-            throws IOException, TimeoutException
-    {
+            throws IOException, TimeoutException {
         return this.receivePacket(0);
     }
 
@@ -70,8 +67,7 @@ public abstract class QuerySocket extends SteamSocket
      * @throws IOException if an error occured while writing to the socket
      */
     public void send(SteamPacket dataPacket)
-            throws IOException
-    {
+            throws IOException {
         Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
         this.buffer = ByteBuffer.wrap(dataPacket.getBytes());

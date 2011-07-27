@@ -18,8 +18,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Class.php';
  * @package    steam-condenser
  * @subpackage community
  */
-class TF2Sniper extends TF2Class
-{
+class TF2Sniper extends TF2Class {
+
     /**
      * @var int
      */
@@ -30,8 +30,7 @@ class TF2Sniper extends TF2Class
      *
      * @param SimpleXMLElement $classData The XML data for this Sniper
      */
-    public function __construct($classData)
-    {
+    public function __construct($classData) {
         parent::__construct($classData);
 
         $this->maxHeadshots = (int) $classData->iheadshots;

@@ -23,7 +23,7 @@ class Portal2Item extends GameItem {
     /**
      * @var array The names of the bots available in Portal 2
      */
-    private static $BOTS = array("pbody", "atlas");
+    private static $BOTS = array('pbody', 'atlas');
 
     /**
      * @var array
@@ -35,7 +35,7 @@ class Portal2Item extends GameItem {
      *
      * @param Portal2Inventory $inventory The inventory this item is contained
      *        in
-     * @param itemData The data specifying this item
+     * @param array $itemData The data specifying this item
      * @throws WebApiException on Web API errors
      */
     public function __construct(Portal2Inventory $inventory, $itemData) {

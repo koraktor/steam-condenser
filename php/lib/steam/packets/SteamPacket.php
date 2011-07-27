@@ -19,8 +19,8 @@ require_once STEAM_CONDENSER_PATH . 'ByteBuffer.php';
  * @subpackage packets
  * @see        SteamPacketFactory
  */
-abstract class SteamPacket
-{
+abstract class SteamPacket {
+
     const S2A_INFO_DETAILED_HEADER = 0x6D;
     const A2S_INFO_HEADER = 0x54;
     const S2A_INFO2_HEADER = 0x49;
@@ -57,25 +57,22 @@ abstract class SteamPacket
      * @param int $headerData The packet header
      * @param string $contentData The raw data of the packet
      */
-    public function __construct($headerData, $contentData = null)
-    {
+    public function __construct($headerData, $contentData = null) {
         $this->headerData = $headerData;
         $this->contentData = ByteBuffer::wrap($contentData);
     }
 
     /**
-     * @return byte[]
+     * @return string The data payload of the packet
      */
-    public function getData()
-    {
+    public function getData() {
         return $this->contentData;
     }
 
     /**
-     * @return byte
+     * @return byte The header of the packet
      */
-    public function getHeader()
-    {
+    public function getHeader() {
         return $this->headerData;
     }
 
@@ -84,10 +81,9 @@ abstract class SteamPacket
      *
      * @return string A string containing the raw data of this request packet
      */
-    public function __toString()
-    {
-        $packetData = pack("cccc", 0xFF, 0xFF, 0xFF, 0xFF);
-        $packetData .= pack("ca*", $this->headerData, $this->contentData->_array());
+    public function __toString() {
+        $packetData = pack('cccc', 0xFF, 0xFF, 0xFF, 0xFF);
+        $packetData .= pack('ca*', $this->headerData, $this->contentData->_array());
 
         return $packetData;
     }

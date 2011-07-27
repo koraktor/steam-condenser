@@ -32,9 +32,9 @@ module SteamSocket
   # Creates a new UDP socket to communicate with the server on the given IP
   # address and port
   #
-  # @param [String] ipaddress Either the IP address or the DNS name of the
+  # @param [String] ip_address Either the IP address or the DNS name of the
   #        server
-  # @param [Fixnum] port_number The port the server is listening on
+  # @param [Fixnum] port The port the server is listening on
   def initialize(ip_address, port = 27015)
     @socket = UDPSocket.new
     @socket.connect ip_address, port

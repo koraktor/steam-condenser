@@ -19,8 +19,8 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
  * @author Sebastian Staudt
  * @see RCONPacket
  */
-public abstract class RCONPacketFactory
-{
+public abstract class RCONPacketFactory {
+
     /**
      * Creates a new packet object based on the header byte of the given raw
      * data
@@ -30,16 +30,14 @@ public abstract class RCONPacketFactory
      * @throws PacketFormatException if the packet header is not recognized
      */
     public static RCONPacket getPacketFromData(byte[] rawData)
-        throws PacketFormatException
-    {
+            throws PacketFormatException {
         PacketBuffer packetBuffer = new PacketBuffer(rawData);
 
         int requestId = Integer.reverseBytes(packetBuffer.getInt());
         int header = Integer.reverseBytes(packetBuffer.getInt());
         String data = packetBuffer.getString();
 
-        switch(header)
-        {
+        switch(header) {
             case RCONPacket.SERVERDATA_AUTH_RESPONSE:
                 return new RCONAuthResponse(requestId);
             case RCONPacket.SERVERDATA_RESPONSE_VALUE:

@@ -30,8 +30,7 @@ import com.github.koraktor.steamcondenser.exceptions.WebApiException;
  *
  * @author Sebastian Staudt
  */
-abstract public class WebApi
-{
+abstract public class WebApi {
 
     private static String apiKey;
 

@@ -141,7 +141,7 @@ class SteamId
     steam_id2 = community_id - 76561197960265728
 
     unless steam_id2 > 0
-      raise SteamCondenserException.new("SteamID #{community_id} is too small.")
+      raise SteamCondenserException, "SteamID #{community_id} is too small."
     end
 
     steam_id2 = (steam_id2 - steam_id1) / 2
@@ -158,10 +158,10 @@ class SteamId
   #        format
   # @return [Fixnum] The converted 64bit numeric SteamID
   def self.convert_steam_id_to_community_id(steam_id)
-    if steam_id == 'STEAM_ID_LAN' or steam_id == 'BOT'
-      raise SteamCondenserException.new("Cannot convert SteamID \"#{steam_id}\" to a community ID.")
+    if steam_id == 'STEAM_ID_LAN' || steam_id == 'BOT'
+      raise SteamCondenserException, "Cannot convert SteamID \"#{steam_id}\" to a community ID."
     elsif steam_id.match(/^STEAM_[0-1]:[0-1]:[0-9]+$/).nil?
-      raise SteamCondenserException.new("SteamID \"#{steam_id}\" doesn't have the correct format.")
+      raise SteamCondenserException, "SteamID \"#{steam_id}\" doesn't have the correct format."
     end
 
     steam_id = steam_id[6..-1].split(':').map!{|s| s.to_i}
@@ -199,7 +199,7 @@ class SteamId
 
       super(fetch)
     rescue REXML::ParseException
-      raise SteamCondenserException.new('SteamID could not be loaded.')
+      raise SteamCondenserException, 'SteamID could not be loaded.'
     end
   end
 
@@ -227,7 +227,7 @@ class SteamId
     profile = REXML::Document.new(profile_url.read).root
 
     unless REXML::XPath.first(profile, 'error').nil?
-      raise SteamCondenserException.new(profile.elements['error'].text)
+      raise SteamCondenserException, profile.elements['error'].text
     end
 
     @nickname         = profile.elements['steamID'].text
@@ -235,7 +235,7 @@ class SteamId
     @vac_banned       = (profile.elements['vacBanned'].text == 1)
 
     unless REXML::XPath.first(profile, 'privacyMessage').nil?
-      raise SteamCondenserException.new(profile.elements['privacyMessage'].text)
+      raise SteamCondenserException, profile.elements['privacyMessage'].text
     end
 
     @image_url        = profile.elements['avatarIcon'].text[0..-5]
@@ -350,7 +350,7 @@ class SteamId
     elsif games.has_key? game_name.downcase
       friendly_name = games[game_name.downcase]
     else
-      raise ArgumentError.new("Stats for game #{game_name} do not exist.")
+      raise ArgumentError, "Stats for game #{game_name} do not exist."
     end
 
     GameStats.create_game_stats(@custom_url || @steam_id64, friendly_name)

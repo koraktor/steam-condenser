@@ -21,8 +21,8 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacketFactory.php';
  * @package    steam-condenser
  * @subpackage sockets
  */
-abstract class SteamSocket
-{
+abstract class SteamSocket {
+
     /**
      * @var int The default socket timeout
      */
@@ -99,18 +99,14 @@ abstract class SteamSocket
      * @return int The number of bytes that have been read from the socket
      * @see ByteBuffer
      */
-    public function receivePacket($bufferLength = 0)
-    {
+    public function receivePacket($bufferLength = 0) {
         if(!$this->socket->select(self::$timeout)) {
             throw new TimeoutException();
         }
 
-        if($bufferLength == 0)
-        {
+        if($bufferLength == 0) {
             $this->buffer->clear();
-        }
-        else
-        {
+        } else {
             $this->buffer = ByteBuffer::allocate($bufferLength);
         }
 
@@ -132,8 +128,7 @@ abstract class SteamSocket
      * @param SteamPacket $dataPacket The packet to send to the server
      * @see SteamPacket::__toString()
      */
-    public function send(SteamPacket $dataPacket)
-    {
+    public function send(SteamPacket $dataPacket) {
         trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
 
         $this->socket->send($dataPacket->__toString());

@@ -290,7 +290,7 @@ public class SteamGroup {
      * @return The number of this group's members
      */
     public int getMemberCount()
-        throws ParserConfigurationException, SAXException, IOException {
+            throws ParserConfigurationException, SAXException, IOException {
         if(this.members == null) {
             DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Element memberData = parser.parse(this.getBaseUrl() + "/memberslistxml").getDocumentElement();

@@ -13,10 +13,10 @@ import org.w3c.dom.Element;
  * Represents the stats for the Team Fortress 2 Engineer class for a specific
  * user
  *
- * @author     Sebastian Staudt
+ * @author Sebastian Staudt
  */
-public class TF2Engineer extends TF2Class
-{
+public class TF2Engineer extends TF2Class {
+
     private int maxBuildingsBuilt;
 
     private int maxSentryKills;
@@ -28,8 +28,7 @@ public class TF2Engineer extends TF2Class
      *
      * @param classData The XML data for this Engineer
      */
-    public TF2Engineer(Element classData)
-    {
+    public TF2Engineer(Element classData) {
         super(classData);
 
         this.maxBuildingsBuilt = Integer.parseInt(classData.getElementsByTagName("ibuildingsbuilt").item(0).getTextContent());
@@ -43,8 +42,7 @@ public class TF2Engineer extends TF2Class
      *
      * @return Maximum number of buildings built
      */
-    public int getMaxBuildingsBuilt()
-    {
+    public int getMaxBuildingsBuilt() {
         return this.maxBuildingsBuilt;
     }
 
@@ -54,8 +52,7 @@ public class TF2Engineer extends TF2Class
      *
      * @return Maximum number of sentry kills
      */
-    public int getMaxSentryKills()
-    {
+    public int getMaxSentryKills() {
         return this.maxSentryKills;
     }
 
@@ -65,8 +62,7 @@ public class TF2Engineer extends TF2Class
      *
      * @return Maximum number of teleports
      */
-    public int getMaxTeleports()
-    {
+    public int getMaxTeleports() {
         return this.maxTeleports;
     }
 

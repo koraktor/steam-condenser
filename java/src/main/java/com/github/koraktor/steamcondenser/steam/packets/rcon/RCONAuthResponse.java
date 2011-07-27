@@ -17,8 +17,8 @@ package com.github.koraktor.steamcondenser.steam.packets.rcon;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.SourceServer#rconAuth
  */
-public class RCONAuthResponse extends RCONPacket
-{
+public class RCONAuthResponse extends RCONPacket {
+
     /**
      * Creates a RCON authentication response for the given request ID
      * <p>
@@ -27,8 +27,7 @@ public class RCONAuthResponse extends RCONPacket
      *
      * @param requestId The request ID of the RCON connection
      */
-    public RCONAuthResponse(int requestId)
-    {
+    public RCONAuthResponse(int requestId) {
         super(requestId, RCONPacket.SERVERDATA_AUTH_RESPONSE, "");
     }
 }
