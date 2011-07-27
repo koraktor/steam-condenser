@@ -13,7 +13,7 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
 
 /**
  * This class represents a S2A_RULES response sent by a game server
- *
+ * <p>
  * It is used to transfer a list of server rules (a.k.a. CVARs) with their
  * active values.
  *

@@ -10,7 +10,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
 /**
  * This packet class represents a S2C_CHALLENGE response replied by a game
  * server
- *
+ * <p>
  * It is used to provide a challenge number to a client requesting information
  * from the game server.
  *

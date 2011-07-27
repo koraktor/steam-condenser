@@ -10,7 +10,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
 /**
  * This class represents a S2A_INFO_DETAILED response packet sent by a Source
  * or GoldSrc server
- *
+ * <p>
  * Out-of-date (before 10/24/2008) GoldSrc servers use an older format (see
  * {@link S2A_INFO_DETAILED_Packet}).
  *

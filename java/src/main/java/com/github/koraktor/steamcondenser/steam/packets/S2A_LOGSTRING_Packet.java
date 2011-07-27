@@ -10,7 +10,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
 /**
  * This class represents a S2A_LOGSTRING packet used to transfer log messages
  *
- * @author     Sebastian Staudt
+ * @author Sebastian Staudt
  */
 public class S2A_LOGSTRING_Packet extends SteamPacket
 {
@@ -35,7 +35,7 @@ public class S2A_LOGSTRING_Packet extends SteamPacket
     /**
      * Returns the log message contained in this packet
      *
-     * @return string The log message
+     * @return The log message
      */
     public String getMessage() {
         return this.message;

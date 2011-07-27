@@ -13,7 +13,7 @@ import com.github.koraktor.steamcondenser.steam.SteamPlayer;
 
 /**
  * This class represents a S2A_PLAYER response sent by a game server
- *
+ * <p>
  * It is used to transfer a list of players currently playing on the server.
  *
  * @author Sebastian Staudt
