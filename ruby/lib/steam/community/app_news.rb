@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2010-2011, Sebastian Staudt
 
-require 'json'
+require 'multi_json'
 
 require 'steam/community/web_api'
 
@@ -83,7 +83,7 @@ class AppNews
     data = WebApi.json('ISteamNews', 'GetNewsForApp', 2, params)
 
     news_items = []
-    JSON.parse(data, { :symbolize_names => true })[:appnews][:newsitems].each do |news_data|
+    MultiJson.decode(data, { :symbolize_keys => true })[:appnews][:newsitems].each do |news_data|
       news_items << AppNews.new(app_id, news_data)
     end
 

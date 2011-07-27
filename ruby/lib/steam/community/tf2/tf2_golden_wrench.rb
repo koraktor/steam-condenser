@@ -3,7 +3,8 @@
 #
 # Copyright (c) 2010-2011, Sebastian Staudt
 
-require 'json'
+require 'multi_json'
+
 require 'steam/community/steam_id'
 require 'steam/community/web_api'
 
@@ -45,7 +46,7 @@ class TF2GoldenWrench
     if @@golden_wrenches.nil?
       @@golden_wrenches = []
 
-      data = JSON.parse(WebApi.json('ITFItems_440', 'GetGoldenWrenches', 2), { :symbolize_names => true })
+      data = MultiJson.decode(WebApi.json('ITFItems_440', 'GetGoldenWrenches', 2), { :symbolize_keys => true })
       data[:results][:wrenches].each do |wrench_data|
         @@golden_wrenches << TF2GoldenWrench.new(wrench_data)
       end

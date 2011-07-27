@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = 'A multi-language library for querying the Steam Community, Source, GoldSrc servers and Steam master servers'
 
   s.add_dependency 'bzip2-ruby', '~> 0.2.7'
-  s.add_dependency 'json', '~> 1.5.1'
+  s.add_dependency 'multi_json', '~> 1.0.3'
   s.add_development_dependency 'rake', '~> 0.9.1'
   s.add_development_dependency 'yard', '~> 0.7.1'
 

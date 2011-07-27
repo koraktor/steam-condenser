@@ -3,6 +3,8 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'multi_json'
+
 require 'steam/community/web_api'
 
 # The GameAchievement class represents a specific achievement for a single game
@@ -49,7 +51,7 @@ class GameAchievement
     percentages = {}
 
     data = WebApi.json('ISteamUserStats', 'GetGlobalAchievementPercentagesForApp', 2, { :gameid => app_id })
-    JSON.parse(data, { :symbolize_names => true })[:achievementpercentages][:achievements].each do |percentage|
+    MultiJson.decode(data, { :symbolize_keys => true })[:achievementpercentages][:achievements].each do |percentage|
       percentages[percentage[:name].to_sym] = percentage[:percent]
     end
 

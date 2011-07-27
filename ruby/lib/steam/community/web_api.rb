@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2010-2011, Sebastian Staudt
 
-require 'json'
+require 'multi_json'
 require 'open-uri'
 
 require 'exceptions/web_api_exception'
@@ -67,7 +67,7 @@ module WebApi
   # @return [Hash<Symbol, Object>] The JSON data replied to the request
   def self.json!(interface, method, version = 1, params = nil)
     data = json(interface, method, version, params)
-    result = JSON.parse(data, { :symbolize_names => true })[:result]
+    result = MultiJson.decode(data, { :symbolize_keys => true })[:result]
 
     status = result[:status]
     if status != 1

@@ -3,13 +3,13 @@ PATH
   specs:
     steam-condenser (0.14.0)
       bzip2-ruby (~> 0.2.7)
-      json (~> 1.5.1)
+      multi_json (~> 1.0.3)
 
 GEM
   remote: http://rubygems.org/
   specs:
     bzip2-ruby (0.2.7)
-    json (1.5.3)
+    multi_json (1.0.3)
     rake (0.9.1)
     yard (0.7.1)
 
