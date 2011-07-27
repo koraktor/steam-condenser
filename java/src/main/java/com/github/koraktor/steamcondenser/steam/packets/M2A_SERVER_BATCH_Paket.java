@@ -34,27 +34,27 @@ public class M2A_SERVER_BATCH_Paket extends SteamPacket
     public M2A_SERVER_BATCH_Paket(byte[] data)
     throws PacketFormatException
     {
-	super(SteamPacket.M2A_SERVER_BATCH_HEADER, data);
+        super(SteamPacket.M2A_SERVER_BATCH_HEADER, data);
 
-	if(this.contentData.getByte() != 0x0A)
-	{
-	    throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
-	}
+        if(this.contentData.getByte() != 0x0A)
+        {
+            throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
+        }
 
-	int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
-	this.serverArray = new Vector<String>();
+        int firstOctet, secondOctet, thirdOctet, fourthOctet, portNumber;
+        this.serverArray = new Vector<String>();
 
-	do
-	{
-	    firstOctet = this.contentData.getByte() & 0xFF;
-	    secondOctet = this.contentData.getByte() & 0xFF;
-	    thirdOctet = this.contentData.getByte() & 0xFF;
-	    fourthOctet = this.contentData.getByte() & 0xFF;
-	    portNumber = this.contentData.getShort() & 0xFFFF;
+        do
+        {
+            firstOctet = this.contentData.getByte() & 0xFF;
+            secondOctet = this.contentData.getByte() & 0xFF;
+            thirdOctet = this.contentData.getByte() & 0xFF;
+            fourthOctet = this.contentData.getByte() & 0xFF;
+            portNumber = this.contentData.getShort() & 0xFFFF;
 
-	    this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
-	}
-	while(this.contentData.remaining() > 0);
+            this.serverArray.add(firstOctet + "." + secondOctet + "." + thirdOctet + "." + fourthOctet + ":" + portNumber);
+        }
+        while(this.contentData.remaining() > 0);
     }
 
     /**
@@ -64,6 +64,6 @@ public class M2A_SERVER_BATCH_Paket extends SteamPacket
      */
     public Vector<String> getServers()
     {
-	return this.serverArray;
+        return this.serverArray;
     }
 }

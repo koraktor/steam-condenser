@@ -30,19 +30,19 @@ class RCONGoldSrcResponse extends SteamPacket
      * @param string $commandResponse The output of the command executed on the
      *        server
      */
-	public function __construct($commandResponse)
-	{
-		parent::__construct(SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER, $commandResponse);
-	}
+    public function __construct($commandResponse)
+    {
+        parent::__construct(SteamPacket::RCON_GOLDSRC_RESPONSE_HEADER, $commandResponse);
+    }
 
     /**
      * Returns the output of the command execution
      *
      * @return string The output of the command
      */
-	public function getResponse()
-	{
-		return substr($this->contentData->_array(), 0, -2);
-	}
+    public function getResponse()
+    {
+        return substr($this->contentData->_array(), 0, -2);
+    }
 }
 ?>

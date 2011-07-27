@@ -31,26 +31,26 @@ public class S2A_PLAYER_Packet extends SteamPacket
     public S2A_PLAYER_Packet(byte[] dataBytes)
     throws PacketFormatException
     {
-	super(SteamPacket.S2A_PLAYER_HEADER, dataBytes);
+        super(SteamPacket.S2A_PLAYER_HEADER, dataBytes);
 
-	if(this.contentData.getLength() == 0)
-	{
-	    throw new PacketFormatException("Wrong formatted S2A_PLAYER response packet.");
-	}
+        if(this.contentData.getLength() == 0)
+        {
+            throw new PacketFormatException("Wrong formatted S2A_PLAYER response packet.");
+        }
 
-	this.playerHash = new HashMap<String, SteamPlayer>(this.contentData.getByte());
+        this.playerHash = new HashMap<String, SteamPlayer>(this.contentData.getByte());
 
-	while(this.contentData.hasRemaining())
-	{
-		byte playerId = this.contentData.getByte();
-		String playerName = this.contentData.getString();
-	    this.playerHash.put(playerName, new SteamPlayer(
-		    playerId,
-		    playerName,
-		    Integer.reverseBytes(this.contentData.getInt()),
-		    Float.intBitsToFloat(Integer.reverseBytes(this.contentData.getInt()))
-	    ));
-	}
+        while(this.contentData.hasRemaining())
+        {
+            byte playerId = this.contentData.getByte();
+            String playerName = this.contentData.getString();
+            this.playerHash.put(playerName, new SteamPlayer(
+                playerId,
+                playerName,
+                Integer.reverseBytes(this.contentData.getInt()),
+                Float.intBitsToFloat(Integer.reverseBytes(this.contentData.getInt()))
+            ));
+        }
     }
 
     /**
@@ -59,7 +59,7 @@ public class S2A_PLAYER_Packet extends SteamPacket
      * @return All active players on the server
      */
     public HashMap<String, SteamPlayer> getPlayerHash()
-	{
-		return this.playerHash;
+    {
+        return this.playerHash;
     }
 }

@@ -37,7 +37,7 @@ import com.github.koraktor.steamcondenser.steam.sockets.SourceSocket;
  */
 public class SourceServer extends GameServer {
 
-	protected RCONSocket rconSocket;
+    protected RCONSocket rconSocket;
 
     /**
      * Returns a master server instance for the default master server for
@@ -125,7 +125,7 @@ public class SourceServer extends GameServer {
         this.socket = new SourceSocket(this.ipAddress, this.port);
     }
 
-	/**
+    /**
      * Authenticates the connection for RCON communication with the server
      *
      * @param password The RCON password of the server
@@ -135,18 +135,18 @@ public class SourceServer extends GameServer {
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
      * @throws TimeoutException if the request times out
-	 */
-	public boolean rconAuth(String password)
-			throws IOException, TimeoutException, SteamCondenserException {
-		this.rconRequestId = new Random().nextInt();
+     */
+    public boolean rconAuth(String password)
+            throws IOException, TimeoutException, SteamCondenserException {
+        this.rconRequestId = new Random().nextInt();
 
-		this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
-		this.rconSocket.getReply();
-		RCONAuthResponse reply = (RCONAuthResponse) this.rconSocket.getReply();
-		return (reply.getRequestId() == this.rconRequestId);
-	}
+        this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
+        this.rconSocket.getReply();
+        RCONAuthResponse reply = (RCONAuthResponse) this.rconSocket.getReply();
+        return (reply.getRequestId() == this.rconRequestId);
+    }
 
-	/**
+    /**
      * Remotely executes a command on the server via RCON
      *
      * @param command The command to execute on the server via RCON
@@ -156,13 +156,13 @@ public class SourceServer extends GameServer {
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
      * @throws TimeoutException if the request times out
-	 */
-	public String rconExec(String command)
-			throws IOException, TimeoutException, SteamCondenserException {
-		this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
+     */
+    public String rconExec(String command)
+            throws IOException, TimeoutException, SteamCondenserException {
+        this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
         this.rconSocket.send(new RCONTerminator(this.rconRequestId));
-		ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
-		RCONPacket responsePacket;
+        ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
+        RCONPacket responsePacket;
 
         String response = "";
         do {
@@ -173,7 +173,7 @@ public class SourceServer extends GameServer {
             response += ((RCONExecResponsePacket) responsePacket).getResponse();
         } while(response.length() == 0 || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
 
-		return response.trim();
-	}
+        return response.trim();
+    }
 
 }

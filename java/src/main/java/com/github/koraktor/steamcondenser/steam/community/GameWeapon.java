@@ -32,7 +32,7 @@ public abstract class GameWeapon {
      */
     public GameWeapon(Element weaponData) {
         this.kills = Integer.parseInt(weaponData.getElementsByTagName("kills").
-        		item(0).getTextContent());
+            item(0).getTextContent());
     }
 
     /**

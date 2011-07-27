@@ -29,18 +29,18 @@ class TF2Medic extends TF2Class
      */
      private $maxUberCharges;
 
-	/**
+    /**
      * Creates a new instance of the Medic class based on the given XML data
      *
      * @param SimpleXMLElement $classData The XML data for this Medic
-	 */
-	public function __construct($classData)
-	{
-		parent::__construct($classData);
+     */
+    public function __construct($classData)
+    {
+        parent::__construct($classData);
 
-		$this->maxUberCharges    = (int) $classData->inuminvulnerable;
-		$this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
-	}
+        $this->maxUberCharges    = (int) $classData->inuminvulnerable;
+        $this->maxHealthHealed   = (int) $classData->ihealthpointshealed;
+    }
 
     /**
      * Returns the maximum health healed for teammates by the player in a

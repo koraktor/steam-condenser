@@ -29,6 +29,6 @@ public class RCONAuthResponse extends RCONPacket
      */
     public RCONAuthResponse(int requestId)
     {
-	super(requestId, RCONPacket.SERVERDATA_AUTH_RESPONSE, "");
+        super(requestId, RCONPacket.SERVERDATA_AUTH_RESPONSE, "");
     }
 }

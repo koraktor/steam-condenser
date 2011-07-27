@@ -20,47 +20,47 @@ import java.util.HashMap;
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
-	protected boolean isMod;
-	protected HashMap<String, Object> modInfo;
-	protected String serverIp;
+    protected boolean isMod;
+    protected HashMap<String, Object> modInfo;
+    protected String serverIp;
 
     /**
      * Creates a new S2A_INFO_DETAILED response object based on the given data
      *
      * @param dataBytes The raw packet data replied from the server
      */
-	public S2A_INFO_DETAILED_Packet(byte[] dataBytes) {
-		super(SteamPacket.S2A_INFO_DETAILED_HEADER, dataBytes);
+    public S2A_INFO_DETAILED_Packet(byte[] dataBytes) {
+        super(SteamPacket.S2A_INFO_DETAILED_HEADER, dataBytes);
 
-		this.serverIp = this.contentData.getString();
-		this.serverName = this.contentData.getString();
-		this.mapName = this.contentData.getString();
-		this.gameDir = this.contentData.getString();
-		this.gameDescription = this.contentData.getString();
-		this.numberOfPlayers = this.contentData.getByte();
-		this.maxPlayers = this.contentData.getByte();
-		this.networkVersion = this.contentData.getByte();
-		this.dedicated = this.contentData.getByte();
-		this.operatingSystem = this.contentData.getByte();
-		this.passwordProtected = this.contentData.getByte() == 1;
-		this.isMod = this.contentData.getByte() == 1;
+        this.serverIp = this.contentData.getString();
+        this.serverName = this.contentData.getString();
+        this.mapName = this.contentData.getString();
+        this.gameDir = this.contentData.getString();
+        this.gameDescription = this.contentData.getString();
+        this.numberOfPlayers = this.contentData.getByte();
+        this.maxPlayers = this.contentData.getByte();
+        this.networkVersion = this.contentData.getByte();
+        this.dedicated = this.contentData.getByte();
+        this.operatingSystem = this.contentData.getByte();
+        this.passwordProtected = this.contentData.getByte() == 1;
+        this.isMod = this.contentData.getByte() == 1;
 
-		if (this.isMod) {
-			this.modInfo = new HashMap<String, Object>(6);
-			this.modInfo.put("urlInfo", this.contentData.getString());
-			this.modInfo.put("urlDl", this.contentData.getString());
-			this.contentData.getByte();
-			if (this.contentData.remaining() == 12) {
-				this.modInfo.put("modVersion", Integer.reverseBytes(this.contentData.getInt()));
-				this.modInfo.put("modSize", Integer.reverseBytes(this.contentData.getInt()));
-				this.modInfo.put("svOnly", this.contentData.getByte() == 1);
-				this.modInfo.put("clDll", this.contentData.getByte() == 1);
-				this.secure = this.contentData.getByte() == 1;
-				this.numberOfBots = this.contentData.getByte();
-			}
-		} else {
-			this.secure = this.contentData.getByte() == 1;
-			this.numberOfBots = this.contentData.getByte();
-		}
-	}
+        if (this.isMod) {
+            this.modInfo = new HashMap<String, Object>(6);
+            this.modInfo.put("urlInfo", this.contentData.getString());
+            this.modInfo.put("urlDl", this.contentData.getString());
+            this.contentData.getByte();
+            if (this.contentData.remaining() == 12) {
+                this.modInfo.put("modVersion", Integer.reverseBytes(this.contentData.getInt()));
+                this.modInfo.put("modSize", Integer.reverseBytes(this.contentData.getInt()));
+                this.modInfo.put("svOnly", this.contentData.getByte() == 1);
+                this.modInfo.put("clDll", this.contentData.getByte() == 1);
+                this.secure = this.contentData.getByte() == 1;
+                this.numberOfBots = this.contentData.getByte();
+            }
+        } else {
+            this.secure = this.contentData.getByte() == 1;
+            this.numberOfBots = this.contentData.getByte();
+        }
+    }
 }

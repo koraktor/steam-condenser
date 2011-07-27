@@ -30,9 +30,9 @@ class RCONAuthRequest extends RCONPacket
      * @param int $requestId The request ID of the RCON connection
      * @param string $password The RCON password of the server
      */
-	public function __construct($requestId, $password)
-	{
-		parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH, $password);
-	}
+    public function __construct($requestId, $password)
+    {
+        parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH, $password);
+    }
 }
 ?>

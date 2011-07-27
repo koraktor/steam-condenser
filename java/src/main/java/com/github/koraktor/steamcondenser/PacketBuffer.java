@@ -27,7 +27,7 @@ public class PacketBuffer
      */
     public PacketBuffer(byte[] data)
     {
-	this.byteBuffer = ByteBuffer.wrap(data);
+        this.byteBuffer = ByteBuffer.wrap(data);
     }
 
     /**
@@ -37,7 +37,7 @@ public class PacketBuffer
      */
     public byte[] array()
     {
-	return this.byteBuffer.array();
+        return this.byteBuffer.array();
     }
 
     /**
@@ -47,7 +47,7 @@ public class PacketBuffer
      */
     public byte getByte()
     {
-	return this.byteBuffer.get();
+        return this.byteBuffer.get();
     }
 
     /**
@@ -57,7 +57,7 @@ public class PacketBuffer
      */
     public float getFloat()
     {
-	return this.byteBuffer.getFloat();
+        return this.byteBuffer.getFloat();
     }
 
     /**
@@ -67,7 +67,7 @@ public class PacketBuffer
      */
     public int getInt()
     {
-	return this.byteBuffer.getInt();
+        return this.byteBuffer.getInt();
     }
 
     /**
@@ -77,7 +77,7 @@ public class PacketBuffer
      */
     public int getLength()
     {
-	return this.byteBuffer.capacity();
+        return this.byteBuffer.capacity();
     }
 
     /**
@@ -87,7 +87,7 @@ public class PacketBuffer
      */
     public short getShort()
     {
-	return this.byteBuffer.getShort();
+        return this.byteBuffer.getShort();
     }
 
     /**
@@ -100,10 +100,10 @@ public class PacketBuffer
      */
     public String getString()
     {
-	byte[] remainingBytes = new byte[this.byteBuffer.remaining()];
-	this.byteBuffer.slice().get(remainingBytes);
-	String dataString = new String(remainingBytes);
-	int stringEnd = dataString.indexOf(0);
+        byte[] remainingBytes = new byte[this.byteBuffer.remaining()];
+        this.byteBuffer.slice().get(remainingBytes);
+        String dataString = new String(remainingBytes);
+        int stringEnd = dataString.indexOf(0);
 
         if(stringEnd == -1) {
             return null;
@@ -122,8 +122,8 @@ public class PacketBuffer
      */
     public PacketBuffer order(ByteOrder byteOrder)
     {
-	this.byteBuffer.order(byteOrder);
-	return this;
+        this.byteBuffer.order(byteOrder);
+        return this;
     }
 
     /**
@@ -134,7 +134,7 @@ public class PacketBuffer
      */
     public int remaining()
     {
-	return this.byteBuffer.remaining();
+        return this.byteBuffer.remaining();
     }
 
     /**
@@ -145,6 +145,6 @@ public class PacketBuffer
      */
     public boolean hasRemaining()
     {
-	return this.byteBuffer.hasRemaining();
+        return this.byteBuffer.hasRemaining();
     }
 }

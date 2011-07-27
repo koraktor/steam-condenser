@@ -28,15 +28,15 @@ import org.xml.sax.SAXException;
  */
 public class SteamGroup {
 
-	private static Map<Object, SteamGroup> steamGroups = new HashMap<Object, SteamGroup>();
+    private static Map<Object, SteamGroup> steamGroups = new HashMap<Object, SteamGroup>();
 
-	private String customUrl;
+    private String customUrl;
 
-	private long fetchTime;
+    private long fetchTime;
 
-	private long groupId64;
+    private long groupId64;
 
-	private ArrayList<SteamId> members;
+    private ArrayList<SteamId> members;
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -45,9 +45,9 @@ public class SteamGroup {
      * @param id The 64bit Steam ID of the group
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(long id) {
-		return SteamGroup.create((Object) id, true, false);
-	}
+    public static SteamGroup create(long id) {
+        return SteamGroup.create((Object) id, true, false);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -56,9 +56,9 @@ public class SteamGroup {
      * @param id The custom URL of the group specified by the group admin
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(String id) {
-		return SteamGroup.create((Object) id, true, false);
-	}
+    public static SteamGroup create(String id) {
+        return SteamGroup.create((Object) id, true, false);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -69,9 +69,9 @@ public class SteamGroup {
      *        object
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(long id, boolean fetch) {
-		return SteamGroup.create((Object) id, fetch, false);
-	}
+    public static SteamGroup create(long id, boolean fetch) {
+        return SteamGroup.create((Object) id, fetch, false);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -82,9 +82,9 @@ public class SteamGroup {
      *        object
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(String id, boolean fetch) {
-		return SteamGroup.create((Object) id, fetch, false);
-	}
+    public static SteamGroup create(String id, boolean fetch) {
+        return SteamGroup.create((Object) id, fetch, false);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -97,9 +97,9 @@ public class SteamGroup {
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(long id, boolean fetch, boolean bypassCache) {
-		return SteamGroup.create((Object) id, fetch, bypassCache);
-	}
+    public static SteamGroup create(long id, boolean fetch, boolean bypassCache) {
+        return SteamGroup.create((Object) id, fetch, bypassCache);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -112,9 +112,9 @@ public class SteamGroup {
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	public static SteamGroup create(String id, boolean fetch, boolean bypassCache) {
-		return SteamGroup.create((Object) id, fetch, bypassCache);
-	}
+    public static SteamGroup create(String id, boolean fetch, boolean bypassCache) {
+        return SteamGroup.create((Object) id, fetch, bypassCache);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance or gets an existing one
@@ -128,17 +128,17 @@ public class SteamGroup {
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
      */
-	private static SteamGroup create(Object id, boolean fetch, boolean bypassCache) {
-		if(SteamGroup.isCached(id) && !bypassCache) {
-			SteamGroup group = SteamGroup.steamGroups.get(id);
-			if(fetch && !group.isFetched()) {
-				group.fetchMembers();
-			}
-			return group;
-		} else {
-			return new SteamGroup(id, fetch);
-		}
-	}
+    private static SteamGroup create(Object id, boolean fetch, boolean bypassCache) {
+        if(SteamGroup.isCached(id) && !bypassCache) {
+            SteamGroup group = SteamGroup.steamGroups.get(id);
+            if(fetch && !group.isFetched()) {
+                group.fetchMembers();
+            }
+            return group;
+        } else {
+            return new SteamGroup(id, fetch);
+        }
+    }
 
     /**
      * Returns whether the requested group is already cached
@@ -147,9 +147,9 @@ public class SteamGroup {
      *        the 64bit group ID
      * @return <code>true</code> if this group is already cached
      */
-	public static boolean isCached(Object id) {
-		return SteamGroup.steamGroups.containsKey(id);
-	}
+    public static boolean isCached(Object id) {
+        return SteamGroup.steamGroups.containsKey(id);
+    }
 
     /**
      * Creates a new <code>SteamGroup</code> instance for the group with the
@@ -160,35 +160,35 @@ public class SteamGroup {
      * @param fetch if <code>true</code> the groups's data is loaded into the
      *        object
      */
-	private SteamGroup(Object id, boolean fetch) {
-		if(id instanceof String) {
-			this.customUrl = (String) id;
-		} else {
-			this.groupId64 = (Long) id;
-		}
-		
-		if(fetch) {
-			this.fetchMembers();
-		}
+    private SteamGroup(Object id, boolean fetch) {
+        if(id instanceof String) {
+            this.customUrl = (String) id;
+        } else {
+            this.groupId64 = (Long) id;
+        }
 
-		this.cache();
-	}
+        if(fetch) {
+            this.fetchMembers();
+        }
+
+        this.cache();
+    }
 
     /**
      * Saves this <code>SteamGroup</code> instance in the cache
      *
      * @return <code>false</code> if this group is already cached
      */
-	public boolean cache() {
-		if(!SteamGroup.steamGroups.containsKey(this.groupId64)) {
-			SteamGroup.steamGroups.put(this.groupId64, this);
-			if(this.customUrl != null && !SteamGroup.steamGroups.containsKey(this.customUrl)) {
-				SteamGroup.steamGroups.put(this.customUrl, this);
-			}
-			return true;
-		}
-		return false;
-	}
+    public boolean cache() {
+        if(!SteamGroup.steamGroups.containsKey(this.groupId64)) {
+            SteamGroup.steamGroups.put(this.groupId64, this);
+            if(this.customUrl != null && !SteamGroup.steamGroups.containsKey(this.customUrl)) {
+                SteamGroup.steamGroups.put(this.customUrl, this);
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Loads the members of this group
@@ -196,35 +196,35 @@ public class SteamGroup {
      * This might take several HTTP requests as the Steam Community splits this
      * data over several XML documents if the group has lots of members.
      */
-	public boolean fetchMembers() {
-		int page = 0;
-		int totalPages;
-		String url;
-		this.members = new ArrayList<SteamId>();
+    public boolean fetchMembers() {
+        int page = 0;
+        int totalPages;
+        String url;
+        this.members = new ArrayList<SteamId>();
 
-		try {
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			do {
-				page ++;
-				url = this.getBaseUrl() + "/memberslistxml?p=" + page;
-				Element memberData = parser.parse(url).getDocumentElement();
+        try {
+            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            do {
+                page ++;
+                url = this.getBaseUrl() + "/memberslistxml?p=" + page;
+                Element memberData = parser.parse(url).getDocumentElement();
 
-				totalPages = Integer.parseInt(memberData.getElementsByTagName("totalPages").item(0).getTextContent());
+                totalPages = Integer.parseInt(memberData.getElementsByTagName("totalPages").item(0).getTextContent());
 
-				NodeList membersList = ((Element) memberData.getElementsByTagName("members").item(0)).getElementsByTagName("steamID64");
-				for(int i = 0; i < membersList.getLength(); i++) {
-					Element member = (Element) membersList.item(i);
-					this.members.add(SteamId.create(Long.parseLong(member.getTextContent())));
-				}
-			} while(page < totalPages);
-		} catch(Exception e) {
-			return false;
-		}
+                NodeList membersList = ((Element) memberData.getElementsByTagName("members").item(0)).getElementsByTagName("steamID64");
+                for(int i = 0; i < membersList.getLength(); i++) {
+                    Element member = (Element) membersList.item(i);
+                    this.members.add(SteamId.create(Long.parseLong(member.getTextContent())));
+                }
+            } while(page < totalPages);
+        } catch(Exception e) {
+            return false;
+        }
 
-		this.fetchTime = new Date().getTime();
+        this.fetchTime = new Date().getTime();
 
-		return true;
-	}
+        return true;
+    }
 
     /**
      * Returns the custom URL of this group
@@ -234,18 +234,18 @@ public class SteamGroup {
      *
      * @return The custom URL of this group
      */
-	public String getCustomUrl() {
-		return this.customUrl;
-	}
+    public String getCustomUrl() {
+        return this.customUrl;
+    }
 
     /**
      * Returns this group's 64bit SteamID
      *
      * @return This group's 64bit SteamID
      */
-	public long getGroupId64() {
-		return this.groupId64;
-	}
+    public long getGroupId64() {
+        return this.groupId64;
+    }
 
     /**
      * Returns the base URL for this group's page
@@ -254,31 +254,31 @@ public class SteamGroup {
      *
      * @return The base URL for this group
      */
-	public String getBaseUrl() {
-		if(this.customUrl == null) {
-			return "http://steamcommunity.com/gid/" + this.groupId64;
-		} else {
-			return "http://steamcommunity.com/groups/" + this.customUrl;
-		}
-	}
+    public String getBaseUrl() {
+        if(this.customUrl == null) {
+            return "http://steamcommunity.com/gid/" + this.groupId64;
+        } else {
+            return "http://steamcommunity.com/groups/" + this.customUrl;
+        }
+    }
 
     /**
      * Returns the time this group has been fetched
      *
      * @return The timestamp of the last fetch time
      */
-	public long getFetchTime() {
-		return this.fetchTime;
-	}
+    public long getFetchTime() {
+        return this.fetchTime;
+    }
 
     /**
      * Returns this group's 64bit SteamID
      *
      * @return This group's 64bit SteamID
      */
-	public long getId() {
-		return this.groupId64;
-	}
+    public long getId() {
+        return this.groupId64;
+    }
 
     /**
      * Returns the number of members this group has
@@ -289,16 +289,16 @@ public class SteamGroup {
      *
      * @return The number of this group's members
      */
-	public int getMemberCount()
-		throws ParserConfigurationException, SAXException, IOException {
-		if(this.members == null) {
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Element memberData = parser.parse(this.getBaseUrl() + "/memberslistxml").getDocumentElement();
-			return Integer.parseInt(memberData.getElementsByTagName("memberCount").item(0).getTextContent());
-		} else {
-			return this.members.size();
-		}
-	}
+    public int getMemberCount()
+        throws ParserConfigurationException, SAXException, IOException {
+        if(this.members == null) {
+            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Element memberData = parser.parse(this.getBaseUrl() + "/memberslistxml").getDocumentElement();
+            return Integer.parseInt(memberData.getElementsByTagName("memberCount").item(0).getTextContent());
+        } else {
+            return this.members.size();
+        }
+    }
 
     /**
      * Returns the members of this group
@@ -308,13 +308,13 @@ public class SteamGroup {
      * @return The Steam ID's of the members of this group
      * @see #fetchMembers
      */
-	public ArrayList<SteamId> getMembers() {
-		if(this.members == null) {
-			this.fetchMembers();
-		}
+    public ArrayList<SteamId> getMembers() {
+        if(this.members == null) {
+            this.fetchMembers();
+        }
 
-		return this.members;
-	}
+        return this.members;
+    }
 
     /**
      * Returns whether the data for this group has already been fetched
@@ -322,7 +322,7 @@ public class SteamGroup {
      * @return <code>true</code> if the group's members have been
      *         fetched
      */
-	public boolean isFetched() {
-		return this.fetchTime != 0;
-	}
+    public boolean isFetched() {
+        return this.fetchTime != 0;
+    }
 }

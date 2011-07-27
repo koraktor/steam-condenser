@@ -17,16 +17,16 @@ import org.w3c.dom.Element;
  */
 public class L4DWeapon extends AbtractL4DWeapon {
 
-	/**
+    /**
      * Creates a new instance of a weapon based on the given XML data
      *
      * @param weaponData The XML data for this weapon
-	 */
-	public L4DWeapon(Element weaponData) {
-		super(weaponData);
+     */
+    public L4DWeapon(Element weaponData) {
+        super(weaponData);
 
-		this.killPercentage = weaponData.getElementsByTagName("killpct")
-				.item(0).getTextContent();
-	}
+        this.killPercentage = weaponData.getElementsByTagName("killpct")
+            .item(0).getTextContent();
+    }
 
 }

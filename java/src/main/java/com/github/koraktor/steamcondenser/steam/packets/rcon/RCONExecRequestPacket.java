@@ -27,6 +27,6 @@ public class RCONExecRequestPacket extends RCONPacket
      */
     public RCONExecRequestPacket(int requestId, String rconCommand)
     {
-	super(requestId, RCONPacket.SERVERDATA_EXECCOMMAND, rconCommand);
+        super(requestId, RCONPacket.SERVERDATA_EXECCOMMAND, rconCommand);
     }
 }

@@ -24,54 +24,54 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/S2A_INFO_BasePacket.php';
  */
 class S2A_INFO2_Packet extends S2A_INFO_BasePacket
 {
-	/**
+    /**
      * Creates a new S2A_INFO2 response object based on the given data
      *
      * @param string $data The raw packet data replied from the server
-	 */
-	public function __construct($data)
-	{
-		parent::__construct(SteamPacket::S2A_INFO2_HEADER, $data);
+     */
+    public function __construct($data)
+    {
+        parent::__construct(SteamPacket::S2A_INFO2_HEADER, $data);
 
-		$this->networkVersion = $this->contentData->getByte();
-		$this->serverName = $this->contentData->getString();
-		$this->mapName = $this->contentData->getString();
-		$this->gameDir = $this->contentData->getString();
-		$this->gameDesc = $this->contentData->getString();
-		$this->appId = $this->contentData->getShort();
-		$this->maxPlayers = $this->contentData->getByte();
+        $this->networkVersion = $this->contentData->getByte();
+        $this->serverName = $this->contentData->getString();
+        $this->mapName = $this->contentData->getString();
+        $this->gameDir = $this->contentData->getString();
+        $this->gameDesc = $this->contentData->getString();
+        $this->appId = $this->contentData->getShort();
+        $this->maxPlayers = $this->contentData->getByte();
         $this->numberOfPlayers = $this->contentData->getByte();
-		$this->botNumber = $this->contentData->getByte();
-		$this->dedicated = chr($this->contentData->getByte());
-		$this->operatingSystem = chr($this->contentData->getByte());
-		$this->passwordProtected = $this->contentData->getByte() == 1;
-		$this->secureServer = $this->contentData->getByte() == 1;
-		$this->gameVersion = $this->contentData->getString();
+        $this->botNumber = $this->contentData->getByte();
+        $this->dedicated = chr($this->contentData->getByte());
+        $this->operatingSystem = chr($this->contentData->getByte());
+        $this->passwordProtected = $this->contentData->getByte() == 1;
+        $this->secureServer = $this->contentData->getByte() == 1;
+        $this->gameVersion = $this->contentData->getString();
 
-		if($this->contentData->remaining() > 0)
-		{
-			$extraDataFlag = $this->contentData->getByte();
+        if($this->contentData->remaining() > 0)
+        {
+            $extraDataFlag = $this->contentData->getByte();
 
-			if($extraDataFlag & 0x80)
-			{
-				$this->serverPort = $this->contentData->getShort();
-			}
+            if($extraDataFlag & 0x80)
+            {
+                $this->serverPort = $this->contentData->getShort();
+            }
 
             if($extraDataFlag & 0x10) {
                 $this->serverId = $this->contentData->getUnsignedLong() | ($this->contentData->getUnsignedLong() << 32);
             }
 
-			if($extraDataFlag & 0x40)
-			{
-				$this->tvPort = $this->contentData->getShort();
-				$this->tvName = $this->contentData->getString();
-			}
+            if($extraDataFlag & 0x40)
+            {
+                $this->tvPort = $this->contentData->getShort();
+                $this->tvName = $this->contentData->getString();
+            }
 
-			if($extraDataFlag & 0x20)
-			{
-				$this->serverTags = $this->contentData->getString();
-			}
-		}
-	}
+            if($extraDataFlag & 0x20)
+            {
+                $this->serverTags = $this->contentData->getString();
+            }
+        }
+    }
 }
 ?>

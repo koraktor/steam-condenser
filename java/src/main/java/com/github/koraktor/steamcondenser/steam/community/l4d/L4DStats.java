@@ -23,19 +23,19 @@ import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
  */
 public class L4DStats extends AbstractL4DStats {
 
-	/**
+    /**
      * Creates a <code>L4DStats</code> object by calling the super constructor
      * with the game name <code>"l4d"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
      * @throws SteamCondenserException if an error occurs
-	 */
-	public L4DStats(Object steamId)
-			throws SteamCondenserException {
-		super(steamId, "l4d");
-	}
+     */
+    public L4DStats(Object steamId)
+            throws SteamCondenserException {
+        super(steamId, "l4d");
+    }
 
-	/**
+    /**
      * Returns a map of Survival statistics for this user like revived
      * teammates
      * <p>
@@ -43,59 +43,59 @@ public class L4DStats extends AbstractL4DStats {
      * now.
      *
      * @return The stats for the Survival mode
-	 */
-	public HashMap<String, Object> getSurvivalStats()
+     */
+    public HashMap<String, Object> getSurvivalStats()
             throws SteamCondenserException {
-		if(!this.isPublic()) {
-			return null;
-		}
+        if(!this.isPublic()) {
+            return null;
+        }
 
-		if(this.survivalStats == null) {
+        if(this.survivalStats == null) {
             super.getSurvivalStats();
             Element survivalStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("survival").item(0);
-			HashMap<String, L4DMap> mapsHash = new HashMap<String, L4DMap>();
-			NodeList mapNodes = survivalStatsElement.getElementsByTagName("maps").item(0).getChildNodes();
-			for(int i = 0; i < mapNodes.getLength(); i++) {
-				Element mapData = (Element) mapNodes.item(i);
-				mapsHash.put(mapData.getNodeName(), new L4DMap(mapData));
-			}
-			this.survivalStats.put("maps", mapsHash);
-		}
+            HashMap<String, L4DMap> mapsHash = new HashMap<String, L4DMap>();
+            NodeList mapNodes = survivalStatsElement.getElementsByTagName("maps").item(0).getChildNodes();
+            for(int i = 0; i < mapNodes.getLength(); i++) {
+                Element mapData = (Element) mapNodes.item(i);
+                mapsHash.put(mapData.getNodeName(), new L4DMap(mapData));
+            }
+            this.survivalStats.put("maps", mapsHash);
+        }
 
-		return this.survivalStats;
-	}
+        return this.survivalStats;
+    }
 
-	/**
+    /**
      * Returns a map of <code>L4DWeapon</code> for this user containing all
      * Left4Dead weapons
      * <p>
      * If the weapons haven't been parsed already, parsing is done now.
      *
      * @return The weapon statistics
-	 */
-	public HashMap<String, GameWeapon> getWeaponStats() {
-		if(!this.isPublic()) {
-			return null;
-		}
+     */
+    public HashMap<String, GameWeapon> getWeaponStats() {
+        if(!this.isPublic()) {
+            return null;
+        }
 
-		if(this.weaponStats == null) {
-			Element weaponStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
-			this.weaponStats = new HashMap<String, GameWeapon>();
-			NodeList weaponNodes = weaponStatsElement.getChildNodes();
-			for(int i = 0; i < weaponNodes.getLength(); i++) {
-				Element weaponData = (Element) weaponNodes.item(i);
-				String weaponName = weaponData.getNodeName();
-				GameWeapon weapon;
-				if(!weaponName.equals("molotov") && !weaponName.equals("pipes")) {
-					weapon = new L4DWeapon(weaponData);
-				}
-				else {
-					weapon = new L4DExplosive(weaponData);
-				}
-				this.weaponStats.put(weaponName, weapon);
-			}
-		}
+        if(this.weaponStats == null) {
+            Element weaponStatsElement = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
+            this.weaponStats = new HashMap<String, GameWeapon>();
+            NodeList weaponNodes = weaponStatsElement.getChildNodes();
+            for(int i = 0; i < weaponNodes.getLength(); i++) {
+                Element weaponData = (Element) weaponNodes.item(i);
+                String weaponName = weaponData.getNodeName();
+                GameWeapon weapon;
+                if(!weaponName.equals("molotov") && !weaponName.equals("pipes")) {
+                    weapon = new L4DWeapon(weaponData);
+                }
+                else {
+                    weapon = new L4DExplosive(weaponData);
+                }
+                this.weaponStats.put(weaponName, weapon);
+            }
+        }
 
-		return this.weaponStats;
-	}
+        return this.weaponStats;
+    }
 }

@@ -23,9 +23,9 @@ abstract class RequestPacketWithChallenge extends SteamPacket
      *
      * @return string A string containing the raw data of this request packet
      */
-	public function __toString()
-	{
-		return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData->_array());
-	}
+    public function __toString()
+    {
+        return pack("cccccV", 0xFF, 0xFF, 0xFF, 0xFF, $this->headerData, $this->contentData->_array());
+    }
 }
 ?>

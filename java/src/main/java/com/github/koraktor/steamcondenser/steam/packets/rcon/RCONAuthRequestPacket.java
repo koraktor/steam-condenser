@@ -27,6 +27,6 @@ public class RCONAuthRequestPacket extends RCONPacket
      */
     public RCONAuthRequestPacket(int requestId, String rconPassword)
     {
-	super(requestId, RCONPacket.SERVERDATA_AUTH, rconPassword);
+        super(requestId, RCONPacket.SERVERDATA_AUTH, rconPassword);
     }
 }

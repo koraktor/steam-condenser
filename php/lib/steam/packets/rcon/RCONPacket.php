@@ -27,27 +27,27 @@ abstract class RCONPacket extends SteamPacket
     /**
      * @var int Header for authentication requests
      */
-	const SERVERDATA_AUTH = 3;
+    const SERVERDATA_AUTH = 3;
 
     /**
      * @var int Header for replies to authentication attempts
      */
-	const SERVERDATA_AUTH_RESPONSE = 2;
+    const SERVERDATA_AUTH_RESPONSE = 2;
 
     /**
      * @var int Header for command execution requests
      */
-	const SERVERDATA_EXECCOMMAND = 2;
+    const SERVERDATA_EXECCOMMAND = 2;
 
     /**
      * @var int Header for packets with the output of a command execution
      */
-	const SERVERDATA_RESPONSE_VALUE = 0;
+    const SERVERDATA_RESPONSE_VALUE = 0;
 
-	/**
+    /**
      * @var long The request ID used to identify the RCON communication
-	 */
-	private $requestId;
+     */
+    private $requestId;
 
     /**
      * Creates a new RCON packet object with the given request ID, type and
@@ -57,22 +57,22 @@ abstract class RCONPacket extends SteamPacket
      * @param int $rconHeader The header for the packet type
      * @param string $rconData The raw packet data
      */
-	public function __construct($requestId, $rconHeader, $rconData = null)
-	{
-		parent::__construct($rconHeader, "$rconData\0\0");
+    public function __construct($requestId, $rconHeader, $rconData = null)
+    {
+        parent::__construct($rconHeader, "$rconData\0\0");
 
-		$this->requestId = $requestId;
-	}
+        $this->requestId = $requestId;
+    }
 
     /**
      * Returns the request ID used to identify the RCON communication
      *
      * @return long The request ID used to identify the RCON communication
      */
-	public function getRequestId()
-	{
-		return $this->requestId;
-	}
+    public function getRequestId()
+    {
+        return $this->requestId;
+    }
 
     /**
      * Returns the raw data representing this packet

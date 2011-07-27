@@ -16,20 +16,20 @@ import org.w3c.dom.Element;
  * @author Sebastian Staudt
  */
 public class L4DMap {
-	public static int GOLD   = 1;
-	public static int SILVER = 2;
-	public static int BRONZE = 3;
-	public static int NONE   = 0;
+    public static int GOLD   = 1;
+    public static int SILVER = 2;
+    public static int BRONZE = 3;
+    public static int NONE   = 0;
 
-	protected float bestTime;
+    protected float bestTime;
 
-	protected String id;
+    protected String id;
 
-	protected int medal;
+    protected int medal;
 
-	protected String name;
+    protected String name;
 
-	private int timesPlayed;
+    private int timesPlayed;
 
     public L4DMap() {}
 
@@ -39,15 +39,15 @@ public class L4DMap {
      *
      * @param mapData The XML data for this map
      */
-	public L4DMap(Element mapData) {
-		this.bestTime    = Float.parseFloat(mapData.getElementsByTagName("besttimeseconds").item(0).getTextContent());
+    public L4DMap(Element mapData) {
+        this.bestTime    = Float.parseFloat(mapData.getElementsByTagName("besttimeseconds").item(0).getTextContent());
         this.id          = mapData.getNodeName();
         this.name        = mapData.getElementsByTagName("name").item(0).getTextContent();
         this.timesPlayed = Integer.parseInt(mapData.getElementsByTagName("timesplayed").item(0).getTextContent());
 
         String medal = mapData.getElementsByTagName("medal").item(0).getTextContent();
         if(medal.equals("gold")) {
-        	this.medal = GOLD;
+            this.medal = GOLD;
         } else if(medal.equals("silver")) {
             this.medal = SILVER;
         } else if(medal.equals("bronze")) {
@@ -55,50 +55,50 @@ public class L4DMap {
         } else {
             this.medal = NONE;
         }
-	}
+    }
 
     /**
      * Returns the best survival time of this player on this map
      *
      * @return The best survival time of this player on this map
      */
-	public float getBestTime() {
-		return this.bestTime;
-	}
+    public float getBestTime() {
+        return this.bestTime;
+    }
 
     /**
      * Returns the ID of this map
      *
      * @return The ID of this map
      */
-	public String getId() {
-		return this.id;
-	}
+    public String getId() {
+        return this.id;
+    }
 
     /**
      * Returns the highest medal this player has won on this map
      *
      * @return The highest medal won by this player on this map
      */
-	public int getMedal() {
-		return this.medal;
-	}
+    public int getMedal() {
+        return this.medal;
+    }
 
     /**
      * Returns the name of the map
      *
      * @return The name of the map
      */
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Returns the number of times this map has been played by this player
      *
      * @return The number of times this map has been played
      */
-	public int getTimesPlayed() {
-		return this.timesPlayed;
-	}
+    public int getTimesPlayed() {
+        return this.timesPlayed;
+    }
 }

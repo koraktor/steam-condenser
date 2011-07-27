@@ -56,7 +56,7 @@ abstract public class SteamPacket
      */
     protected SteamPacket(byte headerData)
     {
-	this(headerData, new byte[0]);
+        this(headerData, new byte[0]);
     }
 
     /**
@@ -67,8 +67,8 @@ abstract public class SteamPacket
      */
     protected SteamPacket(byte headerData, byte[] contentBytes)
     {
-	this.contentData = new PacketBuffer(contentBytes);
-	this.headerData = headerData;
+        this.contentData = new PacketBuffer(contentBytes);
+        this.headerData = headerData;
     }
 
     /**
@@ -78,13 +78,13 @@ abstract public class SteamPacket
      */
     public byte[] getBytes()
     {
-	byte[] bytes = new byte[this.contentData.getLength() + 5];
-	bytes[0] = (byte) 0xFF;
-	bytes[1] = (byte) 0xFF;
-	bytes[2] = (byte) 0xFF;
-	bytes[3] = (byte) 0xFF;
-	bytes[4] = this.headerData;
-	System.arraycopy(this.contentData.array(), 0, bytes, 5, bytes.length - 5);
-	return bytes;
+        byte[] bytes = new byte[this.contentData.getLength() + 5];
+        bytes[0] = (byte) 0xFF;
+        bytes[1] = (byte) 0xFF;
+        bytes[2] = (byte) 0xFF;
+        bytes[3] = (byte) 0xFF;
+        bytes[4] = this.headerData;
+        System.arraycopy(this.contentData.array(), 0, bytes, 5, bytes.length - 5);
+        return bytes;
     }
 }

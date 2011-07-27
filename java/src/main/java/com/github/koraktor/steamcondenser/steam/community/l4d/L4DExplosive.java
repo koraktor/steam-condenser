@@ -19,26 +19,26 @@ import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
  */
 public class L4DExplosive extends GameWeapon {
 
-	/**
+    /**
      * Creates a new instance of an explosivve based on the given XML data
      *
      * @param weaponData The XML data of this explosive
-	 */
-	public L4DExplosive(Element weaponData) {
-		super(weaponData);
+     */
+    public L4DExplosive(Element weaponData) {
+        super(weaponData);
 
-		this.id = weaponData.getNodeName();
-		this.shots = Integer.parseInt(weaponData.getElementsByTagName("thrown")
-				.item(0).getTextContent());
-	}
+        this.id = weaponData.getNodeName();
+        this.shots = Integer.parseInt(weaponData.getElementsByTagName("thrown")
+            .item(0).getTextContent());
+    }
 
-	/**
+    /**
      * Returns the average number of killed zombies for one shot of this
      * explosive
      *
      * @return The average number of kills per shot
-	 */
-	public float getAvgKillsPerShot() {
-		return 1 / this.getAvgShotsPerKill();
-	}
+     */
+    public float getAvgKillsPerShot() {
+        return 1 / this.getAvgShotsPerKill();
+    }
 }

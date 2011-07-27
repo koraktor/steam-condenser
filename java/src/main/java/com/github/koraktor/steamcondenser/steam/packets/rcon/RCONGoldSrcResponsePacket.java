@@ -27,7 +27,7 @@ public class RCONGoldSrcResponsePacket extends SteamPacket
      */
     public RCONGoldSrcResponsePacket(byte[] commandResponse)
     {
-	super(SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER, commandResponse);
+        super(SteamPacket.RCON_GOLDSRC_RESPONSE_HEADER, commandResponse);
     }
 
     /**
@@ -37,6 +37,6 @@ public class RCONGoldSrcResponsePacket extends SteamPacket
      */
     public String getResponse()
     {
-	return this.contentData.getString();
+        return this.contentData.getString();
     }
 }

@@ -31,12 +31,12 @@ class MasterServer extends Server {
     /**
      * @var string The master server address to query for GoldSrc game servers
      */
-	const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
+    const GOLDSRC_MASTER_SERVER = "hl1master.steampowered.com:27010";
 
     /**
      * @var string The master server address to query for GoldSrc game servers
      */
-	const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
+    const SOURCE_MASTER_SERVER = "hl2master.steampowered.com:27011";
 
     /**
      * @var int The region code for the US east coast
@@ -83,10 +83,10 @@ class MasterServer extends Server {
      */
     const REGION_ALL = 0xFF;
 
-	/**
-	 * @var MasterServerSocket
-	 */
-	private $socket;
+    /**
+     * @var MasterServerSocket
+     */
+    private $socket;
 
     /**
      * Request a challenge number from the master server.
@@ -151,12 +151,12 @@ class MasterServer extends Server {
      *         reply
      * @throws TimeoutException if the request times out
      */
-	public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
-	{
-		$failCount  = 0;
-		$finished   = false;
-		$portNumber = 0;
-		$hostName   = "0.0.0.0";
+    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = "")
+    {
+        $failCount  = 0;
+        $finished   = false;
+        $portNumber = 0;
+        $hostName   = "0.0.0.0";
 
         while(true) {
             try {
@@ -192,8 +192,8 @@ class MasterServer extends Server {
             }
         }
 
-		return $serverArray;
-	}
+        return $serverArray;
+    }
 
     /**
      * Initializes the socket to communicate with the master server

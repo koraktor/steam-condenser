@@ -26,9 +26,9 @@ class RCONBanException extends SteamCondenserException
     /**
      * Creates a new <var>RCONBanException</var> instance
      */
-	public function __construct()
-	{
-		parent::__construct('You have been banned from this server.');
-	}
+    public function __construct()
+    {
+        parent::__construct('You have been banned from this server.');
+    }
 }
 ?>

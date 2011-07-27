@@ -36,19 +36,19 @@ class TF2Engineer extends TF2Class
      */
     private $maxTeleports;
 
-	/**
+    /**
      * Creates a new instance of the Engineer class based on the given XML data
      *
      * @param SimpleXMLElement $classData The XML data for this Engineer
-	 */
-	public function __construct($classData)
-	{
-		parent::__construct($classData);
+     */
+    public function __construct($classData)
+    {
+        parent::__construct($classData);
 
-		$this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
-		$this->maxTeleports      = (int) $classData->inumteleports;
-		$this->maxSentryKills    = (int) $classData->isentrykills;
-	}
+        $this->maxBuildingsBuilt = (int) $classData->ibuildingsbuilt;
+        $this->maxTeleports      = (int) $classData->inumteleports;
+        $this->maxSentryKills    = (int) $classData->isentrykills;
+    }
 
     /**
      * Returns the maximum number of buildings built by the player in a single

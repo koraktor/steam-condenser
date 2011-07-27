@@ -33,7 +33,7 @@ public class MasterServerSocket extends QuerySocket
     public MasterServerSocket(InetAddress ipAddress, int portNumber)
     throws IOException
     {
-	super(ipAddress, portNumber);
+        super(ipAddress, portNumber);
     }
 
     /**
@@ -49,14 +49,14 @@ public class MasterServerSocket extends QuerySocket
     public SteamPacket getReply()
     throws IOException, TimeoutException, SteamCondenserException
     {
-	this.receivePacket(1500);
+        this.receivePacket(1500);
 
-	if(this.buffer.getInt() != -1)
-	{
-	    throw new PacketFormatException("Master query response has wrong packet header.");
-	}
+        if(this.buffer.getInt() != -1)
+        {
+            throw new PacketFormatException("Master query response has wrong packet header.");
+        }
 
-	return this.getPacketFromData();
+        return this.getPacketFromData();
     }
 
 }

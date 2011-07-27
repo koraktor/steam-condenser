@@ -32,9 +32,9 @@ class A2S_RULES_Packet extends RequestPacketWithChallenge
      * @param int $challengeNumber The challenge number received from the
      *        server
      */
-	public function __construct($challengeNumber = 0xFFFFFFFF)
-	{
-		parent::__construct(SteamPacket::A2S_RULES_HEADER, $challengeNumber);
-	}
+    public function __construct($challengeNumber = 0xFFFFFFFF)
+    {
+        parent::__construct(SteamPacket::A2S_RULES_HEADER, $challengeNumber);
+    }
 }
 ?>

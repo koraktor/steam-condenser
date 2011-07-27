@@ -32,20 +32,20 @@ class RCONExecResponse extends RCONPacket
      * @param string $commandResponse The output of the command executed on the
      *        server
      */
-	public function __construct($requestId, $commandResponse)
-	{
-		parent::__construct($requestId, RCONPacket::SERVERDATA_RESPONSE_VALUE, $commandResponse);
-	}
+    public function __construct($requestId, $commandResponse)
+    {
+        parent::__construct($requestId, RCONPacket::SERVERDATA_RESPONSE_VALUE, $commandResponse);
+    }
 
     /**
      * Returns the output of the command execution
      *
      * @return string The output of the command
      */
-	public function getResponse()
-	{
-		$response = $this->contentData->_array();
-		return substr($response, 0, strlen($response) - 2);
-	}
+    public function getResponse()
+    {
+        $response = $this->contentData->_array();
+        return substr($response, 0, strlen($response) - 2);
+    }
 }
 ?>

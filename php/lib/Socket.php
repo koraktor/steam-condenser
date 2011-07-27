@@ -18,47 +18,47 @@
  */
 abstract class Socket
 {
-	/**
-	 * The IP address the socket is connected to
+    /**
+     * The IP address the socket is connected to
      *
-	 * @var InetAddress
-	 */
-	protected $ipAddress;
+     * @var InetAddress
+     */
+    protected $ipAddress;
 
-	/**
-	 * The port number the socket is connected to
+    /**
+     * The port number the socket is connected to
      *
-	 * @var int
-	 */
-	protected $portNumber;
+     * @var int
+     */
+    protected $portNumber;
 
-	/**
-	 * @var string
-	 */
-	protected $readBuffer = "";
+    /**
+     * @var string
+     */
+    protected $readBuffer = "";
 
-	/**
-	 * The socket itself
-	 * @var resource
-	 */
-	protected $socket;
+    /**
+     * The socket itself
+     * @var resource
+     */
+    protected $socket;
 
-	/**
-	 * Stores if the sockets extension is loaded
-	 * @var bool
-	 */
-	protected $socketsEnabled;
+    /**
+     * Stores if the sockets extension is loaded
+     * @var bool
+     */
+    protected $socketsEnabled;
 
-	/**
-	 * Constructs the Socket object
+    /**
+     * Constructs the Socket object
      *
      * This will check if PHP's sockets extension is loaded which might be used
      * for socket communication.
-	 */
-	public function __construct()
-	{
-		$this->socketsEnabled = extension_loaded("sockets");
-	}
+     */
+    public function __construct()
+    {
+        $this->socketsEnabled = extension_loaded("sockets");
+    }
 
     /**
      * Destructor of this socket
@@ -92,89 +92,89 @@ abstract class Socket
         }
     }
 
-	/**
+    /**
      * Receives the specified amount of data from the socket
      *
      * @param int $length The number of bytes to read from the socket
      * @return string The data read from the socket
      * @throws Exception if reading from the socket fails
-	 */
-	public function recv($length = 128)
-	{
-		if($this->socketsEnabled)
-		{
-			$data = @socket_read($this->socket, $length, PHP_BINARY_READ);
-		}
-		else
-		{
-			$data = fread($this->socket, $length);
-		}
+     */
+    public function recv($length = 128)
+    {
+        if($this->socketsEnabled)
+        {
+            $data = @socket_read($this->socket, $length, PHP_BINARY_READ);
+        }
+        else
+        {
+            $data = fread($this->socket, $length);
+        }
 
-		if(!$data)
-		{
-			throw new Exception("Could not read from socket.");
-		}
+        if(!$data)
+        {
+            throw new Exception("Could not read from socket.");
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
+    /**
      * Waits for data to be read from this socket before the specified timeout
      * occurs
      *
      * @param int $timeout The number of milliseconds to wait for data arriving
      *        on this socket before timing out
      * @return bool whether data arrived on this socket before the timeout
-	 */
-	public function select($timeout = 0)
-	{
-		$read = array($this->socket);
-		$write = null;
-		$except = null;
+     */
+    public function select($timeout = 0)
+    {
+        $read = array($this->socket);
+        $write = null;
+        $except = null;
 
-		if($this->socketsEnabled)
-		{
-			$select = socket_select($read, $write, $except, 0, $timeout * 1000);
-		}
-		else
-		{
-			$select = stream_select($read, $write, $except, 0, $timeout * 1000);
-		}
+        if($this->socketsEnabled)
+        {
+            $select = socket_select($read, $write, $except, 0, $timeout * 1000);
+        }
+        else
+        {
+            $select = stream_select($read, $write, $except, 0, $timeout * 1000);
+        }
 
-		return $select > 0;
-	}
+        return $select > 0;
+    }
 
-	/**
+    /**
      * Sends the specified data to the peer this socket is connected to
      *
      * @param string $data The data to send to the connected peer
      * @throws Exception if sending fails
-	 */
-	public function send($data)
-	{
-		if($this->socketsEnabled)
-		{
-			$sendResult = socket_send($this->socket, $data, strlen($data), 0);
-		}
-		else
-		{
-			$sendResult = fwrite($this->socket, $data, strlen($data));
-		}
+     */
+    public function send($data)
+    {
+        if($this->socketsEnabled)
+        {
+            $sendResult = socket_send($this->socket, $data, strlen($data), 0);
+        }
+        else
+        {
+            $sendResult = fwrite($this->socket, $data, strlen($data));
+        }
 
-		if(!$sendResult)
-		{
-			throw new Exception("Could not send data.");
-		}
-	}
+        if(!$sendResult)
+        {
+            throw new Exception("Could not send data.");
+        }
+    }
 
-	/**
+    /**
      * Returns the file descriptor of the underlying socket
      *
      * @return resource The underlying socket descriptor
-	 */
-	public function socket()
-	{
-		return $this->socket;
-	}
+     */
+    public function socket()
+    {
+        return $this->socket;
+    }
 }
 ?>

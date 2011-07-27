@@ -25,17 +25,17 @@ class TF2Sniper extends TF2Class
      */
      private $maxHeadshots;
 
-	/**
+    /**
      * Creates a new instance of the Sniper class based on the given XML data
      *
      * @param SimpleXMLElement $classData The XML data for this Sniper
-	 */
-	public function __construct($classData)
-	{
-		parent::__construct($classData);
+     */
+    public function __construct($classData)
+    {
+        parent::__construct($classData);
 
-		$this->maxHeadshots = (int) $classData->iheadshots;
-	}
+        $this->maxHeadshots = (int) $classData->iheadshots;
+    }
 
     /**
      * Returns the maximum number enemies killed with a headshot by the player

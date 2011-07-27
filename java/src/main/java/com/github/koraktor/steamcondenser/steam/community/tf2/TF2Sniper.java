@@ -26,9 +26,9 @@ public class TF2Sniper extends TF2Class
      */
     public TF2Sniper(Element classData)
     {
-	super(classData);
+        super(classData);
 
-	this.maxHeadshots = Integer.parseInt(classData.getElementsByTagName("iheadshots").item(0).getTextContent());
+        this.maxHeadshots = Integer.parseInt(classData.getElementsByTagName("iheadshots").item(0).getTextContent());
     }
 
     /**
@@ -39,6 +39,6 @@ public class TF2Sniper extends TF2Class
      */
     public int getMaxHeadshots()
     {
-	return this.maxHeadshots;
+        return this.maxHeadshots;
     }
 }

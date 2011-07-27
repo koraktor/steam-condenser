@@ -27,10 +27,10 @@ public class TF2Spy extends TF2Class
      */
     public TF2Spy(Element classData)
     {
-	super(classData);
+        super(classData);
 
-	this.maxBackstabs      = Integer.parseInt(classData.getElementsByTagName("ibackstabs").item(0).getTextContent());
-	this.maxHealthLeeched  = Integer.parseInt(classData.getElementsByTagName("ihealthpointsleached").item(0).getTextContent());
+        this.maxBackstabs      = Integer.parseInt(classData.getElementsByTagName("ibackstabs").item(0).getTextContent());
+        this.maxHealthLeeched  = Integer.parseInt(classData.getElementsByTagName("ihealthpointsleached").item(0).getTextContent());
     }
 
     /**
@@ -41,7 +41,7 @@ public class TF2Spy extends TF2Class
      */
     public int getMaxBackstabs()
     {
-	return this.maxBackstabs;
+        return this.maxBackstabs;
     }
 
     /**
@@ -52,6 +52,6 @@ public class TF2Spy extends TF2Class
      */
     public int getMaxHealthLeeched()
     {
-	return this.maxHealthLeeched;
+        return this.maxHealthLeeched;
     }
 }

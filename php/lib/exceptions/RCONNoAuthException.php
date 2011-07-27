@@ -25,9 +25,9 @@ class RCONNoAuthException extends SteamCondenserException
     /**
      * Creates a new <var>RCONNoAuthException</var> instance
      */
-	public function __construct()
-	{
-		parent::__construct("Not authenticated yet.");
-	}
+    public function __construct()
+    {
+        parent::__construct("Not authenticated yet.");
+    }
 }
 ?>

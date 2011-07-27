@@ -24,7 +24,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  *
  * Available filters:
  * <ul>
- * 	<li><var>\type\d</var>: Request only dedicated servers</li>
+ *  <li><var>\type\d</var>: Request only dedicated servers</li>
  *  <li><var>\secure\1</var>: Request only secure servers</li>
  *  <li><var>\gamedir\[mod]</var>: Request only servers of a specific mod</li>
  *  <li><var>\map\[mapname]</var>: Request only servers running a specific

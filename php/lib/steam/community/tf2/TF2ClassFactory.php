@@ -24,7 +24,7 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Spy.php';
  */
 abstract class TF2ClassFactory
 {
-	/**
+    /**
      * Creates a new instance of a TF2 class instance based on the given XML
      * data
      *
@@ -34,27 +34,27 @@ abstract class TF2ClassFactory
      *
      * @param SimpleXMLElement $classData The XML data for the class
      * @return TF2Class The statistics for the given class data
-	 */
-	public static function getTF2Class(SimpleXMLElement $classData)
-	{
-		switch($classData->className)
-		{
-			case "Engineer":
-				return new TF2Engineer($classData);
-				break;
-			case "Medic":
-				return new TF2Medic($classData);
-				break;
-			case "Sniper":
-				return new TF2Sniper($classData);
-				break;
-			case "Spy":
-				return new TF2Spy($classData);
-				break;
-			default:
-				return new TF2Class($classData);
-		}
-	}
+     */
+    public static function getTF2Class(SimpleXMLElement $classData)
+    {
+        switch($classData->className)
+        {
+            case "Engineer":
+                return new TF2Engineer($classData);
+                break;
+            case "Medic":
+                return new TF2Medic($classData);
+                break;
+            case "Sniper":
+                return new TF2Sniper($classData);
+                break;
+            case "Spy":
+                return new TF2Spy($classData);
+                break;
+            default:
+                return new TF2Class($classData);
+        }
+    }
 }
 
 ?>

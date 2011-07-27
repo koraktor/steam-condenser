@@ -40,10 +40,10 @@ abstract class GameInventory {
      */
     private static $qualitySchemas = array();
 
-	/**
-	 * @var string
-	 */
-	private static $schemaLanguage = 'en';
+    /**
+     * @var string
+     */
+    private static $schemaLanguage = 'en';
 
     /**
      * @var int

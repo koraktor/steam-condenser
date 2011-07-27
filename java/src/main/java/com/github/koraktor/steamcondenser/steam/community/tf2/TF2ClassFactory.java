@@ -29,27 +29,27 @@ abstract class TF2ClassFactory
      */
     public static TF2Class getTF2Class(Element classData)
     {
-	String className = classData.getElementsByTagName("className").item(0).getTextContent();
+        String className = classData.getElementsByTagName("className").item(0).getTextContent();
 
-	if(className.equals("Engineer"))
-	{
-	    return new TF2Engineer(classData);
-	}
-	else if(className.equals("Medic"))
-	{
-	    return new TF2Medic(classData);
-	}
-	else if(className.equals("Sniper"))
-	{
-	    return new TF2Sniper(classData);
-	}
-	else if(className.equals("Spy"))
-	{
-	    return new TF2Spy(classData);
-	}
-	else
-	{
-	    return new TF2Class(classData);
-	}
+        if(className.equals("Engineer"))
+        {
+            return new TF2Engineer(classData);
+        }
+        else if(className.equals("Medic"))
+        {
+            return new TF2Medic(classData);
+        }
+        else if(className.equals("Sniper"))
+        {
+            return new TF2Sniper(classData);
+        }
+        else if(className.equals("Spy"))
+        {
+            return new TF2Spy(classData);
+        }
+        else
+        {
+            return new TF2Class(classData);
+        }
     }
 }

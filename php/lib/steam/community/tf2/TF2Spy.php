@@ -29,18 +29,18 @@ class TF2Spy extends TF2Class
      */
     private $maxHealthLeeched;
 
-	/**
+    /**
      * Creates a new instance of the Spy class based on the given XML data
      *
      * @param SimpleXMLElement $classData The XML data for this Spy
-	 */
-	public function __construct($classData)
-	{
-		parent::__construct($classData);
+     */
+    public function __construct($classData)
+    {
+        parent::__construct($classData);
 
-		$this->maxBackstabs     = (int) $classData->ibackstabs;
-		$this->maxHealthLeeched = (int) $classData->ihealthpointsleached;
-	}
+        $this->maxBackstabs     = (int) $classData->ibackstabs;
+        $this->maxHealthLeeched = (int) $classData->ihealthpointsleached;
+    }
 
     /**
      * Returns the maximum health leeched from enemies by the player in a single

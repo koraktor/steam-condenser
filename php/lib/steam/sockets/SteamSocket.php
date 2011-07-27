@@ -28,10 +28,10 @@ abstract class SteamSocket
      */
     private static $timeout = 1000;
 
-	/**
-	 * @var ByteBuffer
-	 */
-	protected $buffer;
+    /**
+     * @var ByteBuffer
+     */
+    protected $buffer;
 
     /**
      * @var UDPSocket
@@ -82,15 +82,15 @@ abstract class SteamSocket
         $this->socket->close();
     }
 
-	/**
+    /**
      * Subclasses have to implement this method for their individual packet
      * formats
      *
      * @return SteamPacket The packet replied from the server
-	 */
-	abstract public function getReply();
+     */
+    abstract public function getReply();
 
-	/**
+    /**
      * Reads the given amount of data from the socket and wraps it into the
      * buffer
      *
@@ -98,32 +98,32 @@ abstract class SteamSocket
      * @throws TimeoutException if no packet is received on time
      * @return int The number of bytes that have been read from the socket
      * @see ByteBuffer
-	 */
-	public function receivePacket($bufferLength = 0)
-	{
+     */
+    public function receivePacket($bufferLength = 0)
+    {
         if(!$this->socket->select(self::$timeout)) {
-			throw new TimeoutException();
-		}
+            throw new TimeoutException();
+        }
 
-		if($bufferLength == 0)
-		{
-			$this->buffer->clear();
-		}
-		else
-		{
-			$this->buffer = ByteBuffer::allocate($bufferLength);
-		}
+        if($bufferLength == 0)
+        {
+            $this->buffer->clear();
+        }
+        else
+        {
+            $this->buffer = ByteBuffer::allocate($bufferLength);
+        }
 
         $data = $this->socket->recv($this->buffer->remaining());
         $this->buffer->put($data);
-		$bytesRead = $this->buffer->position();
-		$this->buffer->rewind();
-		$this->buffer->limit($bytesRead);
+        $bytesRead = $this->buffer->position();
+        $this->buffer->rewind();
+        $this->buffer->limit($bytesRead);
 
-		return $bytesRead;
-	}
+        return $bytesRead;
+    }
 
-	/**
+    /**
      * Sends the given packet to the server
      *
      * This converts the packet into a byte stream first before writing it to
@@ -131,12 +131,12 @@ abstract class SteamSocket
      *
      * @param SteamPacket $dataPacket The packet to send to the server
      * @see SteamPacket::__toString()
-	 */
-	public function send(SteamPacket $dataPacket)
-	{
-		trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
+     */
+    public function send(SteamPacket $dataPacket)
+    {
+        trigger_error("Sending packet of type \"" . get_class($dataPacket) . "\"...");
 
         $this->socket->send($dataPacket->__toString());
-	}
+    }
 }
 ?>

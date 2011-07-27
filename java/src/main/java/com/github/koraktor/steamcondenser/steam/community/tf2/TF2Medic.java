@@ -27,10 +27,10 @@ public class TF2Medic extends TF2Class
      */
     public TF2Medic(Element classData)
     {
-	super(classData);
+        super(classData);
 
-	this.maxHealthHealed = Integer.parseInt(classData.getElementsByTagName("ihealthpointshealed").item(0).getTextContent());
-	this.maxUbercharges  = Integer.parseInt(classData.getElementsByTagName("inuminvulnerable").item(0).getTextContent());
+        this.maxHealthHealed = Integer.parseInt(classData.getElementsByTagName("ihealthpointshealed").item(0).getTextContent());
+        this.maxUbercharges  = Integer.parseInt(classData.getElementsByTagName("inuminvulnerable").item(0).getTextContent());
     }
 
     /**
@@ -41,7 +41,7 @@ public class TF2Medic extends TF2Class
      */
     public int getMaxHealthHealed()
     {
-	return this.maxHealthHealed;
+        return this.maxHealthHealed;
     }
 
     /**
@@ -52,6 +52,6 @@ public class TF2Medic extends TF2Class
      */
     public int getMaxUbercharges()
     {
-	return this.maxUbercharges;
+        return this.maxUbercharges;
     }
 }

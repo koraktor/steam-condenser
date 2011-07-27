@@ -31,19 +31,19 @@ class RCONGoldSrcRequest extends SteamPacket
      *
      * @param string $request The request string to send to the server
      */
-	public function __construct($request)
-	{
-		parent::__construct(0x00, $request);
-	}
+    public function __construct($request)
+    {
+        parent::__construct(0x00, $request);
+    }
 
     /**
      * Returns the raw data representing this packet
      *
      * @return string A string containing the raw data of this request packet
      */
-	public function __toString()
-	{
-		return pack("Va*", 0xFFFFFFFF, $this->contentData->_array());
-	}
+    public function __toString()
+    {
+        return pack("Va*", 0xFFFFFFFF, $this->contentData->_array());
+    }
 }
 ?>

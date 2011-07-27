@@ -23,46 +23,45 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  */
 class S2A_RULES_Packet extends SteamPacket
 {
-	/**
+    /**
      * @var array
-	 */
-	private $rulesArray;
+     */
+    private $rulesArray;
 
-	/**
+    /**
      * Creates a new S2A_RULES response object based on the given data
      *
      * @param string $contentData The raw packet data sent by the server
-	 */
-	public function __construct($contentData)
-	{
-		if(empty($contentData))
-		{
-			throw new Exception("Wrong formatted S2A_RULES packet.");
-		}
-		parent::__construct(SteamPacket::S2A_RULES_HEADER);
+     */
+    public function __construct($contentData)
+    {
+        if(empty($contentData))
+        {
+            throw new Exception("Wrong formatted S2A_RULES packet.");
+        }
+        parent::__construct(SteamPacket::S2A_RULES_HEADER);
 
-		$contentData = unpack("vrulesNumber/a*rulesData", $contentData);
-		$tmpRulesArray = explode("\0", $contentData["rulesData"]);
+        $contentData = unpack("vrulesNumber/a*rulesData", $contentData);
+        $tmpRulesArray = explode("\0", $contentData["rulesData"]);
 
-		// This is a workaround for servers sending corrupt replies
-		if(sizeof($tmpRulesArray) % 2) {
-			array_pop($tmpRulesArray);
-		}
+        if(sizeof($tmpRulesArray) % 2) {
+            array_pop($tmpRulesArray);
+        }
 
-		for($x = 0; $x < sizeof($tmpRulesArray); $x++)
-		{
-			$this->rulesArray[$tmpRulesArray[$x]] = $tmpRulesArray[++$x];
-		}
-	}
+        for($x = 0; $x < sizeof($tmpRulesArray); $x++)
+        {
+            $this->rulesArray[$tmpRulesArray[$x]] = $tmpRulesArray[++$x];
+        }
+    }
 
-	/**
+    /**
      * Returns the list of server rules (a.k.a. CVars) with the current values
      *
      * @return array A list of server rules
-	 */
-	public function getRulesArray()
-	{
-		return $this->rulesArray;
-	}
+     */
+    public function getRulesArray()
+    {
+        return $this->rulesArray;
+    }
 }
 ?>

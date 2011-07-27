@@ -36,23 +36,23 @@ abstract class RCONPacketFactory
      * @return RCONPacket The packet object generated from the packet data
      * @throws PacketFormatException if the packet header is not recognized
      */
-	public static function getPacketFromData($rawData)
-	{
-		$byteBuffer = new ByteBuffer($rawData);
+    public static function getPacketFromData($rawData)
+    {
+        $byteBuffer = new ByteBuffer($rawData);
 
-		$requestId = $byteBuffer->getLong();
-		$header = $byteBuffer->getLong();
-		$data = $byteBuffer->getString();
+        $requestId = $byteBuffer->getLong();
+        $header = $byteBuffer->getLong();
+        $data = $byteBuffer->getString();
 
-		switch($header)
-		{
-			case RCONPacket::SERVERDATA_AUTH_RESPONSE:
-				return new RCONAuthResponse($requestId);
-			case RCONPacket::SERVERDATA_RESPONSE_VALUE:
-				return new RCONExecResponse($requestId, $data);
-			default:
-				throw new PacketFormatException("Unknown packet with header " . dechex($header) . " received.");
-		}
-	}
+        switch($header)
+        {
+            case RCONPacket::SERVERDATA_AUTH_RESPONSE:
+                return new RCONAuthResponse($requestId);
+            case RCONPacket::SERVERDATA_RESPONSE_VALUE:
+                return new RCONExecResponse($requestId, $data);
+            default:
+                throw new PacketFormatException("Unknown packet with header " . dechex($header) . " received.");
+        }
+    }
 }
 ?>

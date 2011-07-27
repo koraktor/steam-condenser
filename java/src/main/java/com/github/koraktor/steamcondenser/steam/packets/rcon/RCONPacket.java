@@ -62,10 +62,10 @@ abstract public class RCONPacket extends SteamPacket
      */
     protected RCONPacket(int requestId, int rconHeader, String rconData)
     {
-	super((byte) 0, (rconData + "\0\0").getBytes());
+        super((byte) 0, (rconData + "\0\0").getBytes());
 
-	this.header = rconHeader;
-	this.requestId = requestId;
+        this.header = rconHeader;
+        this.requestId = requestId;
     }
 
     /**
@@ -75,14 +75,14 @@ abstract public class RCONPacket extends SteamPacket
      */
     public byte[] getBytes()
     {
-	byte[] bytes = new byte[this.contentData.getLength() + 12];
+        byte[] bytes = new byte[this.contentData.getLength() + 12];
 
-	System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(bytes.length - 4)), 0, bytes, 0, 4);
-	System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(this.requestId)), 0, bytes, 4, 4);
-	System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(this.header)), 0, bytes, 8, 4);
-	System.arraycopy(this.contentData.array(), 0, bytes, 12, bytes.length - 12);
+        System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(bytes.length - 4)), 0, bytes, 0, 4);
+        System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(this.requestId)), 0, bytes, 4, 4);
+        System.arraycopy(Helper.byteArrayFromInteger(Integer.reverseBytes(this.header)), 0, bytes, 8, 4);
+        System.arraycopy(this.contentData.array(), 0, bytes, 12, bytes.length - 12);
 
-	return bytes;
+        return bytes;
     }
 
     /**
@@ -92,7 +92,7 @@ abstract public class RCONPacket extends SteamPacket
      */
     public int getRequestId()
     {
-	return this.requestId;
+        return this.requestId;
     }
 
 }

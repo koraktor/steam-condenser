@@ -24,6 +24,6 @@ public class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket
      */
     public A2S_SERVERQUERY_GETCHALLENGE_Packet()
     {
-	super(SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER);
+        super(SteamPacket.A2S_SERVERQUERY_GETCHALLENGE_HEADER);
     }
 }

@@ -32,9 +32,9 @@ class RCONAuthResponse extends RCONPacket
      *
      * @param int $requestId The request ID of the RCON connection
      */
-	public function __construct($requestId)
-	{
-		parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH_RESPONSE);
-	}
+    public function __construct($requestId)
+    {
+        parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH_RESPONSE);
+    }
 }
 ?>

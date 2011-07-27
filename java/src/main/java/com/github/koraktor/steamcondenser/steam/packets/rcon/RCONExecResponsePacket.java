@@ -28,7 +28,7 @@ public class RCONExecResponsePacket extends RCONPacket
      */
     public RCONExecResponsePacket(int requestId, String commandReturn)
     {
-	super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn);
+        super(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn);
     }
 
     /**
@@ -39,6 +39,6 @@ public class RCONExecResponsePacket extends RCONPacket
     public String getResponse()
     {
         String response = new String(this.contentData.array());
-	return response.substring(0, response.length() - 2);
+        return response.substring(0, response.length() - 2);
     }
 }

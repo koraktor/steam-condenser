@@ -24,12 +24,12 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  */
 class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket
 {
-	/**
+    /**
      * Creates a new A2S_SERVERQUERY_GETCHALLENGE request object
-	 */
-	public function __construct()
-	{
-		parent::__construct(SteamPacket::A2S_SERVERQUERY_GETCHALLENGE_HEADER);
-	}
+     */
+    public function __construct()
+    {
+        parent::__construct(SteamPacket::A2S_SERVERQUERY_GETCHALLENGE_HEADER);
+    }
 }
 ?>

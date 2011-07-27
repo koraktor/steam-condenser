@@ -22,30 +22,30 @@ require_once STEAM_CONDENSER_PATH . 'steam/packets/SteamPacket.php';
  */
 abstract class S2A_INFO_BasePacket extends SteamPacket
 {
-	/**
-	 * @var String
-	 */
-	private $mapName;
+    /**
+     * @var String
+     */
+    private $mapName;
 
-	/**
-	 * @var int
-	 */
-	private $networkVersion;
+    /**
+     * @var int
+     */
+    private $networkVersion;
 
-	/**
-	 * @var String
-	 */
-	private $serverName;
+    /**
+     * @var String
+     */
+    private $serverName;
 
-	/**
+    /**
      * Returns a generated array of server properties from the instance
      * variables of the packet object
      *
      * @return array The information provided by the server
-	 */
-	public function getInfoHash()
-	{
-		return array_diff_key(get_object_vars($this), array("contentData" => null, "headerData" => null));
-	}
+     */
+    public function getInfoHash()
+    {
+        return array_diff_key(get_object_vars($this), array("contentData" => null, "headerData" => null));
+    }
 }
 ?>

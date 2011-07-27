@@ -29,7 +29,7 @@ public class GoldSrcServer extends GameServer {
 
     private boolean isHLTV;
 
-	private String rconPassword;
+    private String rconPassword;
 
     /**
      * Returns a master server instance for the default master server for
@@ -106,7 +106,7 @@ public class GoldSrcServer extends GameServer {
         this(address, 27015, false);
     }
 
-	/**
+    /**
      * Creates a new instance of a GoldSrc server object
      *
      * @param address Either an IP address, a DNS name or one of them combined
@@ -115,13 +115,13 @@ public class GoldSrcServer extends GameServer {
      * @param port The port the server is listening on
      * @throws IOException if initializing the socket fails
      * @throws SteamCondenserException if an host name cannot be resolved
-	 */
+     */
     public GoldSrcServer(InetAddress address, Integer port)
             throws IOException, SteamCondenserException {
         this(address.toString(), port, false);
     }
 
-	/**
+    /**
      * Creates a new instance of a GoldSrc server object
      *
      * @param address Either an IP address, a DNS name or one of them combined
@@ -132,7 +132,7 @@ public class GoldSrcServer extends GameServer {
      *        used to determine if the server is a HLTV server
      * @throws IOException if initializing the socket fails
      * @throws SteamCondenserException if an host name cannot be resolved
-	 */
+     */
     public GoldSrcServer(InetAddress address, Integer port, boolean isHLTV)
             throws IOException, SteamCondenserException {
         this(address.toString(), port, isHLTV);
@@ -147,7 +147,7 @@ public class GoldSrcServer extends GameServer {
         this.socket = new GoldSrcSocket(this.ipAddress, this.port, this.isHLTV);
     }
 
-	/**
+    /**
      * Saves the password for authenticating the RCON communication with the
      * server
      *
@@ -155,13 +155,13 @@ public class GoldSrcServer extends GameServer {
      * @return GoldSrc's RCON does not preauthenticate connections so
      *         this method always returns <code>true</code>
      * @see #rconExec
-	 */
-	public boolean rconAuth(String password) {
-		this.rconPassword = password;
-		return true;
-	}
+     */
+    public boolean rconAuth(String password) {
+        this.rconPassword = password;
+        return true;
+    }
 
-	/**
+    /**
      * Remotely executes a command on the server via RCON
      *
      * @param command The command to execute on the server via RCON
@@ -171,10 +171,10 @@ public class GoldSrcServer extends GameServer {
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
      * @throws TimeoutException if the request times out
-	 */
-	public String rconExec(String command)
-			throws IOException, TimeoutException, SteamCondenserException {
-		return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command).trim();
-	}
+     */
+    public String rconExec(String command)
+            throws IOException, TimeoutException, SteamCondenserException {
+        return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command).trim();
+    }
 
 }

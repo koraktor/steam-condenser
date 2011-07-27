@@ -35,7 +35,7 @@ public abstract class S2A_INFO_BasePacket extends SteamPacket
 
     S2A_INFO_BasePacket(byte headerByte, byte[] dataBytes)
     {
-	super(headerByte, dataBytes);
+        super(headerByte, dataBytes);
     }
 
     /**
@@ -46,22 +46,22 @@ public abstract class S2A_INFO_BasePacket extends SteamPacket
      */
     public HashMap<String, Object> getInfoHash()
     {
-	HashMap<String, Object> infoHash = new HashMap<String, Object>();
+        HashMap<String, Object> infoHash = new HashMap<String, Object>();
 
-	try
-	{
-	    for(Field field : this.getClass().getSuperclass().getDeclaredFields())
-	    {
-		infoHash.put(field.getName(), field.get(this));
-	    }
+        try
+        {
+            for(Field field : this.getClass().getSuperclass().getDeclaredFields())
+            {
+            infoHash.put(field.getName(), field.get(this));
+            }
 
-	    for(Field field : this.getClass().getDeclaredFields())
-	    {
-		infoHash.put(field.getName(), field.get(this));
-	    }
-	}
-	catch(IllegalAccessException e){}
+            for(Field field : this.getClass().getDeclaredFields())
+            {
+            infoHash.put(field.getName(), field.get(this));
+            }
+        }
+        catch(IllegalAccessException e){}
 
-	return infoHash;
+        return infoHash;
     }
 }

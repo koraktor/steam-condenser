@@ -2,7 +2,7 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
 package com.github.koraktor.steamcondenser.steam.packets;
 
@@ -23,7 +23,7 @@ import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
  * <p>
  * Available filters:
  * <ul>
- * 	<li>\type\d: Request only dedicated servers</li>
+ *  <li>\type\d: Request only dedicated servers</li>
  *  <li>\secure\1: Request only secure servers</li>
  *  <li>\gamedir\[mod]: Request only servers of a specific mod</li>
  *  <li>\map\[mapname]: Request only servers running a specific map</li>

@@ -30,9 +30,9 @@ class RCONExecRequest extends RCONPacket
      * @param int $requestId The request ID of the RCON connection
      * @param string $command The command to execute on the server
      */
-	public function __construct($requestId, $command)
-	{
-		parent::__construct($requestId, RCONPacket::SERVERDATA_EXECCOMMAND, $command);
-	}
+    public function __construct($requestId, $command)
+    {
+        parent::__construct($requestId, RCONPacket::SERVERDATA_EXECCOMMAND, $command);
+    }
 }
 ?>

@@ -30,11 +30,11 @@ public class TF2Engineer extends TF2Class
      */
     public TF2Engineer(Element classData)
     {
-	super(classData);
+        super(classData);
 
-	this.maxBuildingsBuilt = Integer.parseInt(classData.getElementsByTagName("ibuildingsbuilt").item(0).getTextContent());
-	this.maxSentryKills    = Integer.parseInt(classData.getElementsByTagName("isentrykills").item(0).getTextContent());
-	this.maxTeleports      = Integer.parseInt(classData.getElementsByTagName("inumteleports").item(0).getTextContent());
+        this.maxBuildingsBuilt = Integer.parseInt(classData.getElementsByTagName("ibuildingsbuilt").item(0).getTextContent());
+        this.maxSentryKills    = Integer.parseInt(classData.getElementsByTagName("isentrykills").item(0).getTextContent());
+        this.maxTeleports      = Integer.parseInt(classData.getElementsByTagName("inumteleports").item(0).getTextContent());
     }
 
     /**
@@ -45,7 +45,7 @@ public class TF2Engineer extends TF2Class
      */
     public int getMaxBuildingsBuilt()
     {
-	return this.maxBuildingsBuilt;
+        return this.maxBuildingsBuilt;
     }
 
     /**
@@ -56,7 +56,7 @@ public class TF2Engineer extends TF2Class
      */
     public int getMaxSentryKills()
     {
-	return this.maxSentryKills;
+        return this.maxSentryKills;
     }
 
     /**
@@ -67,7 +67,7 @@ public class TF2Engineer extends TF2Class
      */
     public int getMaxTeleports()
     {
-	return this.maxTeleports;
+        return this.maxTeleports;
     }
 
 }

@@ -21,23 +21,23 @@ require_once STEAM_CONDENSER_PATH . 'steam/sockets/SteamSocket.php';
 class MasterServerSocket extends SteamSocket
 {
 
-	/**
+    /**
      * Reads a single packet from the socket
      *
      * @return SteamPacket The packet replied from the server
      * @throws PacketFormatException if the packet has the wrong format
-	 */
-	public function getReply()
-	{
-		$this->receivePacket(1500);
+     */
+    public function getReply()
+    {
+        $this->receivePacket(1500);
 
-		if($this->buffer->getLong() != -1)
-		{
-			throw new PacketFormatException("Master query response has wrong packet header.");
-		}
+        if($this->buffer->getLong() != -1)
+        {
+            throw new PacketFormatException("Master query response has wrong packet header.");
+        }
 
-		return SteamPacketFactory::getPacketFromData($this->buffer->get());
-	}
+        return SteamPacketFactory::getPacketFromData($this->buffer->get());
+    }
 
 }
 ?>

@@ -65,25 +65,25 @@ public class GameStats {
      * @return The game stats object for the given user and game
      */
     public static GameStats createGameStats(Object steamId, String gameName)
-			throws SteamCondenserException {
+            throws SteamCondenserException {
         if(gameName.equals("cs:s")) {
             return new CSSStats(steamId);
         } else if(gameName.equals("defensegrid:awakening")) {
-			return new DefenseGridStats(steamId);
-		} else if(gameName.equals("dod:s")) {
-			return new DoDSStats(steamId);
-		} else if(gameName.equals("l4d")) {
-			return new L4DStats(steamId);
+            return new DefenseGridStats(steamId);
+        } else if(gameName.equals("dod:s")) {
+            return new DoDSStats(steamId);
+        } else if(gameName.equals("l4d")) {
+            return new L4DStats(steamId);
         } else if(gameName.equals("l4d2")) {
             return new L4D2Stats(steamId);
         } else if(gameName.equals("portal2")) {
             return new Portal2Stats(steamId);
-		} else if(gameName.equals("tf2")) {
-			return new TF2Stats(steamId);
-		} else {
-			return new GameStats(steamId, gameName);
-		}
-	}
+        } else if(gameName.equals("tf2")) {
+            return new TF2Stats(steamId);
+        } else {
+            return new GameStats(steamId, gameName);
+        }
+    }
 
     /**
      * Creates a <code>GameStats</code> object and fetches data from the Steam
@@ -93,35 +93,35 @@ public class GameStats {
      * @param gameName The friendly name of the game
      * @throws SteamCondenserException if the stats cannot be fetched
      */
-	protected GameStats(Object steamId, String gameName)
-			throws SteamCondenserException {
-		if(steamId instanceof String) {
-			this.customUrl = (String) steamId;
-		} else if(steamId instanceof Long) {
-			this.steamId64 = (Long) steamId;
-		}
-		this.gameName = gameName;
+    protected GameStats(Object steamId, String gameName)
+            throws SteamCondenserException {
+        if(steamId instanceof String) {
+            this.customUrl = (String) steamId;
+        } else if(steamId instanceof Long) {
+            this.steamId64 = (Long) steamId;
+        }
+        this.gameName = gameName;
 
-		try {
+        try {
             String url = this.getBaseUrl() + "?xml=all";
 
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			this.xmlData = parser.parse(url).getDocumentElement();
+            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            this.xmlData = parser.parse(url).getDocumentElement();
 
             NodeList errorNode = this.xmlData.getElementsByTagName("error");
             if(errorNode.getLength() > 0) {
                 throw new SteamCondenserException(errorNode.item(0).getTextContent());
             }
 
-			this.privacyState = this.xmlData.getElementsByTagName("privacyState").item(0).getTextContent();
-			if(this.isPublic()) {
-				this.appId = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameLink").item(0).getTextContent().replace("http://store.steampowered.com/app/", ""));
-				this.gameFriendlyName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameFriendlyName").item(0).getTextContent();
-				this.gameName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameName").item(0).getTextContent();
+            this.privacyState = this.xmlData.getElementsByTagName("privacyState").item(0).getTextContent();
+            if(this.isPublic()) {
+                this.appId = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameLink").item(0).getTextContent().replace("http://store.steampowered.com/app/", ""));
+                this.gameFriendlyName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameFriendlyName").item(0).getTextContent();
+                this.gameName = ((Element) this.xmlData.getElementsByTagName("game").item(0)).getElementsByTagName("gameName").item(0).getTextContent();
 
                 Node hoursPlayedNode = ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("hoursPlayed").item(0);
                 if(hoursPlayedNode != null) {
-	                this.hoursPlayed = hoursPlayedNode.getTextContent();
+                    this.hoursPlayed = hoursPlayedNode.getTextContent();
                 }
 
                 if(this.customUrl == null) {
@@ -130,37 +130,37 @@ public class GameStats {
                 if(this.steamId64 == null) {
                     this.steamId64 = Long.parseLong(((Element) this.xmlData.getElementsByTagName("player").item(0)).getElementsByTagName("steamID64").item(0).getTextContent().trim());
                 }
-			}
-		} catch(Exception e) {
-			throw new SteamCondenserException("XML data could not be parsed.");
-		}
-	}
+            }
+        } catch(Exception e) {
+            throw new SteamCondenserException("XML data could not be parsed.");
+        }
+    }
 
-	/**
+    /**
      * Returns the achievements for this stats' user and game
      * <p>
      * If the achievements' data hasn't been parsed yet, parsing is done now.
      *
      * @return All achievements belonging to this game
-	 */
-	public ArrayList<GameAchievement> getAchievements() {
-		if(this.achievements == null) {
-			this.achievements = new ArrayList<GameAchievement>();
+     */
+    public ArrayList<GameAchievement> getAchievements() {
+        if(this.achievements == null) {
+            this.achievements = new ArrayList<GameAchievement>();
             this.achievementsDone = 0;
 
-			NodeList achievementsList = ((Element) this.xmlData.getElementsByTagName("achievements").item(0)).getElementsByTagName("achievement");
-			for(int i = 0; i < achievementsList.getLength(); i++) {
+            NodeList achievementsList = ((Element) this.xmlData.getElementsByTagName("achievements").item(0)).getElementsByTagName("achievement");
+            for(int i = 0; i < achievementsList.getLength(); i++) {
                 Element achievementData = (Element) achievementsList.item(i);
                 GameAchievement achievement = new GameAchievement(this.steamId64, this.appId, achievementData);
                 if(achievement.isUnlocked()) {
                     this.achievementsDone += 1;
                 }
                 this.achievements.add(achievement);
-			}
-		}
+            }
+        }
 
-		return achievements;
-	}
+        return achievements;
+    }
 
     /**
      * Returns the number of achievements done by this player
@@ -230,18 +230,18 @@ public class GameStats {
      *
      * @return The frienldy name of the game
      */
-	public String getGameFriendlyName() {
-		return this.gameFriendlyName;
-	}
+    public String getGameFriendlyName() {
+        return this.gameFriendlyName;
+    }
 
     /**
      * Returns the full name of the game these stats belong to
      *
      * @return The name of the game
      */
-	public String getGameName() {
-		return this.gameName;
-	}
+    public String getGameName() {
+        return this.gameName;
+    }
 
     /**
      * Returns the privacy setting of the Steam ID profile
@@ -257,9 +257,9 @@ public class GameStats {
      *
      * @return The number of hours this game has been played
      */
-	public String getHoursPlayed() {
-		return this.hoursPlayed;
-	}
+    public String getHoursPlayed() {
+        return this.hoursPlayed;
+    }
 
     /**
      * Returns the 64bit numeric SteamID of the player these stats belong to
@@ -275,7 +275,7 @@ public class GameStats {
      *
      * @return <code>true</code> if this Steam ID is publicly accessible
      */
-	protected boolean isPublic() {
-		return this.privacyState.equals("public");
-	}
+    protected boolean isPublic() {
+        return this.privacyState.equals("public");
+    }
 }

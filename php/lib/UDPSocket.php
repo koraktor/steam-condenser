@@ -20,7 +20,7 @@ require_once STEAM_CONDENSER_PATH . 'Socket.php';
  */
 class UDPSocket extends Socket
 {
-	/**
+    /**
      * Connects the UDP socket to the host with the given IP address and port
      * number
      *
@@ -31,33 +31,33 @@ class UDPSocket extends Socket
      * @param string $ipAddress The IP address to connect to
      * @param int $portNumber The UDP port to connect to
      * @throws Exception if an error occurs during connecting the socket
-	 */
-	public function connect($ipAddress, $portNumber)
-	{
-		$this->ipAddress = $ipAddress;
-		$this->portNumber = $portNumber;
+     */
+    public function connect($ipAddress, $portNumber)
+    {
+        $this->ipAddress = $ipAddress;
+        $this->portNumber = $portNumber;
 
-		if($this->socketsEnabled)
-		{
-			if(!$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
-			{
-				$errorCode = socket_last_error($this->socket);
-				throw new Exception("Could not create socket: " . socket_strerror($errorCode));
-			}
-			if(@!socket_connect($this->socket, $ipAddress, $portNumber))
-			{
-				$errorCode = socket_last_error($this->socket);
-				throw new Exception("Could not connect socket: " . socket_strerror($errorCode));
-			}
-		}
-		else
-		{
-			if(!$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
-			{
-				throw new Exception("Could not create socket: $socketErrstr");
-			}
-			stream_set_blocking($this->socket, true);
-		}
-	}
+        if($this->socketsEnabled)
+        {
+            if(!$this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))
+            {
+                $errorCode = socket_last_error($this->socket);
+                throw new Exception("Could not create socket: " . socket_strerror($errorCode));
+            }
+            if(@!socket_connect($this->socket, $ipAddress, $portNumber))
+            {
+                $errorCode = socket_last_error($this->socket);
+                throw new Exception("Could not connect socket: " . socket_strerror($errorCode));
+            }
+        }
+        else
+        {
+            if(!$this->socket = fsockopen("udp://$ipAddress", $portNumber, $socketErrno, $socketErrstr, 2))
+            {
+                throw new Exception("Could not create socket: $socketErrstr");
+            }
+            stream_set_blocking($this->socket, true);
+        }
+    }
 }
 ?>

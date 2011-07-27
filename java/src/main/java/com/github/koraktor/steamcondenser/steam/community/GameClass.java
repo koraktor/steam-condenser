@@ -15,26 +15,26 @@ package com.github.koraktor.steamcondenser.steam.community;
  */
 public abstract class GameClass {
 
-	protected String name;
+    protected String name;
 
-	protected int playTime;
+    protected int playTime;
 
     /**
      * Returns the name of this class
      *
      * @return [String] The name of this class
      */
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Returns the time in minutes the player has played with this class
      *
      * @return The time this class has been played
      */
-	public int getPlayTime() {
-		return this.playTime;
-	}
+    public int getPlayTime() {
+        return this.playTime;
+    }
 
 }

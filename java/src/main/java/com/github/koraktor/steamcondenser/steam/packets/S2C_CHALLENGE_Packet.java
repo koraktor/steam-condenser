@@ -26,7 +26,7 @@ public class S2C_CHALLENGE_Packet extends SteamPacket
      */
     public S2C_CHALLENGE_Packet(byte[] challengeNumberBytes)
     {
-	super(SteamPacket.S2C_CHALLENGE_HEADER, challengeNumberBytes);
+        super(SteamPacket.S2C_CHALLENGE_HEADER, challengeNumberBytes);
     }
 
     /**
@@ -36,6 +36,6 @@ public class S2C_CHALLENGE_Packet extends SteamPacket
     */
     public int getChallengeNumber()
     {
-	return Integer.reverseBytes(this.contentData.getInt());
+        return Integer.reverseBytes(this.contentData.getInt());
     }
 }
