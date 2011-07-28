@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -285,7 +287,7 @@ public class SteamId {
                 throw new SteamCondenserException(profile.getElementsByTagName("error").item(0).getTextContent());
             }
 
-            this.nickname  = profile.getElementsByTagName("steamID").item(0).getTextContent();
+            this.nickname  = StringEscapeUtils.unescapeXml(profile.getElementsByTagName("steamID").item(0).getTextContent());
             this.steamId64 = Long.parseLong(profile.getElementsByTagName("steamID64").item(0).getTextContent());
             this.vacBanned = (profile.getElementsByTagName("vacBanned").item(0).getTextContent().equals("1"));
 
@@ -311,13 +313,13 @@ public class SteamId {
                     this.favoriteGame = favoriteGame.getElementsByTagName("name").item(0).getTextContent();
                     this.favoriteGameHoursPlayed = Float.parseFloat(favoriteGame.getElementsByTagName("hoursPlayed2wk").item(0).getTextContent());
                 }
-                this.headLine = profile.getElementsByTagName("headline").item(0).getTextContent();
+                this.headLine = StringEscapeUtils.unescapeXml(profile.getElementsByTagName("headline").item(0).getTextContent());
                 this.hoursPlayed = Float.parseFloat(profile.getElementsByTagName("hoursPlayed2Wk").item(0).getTextContent());
                 this.location = profile.getElementsByTagName("location").item(0).getTextContent();
                 this.memberSince = DateFormat.getDateInstance(DateFormat.LONG,Locale.ENGLISH).parse(profile.getElementsByTagName("memberSince").item(0).getTextContent());
-                this.realName = profile.getElementsByTagName("realname").item(0).getTextContent();
+                this.realName = StringEscapeUtils.unescapeXml(profile.getElementsByTagName("realname").item(0).getTextContent());
                 this.steamRating = Float.parseFloat(profile.getElementsByTagName("steamRating").item(0).getTextContent());
-                this.summary = profile.getElementsByTagName("summary").item(0).getTextContent();
+                this.summary = StringEscapeUtils.unescapeXml(profile.getElementsByTagName("summary").item(0).getTextContent());
 
                 this.mostPlayedGames = new HashMap<String, Float>();
                 Element mostPlayedGamesNode = (Element) profile.getElementsByTagName("mostPlayedGames").item(0);
@@ -346,7 +348,7 @@ public class SteamId {
                     NodeList weblinksList = weblinksNode.getElementsByTagName("weblink");
                     for(int i = 0; i < weblinksList.getLength(); i++) {
                         Element weblink = (Element) weblinksList.item(i);
-                        this.links.put(weblink.getElementsByTagName("title").item(0).getTextContent(), weblink.getElementsByTagName("link").item(0).getTextContent());
+                        this.links.put(StringEscapeUtils.unescapeXml(weblink.getElementsByTagName("title").item(0).getTextContent()), weblink.getElementsByTagName("link").item(0).getTextContent());
                     }
                 }
             }

@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'cgi'
 require 'open-uri'
 require 'rexml/document'
 
@@ -230,7 +231,7 @@ class SteamId
       raise SteamCondenserException, profile.elements['error'].text
     end
 
-    @nickname         = profile.elements['steamID'].text
+    @nickname         = CGI.unescapeHTML profile.elements['steamID'].text
     @steam_id64       = profile.elements['steamID64'].text.to_i
     @vac_banned       = (profile.elements['vacBanned'].text == 1)
 
@@ -255,13 +256,13 @@ class SteamId
         @favorite_game_hours_played     = profile.elements['favoriteGame/hoursPlayed2wk'].text
       end
 
-      @head_line                        = profile.elements['headline'].text
-      @hours_played                     = profile.elements['hoursPlayed2Wk'].text.to_f
-      @location                         = profile.elements['location'].text
-      @member_since                     = Time.parse(profile.elements['memberSince'].text)
-      @real_name                        = profile.elements['realname'].text
-      @steam_rating                     = profile.elements['steamRating'].text.to_f
-      @summary                          = profile.elements['summary'].text
+      @head_line    = CGI.unescapeHTML profile.elements['headline'].text
+      @hours_played = profile.elements['hoursPlayed2Wk'].text.to_f
+      @location     = profile.elements['location'].text
+      @member_since = Time.parse(profile.elements['memberSince'].text)
+      @real_name    = CGI.unescapeHTML profile.elements['realname'].text
+      @steam_rating = profile.elements['steamRating'].text.to_f
+      @summary      = CGI.unescapeHTML profile.elements['summary'].text
 
       @most_played_games = {}
       unless REXML::XPath.first(profile, 'mostPlayedGames').nil?
@@ -280,7 +281,7 @@ class SteamId
       @links = {}
       unless REXML::XPath.first(profile, 'mostPlayedGames').nil?
         profile.elements.each('weblinks/weblink') do |link|
-          @links[link.elements['title'].text] = link.elements['link'].text
+          @links[CGI.unescapeHTML link.elements['title'].text] = link.elements['link'].text
         end
       end
     end

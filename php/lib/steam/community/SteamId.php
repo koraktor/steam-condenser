@@ -219,7 +219,7 @@ class SteamId {
             throw new SteamCondenserException((string) $profile->error);
         }
 
-        $this->nickname  = (string) $profile->steamID;
+        $this->nickname  = htmlspecialchars_decode((string) $profile->steamID);
         $this->steamId64 = (string) $profile->steamID64;
         $this->vacBanned = (bool)(int) $profile->vacBanned;
 
@@ -237,13 +237,13 @@ class SteamId {
             $this->customUrl = strtolower((string) $profile->customURL);
             $this->favoriteGame = (string) $profile->favoriteGame->name;
             $this->favoriteGameHoursPlayed = (string) $profile->favoriteGame->hoursPlayed2wk;
-            $this->headLine = (string) $profile->headline;
+            $this->headLine = htmlspecialchars_decode((string) $profile->headline);
             $this->hoursPlayed = (float) $profile->hoursPlayed2Wk;
             $this->location = (string) $profile->location;
             $this->memberSince = (string) $profile->memberSince;
-            $this->realName = (string) $profile->realname;
+            $this->realName = htmlspecialchars_decode((string) $profile->realname);
             $this->steamRating = (float) $profile->steamRating;
-            $this->summary = (string) $profile->summary;
+            $this->summary = htmlspecialchars_decode((string) $profile->summary);
         }
 
         if(!empty($profile->mostPlayedGames)) {
@@ -260,7 +260,7 @@ class SteamId {
 
         if(!empty($profile->weblinks)) {
             foreach($profile->weblinks->weblink as $link) {
-                $this->links[(string) $link->title] = (string) $link->link;
+                $this->links[htmlspecialchars_decode((string) $link->title)] = (string) $link->link;
             }
         }
 
