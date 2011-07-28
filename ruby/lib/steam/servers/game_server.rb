@@ -24,11 +24,6 @@ module GameServer
 
   include Server
 
-  REQUEST_CHALLENGE = 0
-  REQUEST_INFO = 1
-  REQUEST_PLAYER = 2
-  REQUEST_RULES = 3
-
   # Parses the player attribute names supplied by `rcon status`
   #
   # @param [String] status_header The header line provided by `rcon status`
@@ -195,7 +190,7 @@ module GameServer
   # Depending on the given request type this will fill the various data
   # attributes of the server object.
   #
-  # @param [Fixnum] request_type The type of request to send to the server
+  # @param [Symbol] request_type The type of request to send to the server
   # @param [Boolean] repeat_on_failure Whether the request should be repeated,
   #        if the replied packet isn't expected. This is useful to handle
   #        missing challenge numbers, which will be automatically filled in,
@@ -205,16 +200,16 @@ module GameServer
   def handle_response_for_request(request_type, repeat_on_failure = true)
     begin
       case request_type
-        when GameServer::REQUEST_CHALLENGE then
+        when :challenge then
           request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
           expected_response = S2C_CHALLENGE_Packet
-        when GameServer::REQUEST_INFO then
+        when :info then
           request_packet = A2S_INFO_Packet.new
           expected_response = S2A_INFO_BasePacket
-        when GameServer::REQUEST_PLAYER then
+        when :players then
           request_packet = A2S_PLAYER_Packet.new(@challenge_number)
           expected_response = S2A_PLAYER_Packet
-        when GameServer::REQUEST_RULES then
+        when :rules then
           request_packet = A2S_RULES_Packet.new(@challenge_number)
           expected_response = S2A_RULES_Packet
         else
@@ -269,7 +264,7 @@ module GameServer
   # @see #handle_response_for_request
   # @see #players
   def update_players(rcon_password = nil)
-    handle_response_for_request GameServer::REQUEST_PLAYER
+    handle_response_for_request :players
 
     unless @rcon_authenticated
       return if rcon_password.nil?
@@ -300,7 +295,7 @@ module GameServer
   # @see #handle_response_for_request
   # @see #rules
   def update_rules
-    handle_response_for_request GameServer::REQUEST_RULES
+    handle_response_for_request :rules
   end
 
   # Sends a A2S_INFO request to the server and updates this server's basic
@@ -313,7 +308,7 @@ module GameServer
   # @see #handle_response_for_request
   # @see #server_info
   def update_server_info
-    handle_response_for_request GameServer::REQUEST_INFO
+    handle_response_for_request :info
   end
 
   # Sends a A2S_SERVERQUERY_GETCHALLENGE request to the server and updates the
@@ -326,7 +321,7 @@ module GameServer
   # @see #handle_response_for_request
   # @see #init
   def update_challenge_number
-    handle_response_for_request GameServer::REQUEST_CHALLENGE
+    handle_response_for_request :challenge
   end
 
   # Sends a A2S_INFO request to the server and measures the time needed for the
