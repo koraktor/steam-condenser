@@ -45,6 +45,7 @@ public abstract class GameServer extends Server {
     protected int challengeNumber = 0xFFFFFFFF;
     protected int ping;
     protected HashMap<String, SteamPlayer> playerHash;
+    protected boolean rconAuthenticated;
     protected int rconRequestId;
     protected HashMap<String, String> rulesHash;
     protected HashMap<String, Object> serverInfo;
@@ -63,6 +64,8 @@ public abstract class GameServer extends Server {
     protected GameServer(String address, Integer port)
             throws IOException, SteamCondenserException {
         super(address, port);
+
+        this.rconAuthenticated = false;
     }
 
     /**
@@ -383,6 +386,17 @@ public abstract class GameServer extends Server {
     }
 
     /**
+     * Returns whether the RCON connection to this server is already
+     * authenticated
+     *
+     * @return <code>true</code> if the RCON connection is authenticated
+     * @see #rconAuth
+     */
+    public boolean isRconAuthenticated() {
+        return this.rconAuthenticated;
+    }
+
+    /**
      * Authenticates with the server for RCON communication
      *
      * @param password The RCON password of the server
@@ -542,22 +556,26 @@ public abstract class GameServer extends Server {
             throws IOException, TimeoutException, SteamCondenserException {
         this.handleResponseForRequest(GameServer.REQUEST_PLAYER);
 
-        if(rconPassword != null && !this.playerHash.isEmpty()) {
-            this.rconAuth(rconPassword);
-            List<String> players = new ArrayList<String>();
-            for(String line : Arrays.asList(this.rconExec("status").split("\n"))) {
-                if(line.startsWith("#") && !line.equals("#end")) {
-                    players.add(line.substring(1).trim());
-                }
+        if(!this.rconAuthenticated) {
+            if(rconPassword == null) {
+                return;
             }
-            List<String> attributes = getPlayerStatusAttributes(players.remove(0));
+            this.rconAuth(rconPassword);
+        }
 
-            for(String player : players) {
-                Map<String, String> playerData = splitPlayerStatus(attributes, player);
-                String playerName = playerData.get("name");
-                if(this.playerHash.containsKey(playerName)) {
-                    this.playerHash.get(playerName).addInformation(playerData);
-                }
+        List<String> players = new ArrayList<String>();
+        for(String line : Arrays.asList(this.rconExec("status").split("\n"))) {
+            if(line.startsWith("#") && !line.equals("#end")) {
+                players.add(line.substring(1).trim());
+            }
+        }
+        List<String> attributes = getPlayerStatusAttributes(players.remove(0));
+
+        for(String player : players) {
+            Map<String, String> playerData = splitPlayerStatus(attributes, player);
+            String playerName = playerData.get("name");
+            if(this.playerHash.containsKey(playerName)) {
+                this.playerHash.get(playerName).addInformation(playerData);
             }
         }
     }

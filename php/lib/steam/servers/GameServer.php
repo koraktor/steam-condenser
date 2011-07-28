@@ -53,6 +53,11 @@ abstract class GameServer extends Server {
     protected $playerHash;
 
     /**
+     * @var bool whether the RCON connection is already authenticated
+     */
+    protected $rconAuthenticated;
+
+    /**
      * @var array The settings applied on the server
      */
     protected $rulesHash;
@@ -141,6 +146,8 @@ abstract class GameServer extends Server {
      */
     public function __construct($address, $port = 27015) {
         parent::__construct($address, $port);
+
+        $this->rconAuthenticated = false;
     }
 
     /**
@@ -325,6 +332,17 @@ abstract class GameServer extends Server {
     }
 
     /**
+     * Returns whether the RCON connection to this server is already
+     * authenticated
+     *
+     * @return bool <var>true</var> if the RCON connection is authenticated
+     * @see rconAuth()
+     */
+    public function isRconAuthenticated() {
+        return $this->rconAuthenticated;
+    }
+
+    /**
      * Authenticates the connection for RCON communication with the server
      *
      * @param string $password The RCON password of the server
@@ -411,21 +429,25 @@ abstract class GameServer extends Server {
     public function updatePlayers($rconPassword = null) {
         $this->handleResponseForRequest(self::REQUEST_PLAYER);
 
-        if($rconPassword != null && !empty($this->playerHash)) {
-            $this->rconAuth($rconPassword);
-            $players = array();
-            foreach(explode("\n", $this->rconExec('status')) as $line) {
-                if(strpos($line, '#') === 0 && $line != '#end') {
-                    $players[] = trim(substr($line, 1));
-                }
+        if(!$this->rconAuthenticated) {
+            if($rconPassword == null) {
+                return;
             }
-            $attributes = self::getPlayerStatusAttributes(array_shift($players));
+            $this->rconAuth($rconPassword);
+        }
 
-            foreach($players as $player) {
-                $playerData = self::splitPlayerStatus($attributes, $player);
-                if(array_key_exists($playerData['name'], $this->playerHash)) {
-                    $this->playerHash[$playerData['name']]->addInformation($playerData);
-                }
+        $players = array();
+        foreach(explode("\n", $this->rconExec('status')) as $line) {
+            if(strpos($line, '#') === 0 && $line != '#end') {
+                $players[] = trim(substr($line, 1));
+            }
+        }
+        $attributes = self::getPlayerStatusAttributes(array_shift($players));
+
+        foreach($players as $player) {
+            $playerData = self::splitPlayerStatus($attributes, $player);
+            if(array_key_exists($playerData['name'], $this->playerHash)) {
+                $this->playerHash[$playerData['name']]->addInformation($playerData);
             }
         }
     }

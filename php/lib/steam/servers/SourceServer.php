@@ -75,8 +75,9 @@ class SourceServer extends GameServer {
         $this->rconSocket->send(new RCONAuthRequest($this->rconRequestId, $password));
         $this->rconSocket->getReply();
         $reply = $this->rconSocket->getReply();
+        $this->rconAuthenticated = $reply->getRequestId() == $this->rconRequestId;
 
-        return $reply->getRequestId() == $this->rconRequestId;
+        return $this->rconAuthenticated;
     }
 
     /**
@@ -91,6 +92,10 @@ class SourceServer extends GameServer {
      * @throws TimeoutException if the request times out
      */
     public function rconExec($command) {
+        if(!$this->rconAuthenticated) {
+            throw new RCONNoAuthException();
+        }
+
         $this->rconSocket->send(new RCONExecRequest($this->rconRequestId, $command));
         $this->rconSocket->send(new RCONTerminator($this->rconRequestId));
 
@@ -98,11 +103,8 @@ class SourceServer extends GameServer {
         do {
             $responsePacket = $this->rconSocket->getReply();
 
-            if($responsePacket == null) {
-                continue;
-            }
-
             if($responsePacket instanceof RCONAuthResponse) {
+                $this->rconAuthenticated = false;
                 throw new RCONNoAuthException();
             }
 

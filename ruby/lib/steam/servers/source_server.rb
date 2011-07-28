@@ -61,6 +61,7 @@ class SourceServer
   #
   # @param [String] password The RCON password of the server
   # @return [Boolean] whether authentication was successful
+  # @see #rcon_authenticated?
   # @see #rcon_exec
   def rcon_auth(password)
     @rcon_request_id = rand 2**16
@@ -80,13 +81,18 @@ class SourceServer
   # @return [String] The output of the executed command
   # @see #rcon_auth
   def rcon_exec(command)
+    raise RCONNoAuthException unless @rcon_authenticated
+
     @rcon_socket.send RCONExecRequest.new(@rcon_request_id, command)
     @rcon_socket.send RCONTerminator.new(@rcon_request_id)
 
     response = ''
     begin
       response_packet = @rcon_socket.reply
-      raise RCONNoAuthException if response_packet.is_a? RCONAuthResponse
+      if response_packet.is_a? RCONAuthResponse
+        @rcon_authenticated = false
+        raise RCONNoAuthException
+      end
       response << response_packet.response
     end while response.length == 0 || response_packet.response.size > 0
 

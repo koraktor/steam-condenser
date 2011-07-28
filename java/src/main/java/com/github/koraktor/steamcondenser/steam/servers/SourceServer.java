@@ -143,7 +143,9 @@ public class SourceServer extends GameServer {
         this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
         this.rconSocket.getReply();
         RCONAuthResponse reply = (RCONAuthResponse) this.rconSocket.getReply();
-        return (reply.getRequestId() == this.rconRequestId);
+        this.rconAuthenticated = reply.getRequestId() == this.rconRequestId;
+
+        return this.rconAuthenticated;
     }
 
     /**
@@ -159,6 +161,10 @@ public class SourceServer extends GameServer {
      */
     public String rconExec(String command)
             throws IOException, TimeoutException, SteamCondenserException {
+        if(!this.rconAuthenticated) {
+            throw new RCONNoAuthException();
+        }
+
         this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
         this.rconSocket.send(new RCONTerminator(this.rconRequestId));
         ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
@@ -168,6 +174,7 @@ public class SourceServer extends GameServer {
         do {
             responsePacket = this.rconSocket.getReply();
             if(responsePacket instanceof RCONAuthResponse) {
+                this.rconAuthenticated = false;
                 throw new RCONNoAuthException();
             }
             response += ((RCONExecResponsePacket) responsePacket).getResponse();

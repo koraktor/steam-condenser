@@ -90,6 +90,8 @@ module GameServer
   # @raise [SteamCondenserException] if an host name cannot be resolved
   def initialize(address, port = 27015)
     super
+
+    @rcon_authenticated = false
   end
 
   # Returns the last measured response time of this server
@@ -136,6 +138,10 @@ module GameServer
   def rcon_auth(password)
   end
 
+  # Returns whether the RCON connection to this server is already authenticated
+  #
+  # @return [Boolean] `true` if the RCON connection is authenticated
+  # @see #rcon_auth
   def rcon_authenticated?
     @rcon_authenticated
   end
@@ -265,20 +271,22 @@ module GameServer
   def update_players(rcon_password = nil)
     handle_response_for_request GameServer::REQUEST_PLAYER
 
-    unless rcon_password.nil? || @player_hash.nil? || @player_hash.empty?
+    unless @rcon_authenticated
+      return if rcon_password.nil?
       rcon_auth rcon_password
-      players = rcon_exec('status').lines.select do |line|
-        line.start_with?('#') && line != "#end\n"
-      end.map do |line|
-        line[1..-1].strip
-      end
-      attributes = GameServer.player_status_attributes players.shift
+    end
 
-      players.each do |player|
-        player_data = GameServer.split_player_status(attributes, player)
-        if @player_hash.key? player_data[:name]
-          @player_hash[player_data[:name]].add_info player_data
-        end
+    players = rcon_exec('status').lines.select do |line|
+      line.start_with?('#') && line != "#end\n"
+    end.map do |line|
+      line[1..-1].strip
+    end
+    attributes = GameServer.player_status_attributes players.shift
+
+    players.each do |player|
+      player_data = GameServer.split_player_status(attributes, player)
+      if @player_hash.key? player_data[:name]
+        @player_hash[player_data[:name]].add_info player_data
       end
     end
   end
