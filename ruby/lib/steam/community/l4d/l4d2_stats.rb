@@ -41,9 +41,9 @@ class L4D2Stats < GameStats
 
     if @lifetime_stats.nil?
       super
-      @lifetime_stats['avg_adrenaline_shared']   = @xml_data.elements['stats/lifetime/adrenalineshared'].text.to_f
-      @lifetime_stats['avg_adrenaline_used']     = @xml_data.elements['stats/lifetime/adrenalineused'].text.to_f
-      @lifetime_stats['avg_defibrillators_used'] = @xml_data.elements['stats/lifetime/defibrillatorsused'].text.to_f
+      @lifetime_stats[:avg_adrenaline_shared]   = @xml_data.elements['stats/lifetime/adrenalineshared'].text.to_f
+      @lifetime_stats[:avg_adrenaline_used]     = @xml_data.elements['stats/lifetime/adrenalineused'].text.to_f
+      @lifetime_stats[:avg_defibrillators_used] = @xml_data.elements['stats/lifetime/defibrillatorsused'].text.to_f
     end
 
     @lifetime_stats
@@ -61,32 +61,32 @@ class L4D2Stats < GameStats
 
     if @scavenge_stats.nil?
       @scavenge_stats = {}
-      @scavenge_stats['avg_cans_per_round'] = @xml_data.elements['stats/scavenge/avgcansperround'].text.to_f
-      @scavenge_stats['perfect_rounds']     = @xml_data.elements['stats/scavenge/perfect16canrounds'].text.to_i
-      @scavenge_stats['rounds_lost']        = @xml_data.elements['stats/scavenge/roundslost'].text.to_i
-      @scavenge_stats['rounds_played']      = @xml_data.elements['stats/scavenge/roundsplayed'].text.to_i
-      @scavenge_stats['rounds_won']         = @xml_data.elements['stats/scavenge/roundswon'].text.to_i
-      @scavenge_stats['total_cans']         = @xml_data.elements['stats/scavenge/totalcans'].text.to_i
+      @scavenge_stats[:avg_cans_per_round] = @xml_data.elements['stats/scavenge/avgcansperround'].text.to_f
+      @scavenge_stats[:perfect_rounds]     = @xml_data.elements['stats/scavenge/perfect16canrounds'].text.to_i
+      @scavenge_stats[:rounds_lost]        = @xml_data.elements['stats/scavenge/roundslost'].text.to_i
+      @scavenge_stats[:rounds_played]      = @xml_data.elements['stats/scavenge/roundsplayed'].text.to_i
+      @scavenge_stats[:rounds_won]         = @xml_data.elements['stats/scavenge/roundswon'].text.to_i
+      @scavenge_stats[:total_cans]         = @xml_data.elements['stats/scavenge/totalcans'].text.to_i
 
-      @scavenge_stats['maps'] = {}
+      @scavenge_stats[:maps] = {}
       @xml_data.elements.each('stats/scavenge/mapstats/map') do |map_data|
         map_id = map_data.elements['name'].text
-        @scavenge_stats['maps'][map_id] = {}
-        @scavenge_stats['maps'][map_id]['avg_round_score']     = map_data.elements['avgscoreperround'].text.to_i
-        @scavenge_stats['maps'][map_id]['highest_game_score']  = map_data.elements['highgamescore'].text.to_i
-        @scavenge_stats['maps'][map_id]['highest_round_score'] = map_data.elements['highroundscore'].text.to_i
-        @scavenge_stats['maps'][map_id]['name']                = map_data.elements['fullname'].text
-        @scavenge_stats['maps'][map_id]['rounds_played']       = map_data.elements['roundsplayed'].text.to_i
-        @scavenge_stats['maps'][map_id]['rounds_won']          = map_data.elements['roundswon'].text.to_i
+        @scavenge_stats[:maps][map_id] = {}
+        @scavenge_stats[:maps][map_id]['avg_round_score']     = map_data.elements['avgscoreperround'].text.to_i
+        @scavenge_stats[:maps][map_id]['highest_game_score']  = map_data.elements['highgamescore'].text.to_i
+        @scavenge_stats[:maps][map_id]['highest_round_score'] = map_data.elements['highroundscore'].text.to_i
+        @scavenge_stats[:maps][map_id]['name']                = map_data.elements['fullname'].text
+        @scavenge_stats[:maps][map_id]['rounds_played']       = map_data.elements['roundsplayed'].text.to_i
+        @scavenge_stats[:maps][map_id]['rounds_won']          = map_data.elements['roundswon'].text.to_i
       end
 
-      @scavenge_stats['infected'] = {}
+      @scavenge_stats[:infected] = {}
       @xml_data.elements.each('stats/scavenge/infectedstats/special') do |infected_data|
         infected_id = infected_data.elements['name'].text
-        @scavenge_stats['infected'][infected_id] = {}
-        @scavenge_stats['infected'][infected_id]['max_damage_per_life']   = infected_data.elements['maxdmg1life'].text.to_i
-        @scavenge_stats['infected'][infected_id]['max_pours_interrupted'] = infected_data.elements['maxpoursinterrupted'].text.to_i
-        @scavenge_stats['infected'][infected_id]['special_attacks']       = infected_data.elements['specialattacks'].text.to_i
+        @scavenge_stats[:infected][infected_id] = {}
+        @scavenge_stats[:infected][infected_id]['max_damage_per_life']   = infected_data.elements['maxdmg1life'].text.to_i
+        @scavenge_stats[:infected][infected_id]['max_pours_interrupted'] = infected_data.elements['maxpoursinterrupted'].text.to_i
+        @scavenge_stats[:infected][infected_id]['special_attacks']       = infected_data.elements['specialattacks'].text.to_i
       end
     end
 
@@ -110,10 +110,10 @@ class L4D2Stats < GameStats
 
     if @survival_stats.nil?
       super
-      @survival_stats['maps'] = {}
+      @survival_stats[:maps] = {}
       @xml_data.elements.each('stats/survival/maps/map') do |map_data|
         map = L4D2Map.new(map_data)
-        @survival_stats['maps'][map.id] = map
+        @survival_stats[:maps][map.id] = map
       end
     end
 

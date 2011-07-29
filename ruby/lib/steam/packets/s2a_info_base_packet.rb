@@ -27,7 +27,7 @@ module S2A_INFO_BasePacket
   def generate_info_hash
     @info_hash = Hash[
       *instance_variables.map { |var|
-        [var[1..-1], instance_variable_get(var)] if var != '@content_data' && var != '@header_data'
+        [var[1..-1].to_sym, instance_variable_get(var)] if var != '@content_data' && var != '@header_data'
       }.compact.flatten
     ]
   end

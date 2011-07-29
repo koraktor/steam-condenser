@@ -39,14 +39,14 @@ class S2A_INFO_DETAILED_Packet
 
     if @is_mod
       @mod_info = {}
-      @mod_info['url_info'] = @content_data.cstring
-      @mod_info['url_dl'] = @content_data.cstring
+      @mod_info[:url_info] = @content_data.cstring
+      @mod_info[:url_dl] = @content_data.cstring
       @content_data.byte
       if @content_data.remaining == 12
-        @mod_info['mod_version'] = @content_data.long
-        @mod_info['mod_size'] = @content_data.long
-        @mod_info['sv_only'] = @content_data.byte == 1
-        @mod_info['cl_dll'] = @content_data.byte == 1
+        @mod_info[:mod_version] = @content_data.long
+        @mod_info[:mod_size] = @content_data.long
+        @mod_info[:sv_only] = @content_data.byte == 1
+        @mod_info[:cl_dll] = @content_data.byte == 1
         @secure = @content_data.byte == 1
         @number_of_bots = @content_data.byte
       end

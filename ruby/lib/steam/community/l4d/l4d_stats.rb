@@ -34,9 +34,9 @@ class L4DStats < GameStats
 
     if @survival_stats.nil?
       super
-      @survival_stats['maps'] = {}
+      @survival_stats[:maps] = {}
       @xml_data.elements.each('stats/survival/maps/*') do |map_data|
-        @survival_stats['maps'][map_data.name] = L4DMap.new(map_data)
+        @survival_stats[:maps][map_data.name] = L4DMap.new(map_data)
       end
     end
 
