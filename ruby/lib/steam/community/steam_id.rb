@@ -10,6 +10,7 @@ require 'rexml/document'
 require 'exceptions/steam_condenser_exception'
 require 'steam/community/cacheable'
 require 'steam/community/game_stats'
+require 'steam/community/steam_game'
 require 'steam/community/steam_group'
 
 # The SteamId class represents a Steam Community profile (also called Steam ID)
@@ -249,8 +250,6 @@ class SteamId
       @custom_url                       = profile.elements['customURL'].text.downcase
       @custom_url                       = nil if @custom_url.empty?
 
-      # The favorite game cannot be set since 10/10/2008, but old profiles
-      # still have this. May be removed in a future version.
       unless REXML::XPath.first(profile, 'favoriteGame').nil?
         @favorite_game                  = profile.elements['favoriteGame/name'].text
         @favorite_game_hours_played     = profile.elements['favoriteGame/hoursPlayed2wk'].text
@@ -316,16 +315,15 @@ class SteamId
   def fetch_games
     url = "#{base_url}/games?xml=1"
 
-    @games = {}
+    @games     = {}
+    @playtimes = {}
     games_data = REXML::Document.new(open(url, {:proxy => true}).read).root
-    games_data.elements.each('games/game') do |game|
-      game_name = game.elements['name'].text
-      if game.elements['globalStatsLink'].nil?
-        @games[game_name] = false
-      else
-        friendly_name = game.elements['globalStatsLink'].text.match(/http:\/\/steamcommunity.com\/stats\/([^?\/]+)\/achievements\//)[1]
-        @games[game_name] = friendly_name.downcase
-      end
+    games_data.elements.each('games/game') do |game_data|
+      game = SteamGame.new(game_data)
+      @games[game.app_id] = game
+      recent = game_data.elements['hoursLast2Weeks'].text.to_f rescue 0
+      total = game_data.elements['hoursOnRecord'].text.to_f rescue 0
+      @playtimes[game.app_id] = [(recent * 60).to_i, (total * 60).to_i]
     end
 
     true
@@ -340,21 +338,21 @@ class SteamId
 
   # Returns the stats for the given game for the owner of this SteamID
   #
-  # @param [String] game_name The friendly name of the game stats should be
-  #        fetched for
+  # @param [Fixnum, String] id The full or short name or the application ID of
+  #        the game stats should be fetched for
   # @return [GameStats] The statistics for the game with the given name
-  # @raise [ArgumentError] if the user does not own this game or it does not
-  #        have any stats
-  def game_stats(game_name)
-    if games.has_value? game_name
-      friendly_name = game_name
-    elsif games.has_key? game_name.downcase
-      friendly_name = games[game_name.downcase]
-    else
-      raise ArgumentError, "Stats for game #{game_name} do not exist."
+  # @raise [SteamCondenserException] if the user does not own this game or it
+  #        does not have any stats
+  # @see find_game
+  # @see SteamGame#has_stats?
+  def game_stats(id)
+    game = find_game id
+
+    unless game.has_stats?
+      raise SteamCondenserException, "\"#{game.name}\" does not have stats."
     end
 
-    GameStats.create_game_stats(@custom_url || @steam_id64, friendly_name)
+    GameStats.create_game_stats(@custom_url || @steam_id64, game.short_name)
   end
 
   # Returns the Steam Community friends of this user
@@ -370,12 +368,12 @@ class SteamId
 
   # Returns the games this user owns
   #
-  # The keys of the hash are the games' names and the values are the "friendly
-  # names" used for stats or `false` if the games has no stats.
+  # The keys of the hash are the games' application IDs and the values are
+  # the corresponding game instances.
   #
   # If the friends haven't been fetched yet, this is done now.
   #
-  # @return [Hash<String, Object>] Pairs of game names and friendly names
+  # @return [Hash<Fixnum, SteamGame>] The games this user owns
   # @see #fetch_games
   def games
     fetch_games if @games.nil?
@@ -415,6 +413,60 @@ class SteamId
   # @return [String] The URL of the medium-sized avatar
   def medium_avatar_url
     "#{@image_url}_medium.jpg"
+  end
+
+  # Returns the time in minutes this user has played this game in the last two
+  # weeks
+  #
+  # @param [Fixnum, String] id The full or short name or the application ID of
+  #        the game
+  # @return [Fixnum] The number of minutes this user played the given game in
+  #         the last two weeks
+  def recent_playtime(id)
+    game = find_game id
+    @playtimes[game.app_id][0]
+  end
+
+  # Returns the total time in minutes this user has played this game
+  #
+  # @param [Fixnum, String] id The full or short name or the application ID of
+  #        the game
+  # @return [Fixnum] The total number of minutes this user played the given
+  #         game
+  def total_playtime(id)
+    game = find_game id
+    @playtimes[game.app_id][1]
+  end
+
+  private
+
+  # Tries to find a game instance with the given application ID or full name or
+  # short name
+  #
+  # @param [Fixnum, String] id The full or short name or the application ID of
+  #        the game
+  # @raise [SteamCondenserException] if the user does not own the game or no
+  #        game with the given ID exists
+  # @return [SteamGame] The game found with the given ID
+  def find_game(id)
+    if id.is_a? Integer
+      game = games[id]
+    else
+      game = games.values.find do |game|
+        game.short_name == id || game.name == id
+      end
+    end
+
+    if game.nil?
+      if id.is_a? Numeric
+        message = "This SteamID does not own a game with application ID #{id}."
+      else
+        message = "This SteamID does not own the game \"#{id}\"."
+      end
+      raise SteamCondenserException, message
+    end
+
+    game
   end
 
 end

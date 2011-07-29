@@ -7,13 +7,13 @@
 
 package com.github.koraktor.steamcondenser.steam.community;
 
+import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +21,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
@@ -41,7 +40,7 @@ public class SteamId {
     private float favoriteGameHoursPlayed;
     private long fetchTime;
     private SteamId[] friends;
-    private Map<String, String> games;
+    private HashMap<Integer, SteamGame> games;
     private SteamGroup[] groups;
     private String headLine;
     private float hoursPlayed;
@@ -51,6 +50,7 @@ public class SteamId {
     private Date memberSince;
     private Map<String, Float> mostPlayedGames;
     private String onlineState;
+    private Map<Integer, int[]> playtimes;
     private String privacyState;
     private String realName;
     private String stateMessage;
@@ -391,10 +391,6 @@ public class SteamId {
 
     /**
      * Fetches the games this user owns
-     * <p>
-     * This fills the game hash with the names of the games as keys. The values
-     * will either be `false` if the game does not have stats or the game's
-     * "friendly name".
      *
      * @see #getGames
      * @throws SteamCondenserException if an error occurs while parsing the
@@ -409,21 +405,26 @@ public class SteamId {
 
             Element gamesNode = (Element) gamesData.getElementsByTagName("games").item(0);
             NodeList gamesNodeList = ((Element) gamesNode).getElementsByTagName("game");
-            this.games = new HashMap<String, String>();
+            this.games = new HashMap<Integer, SteamGame>();
+            this.playtimes = new HashMap<Integer, int[]>();
             for(int i = 0; i < gamesNodeList.getLength(); i++) {
-                Element game = (Element) gamesNodeList.item(i);
-                String gameName = game.getElementsByTagName("name").item(0).getTextContent();
-                Node globalStatsLinkNode = game.getElementsByTagName("globalStatsLink").item(0);
-                if(globalStatsLinkNode != null) {
-                    String friendlyName = globalStatsLinkNode.getTextContent();
-                    Pattern regex = Pattern.compile("http://steamcommunity.com/stats/([^?/]+)/achievements/");
-                    Matcher matcher = regex.matcher(friendlyName);
-                    matcher.find(0);
-                    friendlyName = matcher.group(1).toLowerCase();
-                    this.games.put(gameName, friendlyName);
-                } else {
-                    this.games.put(gameName, null);
+                Element gameData = (Element) gamesNodeList.item(i);
+                SteamGame game = SteamGame.create(gameData);
+                this.games.put(game.getAppId(), game);
+                float recent;
+                try {
+                    recent = Float.parseFloat(gameData.getElementsByTagName("hoursLast2Weeks").item(0).getTextContent());
+                } catch(NullPointerException e) {
+                    recent = 0;
                 }
+                float total;
+                try {
+                    total = Float.parseFloat(gameData.getElementsByTagName("hoursOnRecord").item(0).getTextContent());
+                } catch(NullPointerException e) {
+                    total = 0;
+                }
+                int[] playtimes = { (int) (recent * 60), (int) (total * 60) };
+                this.playtimes.put(game.getAppId(), playtimes);
             }
         } catch(Exception e) {
             throw new SteamCondenserException("XML data could not be parsed.");
@@ -536,15 +537,15 @@ public class SteamId {
     /**
      * Returns the games this user owns
      * <p>
-     * The keys of the hash are the games' names and the values are the
-     * "friendly names" used for stats or `false` if the games has no stats.
+     * The keys of the hash are the games' application IDs and the values are
+     * the corresponding game instances.
      * <p>
      * If the friends haven't been fetched yet, this is done now.
      *
-     * @return Pairs of game names and friendly names
+     * @return array The games this user owns
      * @see #fetchGames
      */
-    public Map<String, String> getGames()
+    public HashMap<Integer, SteamGame> getGames()
             throws SteamCondenserException {
         if(this.games == null) {
             this.fetchGames();
@@ -555,30 +556,24 @@ public class SteamId {
     /**
      * Returns the stats for the given game for the owner of this SteamID
      *
-     * @param gameName The friendly name of the game stats should be fetched
-     *        for
+     * @param id The full or short name or the application ID of the game stats
+     *        should be fetched for
      * @return The statistics for the game with the given name
      * @throws SteamCondenserException if the user does not own this game or it
      *         does not have any stats
      */
-    public GameStats getGameStats(String gameName)
+    public GameStats getGameStats(Object id)
             throws SteamCondenserException {
-        String friendlyName;
+        SteamGame game = this.findGame(id);
 
-        this.getGames();
-
-        if(this.games.containsKey(gameName)) {
-            friendlyName = this.games.get(gameName);
-        } else if(this.games.containsValue(gameName.toLowerCase())) {
-            friendlyName = gameName.toLowerCase();
-        } else {
-            throw new SteamCondenserException("Stats for game " + gameName + " do not exist.");
+        if(!game.hasStats()) {
+            throw new SteamCondenserException("\"" + game.getName() + "\" does not have stats.");
         }
 
         if(this.customUrl == null) {
-            return GameStats.createGameStats(this.steamId64, friendlyName);
+            return GameStats.createGameStats(this.steamId64, game.getShortName());
         } else {
-            return GameStats.createGameStats(this.customUrl, friendlyName);
+            return GameStats.createGameStats(this.customUrl, game.getShortName());
         }
     }
 
@@ -660,6 +655,21 @@ public class SteamId {
     }
 
     /**
+     * Returns the time in minutes this user has played this game in the last
+     * two weeks
+     *
+     * @param id The full or short name or the application ID of the game
+     * @return The number of minutes this user played the given game in the
+     *         last two weeks
+     */
+    public int getRecentPlaytime(Object id)
+            throws SteamCondenserException {
+        SteamGame game = this.findGame(id);
+
+        return this.playtimes.get(game.getAppId())[0];
+    }
+
+    /**
      * Returns the message corresponding to this user's online state
      *
      * @return The message corresponding to this user's online state
@@ -698,12 +708,63 @@ public class SteamId {
     }
 
     /**
+     * Returns the total time in minutes this user has played this game
+     *
+     * @param id The full or short name or the application ID of the game
+     * @return The total number of minutes this user played the given game
+     */
+    public int getTotalPlaytime(Object id)
+            throws SteamCondenserException {
+        SteamGame game = this.findGame(id);
+
+        return this.playtimes.get(game.getAppId())[1];
+    }
+
+    /**
      * Returns the visibility state of this Steam ID
      *
      * @return This Steam ID's visibility State
      */
     public int getVisibilityState() {
         return this.visibilityState;
+    }
+
+    /**
+     * Tries to find a game instance with the given application ID or full name
+     * or short name
+     *
+     * @param id The full or short name or the application ID of the game
+     * @return The game found with the given ID
+     * @throws SteamCondenserException if the user does not own the game or no
+     *         game with the given ID exists
+     */
+    private SteamGame findGame(Object id)
+            throws SteamCondenserException {
+        SteamGame game = null;
+
+        if(id instanceof Integer) {
+            game = this.getGames().get(id);
+        } else {
+            for(SteamGame currentGame : this.getGames().values()) {
+                if(id.equals(currentGame.getShortName()) ||
+                   id.equals(currentGame.getName())) {
+                    game = currentGame;
+                    break;
+                }
+            }
+        }
+
+        if(game == null) {
+            String message;
+            if(id instanceof Integer) {
+                message = "This SteamID does not own a game with application ID " + id + ".";
+            } else {
+                message = "This SteamID does not own the game \"" + id + "\".";
+            }
+            throw new SteamCondenserException(message);
+        }
+
+        return game;
     }
 
     /**

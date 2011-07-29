@@ -10,6 +10,7 @@
 
 require_once STEAM_CONDENSER_PATH . 'exceptions/SteamCondenserException.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/SteamGame.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/SteamGroup.php';
 
 /**
@@ -25,7 +26,7 @@ class SteamId {
     /**
      * @var array
      */
-    public static $steamIds = array();
+    private static $steamIds = array();
 
     /**
      * @var string
@@ -51,6 +52,11 @@ class SteamId {
      * @var string
      */
     private $nickname;
+
+    /**
+     * @var array
+     */
+    private $playtimes;
 
     /**
      * @var string
@@ -291,29 +297,58 @@ class SteamId {
     /**
      * Fetches the games this user owns
      *
-     * This fills the game hash with the names of the games as keys. The values
-     * will either be `false` if the game does not have stats or the game's
-     * "friendly name".
-     *
      * @see getGames()
      * @throws SteamCondenserException if an error occurs while parsing the
      *         data
      */
     private function fetchGames() {
         $this->games = array();
+        $this->playtimes = array();
 
         $url = $this->getBaseUrl() . '/games?xml=1';
         $gamesData = new SimpleXMLElement(file_get_contents($url));
 
-        foreach($gamesData->games->game as $game) {
-            $gameName = (string) $game->name;
-            if($game->globalStatsLink != null && !empty($game->globalStatsLink)) {
-                preg_match('#http://steamcommunity.com/stats/([^?/]+)/achievements/#', (string) $game->globalStatsLink, $friendlyName);
-                $this->games[$gameName] = strtolower($friendlyName[1]);
-            } else {
-                $this->games[$gameName] = false;
+        foreach($gamesData->games->game as $gameData) {
+            $game = SteamGame::create($gameData);
+            $this->games[$game->getAppId()] = $game;
+            $recent = (float) $gameData->hoursLast2Weeks;
+            $total = (float) $gameData->hoursOnRecord;
+            $playtimes = array((int) ($recent * 60), (int) ($total * 60));
+            $this->playtimes[$game->getAppId()] = $playtimes;
+        }
+    }
+
+    /**
+     * Tries to find a game instance with the given application ID or full name
+     * or short name
+     *
+     * @param mixed $id The full or short name or the application ID of the
+     *        game
+     * @return SteamGame The game found with the given ID
+     * @throws SteamCondenserException if the user does not own the game or no
+     *         game with the given ID exists
+     */
+    private function findGame($id) {
+        $game = null;
+        foreach($this->getGames() as $currentGame) {
+            if($currentGame->getAppId() == $id ||
+               $currentGame->getShortName() == $id ||
+               $currentGame->getName() == $id) {
+                $game = $currentGame;
+                break;
             }
         }
+
+        if($game == null) {
+            if(is_int($id)) {
+                $message = "This SteamID does not own a game with application ID {$id}.";
+            } else {
+                $message = "This SteamID does not own the game \"{$id}\".";
+            }
+            throw new SteamCondenserException($message);
+        }
+
+        return $game;
     }
 
     /**
@@ -368,12 +403,12 @@ class SteamId {
     /**
      * Returns the games this user owns
      *
-     * The keys of the hash are the games' names and the values are the
-     * "friendly names" used for stats or `false` if the games has no stats.
+     * The keys of the hash are the games' application IDs and the values are
+     * the corresponding game instances.
      *
      * If the friends haven't been fetched yet, this is done now.
      *
-     * @return array Pairs of game names and friendly names
+     * @return array The games this user owns
      * @see fetchGames()
      */
     public function getGames() {
@@ -387,25 +422,23 @@ class SteamId {
     /**
      * Returns the stats for the given game for the owner of this SteamID
      *
-     * @param string $gameName The friendly name of the game stats should be
-     *        fetched for
+     * @param mixed $id The full or short name or the application ID of the
+     *        game stats should be fetched for
      * @return GameStats The statistics for the game with the given name
      * @throws SteamCondenserException if the user does not own this game or it
      *         does not have any stats
      */
-    public function getGameStats($gameName) {
-        if(in_array($gameName, array_values($this->getGames()))) {
-            $friendlyName = $gameName;
-        } else if(array_key_exists(strtolower($gameName), $this->getGames())) {
-            $friendlyName = $this->games[strtolower($gameName)];
-        } else {
-            throw new SteamCondenserException("Stats for game {$gameName} do not exist.");
+    public function getGameStats($id) {
+        $game = $this->findGame($id);
+
+        if(!$game->hasStats()) {
+            throw new SteamCondenserException("\"{$game->getName()}\" does not have stats.");
         }
 
         if(empty($this->customUrl)) {
-            return GameStats::createGameStats($this->steamId64, $friendlyName);
+            return GameStats::createGameStats($this->steamId64, $game->getShortName());
         } else {
-            return GameStats::createGameStats($this->customUrl, $friendlyName);
+            return GameStats::createGameStats($this->customUrl, $game->getShortName());
         }
     }
 
@@ -434,6 +467,36 @@ class SteamId {
      */
     public function getNickname() {
         return $this->nickname;
+    }
+
+    /**
+     * Returns the time in minutes this user has played this game in the last
+     * two weeks
+     *
+     * @param mixed $id The full or short name or the application ID of the
+     *        game
+     * @return int The number of minutes this user played the given game in the
+     *         last two weeks
+     */
+    public function getRecentPlaytime($id) {
+        $game = $this->findGame($id);
+        $playtimes = $this->playtimes[$game->getAppId()];
+
+        return $playtimes[0];
+    }
+
+    /**
+     * Returns the total time in minutes this user has played this game
+     *
+     * @param mixed $id The full or short name or the application ID of the
+     *        game
+     * @return int The total number of minutes this user played the given game
+     */
+    public function getTotalPlaytime($id) {
+        $game = $this->findGame($id);
+        $playtimes = $this->playtimes[$game->getAppId()];
+
+        return $playtimes[1];
     }
 
     /**
