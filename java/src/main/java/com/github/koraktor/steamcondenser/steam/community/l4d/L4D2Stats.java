@@ -24,6 +24,7 @@ import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
 public class L4D2Stats extends AbstractL4DStats {
 
     private HashMap<String, Object> scavengeStats;
+    private HashMap<String, Float> damagePercentages;
 
     /**
      * Creates a <code>L4D2Stats</code> object by calling the super constructor
@@ -34,6 +35,26 @@ public class L4D2Stats extends AbstractL4DStats {
     public L4D2Stats(Object steamId)
             throws SteamCondenserException {
         super(steamId, "l4d2");
+
+        Element weaponsData = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);
+        this.damagePercentages = new HashMap<String, Float>();
+        this.damagePercentages.put("melee", Float.parseFloat(((Element) weaponsData.getElementsByTagName("meleePctDmg")).getTextContent()));
+        this.damagePercentages.put("pistols", Float.parseFloat(((Element) weaponsData.getElementsByTagName("pistolsPctDmg")).getTextContent()));
+        this.damagePercentages.put("rifles", Float.parseFloat(((Element) weaponsData.getElementsByTagName("bulletsPctDmg")).getTextContent()));
+        this.damagePercentages.put("shotguns", Float.parseFloat(((Element) weaponsData.getElementsByTagName("shellPctDmg")).getTextContent()));
+    }
+
+    /**
+     * Returns the percentage of damage done by this player with each weapon
+     * type
+     *
+     * Available weapon types are <var>"melee"</var>, <var>"pistols"</var>,
+     * <var>"rifles"</var> and <var>"shotguns"</var>.
+     *
+     * @return float The percentages of damage done with each weapon type
+     */
+    public Map<String, Float> getDamagePercentages() {
+        return this.damagePercentages;
     }
 
     /**

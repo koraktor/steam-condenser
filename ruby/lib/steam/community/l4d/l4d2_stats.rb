@@ -17,12 +17,27 @@ class L4D2Stats < GameStats
   # The names of the special infected in Left4Dead 2
   SPECIAL_INFECTED = SPECIAL_INFECTED + %w{charger jockey spitter}
 
+  # Returns the percentage of damage done by this player with each weapon type
+  #
+  # Available weapon types are `:melee`, `:pistols`, `:rifles` and `:shotguns`.
+  #
+  # @return [Hash<Symbol, Float>] The percentages of damage done with each
+  #         weapon type
+  attr_reader :damage_percentages
+
   # Creates a `L4D2Stats` object by calling the super constructor with the game
   # name `'l4d2'`
   #
   # @param [String] steam_id The custom URL or 64bit Steam ID of the user
   def initialize(steam_id)
     super steam_id, 'l4d2'
+
+    @damage_percentages = {
+      :melee    => @xml_data.elements['stats/weapons/meleepctdmg'].text.to_f,
+      :pistols  => @xml_data.elements['stats/weapons/pistolspctdmg'].text.to_f,
+      :rifles   => @xml_data.elements['stats/weapons/bulletspctdmg'].text.to_f,
+      :shotguns => @xml_data.elements['stats/weapons/shellspctdmg'].text.to_f
+    }
   end
 
   # Returns a hash of lifetime statistics for this user like the time played

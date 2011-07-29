@@ -30,6 +30,11 @@ class L4D2Stats extends AbstractL4DStats {
     /**
      * @var array
      */
+    private $damagePercentages;
+
+    /**
+     * @var array
+     */
     private $scavengeStats;
 
     /**
@@ -40,6 +45,13 @@ class L4D2Stats extends AbstractL4DStats {
      */
     public function __construct($steamId) {
         parent::__construct($steamId, 'l4d2');
+
+        $this->damagePercentages = array(
+            'melee' => (float) $this->xmlData->stats->weapons->meleePctDmg,
+            'pistols' => (float) $this->xmlData->stats->weapons->pistolsPctDmg,
+            'rifles' => (float) $this->xmlData->stats->weapons->bulletsPctDmg,
+            'shotguns' => (float) $this->xmlData->stats->weapons->shellsPctDmg
+        );
     }
 
     /**
@@ -69,6 +81,37 @@ class L4D2Stats extends AbstractL4DStats {
         }
 
         return $this->lifetimeStats;
+    }
+
+    /**
+     * Returns the percentage of damage done by this player with each weapon
+     * type
+     *
+     * Available weapon types are <var>"melee"</var>, <var>"pistols"</var>,
+     * <var>"rifles"</var> and <var>"shotguns"</var>.
+     *
+     * @return float The percentages of damage done with each weapon type
+     */
+    public function getDamagePercentage() {
+        return $this->DamagePercentage;
+    }
+
+    /**
+     * Returns the percentage of damage done by this player with pistols
+     *
+     * @return float The percentage of damage done with pistols
+     */
+    public function getPistolDamagePercentage() {
+        return $this->pistolDamagePercentage;
+    }
+
+    /**
+     * Returns the percentage of damage done by this player with rifles
+     *
+     * @return float The percentage of damage done with rifles
+     */
+    public function getRifleDamagePercentage() {
+        return $this->rifleDamagePercentage;
     }
 
     /**
@@ -117,6 +160,15 @@ class L4D2Stats extends AbstractL4DStats {
         }
 
         return $this->scavengeStats;
+    }
+
+    /**
+     * Returns the percentage of damage done by this player with shotguns
+     *
+     * @return float The percentage of damage done with shotguns
+     */
+    public function getShotgunDamagePercentage() {
+        return $this->shotgunDamagePercentage;
     }
 
     /**
