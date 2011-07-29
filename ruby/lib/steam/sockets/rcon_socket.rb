@@ -73,7 +73,7 @@ class RCONSocket
   #
   # @raise [RCONBanException] if the IP of the local machine has been banned on
   #        the game server
-  # @return [SteamPacket] The packet replied from the server
+  # @return [RCONPacket] The packet replied from the server
   def reply
     raise RCONBanException if receive_packet(4) == 0
 

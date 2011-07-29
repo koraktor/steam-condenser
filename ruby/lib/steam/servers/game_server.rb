@@ -131,6 +131,7 @@ module GameServer
   # @return [Boolean] whether the authentication was successful
   # @see #rcon_exec
   def rcon_auth(password)
+    raise NotImplementedError
   end
 
   # Returns whether the RCON connection to this server is already authenticated
@@ -149,6 +150,7 @@ module GameServer
   # @return [String] The output of the executed command
   # @see #rcon_auth
   def rcon_exec(command)
+    raise NotImplementedError
   end
 
   # Returns the settings applied on the server. These settings are also called

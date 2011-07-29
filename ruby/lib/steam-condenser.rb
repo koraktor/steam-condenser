@@ -3,8 +3,6 @@
 #
 # Copyright (c) 2009-2011, Sebastian Staudt
 
-require 'bundler'
-
 # This module is used as a wrapper around Steam Condenser's classes
 #
 # It does not provide any own functionality, but this file is used as an entry

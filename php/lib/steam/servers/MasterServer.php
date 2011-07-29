@@ -151,8 +151,7 @@ class MasterServer extends Server {
      *         reply
      * @throws TimeoutException if the request times out
      */
-    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = '')
-    {
+    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = '') {
         $failCount  = 0;
         $finished   = false;
         $portNumber = 0;
@@ -231,7 +230,6 @@ class MasterServer extends Server {
 
                 return $replyPackets;
             } catch(Exception $e) {
-                echo get_class($e) . "\n";
                 if($this->rotateIp()) {
                     throw $e;
                 }
