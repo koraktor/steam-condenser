@@ -19,7 +19,7 @@ class L4DWeapon
   def initialize(weapon_data)
     super weapon_data
 
-    @kill_percentage = weapon_data.elements['killpct'].text
+    @kill_percentage = weapon_data.elements['killpct'].text.to_f * 0.01
   end
 
 end

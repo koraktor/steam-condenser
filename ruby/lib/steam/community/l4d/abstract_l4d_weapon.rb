@@ -46,8 +46,8 @@ module AbstractL4DWeapon
   def initialize(weapon_data)
     super weapon_data
 
-    @accuracy             = weapon_data.elements['accuracy'].text
-    @headshots_percentage = weapon_data.elements['headshots'].text
+    @accuracy             = weapon_data.elements['accuracy'].text.to_f * 0.01
+    @headshots_percentage = weapon_data.elements['headshots'].text.to_f * 0.01
     @id                   = weapon_data.name
     @shots                = weapon_data.elements['shots'].text.to_i
   end

@@ -18,11 +18,11 @@ import com.github.koraktor.steamcondenser.steam.community.GameWeapon;
  */
 public abstract class AbtractL4DWeapon extends GameWeapon {
 
-    protected String accuracy;
+    protected float accuracy;
 
-    protected String headshotPercentage;
+    protected float headshotPercentage;
 
-    protected String killPercentage;
+    protected float killPercentage;
 
     protected String name;
 
@@ -37,21 +37,23 @@ public abstract class AbtractL4DWeapon extends GameWeapon {
     public AbtractL4DWeapon(Element weaponData) {
         super(weaponData);
 
-        this.accuracy = weaponData.getElementsByTagName("accuracy").item(0)
-                .getTextContent();
-        this.headshotPercentage = weaponData.getElementsByTagName("headshots")
-                .item(0).getTextContent();
+        this.accuracy = Float.parseFloat(weaponData
+            .getElementsByTagName("accuracy").item(0).getTextContent()
+            .replace("%", "")) * 0.01f;
+        this.headshotPercentage = Float.parseFloat(weaponData
+            .getElementsByTagName("headshots").item(0).getTextContent()
+            .replace("%", "")) * 0.01f;
         this.name = weaponData.getTagName();
         this.shots = Integer.valueOf(weaponData.getElementsByTagName("shots")
-                .item(0).getTextContent());
+            .item(0).getTextContent());
     }
 
     /**
      * Returns the overall accuracy of the player with this weapon
      *
-     * @return string The accuracy of the player with this weapon
+     * @return The accuracy of the player with this weapon
      */
-    public String getAccuracy() {
+    public float getAccuracy() {
         return this.accuracy;
     }
 
@@ -59,9 +61,9 @@ public abstract class AbtractL4DWeapon extends GameWeapon {
      * Returns the percentage of kills with this weapon that have been
      * headshots
      *
-     * @return string The percentage of headshots with this weapon
+     * @return The percentage of headshots with this weapon
      */
-    public String getHeadshotPercentage() {
+    public float getHeadshotPercentage() {
         return this.headshotPercentage;
     }
 
@@ -69,16 +71,16 @@ public abstract class AbtractL4DWeapon extends GameWeapon {
      * Returns the percentage of overall kills of the player that have been
      * achieved with this weapon
      *
-     * @return string The percentage of kills with this weapon
+     * @return The percentage of kills with this weapon
      */
-    public String getKillPercentage() {
-        return killPercentage;
+    public float getKillPercentage() {
+        return this.killPercentage;
     }
 
     /**
      * Returns the name of the weapon
      *
-     * @return string The name of the weapon
+     * @return The name of the weapon
      */
     public String getName() {
         return this.name;
@@ -87,7 +89,7 @@ public abstract class AbtractL4DWeapon extends GameWeapon {
     /**
      * Returns the number of shots the player has fired with this weapon
      *
-     * @return int The number of shots with this weapon
+     * @return The number of shots with this weapon
      */
     public int getShots() {
         return this.shots;

@@ -28,7 +28,7 @@ class L4DWeapon extends AbstractL4DWeapon {
     public function __construct($weaponData) {
         parent::__construct($weaponData);
 
-        $this->killPercentage      = (string) $weaponData->killpct;
+        $this->killPercentage = ((float) $weaponData->killpct) * 0.01;
     }
 }
 ?>

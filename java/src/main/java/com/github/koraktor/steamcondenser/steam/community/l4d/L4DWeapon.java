@@ -25,8 +25,9 @@ public class L4DWeapon extends AbtractL4DWeapon {
     public L4DWeapon(Element weaponData) {
         super(weaponData);
 
-        this.killPercentage = weaponData.getElementsByTagName("killpct")
-            .item(0).getTextContent();
+        this.killPercentage = Float.parseFloat(weaponData
+            .getElementsByTagName("killpct").item(0).getTextContent()
+            .replace("%", "")) * 0.01f;
     }
 
 }

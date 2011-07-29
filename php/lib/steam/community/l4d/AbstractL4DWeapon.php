@@ -54,8 +54,8 @@ abstract class AbstractL4DWeapon extends GameWeapon {
     public function __construct($weaponData) {
         parent::__construct($weaponData);
 
-        $this->accuracy            = (string) $weaponData->accuracy;
-        $this->headshotsPercentage = (string) $weaponData->headshots;
+        $this->accuracy            = ((float) $weaponData->accuracy) * 0.01;
+        $this->headshotsPercentage = ((float) $weaponData->headshots) * 0.01;
         $this->id                  = $weaponData->getName();
         $this->shots               = (int)    $weaponData->shots;
     }

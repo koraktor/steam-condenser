@@ -30,7 +30,7 @@ class L4D2Weapon
     super weapon_data
 
     @damage          = weapon_data.elements['damage'].text.to_i
-    @kill_percentage = weapon_data.elements['pctkills'].text
+    @kill_percentage = weapon_data.elements['pctkills'].text.to_f * 0.01
     @weapon_group    = weapon_data.attribute('group')
   end
 

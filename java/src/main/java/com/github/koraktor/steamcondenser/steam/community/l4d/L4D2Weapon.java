@@ -31,8 +31,9 @@ public class L4D2Weapon extends AbtractL4DWeapon {
 
         this.damage = Integer.valueOf(weaponData.getElementsByTagName("damage")
                 .item(0).getTextContent());
-        this.killPercentage = weaponData.getElementsByTagName("pctkills")
-                .item(0).getTextContent();
+        this.killPercentage = Float.parseFloat(weaponData
+                .getElementsByTagName("pctkills").item(0).getTextContent()
+                .replace("%", "")) * 0.01f;
         this.weaponGroup = weaponData.getAttribute("group");
     }
 

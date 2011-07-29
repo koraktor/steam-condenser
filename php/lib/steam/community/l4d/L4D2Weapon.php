@@ -39,7 +39,7 @@ class L4D2Weapon extends AbstractL4DWeapon {
         parent::__construct($weaponData);
 
         $this->damage         = (int)    $weaponData->damage;
-        $this->killPercentage = (string) $weaponData->pctkills;
+        $this->killPercentage = ((float) $weaponData->pctkills) * 0.01;
         $this->weaponGroup    = $weaponData['group'];
 
     }
