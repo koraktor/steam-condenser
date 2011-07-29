@@ -8,6 +8,7 @@
 package com.github.koraktor.steamcondenser.steam.community.l4d;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -46,9 +47,9 @@ public class L4D2Stats extends AbstractL4DStats {
      * <code>AbstractL4DStats#getLifetimeStats()</code> first and adds some
      * additional stats.
      *
-     * @return array The lifetime statistics of the player in Left4Dead 2
+     * @return The lifetime statistics of the player in Left4Dead 2
      */
-    public HashMap<String, Object> getLifetimeStats() {
+    public Map<String, Object> getLifetimeStats() {
         if(!this.isPublic()) {
             return null;
         }
@@ -73,7 +74,7 @@ public class L4D2Stats extends AbstractL4DStats {
      *
      * @return The Scavenge statistics of the player
      */
-    public HashMap<String, Object> getScavengeStats() {
+    public Map<String, Object> getScavengeStats() {
         if(!this.isPublic()) {
             return null;
         }
@@ -123,7 +124,7 @@ public class L4D2Stats extends AbstractL4DStats {
      *
      * @return The Survival statistics of the player
      */
-    public HashMap<String, Object> getSurvivalStats()
+    public Map<String, Object> getSurvivalStats()
             throws SteamCondenserException {
         if(!this.isPublic()) {
             return null;
@@ -152,7 +153,7 @@ public class L4D2Stats extends AbstractL4DStats {
      *
      * @return The weapon statistics for this player
      */
-    public HashMap<String, GameWeapon> getWeaponStats() {
+    public Map<String, GameWeapon> getWeaponStats() {
         if(!this.isPublic()) {
             return null;
         }

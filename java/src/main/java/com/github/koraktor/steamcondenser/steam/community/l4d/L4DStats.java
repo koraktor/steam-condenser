@@ -7,8 +7,8 @@
 
 package com.github.koraktor.steamcondenser.steam.community.l4d;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,7 +44,7 @@ public class L4DStats extends AbstractL4DStats {
      *
      * @return The stats for the Survival mode
      */
-    public HashMap<String, Object> getSurvivalStats()
+    public Map<String, Object> getSurvivalStats()
             throws SteamCondenserException {
         if(!this.isPublic()) {
             return null;
@@ -73,7 +73,7 @@ public class L4DStats extends AbstractL4DStats {
      *
      * @return The weapon statistics
      */
-    public HashMap<String, GameWeapon> getWeaponStats() {
+    public Map<String, GameWeapon> getWeaponStats() {
         if(!this.isPublic()) {
             return null;
         }

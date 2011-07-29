@@ -9,6 +9,7 @@ package com.github.koraktor.steamcondenser.steam.community.l4d;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -71,7 +72,7 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @return The favorites of this user
      */
-    public HashMap<String, Object> getFavorites() {
+    public Map<String, Object> getFavorites() {
         if(!this.isPublic()) {
             return null;
         }
@@ -100,7 +101,7 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @return The lifetime statistics for this user
      */
-    public HashMap<String, Object> getLifetimeStats() {
+    public Map<String, Object> getLifetimeStats() {
         if(!this.isPublic()) {
             return null;
         }
@@ -132,7 +133,7 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @return The Survival statistics for this user
      */
-    public HashMap<String, Object> getSurvivalStats()
+    public Map<String, Object> getSurvivalStats()
             throws SteamCondenserException {
         if(!this.isPublic()) {
             return null;
@@ -168,7 +169,7 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @return The teamplay statistics for this
      */
-    public HashMap<String, Object> getTeamplayStats() {
+    public Map<String, Object> getTeamplayStats() {
         if(!this.isPublic()) {
             return null;
         }
@@ -201,7 +202,7 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @return The Versus statistics for this user
      */
-    public HashMap<String, Object> getVersusStats() {
+    public Map<String, Object> getVersusStats() {
         if(!this.isPublic()) {
             return null;
         }
