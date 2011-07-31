@@ -186,6 +186,15 @@ class AlienSwarmStats extends GameStats {
     }
 
     /**
+     * Returns general stats for the players
+     *
+     * @return array The stats for the player
+     */
+    public function getLifetimeStats() {
+        return $this->lifetimeStats;
+    }
+
+    /**
      * Returns the stats for individual missions for this user containing all
      * Alien Swarm missions
      *

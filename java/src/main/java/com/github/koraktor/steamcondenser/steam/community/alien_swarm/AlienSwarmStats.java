@@ -177,6 +177,15 @@ public class AlienSwarmStats extends GameStats {
     }
 
     /**
+     * Returns general stats for the players
+     *
+     * @return The stats for the player
+     */
+    public Map<String, Object> getLifetimeStats() {
+        return this.lifetimeStats;
+    }
+
+    /**
      * Returns the stats for individual missions for this user containing all
      * Alien Swarm missions
      * <p>
