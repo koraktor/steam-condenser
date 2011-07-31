@@ -13,8 +13,8 @@ package com.github.koraktor.steamcondenser.exceptions;
  *
  * @author Sebastian Staudt
  */
-public class SteamCondenserException extends Exception
-{
+public class SteamCondenserException extends Exception {
+
     /**
      * Creates a new <code>SteamCondenserException</code> instance
      */
@@ -27,5 +27,15 @@ public class SteamCondenserException extends Exception
      */
     public SteamCondenserException(String message) {
         super(message);
+    }
+
+    /**
+     * Creates a new <code>SteamCondenserException</code> instance
+     *
+     * @param message The message to attach to the exception
+     * @param cause The initial error that caused this exception
+     */
+    public SteamCondenserException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

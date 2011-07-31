@@ -9,8 +9,6 @@ package com.github.koraktor.steamcondenser.steam.community.tf2;
 
 import java.util.ArrayList;
 
-import org.json.JSONException;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -37,11 +35,10 @@ public class TF2Stats extends GameStats {
      * constructor with the game name <code>"tf2"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
-     * @throws SteamCondenserException If an error occurs while fetching the
-     *                                 stats data
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
-    public TF2Stats(Object steamId)
-            throws SteamCondenserException {
+    public TF2Stats(Object steamId) throws SteamCondenserException {
         super(steamId, "tf2");
 
         if(this.isPublic()) {
@@ -86,12 +83,10 @@ public class TF2Stats extends GameStats {
      * player
      *
      * @return This player's TF2 backpack
-     * @throws JSONException If the received data could not be parsed
      * @throws WebApiException If an error occured while querying Steam's Web
-     *                         API
+     *         API
      */
-    public TF2Inventory getInventory()
-            throws JSONException, WebApiException {
+    public TF2Inventory getInventory() throws WebApiException {
         if(!this.isPublic()) {
             return null;
         }

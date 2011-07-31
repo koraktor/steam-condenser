@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.sockets;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
@@ -28,10 +27,10 @@ public class MasterServerSocket extends QuerySocket {
      *
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
-     * @throws IOException if the socket cannot be opened
+     * @throws SteamCondenserException if the socket cannot be opened
      */
     public MasterServerSocket(InetAddress ipAddress, int portNumber)
-            throws IOException {
+            throws SteamCondenserException {
         super(ipAddress, portNumber);
     }
 
@@ -39,14 +38,13 @@ public class MasterServerSocket extends QuerySocket {
      * Reads a single packet from the socket
      *
      * @return The packet replied from the server
-     * @throws IOException if an error occurs while communicating with the
-     *         server
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws PacketFormatException if the packet has the wrong format
-     * @throws SteamCondenserException if the reply cannot be parsed
      * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.receivePacket(1500);
 
         if(this.buffer.getInt() != -1) {

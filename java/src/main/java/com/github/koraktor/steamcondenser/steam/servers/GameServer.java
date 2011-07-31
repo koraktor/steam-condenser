@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.servers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,11 +57,10 @@ public abstract class GameServer extends Server {
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     protected GameServer(String address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address, port);
 
         this.rconAuthenticated = false;
@@ -144,13 +142,11 @@ public abstract class GameServer extends Server {
      *
      * @return The latency of this server in milliseconds
      * @see #updatePing
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public int getPing()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         if(this.ping == 0) {
             this.updatePing();
         }
@@ -170,13 +166,12 @@ public abstract class GameServer extends Server {
      *
      * @return The players on this server
      * @see #updatePlayers
-     * @throws IOException if the request fails
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
      * @throws TimeoutException if the request times out
      */
     public HashMap<String, SteamPlayer> getPlayers()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         return this.getPlayers(null);
     }
 
@@ -194,13 +189,11 @@ public abstract class GameServer extends Server {
      *        gather more detailed information on the players, like STEAM_IDs.
      * @return The players on this server
      * @see #updatePlayers
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public HashMap<String, SteamPlayer> getPlayers(String rconPassword)
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         if(this.playerHash == null) {
             this.updatePlayers(rconPassword);
         }
@@ -221,13 +214,11 @@ public abstract class GameServer extends Server {
      *
      * @return The currently active server rules
      * @see #updateRules
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public HashMap<String, String> getRules()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         if(this.rulesHash == null) {
             this.updateRules();
         }
@@ -248,13 +239,11 @@ public abstract class GameServer extends Server {
      *
      * @return Server attributes with their values
      * @see #updateServerInfo
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public HashMap<String, Object> getServerInfo()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         if(this.serverInfo == null) {
             this.updateServerInfo();
         }
@@ -266,13 +255,11 @@ public abstract class GameServer extends Server {
      * Receives a response from the server
      *
      * @return The response packet replied by the server
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     private SteamPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws TimeoutException, SteamCondenserException {
         return this.socket.getReply();
     }
 
@@ -284,14 +271,11 @@ public abstract class GameServer extends Server {
      * attributes of the server object.
      *
      * @param requestType The type of request to send to the server
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if either the request type or the
-     *         response packet is not known or a problem occurs while parsing
-     *         the reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     private void handleResponseForRequest(int requestType)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.handleResponseForRequest(requestType, true);
     }
 
@@ -307,14 +291,11 @@ public abstract class GameServer extends Server {
      *        the replied packet isn't expected. This is useful to handle
      *        missing challenge numbers, which will be automatically filled in,
      *        although not requested explicitly.
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if either the request type or the
-     *         response packet is not known or a problem occurs while parsing
-     *         the reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     private void handleResponseForRequest(int requestType, boolean repeatOnFailure)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         Class<? extends SteamPacket> expectedResponse = null;
         SteamPacket requestPacket = null;
 
@@ -336,8 +317,6 @@ public abstract class GameServer extends Server {
                     expectedResponse = S2A_RULES_Packet.class;
                     requestPacket = new A2S_RULES_Packet(this.challengeNumber);
                     break;
-                default:
-                    throw new SteamCondenserException("Called with wrong request type.");
             }
 
             this.sendRequest(requestPacket);
@@ -373,13 +352,11 @@ public abstract class GameServer extends Server {
      * @see #updateChallengeNumber
      * @see #updatePing
      * @see #updateServerInfo
-     * @throws IOException if a request fails
-     * @throws SteamCondenserException if a problem occurs while parsing a
-     *         reply
+     * @throws SteamCondenserException if a request fails
      * @throws TimeoutException if a request times out
      */
     public void initialize()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.updatePing();
         this.updateServerInfo();
         this.updateChallengeNumber();
@@ -402,13 +379,11 @@ public abstract class GameServer extends Server {
      * @param password The RCON password of the server
      * @return <code>true</code>, if the authentication was successful
      * @see #rconExec
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     abstract public boolean rconAuth(String password)
-            throws IOException, TimeoutException, SteamCondenserException;
+            throws SteamCondenserException, TimeoutException;
 
     /**
      * Remotely executes a command on the server via RCON
@@ -416,22 +391,20 @@ public abstract class GameServer extends Server {
      * @param command The command to execute on the server via RCON
      * @return The output of the executed command
      * @see #rconAuth
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     abstract public String rconExec(String command)
-            throws IOException, TimeoutException, SteamCondenserException;
+            throws SteamCondenserException, TimeoutException;
 
     /**
      * Sends a request packet to the server
      *
      * @param requestData The request packet to send to the server
-     * @throws IOException if the request fails
+     * @throws SteamCondenserException if the request fails
      */
     private void sendRequest(SteamPacket requestData)
-            throws IOException {
+            throws SteamCondenserException {
         this.socket.send(requestData);
     }
 
@@ -482,13 +455,11 @@ public abstract class GameServer extends Server {
      *
      * @see #handleResponseForRequest
      * @see #initialize
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updateChallengeNumber()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.handleResponseForRequest(GameServer.REQUEST_CHALLENGE);
     }
 
@@ -501,13 +472,11 @@ public abstract class GameServer extends Server {
      *
      * @see #getPing
      * @see #initialize
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updatePing()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.sendRequest(new A2S_INFO_Packet());
         long startTime = System.currentTimeMillis();
         this.getReply();
@@ -525,13 +494,11 @@ public abstract class GameServer extends Server {
      *
      * @see #getPlayers
      * @see #handleResponseForRequest
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updatePlayers()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.updatePlayers(null);
     }
 
@@ -547,13 +514,11 @@ public abstract class GameServer extends Server {
      *        gather more detailed information on the players, like STEAM_IDs.
      * @see #getPlayers
      * @see #handleResponseForRequest
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updatePlayers(String rconPassword)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.handleResponseForRequest(GameServer.REQUEST_PLAYER);
 
         if(!this.rconAuthenticated) {
@@ -590,13 +555,11 @@ public abstract class GameServer extends Server {
      *
      * @see #getRules
      * @see #handleResponseForRequest
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updateRules()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.handleResponseForRequest(GameServer.REQUEST_RULES);
     }
 
@@ -611,13 +574,11 @@ public abstract class GameServer extends Server {
      * @see #getServerInfo
      * @see #handleResponseForRequest
      * @see #initialize
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public void updateServerInfo()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.handleResponseForRequest(GameServer.REQUEST_INFO);
     }
 }

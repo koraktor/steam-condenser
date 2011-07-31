@@ -28,10 +28,10 @@ public class L4DStats extends AbstractL4DStats {
      * with the game name <code>"l4d"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
-     * @throws SteamCondenserException if an error occurs
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
-    public L4DStats(Object steamId)
-            throws SteamCondenserException {
+    public L4DStats(Object steamId) throws SteamCondenserException {
         super(steamId, "l4d");
     }
 

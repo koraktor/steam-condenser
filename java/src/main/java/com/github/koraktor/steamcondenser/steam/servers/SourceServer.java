@@ -44,11 +44,9 @@ public class SourceServer extends GameServer {
      * Source games
      *
      * @return The Source master server
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public MasterServer getMaster()
-            throws IOException, SteamCondenserException {
+    public MasterServer getMaster() throws SteamCondenserException {
         return new MasterServer(MasterServer.SOURCE_MASTER_SERVER);
     }
 
@@ -59,11 +57,9 @@ public class SourceServer extends GameServer {
      * @param address Either an IP address, a DNS name or one of them
      *        combined with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public SourceServer(String address)
-            throws IOException, SteamCondenserException {
+    public SourceServer(String address) throws SteamCondenserException {
         super(address, 27015);
     }
 
@@ -75,11 +71,10 @@ public class SourceServer extends GameServer {
      *        combined with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public SourceServer(String address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address, port);
     }
 
@@ -90,11 +85,9 @@ public class SourceServer extends GameServer {
      * @param address Either an IP address, a DNS name or one of them
      *        combined with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public SourceServer(InetAddress address)
-            throws IOException, SteamCondenserException {
+    public SourceServer(InetAddress address) throws SteamCondenserException {
         super(address.toString(), 27015);
     }
 
@@ -106,21 +99,20 @@ public class SourceServer extends GameServer {
      *        combined with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public SourceServer(InetAddress address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address.toString(), port);
     }
 
     /**
-     * Initializes the socket to communicate with the Source server
+     * Initializes the sockets to communicate with the Source server
      *
      * @see RCONSocket
      * @see SourceSocket
      */
-    public void initSocket() throws IOException {
+    public void initSocket() throws SteamCondenserException {
         this.rconSocket = new RCONSocket(this.ipAddress, this.port);
         this.socket = new SourceSocket(this.ipAddress, this.port);
     }
@@ -131,13 +123,11 @@ public class SourceServer extends GameServer {
      * @param password The RCON password of the server
      * @return whether authentication was successful
      * @see #rconAuth
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public boolean rconAuth(String password)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws TimeoutException, SteamCondenserException {
         this.rconRequestId = new Random().nextInt();
 
         this.rconSocket.send(new RCONAuthRequestPacket(this.rconRequestId, password));
@@ -154,20 +144,18 @@ public class SourceServer extends GameServer {
      * @param command The command to execute on the server via RCON
      * @return The output of the executed command
      * @see #rconExec
-     * @throws IOException if the request fails
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
      * @throws TimeoutException if the request times out
      */
     public String rconExec(String command)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws TimeoutException, SteamCondenserException {
         if(!this.rconAuthenticated) {
             throw new RCONNoAuthException();
         }
 
         this.rconSocket.send(new RCONExecRequestPacket(this.rconRequestId, command));
         this.rconSocket.send(new RCONTerminator(this.rconRequestId));
-        ArrayList<RCONExecResponsePacket> responsePackets = new ArrayList<RCONExecResponsePacket>();
         RCONPacket responsePacket;
 
         String response = "";

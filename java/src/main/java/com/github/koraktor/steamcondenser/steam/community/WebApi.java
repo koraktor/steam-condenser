@@ -2,12 +2,11 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2010, Sebastian Staudt
+ * Copyright (c) 2010-2011, Sebastian Staudt
  */
 
 package com.github.koraktor.steamcondenser.steam.community;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,8 +50,7 @@ abstract public class WebApi {
      * @throws WebApiException if the given API key is not a valid 128bit
      *        hexadecimal string
      */
-    public static void setApiKey(String apiKey)
-            throws WebApiException {
+    public static void setApiKey(String apiKey) throws WebApiException {
         if(apiKey != null && !apiKey.matches("^[0-9A-F]{32}$")) {
             throw new WebApiException(WebApiException.Cause.INVALID_KEY);
         }
@@ -269,8 +267,8 @@ abstract public class WebApi {
             }
 
             data = EntityUtils.toString(response.getEntity());
-        } catch(IOException e) {
-            throw new RuntimeException(e);
+        } catch(Exception e) {
+            throw new WebApiException("Could not communicate with the Web API.", e);
         }
 
         return data;

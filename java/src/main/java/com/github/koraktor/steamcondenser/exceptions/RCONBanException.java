@@ -16,8 +16,8 @@ package com.github.koraktor.steamcondenser.exceptions;
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#rconAuth
  */
-public class RCONBanException extends SteamCondenserException
-{
+public class RCONBanException extends SteamCondenserException {
+
     /**
      * Creates a new <code>RCONBanException</code> instance
      */

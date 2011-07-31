@@ -15,8 +15,8 @@ package com.github.koraktor.steamcondenser.exceptions;
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#rconAuth
  * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#rconExec
  */
-public class RCONNoAuthException extends SteamCondenserException
-{
+public class RCONNoAuthException extends SteamCondenserException {
+
     /**
      * Creates a new <code>RCONNoAuthException</code> instance
      */

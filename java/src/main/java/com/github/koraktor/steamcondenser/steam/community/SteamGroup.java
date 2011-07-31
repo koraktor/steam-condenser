@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.community;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,11 +14,11 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
+import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 /**
  * The SteamGroup class represents a group in the Steam Community
@@ -44,8 +43,10 @@ public class SteamGroup {
      *
      * @param id The 64bit Steam ID of the group
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(long id) {
+    public static SteamGroup create(long id) throws SteamCondenserException {
         return SteamGroup.create((Object) id, true, false);
     }
 
@@ -55,8 +56,10 @@ public class SteamGroup {
      *
      * @param id The custom URL of the group specified by the group admin
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(String id) {
+    public static SteamGroup create(String id) throws SteamCondenserException {
         return SteamGroup.create((Object) id, true, false);
     }
 
@@ -68,8 +71,11 @@ public class SteamGroup {
      * @param fetch if <code>true</code> the groups's data is loaded into the
      *        object
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(long id, boolean fetch) {
+    public static SteamGroup create(long id, boolean fetch)
+            throws SteamCondenserException {
         return SteamGroup.create((Object) id, fetch, false);
     }
 
@@ -81,8 +87,11 @@ public class SteamGroup {
      * @param fetch if <code>true</code> the groups's data is loaded into the
      *        object
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(String id, boolean fetch) {
+    public static SteamGroup create(String id, boolean fetch)
+            throws SteamCondenserException {
         return SteamGroup.create((Object) id, fetch, false);
     }
 
@@ -96,8 +105,11 @@ public class SteamGroup {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(long id, boolean fetch, boolean bypassCache) {
+    public static SteamGroup create(long id, boolean fetch, boolean bypassCache)
+            throws SteamCondenserException {
         return SteamGroup.create((Object) id, fetch, bypassCache);
     }
 
@@ -111,8 +123,11 @@ public class SteamGroup {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public static SteamGroup create(String id, boolean fetch, boolean bypassCache) {
+    public static SteamGroup create(String id, boolean fetch, boolean bypassCache)
+            throws SteamCondenserException {
         return SteamGroup.create((Object) id, fetch, bypassCache);
     }
 
@@ -127,8 +142,11 @@ public class SteamGroup {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this group will be ignored and a new one will be created
      * @return The <code>SteamGroup</code> instance of the requested group
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    private static SteamGroup create(Object id, boolean fetch, boolean bypassCache) {
+    private static SteamGroup create(Object id, boolean fetch, boolean bypassCache)
+            throws SteamCondenserException {
         if(SteamGroup.isCached(id) && !bypassCache) {
             SteamGroup group = SteamGroup.steamGroups.get(id);
             if(fetch && !group.isFetched()) {
@@ -159,8 +177,11 @@ public class SteamGroup {
      *        the 64bit group ID
      * @param fetch if <code>true</code> the groups's data is loaded into the
      *        object
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    private SteamGroup(Object id, boolean fetch) {
+    private SteamGroup(Object id, boolean fetch)
+            throws SteamCondenserException {
         if(id instanceof String) {
             this.customUrl = (String) id;
         } else {
@@ -195,8 +216,11 @@ public class SteamGroup {
      * <p>
      * This might take several HTTP requests as the Steam Community splits this
      * data over several XML documents if the group has lots of members.
+     *
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public boolean fetchMembers() {
+    public void fetchMembers() throws SteamCondenserException {
         int page = 0;
         int totalPages;
         String url;
@@ -218,12 +242,10 @@ public class SteamGroup {
                 }
             } while(page < totalPages);
         } catch(Exception e) {
-            return false;
+            throw new SteamCondenserException("XML data could not be parsed.", e);
         }
 
         this.fetchTime = new Date().getTime();
-
-        return true;
     }
 
     /**
@@ -288,15 +310,20 @@ public class SteamGroup {
      * multiple requests for big groups.
      *
      * @return The number of this group's members
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public int getMemberCount()
-            throws ParserConfigurationException, SAXException, IOException {
-        if(this.members == null) {
-            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Element memberData = parser.parse(this.getBaseUrl() + "/memberslistxml").getDocumentElement();
-            return Integer.parseInt(memberData.getElementsByTagName("memberCount").item(0).getTextContent());
-        } else {
-            return this.members.size();
+    public int getMemberCount() throws SteamCondenserException {
+        try {
+            if(this.members == null) {
+                DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Element memberData = parser.parse(this.getBaseUrl() + "/memberslistxml").getDocumentElement();
+                return Integer.parseInt(memberData.getElementsByTagName("memberCount").item(0).getTextContent());
+            } else {
+                return this.members.size();
+            }
+        } catch(Exception e) {
+            throw new SteamCondenserException(e.getMessage(), e);
         }
     }
 
@@ -307,8 +334,10 @@ public class SteamGroup {
      *
      * @return The Steam ID's of the members of this group
      * @see #fetchMembers
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
-    public ArrayList<SteamId> getMembers() {
+    public ArrayList<SteamId> getMembers() throws SteamCondenserException {
         if(this.members == null) {
             this.fetchMembers();
         }

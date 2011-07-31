@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.servers;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -100,11 +99,9 @@ public class MasterServer extends Server {
      * @param address Either an IP address, a DNS name or one of them combined
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public MasterServer(String address)
-            throws IOException, SteamCondenserException {
+    public MasterServer(String address) throws SteamCondenserException {
         super(address, null);
     }
 
@@ -115,11 +112,10 @@ public class MasterServer extends Server {
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public MasterServer(String address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address, port);
     }
 
@@ -129,11 +125,9 @@ public class MasterServer extends Server {
      * @param address Either an IP address, a DNS name or one of them combined
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public MasterServer(InetAddress address)
-            throws IOException, SteamCondenserException {
+    public MasterServer(InetAddress address) throws SteamCondenserException {
         super(address.toString(), null);
     }
 
@@ -144,11 +138,10 @@ public class MasterServer extends Server {
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public MasterServer(InetAddress address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address.toString(), port);
     }
 
@@ -162,13 +155,11 @@ public class MasterServer extends Server {
      *
      * @return The challenge number returned from the master server
      * @see #sendHeartbeat
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public int getChallenge()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         this.socket.send(new C2M_CHECKMD5_Packet());
 
         return ((M2C_ISVALIDMD5_Packet) this.socket.getReply()).getChallenge();
@@ -183,13 +174,11 @@ public class MasterServer extends Server {
      * @return A list of game servers matching the given
      *         region and filters
      * @see A2M_GET_SERVERS_BATCH2_Paket
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public Vector<InetSocketAddress> getServers()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         return this.getServers(MasterServer.REGION_ALL, "");
     }
 
@@ -224,13 +213,11 @@ public class MasterServer extends Server {
      * @return A list of game servers matching the given
      *         region and filters
      * @see A2M_GET_SERVERS_BATCH2_Paket
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         int failCount    = 0;
         boolean finished = false;
         int portNumber   = 0;
@@ -271,7 +258,7 @@ public class MasterServer extends Server {
      *
      * @see MasterServerSocket
      */
-    public void initSocket() throws IOException {
+    public void initSocket() throws SteamCondenserException {
         this.socket = new MasterServerSocket(this.ipAddress, this.port);
     }
 
@@ -285,12 +272,10 @@ public class MasterServer extends Server {
      *         Zero means either the heartbeat was accepted by the master or
      *         there was a timeout. So usually it's best to repeat a heartbeat
      *         a few times when not receiving any packets.
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if heartbeat data is missing the
-     *         challenge number or the reply cannot be parsed
+     * @throws SteamCondenserException if the request fails
      */
     public List<SteamPacket> sendHeartbeat(Map<String, Object> data)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         this.socket.send(new S2M_HEARTBEAT2_Packet(data));
 
         List<SteamPacket> replyPackets = new ArrayList<SteamPacket>();

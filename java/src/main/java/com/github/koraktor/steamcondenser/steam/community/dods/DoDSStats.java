@@ -28,14 +28,14 @@ public class DoDSStats extends GameStats {
     private HashMap<String, DoDSWeapon> weaponStats;
 
     /**
-     * Creates a <code>DoDSStats</code> instance by calling the super constructor
-     * with the game name <code>"DoD:S"</code>
+     * Creates a <code>DoDSStats</code> instance by calling the super
+     * constructor with the game name <code>"DoD:S"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
-     * @throws SteamCondenserException if an error occurs
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
-    public DoDSStats(Object steamId)
-            throws SteamCondenserException {
+    public DoDSStats(Object steamId) throws SteamCondenserException {
         super(steamId, "dod:s");
     }
 

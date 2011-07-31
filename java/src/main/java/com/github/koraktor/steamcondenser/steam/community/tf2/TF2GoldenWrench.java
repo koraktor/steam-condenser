@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
+import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 import com.github.koraktor.steamcondenser.steam.community.SteamId;
 import com.github.koraktor.steamcondenser.steam.community.WebApi;
 
@@ -42,19 +43,23 @@ public class TF2GoldenWrench {
      * Returns all Golden Wrenches
      *
      * @return All Golden Wrenches
-     * @throws JSONException On JSON errors
-     * @throws SteamCondenserException If an error occurs querying the Web API
-     *                                 or the Steam Community
+     * @throws WebApiException if an error occurs querying the Web API
+     * @throws SteamCondenserException if an error occurs querying the Steam
+     *         Community
      */
     public static Set<TF2GoldenWrench> getGoldenWrenches()
-            throws JSONException, SteamCondenserException {
+            throws SteamCondenserException {
         if(goldenWrenches == null) {
-            goldenWrenches = new HashSet<TF2GoldenWrench>();
+            try {
+                goldenWrenches = new HashSet<TF2GoldenWrench>();
 
-            JSONObject data = new JSONObject(WebApi.getJSON("ITFItems_440", "GetGoldenWrenches", 2));
-            JSONArray wrenches = data.getJSONObject("results").getJSONArray("wrenches");
-            for(int i = 0; i < wrenches.length(); i ++) {
-                goldenWrenches.add(new TF2GoldenWrench(wrenches.getJSONObject(i)));
+                JSONObject data = new JSONObject(WebApi.getJSON("ITFItems_440", "GetGoldenWrenches", 2));
+                JSONArray wrenches = data.getJSONObject("results").getJSONArray("wrenches");
+                for(int i = 0; i < wrenches.length(); i ++) {
+                    goldenWrenches.add(new TF2GoldenWrench(wrenches.getJSONObject(i)));
+                }
+            } catch(JSONException e) {
+                throw new WebApiException("Could not parse the JSON data.", e);
             }
         }
 
@@ -65,16 +70,20 @@ public class TF2GoldenWrench {
      * Creates a new instance of a Golden Wrench with the given data
      *
      * @param wrenchData The JSON data for this wrench
-     * @throws JSONException If some attribute is missing from the JSON data
+     * @throws WebApiException If some attribute is missing from the JSON data
      * @throws SteamCondenserException If the SteamId for the owner of the
      *                                 wrench cannot be created
      */
     private TF2GoldenWrench(JSONObject wrenchData)
-            throws JSONException, SteamCondenserException {
-        this.date   = new Date(wrenchData.getLong("timestamp"));
-        this.id     = wrenchData.getInt("itemID");
-        this.number = wrenchData.getInt("wrenchNumber");
-        this.owner  = SteamId.create(wrenchData.getLong("steamID"), false);
+            throws SteamCondenserException {
+        try {
+            this.date   = new Date(wrenchData.getLong("timestamp"));
+            this.id     = wrenchData.getInt("itemID");
+            this.number = wrenchData.getInt("wrenchNumber");
+            this.owner  = SteamId.create(wrenchData.getLong("steamID"), false);
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
+        }
     }
 
     /**

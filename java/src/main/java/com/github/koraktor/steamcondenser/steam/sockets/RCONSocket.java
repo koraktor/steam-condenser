@@ -37,11 +37,17 @@ public class RCONSocket extends SteamSocket {
      *
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
+     * @throws SteamCondenserException if the socket cannot be opened
      */
     public RCONSocket(InetAddress ipAddress, int portNumber)
-            throws IOException {
+            throws SteamCondenserException {
         super(ipAddress, portNumber);
-        this.channel = SocketChannel.open();
+
+        try {
+            this.channel = SocketChannel.open();
+        } catch(IOException e) {
+            throw new SteamCondenserException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -60,17 +66,22 @@ public class RCONSocket extends SteamSocket {
      * Sends the given RCON packet to the server
      *
      * @param dataPacket The RCON packet to send to the server
-     * @throws IOException if an error occured while writing to the socket
+     * @throws SteamCondenserException if an error occurs while writing to the
+     *         socket
      */
     public void send(RCONPacket dataPacket)
-            throws IOException {
-        if(!((SocketChannel)this.channel).isConnected()) {
-            ((SocketChannel)this.channel).connect(this.remoteSocket);
-            this.channel.configureBlocking(false);
-        }
+            throws SteamCondenserException {
+        try {
+            if(!((SocketChannel)this.channel).isConnected()) {
+                ((SocketChannel)this.channel).connect(this.remoteSocket);
+                this.channel.configureBlocking(false);
+            }
 
-        this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
-        ((SocketChannel)this.channel).write(this.buffer);
+            this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
+            ((SocketChannel)this.channel).write(this.buffer);
+        } catch(IOException e) {
+            throw new SteamCondenserException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -81,15 +92,14 @@ public class RCONSocket extends SteamSocket {
      * concatenated into a single response packet.
      *
      * @return The packet replied from the server
-     * @throws IOException if an error occurs while communicating with the
-     *         server
      * @throws RCONBanException if the IP of the local machine has been banned
      *         on the game server
-     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws TimeoutException if the request times out
      */
     public RCONPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         if(this.receivePacket(4) <= 0) {
             throw new RCONBanException();
         }

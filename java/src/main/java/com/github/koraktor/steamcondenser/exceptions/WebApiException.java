@@ -9,17 +9,36 @@ package com.github.koraktor.steamcondenser.exceptions;
 
 /**
  * This exception is raised when a Steam Web API request or a related action
- * fails. This can have codeious reasons like an invalid Web API key or a broken
- * request.
+ * fails. This can have codeious reasons like an invalid Web API key or a
+ * broken request.
  *
  * @author Sebastian Staudt
  * @see com.github.koraktor.steamcondenser.steam.community.WebApi
  */
-public class WebApiException extends SteamCondenserException
-{
+public class WebApiException extends SteamCondenserException {
+
     public enum Cause { HTTP_ERROR, INVALID_KEY, STATUS_BAD, UNAUTHORIZED }
 
     private String message;
+
+    /**
+     * Creates a new <code>WebApiException</code> instance
+     *
+     * @param message The message to attach to the exception
+     */
+    public WebApiException(String message) {
+        super(message);
+    }
+
+    /**
+     * Creates a new <code>WebApiException</code> instance
+     *
+     * @param message The message to attach to the exception
+     * @param cause The initial error that caused this exception
+     */
+    public WebApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     /**
      * Creates a new WebApiException with an error message according to the

@@ -10,8 +10,6 @@ package com.github.koraktor.steamcondenser.steam.community.tf2;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONException;
-
 import com.github.koraktor.steamcondenser.exceptions.WebApiException;
 import com.github.koraktor.steamcondenser.steam.community.GameInventory;
 import com.github.koraktor.steamcondenser.steam.community.GameItem;
@@ -48,11 +46,10 @@ public class TF2Inventory extends GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static TF2Inventory create(long steamId64)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return create(steamId64, true, false);
     }
 
@@ -63,11 +60,10 @@ public class TF2Inventory extends GameInventory {
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static TF2Inventory create(long steamId64, boolean fetchNow)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return create(steamId64, fetchNow, false);
     }
 
@@ -79,11 +75,10 @@ public class TF2Inventory extends GameInventory {
      * @param fetchNow Whether the data should be fetched now
      * @param bypassCache Whether the cache should be bypassed
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static TF2Inventory create(long steamId64, boolean fetchNow, boolean bypassCache)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         if(isCached(steamId64) && !bypassCache) {
             TF2Inventory inventory = cache.get(steamId64);
             if(fetchNow && !inventory.isFetched()) {
@@ -101,10 +96,9 @@ public class TF2Inventory extends GameInventory {
      * and fetches its contents
      *
      * @param steamId64 The 64bit Steam ID of the user
-     * @throws JSONException on invalid JSON data
+     * @throws WebApiException on Web API errors
      */
-    protected TF2Inventory(long steamId64)
-            throws JSONException, WebApiException {
+    protected TF2Inventory(long steamId64) throws WebApiException {
         super(steamId64, true);
     }
 
@@ -113,10 +107,10 @@ public class TF2Inventory extends GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
-     * @throws JSONException on invalid JSON data
+     * @throws WebApiException on Web API errors
      */
     protected TF2Inventory(long steamId64, boolean fetchNow)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         super(steamId64, fetchNow);
     }
 

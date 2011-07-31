@@ -47,11 +47,10 @@ public abstract class GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public GameInventory(long steamId64, boolean fetchNow)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         this.steamId64 = steamId64;
 
         if(fetchNow) {
@@ -76,29 +75,31 @@ public abstract class GameInventory {
     /**
      * Updates the contents of the backpack using Steam Web API
      *
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     @SuppressWarnings("unchecked")
-    public void fetch()
-            throws JSONException, WebApiException {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SteamID", this.steamId64);
-        JSONObject result = WebApi.getJSONData("IEconItems_" + this.getAppId(), "GetPlayerItems", 1, params);
+    public void fetch() throws WebApiException {
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("SteamID", this.steamId64);
+            JSONObject result = WebApi.getJSONData("IEconItems_" + this.getAppId(), "GetPlayerItems", 1, params);
 
-        this.items = new HashMap<Integer, GameItem>();
-        JSONArray itemsData = result.getJSONArray("items");
-        for(int i = 0; i < itemsData.length(); i ++) {
-            JSONObject itemData = itemsData.getJSONObject(i);
-            if(itemData != null) {
-                try {
-                    GameItem item = this.getItemClass().getConstructor(this.getClass(), JSONObject.class).newInstance(this, itemData);
-                    this.items.put(item.getBackpackPosition() - 1, item);
-                } catch(IllegalAccessException e) {
-                } catch(InstantiationException e) {
-                } catch(InvocationTargetException e) {
-                } catch(NoSuchMethodException e) {}
+            this.items = new HashMap<Integer, GameItem>();
+            JSONArray itemsData = result.getJSONArray("items");
+            for(int i = 0; i < itemsData.length(); i ++) {
+                JSONObject itemData = itemsData.getJSONObject(i);
+                if(itemData != null) {
+                    try {
+                        GameItem item = this.getItemClass().getConstructor(this.getClass(), JSONObject.class).newInstance(this, itemData);
+                        this.items.put(item.getBackpackPosition() - 1, item);
+                    } catch(IllegalAccessException e) {
+                    } catch(InstantiationException e) {
+                    } catch(InvocationTargetException e) {
+                    } catch(NoSuchMethodException e) {}
+                }
             }
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
         }
 
         this.fetchDate = new Date();
@@ -238,15 +239,15 @@ public abstract class GameInventory {
      * Updates the item schema (this includes attributes and qualities) using
      * the "GetSchema" method of interface "IEconItems_{AppId}"
      *
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
-    protected void updateSchema()
-            throws JSONException, WebApiException {
+    protected void updateSchema() throws WebApiException {
         Map<String, Object> params = new HashMap<String, Object>();
         if(schemaLanguage != null) {
             params.put("language", schemaLanguage);
         }
+
+        try {
         JSONObject result = WebApi.getJSONData("IEconItems_" + this.getAppId(), "GetSchema", 1, params);
 
         Map<String, JSONObject> attributeSchema = new HashMap<String, JSONObject>();
@@ -272,6 +273,9 @@ public abstract class GameInventory {
         while(qualityIterator.hasNext()) {
             String quality = (String) qualityIterator.next();
             qualitySchema.put(qualitiesData.getInt(quality), quality);
+        }
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
         }
     }
 

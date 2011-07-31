@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.servers;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.concurrent.TimeoutException;
 
@@ -36,11 +35,9 @@ public class GoldSrcServer extends GameServer {
      * GoldSrc games
      *
      * @return The GoldSrc master server
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public MasterServer getMaster()
-            throws IOException, SteamCondenserException {
+    public MasterServer getMaster() throws SteamCondenserException {
         return new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
     }
 
@@ -50,11 +47,9 @@ public class GoldSrcServer extends GameServer {
      * @param address Either an IP address, a DNS name or one of them combined
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public GoldSrcServer(String address)
-            throws IOException, SteamCondenserException {
+    public GoldSrcServer(String address) throws SteamCondenserException {
         this(address, 27015, false);
     }
 
@@ -65,11 +60,10 @@ public class GoldSrcServer extends GameServer {
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public GoldSrcServer(String address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         this(address, port, false);
     }
 
@@ -82,11 +76,10 @@ public class GoldSrcServer extends GameServer {
      * @param port The port the server is listening on
      * @param isHLTV HLTV servers need special treatment, so this is used to
      *        determine if the server is a HLTV server
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public GoldSrcServer(String address, Integer port, boolean isHLTV)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         super(address, port);
 
         this.isHLTV = isHLTV;
@@ -98,11 +91,9 @@ public class GoldSrcServer extends GameServer {
      * @param address Either an IP address, a DNS name or one of them combined
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public GoldSrcServer(InetAddress address)
-            throws IOException, SteamCondenserException {
+    public GoldSrcServer(InetAddress address) throws SteamCondenserException {
         this(address, 27015, false);
     }
 
@@ -113,11 +104,10 @@ public class GoldSrcServer extends GameServer {
      *        with the port number. If a port number is given, e.g.
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public GoldSrcServer(InetAddress address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         this(address.toString(), port, false);
     }
 
@@ -130,11 +120,10 @@ public class GoldSrcServer extends GameServer {
      * @param port The port the server is listening on
      * @param isHLTV HLTV servers need special treatment, so this is
      *        used to determine if the server is a HLTV server
-     * @throws IOException if initializing the socket fails
-     * @throws SteamCondenserException if an host name cannot be resolved
+     * @throws SteamCondenserException if initializing the socket fails
      */
     public GoldSrcServer(InetAddress address, Integer port, boolean isHLTV)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         this(address.toString(), port, isHLTV);
     }
 
@@ -143,7 +132,7 @@ public class GoldSrcServer extends GameServer {
      *
      * @see GoldSrcSocket
      */
-    public void initSocket() throws IOException {
+    public void initSocket() throws SteamCondenserException {
         this.socket = new GoldSrcSocket(this.ipAddress, this.port, this.isHLTV);
     }
 
@@ -168,13 +157,11 @@ public class GoldSrcServer extends GameServer {
      * @param command The command to execute on the server via RCON
      * @return The output of the executed command
      * @see #rconExec
-     * @throws IOException if the request fails
-     * @throws SteamCondenserException if a problem occurs while parsing the
-     *         reply
+     * @throws SteamCondenserException if the request fails
      * @throws TimeoutException if the request times out
      */
     public String rconExec(String command)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws TimeoutException, SteamCondenserException {
         return ((GoldSrcSocket) this.socket).rconExec(this.rconPassword, command).trim();
     }
 

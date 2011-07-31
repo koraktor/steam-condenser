@@ -31,9 +31,10 @@ public class L4D2Stats extends AbstractL4DStats {
      * with the game name <code>"l4d2"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
-    public L4D2Stats(Object steamId)
-            throws SteamCondenserException {
+    public L4D2Stats(Object steamId) throws SteamCondenserException {
         super(steamId, "l4d2");
 
         Element weaponsData = (Element) ((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("weapons").item(0);

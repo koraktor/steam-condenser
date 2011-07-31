@@ -47,7 +47,8 @@ public abstract class AbstractL4DStats extends GameStats {
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
      * @param gameName The name of the game
-     * @throws SteamCondenserException if an error occurs
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
     public AbstractL4DStats(Object steamId, String gameName)
             throws SteamCondenserException {

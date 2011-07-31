@@ -98,14 +98,14 @@ public abstract class SteamPacketFactory {
      * Reassembles the data of a split packet into a single packet object
      *
      * @param splitPackets An array of packet data
-     * @throws IOException if decompressing the packet data fails
+     * @throws SteamCondenserException if decompressing the packet data fails
      * @throws PacketFormatException if the calculated CRC32 checksum does not
      *         match the expected value
      * @return SteamPacket The reassembled packet
      * @see SteamPacketFactory#getPacketFromData
      */
     public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         return SteamPacketFactory.reassemblePacket(splitPackets, false, 0, 0);
     }
 
@@ -118,7 +118,7 @@ public abstract class SteamPacketFactory {
      * @param uncompressedSize The size of the decompressed packet data
      * @param packetChecksum The CRC32 checksum of the decompressed
      *        packet data
-     * @throws IOException if decompressing the packet data fails
+     * @throws SteamCondenserException if decompressing the packet data fails
      * @throws PacketFormatException if the calculated CRC32 checksum does not
      *         match the expected value
      * @return SteamPacket The reassembled packet
@@ -126,7 +126,7 @@ public abstract class SteamPacketFactory {
      */
     public static SteamPacket reassemblePacket(ArrayList<byte[]> splitPackets,
             boolean isCompressed, int uncompressedSize, int packetChecksum)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         byte[] packetData, tmpData;
         packetData = new byte[0];
 
@@ -138,23 +138,27 @@ public abstract class SteamPacketFactory {
                     splitPacket.length);
         }
 
-        if (isCompressed) {
-            ByteArrayInputStream stream = new ByteArrayInputStream(packetData);
-            stream.read();
-            stream.read();
-            BZip2CompressorInputStream bzip2 = new BZip2CompressorInputStream(stream);
-            byte[] uncompressedPacketData = new byte[uncompressedSize];
-            bzip2.read(uncompressedPacketData, 0, uncompressedSize);
+        if(isCompressed) {
+            try {
+                ByteArrayInputStream stream = new ByteArrayInputStream(packetData);
+                stream.read();
+                stream.read();
+                BZip2CompressorInputStream bzip2 = new BZip2CompressorInputStream(stream);
+                byte[] uncompressedPacketData = new byte[uncompressedSize];
+                bzip2.read(uncompressedPacketData, 0, uncompressedSize);
 
-            CRC32 crc32 = new CRC32();
-            crc32.update(uncompressedPacketData);
-            int crc32checksum = (int) crc32.getValue();
+                CRC32 crc32 = new CRC32();
+                crc32.update(uncompressedPacketData);
+                int crc32checksum = (int) crc32.getValue();
 
-            if (crc32checksum != packetChecksum) {
-                throw new PacketFormatException(
-                        "CRC32 checksum mismatch of uncompressed packet data.");
+                if (crc32checksum != packetChecksum) {
+                    throw new PacketFormatException(
+                            "CRC32 checksum mismatch of uncompressed packet data.");
+                }
+                packetData = uncompressedPacketData;
+            } catch(IOException e) {
+                throw new SteamCondenserException(e.getMessage(), e);
             }
-            packetData = uncompressedPacketData;
         }
 
         packetData = new String(packetData).substring(4).getBytes();

@@ -54,11 +54,10 @@ public class AppNews {
      *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
      *        all application IDs
      * @return A list of news for the specified game with the given options
-     * @throws JSONException If the JSON data cannot be parsed
-     * @throws WebApiException If a request to Steam's Web API fails
+     * @throws WebApiException if a request to Steam's Web API fails
      */
     public static List<AppNews> getNewsForApp(int appId)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return getNewsForApp(appId, 5, null);
     }
 
@@ -73,11 +72,10 @@ public class AppNews {
      *        reliable way to load all news. Use really a really great number
      *        instead
      * @return A list of news for the specified game with the given options
-     * @throws JSONException If the JSON data cannot be parsed
-     * @throws WebApiException If a request to Steam's Web API fails
+     * @throws WebApiException if a request to Steam's Web API fails
      */
     public static List<AppNews> getNewsForApp(int appId, int count)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return getNewsForApp(appId, count, null);
     }
 
@@ -96,24 +94,27 @@ public class AppNews {
      *        be at most <code>maxLength</code> characters long plus an
      *        ellipsis
      * @return A list of news for the specified game with the given options
-     * @throws JSONException If the JSON data cannot be parsed
-     * @throws WebApiException If a request to Steam's Web API fails
+     * @throws WebApiException if a request to Steam's Web API fails
      */
     public static List<AppNews> getNewsForApp(int appId, int count, Integer maxLength)
-            throws JSONException, WebApiException {
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("appid", appId);
-        params.put("count", count);
-        params.put("maxlength", maxLength);
-        JSONObject data = new JSONObject(WebApi.getJSON("ISteamNews", "GetNewsForApp", 2, params));
+            throws WebApiException {
+        try {
+            HashMap<String, Object> params = new HashMap<String, Object>();
+            params.put("appid", appId);
+            params.put("count", count);
+            params.put("maxlength", maxLength);
+            JSONObject data = new JSONObject(WebApi.getJSON("ISteamNews", "GetNewsForApp", 2, params));
 
-        List<AppNews> newsItems = new ArrayList<AppNews>();
-        JSONArray newsData = data.getJSONObject("appnews").getJSONArray("newsitems");
-        for(int i = 0; i < newsData.length(); i ++) {
-            newsItems.add(new AppNews(appId, newsData.getJSONObject(i)));
+            List<AppNews> newsItems = new ArrayList<AppNews>();
+            JSONArray newsData = data.getJSONObject("appnews").getJSONArray("newsitems");
+            for(int i = 0; i < newsData.length(); i ++) {
+                newsItems.add(new AppNews(appId, newsData.getJSONObject(i)));
+            }
+
+            return newsItems;
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
         }
-
-        return newsItems;
     }
 
     /**
@@ -124,20 +125,23 @@ public class AppNews {
      *        http://developer.valvesoftware.com/wiki/Steam_Application_IDs for
      *        all application IDs
      * @param newsData The news data extracted from JSON
-     * @throws JSONException If the JSON data cannot be parsed
+     * @throws WebApiException if the JSON data cannot be parsed
      */
-    private AppNews(int appId, JSONObject newsData)
-            throws JSONException {
-        this.appId     = appId;
-        this.author    = newsData.getString("author");
-        this.contents  = newsData.getString("contents").trim();
-        this.date      = new Date(newsData.getLong("date"));
-        this.external  = newsData.getBoolean("is_external_url");
-        this.feedLabel = newsData.getString("feedlabel");
-        this.feedName  = newsData.getString("feedname");
-        this.gid       = newsData.getLong("gid");
-        this.title     = newsData.getString("title");
-        this.url       = newsData.getString("url");
+    private AppNews(int appId, JSONObject newsData) throws WebApiException {
+        try {
+            this.appId     = appId;
+            this.author    = newsData.getString("author");
+            this.contents  = newsData.getString("contents").trim();
+            this.date      = new Date(newsData.getLong("date"));
+            this.external  = newsData.getBoolean("is_external_url");
+            this.feedLabel = newsData.getString("feedlabel");
+            this.feedName  = newsData.getString("feedname");
+            this.gid       = newsData.getLong("gid");
+            this.title     = newsData.getString("title");
+            this.url       = newsData.getString("url");
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
+        }
     }
 
     /**

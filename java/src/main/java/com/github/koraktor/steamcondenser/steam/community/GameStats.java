@@ -63,6 +63,8 @@ public class GameStats {
      * @param steamId The custom URL or the 64bit Steam ID of the user
      * @param gameName The friendly name of the game
      * @return The game stats object for the given user and game
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
     public static GameStats createGameStats(Object steamId, String gameName)
             throws SteamCondenserException {
@@ -132,7 +134,7 @@ public class GameStats {
                 }
             }
         } catch(Exception e) {
-            throw new SteamCondenserException("XML data could not be parsed.");
+            throw new SteamCondenserException("XML data could not be parsed.", e);
         }
     }
 

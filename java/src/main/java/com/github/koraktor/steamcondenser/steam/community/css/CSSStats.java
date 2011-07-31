@@ -53,7 +53,8 @@ public class CSSStats extends GameStats {
      * constructor with the game name <code>"cs:s"</code>
      *
      * @param steamId The custom URL or 64bit Steam ID of the user
-     * @throws SteamCondenserException if an error occurs
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
     public CSSStats(Object steamId) throws SteamCondenserException {
         super(steamId, "cs:s");

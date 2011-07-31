@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.sockets;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -38,10 +37,10 @@ public class GoldSrcSocket extends QuerySocket {
      *
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
-     * @throws IOException if the socket cannot be opened
+     * @throws SteamCondenserException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber)
-            throws IOException {
+            throws SteamCondenserException {
         super(ipAddress, portNumber);
         this.isHLTV = false;
     }
@@ -55,10 +54,10 @@ public class GoldSrcSocket extends QuerySocket {
      * @param isHLTV <code>true</code> if the target server is a HTLV instance.
      *        HLTV behaves slightly different for RCON commands, this flag
      *        increases compatibility.
-     * @throws IOException if the socket cannot be opened
+     * @throws SteamCondenserException if the socket cannot be opened
      */
     public GoldSrcSocket(InetAddress ipAddress, int portNumber, boolean isHLTV)
-            throws IOException {
+            throws SteamCondenserException {
         super(ipAddress, portNumber);
         this.isHLTV = isHLTV;
     }
@@ -71,13 +70,12 @@ public class GoldSrcSocket extends QuerySocket {
      * method reassembles split packets into single packet objects.
      *
      * @return The packet replied from the server
-     * @throws IOException if an error occurs while communicating with the
-     *         server
-     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws TimeoutException if the request times out
      */
     public SteamPacket getReply()
-            throws IOException, SteamCondenserException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         int bytesRead;
         SteamPacket packet;
 
@@ -132,16 +130,15 @@ public class GoldSrcSocket extends QuerySocket {
      * @return The response replied by the server
      * @see #rconChallenge
      * @see #rconSend
-     * @throws IOException if an error occurs while communicating with the
-     *         server
      * @throws RCONBanException if the IP of the local machine has been banned
      *         on the game server
      * @throws RCONNoAuthException if the password is incorrect
-     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws TimeoutException if the request times out
      */
     public String rconExec(String password, String command)
-            throws IOException, TimeoutException, SteamCondenserException {
+            throws TimeoutException, SteamCondenserException {
         if(this.rconChallenge == -1 || this.isHLTV) {
             this.rconGetChallenge();
         }
@@ -180,17 +177,14 @@ public class GoldSrcSocket extends QuerySocket {
      * requests
      *
      * @see #rconSend
-     * @throws IOException if an error occurs while communicating with the
-     *         server
-     * @throws NumberFormatException if the received response is not a valid
-     *         challenge number
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws RCONBanException if the IP of the local machine has been banned
      *         on the game server
      * @throws TimeoutException if the request times out
      */
     public void rconGetChallenge()
-            throws IOException, TimeoutException, NumberFormatException,
-                   SteamCondenserException {
+            throws SteamCondenserException, TimeoutException {
         this.rconSend("challenge rcon");
 
         String response = ((RCONGoldSrcResponsePacket)this.getReply()).getResponse().trim();
@@ -206,10 +200,11 @@ public class GoldSrcSocket extends QuerySocket {
      * server
      *
      * @param command The RCON command to send to the server
-     * @throws IOException if an error occured while writing to the socket
+     * @throws SteamCondenserException if an error occured while writing to the
+     *         socket
      */
     private void rconSend(String command)
-            throws IOException {
+            throws SteamCondenserException {
         this.send(new RCONGoldSrcRequestPacket(command));
     }
 }

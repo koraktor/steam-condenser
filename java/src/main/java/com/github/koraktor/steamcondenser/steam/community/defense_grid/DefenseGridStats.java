@@ -57,8 +57,7 @@ public class DefenseGridStats extends GameStats {
      * @param steamId The custom URL or the 64bit Steam ID of the user
      * @throws SteamCondenserException if the stats cannot be parsed
      */
-    public DefenseGridStats(Object steamId)
-            throws SteamCondenserException {
+    public DefenseGridStats(Object steamId) throws SteamCondenserException {
         super(steamId, "defensegrid:awakening");
 
         if(this.isPublic()) {
@@ -89,7 +88,7 @@ public class DefenseGridStats extends GameStats {
                 this.orbitalLaserFired = Integer.parseInt(((Element) xpath.evaluate("stats/orbitallaser/fired/value", this.xmlData, XPathConstants.NODE)).getTextContent());
                 this.orbitalLaserDamage = Float.parseFloat(((Element) xpath.evaluate("stats/orbitallaser/damage/value", this.xmlData, XPathConstants.NODE)).getTextContent());
             } catch(XPathExpressionException e) {
-                throw new SteamCondenserException("Stats could not be parsed.");
+                throw new SteamCondenserException("Stats could not be parsed.", e);
             }
         }
     }
@@ -388,7 +387,7 @@ public class DefenseGridStats extends GameStats {
                 }
                 this.towerStats.put("temporal", towerData);
             } catch(XPathExpressionException e) {
-                throw new SteamCondenserException("Stats could not be parsed.");
+                throw new SteamCondenserException("Stats could not be parsed.", e);
             }
         }
 

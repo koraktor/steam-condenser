@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam.servers;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -43,11 +42,10 @@ public abstract class Server {
      *        'server.example.com:27016' it will override the second argument.
      * @param port The port the server is listening on
      * @see #initSocket
-     * @throws IOException if initializing the socket fails
      * @throws SteamCondenserException if an host name cannot be resolved
      */
     protected Server(String address, Integer port)
-            throws IOException, SteamCondenserException {
+            throws SteamCondenserException {
         if(address.indexOf(':') >= 0) {
             String[] tmpAddress = address.split(":", 2);
             port    = Integer.parseInt(tmpAddress[1]);
@@ -109,9 +107,9 @@ public abstract class Server {
      *         list contains only one IP address, this method will instantly
      *         return <code>true</code>
      * @see #initSocket
-     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    public boolean rotateIp() throws IOException {
+    public boolean rotateIp() throws SteamCondenserException {
         if(this.ipAddresses.size() == 1) {
             return true;
         }
@@ -130,8 +128,8 @@ public abstract class Server {
      * Must be implemented in subclasses to prepare sockets for server
      * communication
      *
-     * @throws IOException if initializing the socket fails
+     * @throws SteamCondenserException if initializing the socket fails
      */
-    protected abstract void initSocket() throws IOException;
+    protected abstract void initSocket() throws SteamCondenserException;
 
 }

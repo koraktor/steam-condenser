@@ -82,50 +82,55 @@ abstract public class SteamSocket {
      * formats
      *
      * @return The packet replied from the server
-     * @throws IOException if an error occurs while communicating with the
-     *         server
-     * @throws SteamCondenserException if the reply cannot be parsed
+     * @throws SteamCondenserException if an error occurs while communicating
+     *         with the server
      * @throws TimeoutException if the request times out
      */
     abstract public SteamPacket getReply()
-            throws IOException, TimeoutException, SteamCondenserException;
+            throws SteamCondenserException, TimeoutException;
 
     /**
      * Reads the given amount of data from the socket and wraps it into the
      * buffer
      *
      * @param bufferLength The data length to read from the socket
+     * @throws SteamCondenserException if an error occurs while reading from
+     *         the socket
      * @throws TimeoutException if no packet is received on time
      * @return int The number of bytes that have been read from the socket
      * @see ByteBuffer
      */
     protected int receivePacket(int bufferLength)
-            throws IOException, TimeoutException {
-        Selector selector = Selector.open();
-        this.channel.register(selector, SelectionKey.OP_READ);
+            throws SteamCondenserException, TimeoutException {
+        try {
+            Selector selector = Selector.open();
+            this.channel.register(selector, SelectionKey.OP_READ);
 
-        if (selector.select(SteamSocket.timeout) == 0) {
+            if(selector.select(SteamSocket.timeout) == 0) {
+                selector.close();
+                throw new TimeoutException();
+            }
+
+            int bytesRead;
+
+            if (bufferLength == 0) {
+                this.buffer.clear();
+            } else {
+                this.buffer = ByteBuffer.allocate(bufferLength);
+            }
+
+            bytesRead = ((ReadableByteChannel) this.channel).read(this.buffer);
+            if(bytesRead > 0) {
+                this.buffer.rewind();
+                this.buffer.limit(bytesRead);
+            }
+
             selector.close();
-            throw new TimeoutException();
+
+            return bytesRead;
+        } catch(IOException e) {
+            throw new SteamCondenserException(e.getMessage(), e);
         }
-
-        int bytesRead;
-
-        if (bufferLength == 0) {
-            this.buffer.clear();
-        } else {
-            this.buffer = ByteBuffer.allocate(bufferLength);
-        }
-
-        bytesRead = ((ReadableByteChannel) this.channel).read(this.buffer);
-        if(bytesRead > 0) {
-            this.buffer.rewind();
-            this.buffer.limit(bytesRead);
-        }
-
-        selector.close();
-
-        return bytesRead;
     }
 
     /**
@@ -134,8 +139,7 @@ abstract public class SteamSocket {
      * @see #close
      */
     @Override
-    public void finalize()
-            throws IOException {
+    public void finalize() {
         this.close();
     }
 

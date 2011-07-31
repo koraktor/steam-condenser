@@ -54,6 +54,8 @@ public class AlienSwarmStats extends GameStats {
      * constructor with the game name <code>"alienswarm"</code>
      *
      * @param steamId The custom URL or the 64bit Steam ID of the user
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
      */
     public AlienSwarmStats(Object steamId) throws SteamCondenserException {
         super(steamId, "alienswarm");

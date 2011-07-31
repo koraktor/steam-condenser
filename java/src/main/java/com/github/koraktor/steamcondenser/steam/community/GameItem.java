@@ -49,25 +49,28 @@ public class GameItem {
      *
      * @param inventory The inventory this item is contained in
      * @param itemData The data specifying this item
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public GameItem(GameInventory inventory, JSONObject itemData)
-            throws JSONException, WebApiException {
-        this.defindex         = itemData.getInt("defindex");
-        this.backpackPosition = (int) itemData.getLong("inventory") & 0xffff;
-        this.className        = inventory.getItemSchema().get(this.defindex).getString("item_class");
-        this.count            = itemData.getInt("quantity");
-        this.id               = itemData.getInt("id");
-        this.level            = itemData.getInt("level");
-        this.name             = inventory.getItemSchema().get(this.defindex).getString("item_name");
-        this.quality          = inventory.getQualitySchema().get(itemData.getInt("quality"));
-        this.slot             = inventory.getItemSchema().get(this.defindex).getString("item_slot");
-        this.tradeable        = itemData.isNull("flag_cannot_trade") || !itemData.getBoolean("flag_cannot_trade");
-        this.type             = inventory.getItemSchema().get(this.defindex).getString("item_type_name");
+            throws WebApiException {
+        try {
+            this.defindex         = itemData.getInt("defindex");
+            this.backpackPosition = (int) itemData.getLong("inventory") & 0xffff;
+            this.className        = inventory.getItemSchema().get(this.defindex).getString("item_class");
+            this.count            = itemData.getInt("quantity");
+            this.id               = itemData.getInt("id");
+            this.level            = itemData.getInt("level");
+            this.name             = inventory.getItemSchema().get(this.defindex).getString("item_name");
+            this.quality          = inventory.getQualitySchema().get(itemData.getInt("quality"));
+            this.slot             = inventory.getItemSchema().get(this.defindex).getString("item_slot");
+            this.tradeable        = itemData.isNull("flag_cannot_trade") || !itemData.getBoolean("flag_cannot_trade");
+            this.type             = inventory.getItemSchema().get(this.defindex).getString("item_type_name");
 
-        if(!inventory.getItemSchema().get(this.defindex).isNull("attributes")) {
-          this.attributes = inventory.getItemSchema().get(this.defindex).getJSONArray("attributes");
+            if(!inventory.getItemSchema().get(this.defindex).isNull("attributes")) {
+              this.attributes = inventory.getItemSchema().get(this.defindex).getJSONArray("attributes");
+            }
+        } catch(JSONException e) {
+            throw new WebApiException("Could not parse JSON data.", e);
         }
     }
 

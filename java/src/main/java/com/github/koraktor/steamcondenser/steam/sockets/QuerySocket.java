@@ -14,6 +14,7 @@ import java.nio.channels.DatagramChannel;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.packets.SteamPacket;
 
 /**
@@ -29,14 +30,19 @@ public abstract class QuerySocket extends SteamSocket {
      *
      * @param ipAddress Either the IP address or the DNS name of the server
      * @param portNumber The port the server is listening on
-     * @throws IOException if the socket cannot be opened
+     * @throws SteamCondenserException if the socket cannot be opened
      */
     protected QuerySocket(InetAddress ipAddress, int portNumber)
-            throws IOException {
+            throws  SteamCondenserException {
         super(ipAddress, portNumber);
-        this.channel = DatagramChannel.open();
-        this.channel.configureBlocking(false);
-        ((DatagramChannel) this.channel).connect(this.remoteSocket);
+
+        try {
+            this.channel = DatagramChannel.open();
+            this.channel.configureBlocking(false);
+            ((DatagramChannel) this.channel).connect(this.remoteSocket);
+        } catch(IOException e) {
+            throw new SteamCondenserException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -52,11 +58,12 @@ public abstract class QuerySocket extends SteamSocket {
      * Reads an UDP packet into the buffer
      *
      * @return The number of bytes received
-     * @throws IOException if an error occured while reading from the socket
+     * @throws SteamCondenserException if an error occurs while reading from
+     *         the socket
      * @throws TimeoutException if no UDP packet was received
      */
     protected int receivePacket()
-            throws IOException, TimeoutException {
+            throws SteamCondenserException, TimeoutException {
         return this.receivePacket(0);
     }
 
@@ -64,14 +71,19 @@ public abstract class QuerySocket extends SteamSocket {
      * Sends the given packet to the server
      *
      * @param dataPacket The packet to send to the server
-     * @throws IOException if an error occured while writing to the socket
+     * @throws SteamCondenserException if an error occurs while writing to the
+     *         socket
      */
     public void send(SteamPacket dataPacket)
-            throws IOException {
+            throws SteamCondenserException {
         Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
-        this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
-        ((DatagramChannel) this.channel).send(this.buffer, this.remoteSocket);
-        this.buffer.flip();
+        try {
+            this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
+            ((DatagramChannel) this.channel).send(this.buffer, this.remoteSocket);
+            this.buffer.flip();
+        } catch(IOException e) {
+            throw new SteamCondenserException(e.getMessage(), e);
+        }
     }
 }

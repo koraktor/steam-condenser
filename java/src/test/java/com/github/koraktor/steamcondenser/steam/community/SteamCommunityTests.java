@@ -37,12 +37,6 @@ public class SteamCommunityTests {
     /**
      * This test tries to aquire information from a online Steam ID. This test
      * only passes if the parsing of the XML document works
-     *
-     * @throws DOMException
-     * @throws IOException
-     * @throws ParseException
-     * @throws ParserConfigurationException
-     * @throws SAXException
      */
     @Test
     public void steamIdByCustomUrl() throws Exception {
@@ -55,12 +49,6 @@ public class SteamCommunityTests {
     /**
      * This test tries to aquire information from a online Steam ID. This test
      * only passes if the parsing of the XML document works
-     *
-     * @throws DOMException
-     * @throws IOException
-     * @throws ParseException
-     * @throws ParserConfigurationException
-     * @throws SAXException
      */
     @Test
     public void steamIdBySteamId64() throws Exception {

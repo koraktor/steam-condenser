@@ -48,11 +48,10 @@ public class Portal2Inventory extends GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static Portal2Inventory create(long steamId64)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return create(steamId64, true, false);
     }
 
@@ -63,11 +62,10 @@ public class Portal2Inventory extends GameInventory {
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static Portal2Inventory create(long steamId64, boolean fetchNow)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         return create(steamId64, fetchNow, false);
     }
 
@@ -79,11 +77,10 @@ public class Portal2Inventory extends GameInventory {
      * @param fetchNow Whether the data should be fetched now
      * @param bypassCache Whether the cache should be bypassed
      * @return The inventory created from the given options
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public static Portal2Inventory create(long steamId64, boolean fetchNow, boolean bypassCache)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         if(isCached(steamId64) && !bypassCache) {
             Portal2Inventory inventory = cache.get(steamId64);
             if(fetchNow && !inventory.isFetched()) {
@@ -101,11 +98,9 @@ public class Portal2Inventory extends GameInventory {
      * and fetches its contents
      *
      * @param steamId64 The 64bit Steam ID of the user
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
-    public Portal2Inventory(long steamId64)
-            throws JSONException, WebApiException {
+    public Portal2Inventory(long steamId64) throws WebApiException {
         super(steamId64, true);
     }
 
@@ -114,11 +109,10 @@ public class Portal2Inventory extends GameInventory {
      *
      * @param steamId64 The 64bit Steam ID of the user
      * @param fetchNow Whether the data should be fetched now
-     * @throws JSONException on invalid JSON data
      * @throws WebApiException on Web API errors
      */
     public Portal2Inventory(long steamId64, boolean fetchNow)
-            throws JSONException, WebApiException {
+            throws WebApiException {
         super(steamId64, fetchNow);
     }
 

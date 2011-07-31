@@ -13,8 +13,8 @@ package com.github.koraktor.steamcondenser.exceptions;
  *
  * @author Sebastian Staudt
  */
-public class PacketFormatException extends SteamCondenserException
-{
+public class PacketFormatException extends SteamCondenserException {
+
     /**
      * Creates a new <code>PacketFormatException</code> instance
      *

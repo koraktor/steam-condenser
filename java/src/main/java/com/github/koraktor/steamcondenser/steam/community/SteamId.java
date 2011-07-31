@@ -114,6 +114,8 @@ public class SteamId {
      *
      * @param id The 64bit SteamID of the player
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(long id)
             throws SteamCondenserException {
@@ -126,6 +128,8 @@ public class SteamId {
      *
      * @param id The 64bit SteamID of the player
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(String id)
             throws SteamCondenserException {
@@ -140,6 +144,8 @@ public class SteamId {
      * @param fetch if <code>true</code> the profile's data is loaded into the
      *        object
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(long id, boolean fetch)
             throws SteamCondenserException {
@@ -154,6 +160,8 @@ public class SteamId {
      * @param fetch if <code>true</code> the profile's data is loaded into the
      *        object
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(String id, boolean fetch)
             throws SteamCondenserException {
@@ -170,6 +178,8 @@ public class SteamId {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this Steam ID will be ignored and a new one will be created
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(long id, boolean fetch, boolean bypassCache)
             throws SteamCondenserException {
@@ -186,6 +196,8 @@ public class SteamId {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this Steam ID will be ignored and a new one will be created
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     public static SteamId create(String id, boolean fetch, boolean bypassCache)
             throws SteamCondenserException {
@@ -203,6 +215,8 @@ public class SteamId {
      * @param bypassCache If <code>true</code> an already cached instance for
      *        this Steam ID will be ignored and a new one will be created
      * @return The <code>SteamId</code> instance of the requested profile
+     * @throws SteamCondenserException if the Steam ID data is not available,
+     *         e.g. when it is private
      */
     private static SteamId create(Object id, boolean fetch, boolean bypassCache)
             throws SteamCondenserException {
@@ -276,8 +290,7 @@ public class SteamId {
      * @throws SteamCondenserException if the Steam ID data is not available,
      *         e.g. when it is private, or when it cannot be parsed
      */
-    public void fetchData()
-            throws SteamCondenserException {
+    public void fetchData() throws SteamCondenserException {
         try {
             String url = this.getBaseUrl() + "?xml=1";
             DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -353,7 +366,7 @@ public class SteamId {
                 }
             }
         } catch(Exception e) {
-            throw new SteamCondenserException("XML data could not be parsed.");
+            throw new SteamCondenserException("XML data could not be parsed.", e);
         }
 
         this.fetchTime = new Date().getTime();
@@ -370,8 +383,7 @@ public class SteamId {
      * @throws SteamCondenserException if an error occurs while parsing the
      *         data
      */
-    private void fetchFriends()
-            throws SteamCondenserException {
+    private void fetchFriends() throws SteamCondenserException {
         try {
             String url = this.getBaseUrl() + "/friends?xml=1";
             DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -385,7 +397,7 @@ public class SteamId {
                 this.friends[i] = SteamId.create(Long.parseLong(friend.getTextContent()), false);
             }
         } catch(Exception e) {
-            throw new SteamCondenserException("XML data could not be parsed.");
+            throw new SteamCondenserException("XML data could not be parsed.", e);
         }
     }
 
@@ -396,8 +408,7 @@ public class SteamId {
      * @throws SteamCondenserException if an error occurs while parsing the
      *         data
      */
-    private void fetchGames()
-            throws SteamCondenserException {
+    private void fetchGames() throws SteamCondenserException {
         try {
             String url = this.getBaseUrl() + "/games?xml=1";
             DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -427,7 +438,7 @@ public class SteamId {
                 this.playtimes.put(game.getAppId(), playtimes);
             }
         } catch(Exception e) {
-            throw new SteamCondenserException("XML data could not be parsed.");
+            throw new SteamCondenserException("XML data could not be parsed.", e);
         }
     }
 
@@ -525,6 +536,8 @@ public class SteamId {
      *
      * @return The friends of this user
      * @see #fetchFriends
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
     public SteamId[] getFriends()
             throws SteamCondenserException {
@@ -544,6 +557,8 @@ public class SteamId {
      *
      * @return array The games this user owns
      * @see #fetchGames
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
     public HashMap<Integer, SteamGame> getGames()
             throws SteamCondenserException {
@@ -661,6 +676,8 @@ public class SteamId {
      * @param id The full or short name or the application ID of the game
      * @return The number of minutes this user played the given game in the
      *         last two weeks
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
     public int getRecentPlaytime(Object id)
             throws SteamCondenserException {
@@ -712,6 +729,8 @@ public class SteamId {
      *
      * @param id The full or short name or the application ID of the game
      * @return The total number of minutes this user played the given game
+     * @throws SteamCondenserException if an error occurs while parsing the
+     *         data
      */
     public int getTotalPlaytime(Object id)
             throws SteamCondenserException {
