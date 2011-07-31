@@ -17,7 +17,7 @@ import com.github.koraktor.steamcondenser.steam.SteamPlayer;
  * It is used to transfer a list of players currently playing on the server.
  *
  * @author Sebastian Staudt
- * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updatePlayerInfo
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updatePlayers
  */
 public class S2A_PLAYER_Packet extends SteamPacket {
 

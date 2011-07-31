@@ -13,9 +13,10 @@ import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.concurrent.TimeoutException;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer;
@@ -33,7 +34,7 @@ public class RCONTests {
 
     /**
      * Setup method to load fixtures from test-fixtures.properties
-     * @throws java.net.UnknownHostException
+     * @throws UnknownHostException
      */
     @Before
     public void setUp()

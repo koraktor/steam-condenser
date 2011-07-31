@@ -19,7 +19,7 @@ import com.github.koraktor.steamcondenser.Helper;
  * which is done automatically if required.
  *
  * @author Sebastian Staudt
- * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRulesInfo()
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRules()
  */
 public class A2S_RULES_Packet extends SteamPacket {
 

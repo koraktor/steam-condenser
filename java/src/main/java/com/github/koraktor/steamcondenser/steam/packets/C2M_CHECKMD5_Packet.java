@@ -13,7 +13,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * It is used to initialize (challenge) master server communication.
  *
  * @author Sebastian Staudt
- * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#getChallenge()
+ * @see com.github.koraktor.steamcondenser.steam.servers.MasterServer#getChallenge
  */
 public class C2M_CHECKMD5_Packet extends SteamPacket {
 

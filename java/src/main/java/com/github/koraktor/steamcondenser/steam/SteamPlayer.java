@@ -7,7 +7,6 @@
 
 package com.github.koraktor.steamcondenser.steam;
 
-import java.util.List;
 import java.util.Map;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
@@ -36,10 +35,10 @@ public class SteamPlayer {
     /**
      * Creates a new player instancewith the given information
      *
-     * @param int id The ID of the player on the server
-     * @param string name The name of the player
-     * @param int score The score of the player
-     * @param float connectTime The time the player is connected to the server
+     * @param id The ID of the player on the server
+     * @param name The name of the player
+     * @param score The score of the player
+     * @param connectTime The time the player is connected to the server
      */
     public SteamPlayer(int id, String name, int score, float connectTime) {
         this.connectTime = connectTime;

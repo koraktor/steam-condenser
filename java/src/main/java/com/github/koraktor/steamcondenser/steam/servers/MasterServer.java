@@ -228,7 +228,7 @@ public class MasterServer extends Server {
         do {
             this.socket.send(new A2M_GET_SERVERS_BATCH2_Paket(regionCode, hostName + ":" + portNumber, filter));
             try {
-                serverStringArray = ((M2A_SERVER_BATCH_Paket)this.socket.getReply()).getServers();
+                serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
 
                 for(String serverString : serverStringArray) {
                     hostName = serverString.substring(0, serverString.lastIndexOf(":"));

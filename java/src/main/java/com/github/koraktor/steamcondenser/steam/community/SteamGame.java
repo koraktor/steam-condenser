@@ -18,7 +18,7 @@ import org.w3c.dom.Node;
 /**
  * This class represents a game available on Steam
  *
- * @author     Sebastian Staudt
+ * @author Sebastian Staudt
  */
 public class SteamGame {
 

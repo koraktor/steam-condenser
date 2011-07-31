@@ -9,7 +9,6 @@ package com.github.koraktor.steamcondenser.steam.servers;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 

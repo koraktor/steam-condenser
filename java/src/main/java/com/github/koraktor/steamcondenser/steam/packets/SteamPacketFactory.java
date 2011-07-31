@@ -130,7 +130,7 @@ public abstract class SteamPacketFactory {
         byte[] packetData, tmpData;
         packetData = new byte[0];
 
-        for (byte[] splitPacket : splitPackets) {
+        for(byte[] splitPacket : splitPackets) {
             tmpData = packetData;
             packetData = new byte[tmpData.length + splitPacket.length];
             System.arraycopy(tmpData, 0, packetData, 0, tmpData.length);

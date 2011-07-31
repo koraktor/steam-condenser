@@ -80,7 +80,7 @@ public class DoDSStats extends GameStats {
 
         if(this.weaponStats == null) {
         this.weaponStats = new HashMap<String, DoDSWeapon>();
-        NodeList weaponNodes = ((Element) this.xmlData.getElementsByTagName("weapons").item(0)).getChildNodes();
+        NodeList weaponNodes = this.xmlData.getElementsByTagName("weapons").item(0).getChildNodes();
             for(int i = 0; i < weaponNodes.getLength(); i++) {
                 Element weaponData = (Element) weaponNodes.item(i);
                 this.weaponStats.put(weaponData.getAttribute("key"),

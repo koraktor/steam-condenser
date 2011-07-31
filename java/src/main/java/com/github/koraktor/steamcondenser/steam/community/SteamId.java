@@ -7,11 +7,9 @@
 
 package com.github.koraktor.steamcondenser.steam.community;
 
-import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,7 +55,6 @@ public class SteamId {
     private String nickname;
     private long steamId64;
     private float steamRating;
-    private String steamRatingText;
     private String summary;
     private boolean vacBanned;
     private int visibilityState;
@@ -347,7 +344,7 @@ public class SteamId {
                 Element groupsNode = (Element) profile.getElementsByTagName(
                         "groups").item(0);
                 if(groupsNode != null) {
-                    NodeList groupsNodeList = ((Element) groupsNode).getElementsByTagName("group");
+                    NodeList groupsNodeList = groupsNode.getElementsByTagName("group");
                     this.groups = new SteamGroup[groupsNodeList.getLength()];
                     for(int i = 0; i < groupsNodeList.getLength(); i++) {
                         Element group = (Element) groupsNodeList.item(i);
@@ -390,7 +387,7 @@ public class SteamId {
             Element friendsData = parser.parse(url).getDocumentElement();
 
             Element friendsNode = (Element) friendsData.getElementsByTagName("friends").item(0);
-            NodeList friendsNodeList = ((Element) friendsNode).getElementsByTagName("friend");
+            NodeList friendsNodeList = friendsNode.getElementsByTagName("friend");
             this.friends = new SteamId[friendsNodeList.getLength()];
             for(int i = 0; i < friendsNodeList.getLength(); i++) {
                 Element friend = (Element) friendsNodeList.item(i);
@@ -415,7 +412,7 @@ public class SteamId {
             Element gamesData = parser.parse(url).getDocumentElement();
 
             Element gamesNode = (Element) gamesData.getElementsByTagName("games").item(0);
-            NodeList gamesNodeList = ((Element) gamesNode).getElementsByTagName("game");
+            NodeList gamesNodeList = gamesNode.getElementsByTagName("game");
             this.games = new HashMap<Integer, SteamGame>();
             this.playtimes = new HashMap<Integer, int[]>();
             for(int i = 0; i < gamesNodeList.getLength(); i++) {

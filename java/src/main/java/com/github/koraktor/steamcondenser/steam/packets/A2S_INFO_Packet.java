@@ -11,7 +11,7 @@ package com.github.koraktor.steamcondenser.steam.packets;
  * The A2S_INFO_Packet class represents a A2S_INFO request send to the server
  *
  * @author Sebastian Staudt
- * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo()
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateServerInfo
  */
 public class A2S_INFO_Packet extends SteamPacket {
 
