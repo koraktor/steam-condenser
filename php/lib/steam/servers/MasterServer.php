@@ -84,9 +84,24 @@ class MasterServer extends Server {
     const REGION_ALL = 0xFF;
 
     /**
+     * @var int
+     */
+    private static $attempts = 3;
+
+    /**
      * @var MasterServerSocket
      */
     private $socket;
+
+    /**
+     * Sets the number of consecutive requests that may fail, before getting
+     * the server list is cancelled (default: 3)
+     *
+     * @param int $retries The number of allowed retries
+     */
+    public static function setRetries($retries) {
+        self::$retries = $retries;
+    }
 
     /**
      * Request a challenge number from the master server.
@@ -178,8 +193,8 @@ class MasterServer extends Server {
                         $failCount = 0;
                     } catch(TimeoutException $e) {
                         $failCount ++;
-                        if($failCount == 4) {
-                                throw $e;
+                        if($failCount == self::$retries) {
+                            throw $e;
                         }
                     }
                 } while(!$finished);

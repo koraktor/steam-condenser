@@ -91,7 +91,19 @@ public class MasterServer extends Server {
      */
     public static final byte REGION_ALL = (byte)0xFF;
 
+    public static int retries = 3;
+
     private MasterServerSocket socket;
+
+    /**
+     * Sets the number of consecutive requests that may fail, before getting
+     * the server list is cancelled (default: 3)
+     *
+     * @param newRetries The number of allowed retries
+     */
+    public static void setRetries(int newRetries) {
+        retries = newRetries;
+    }
 
     /**
      * Creates a new instance of a master server object
@@ -244,7 +256,7 @@ public class MasterServer extends Server {
                 failCount = 0;
             } catch(TimeoutException e) {
                 failCount ++;
-                if(failCount == 3) {
+                if(failCount == retries) {
                     throw e;
                 }
             }

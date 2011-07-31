@@ -21,6 +21,9 @@ class MasterServer
 
   include Server
 
+  # The default number of allowed retries
+  @@retries = 3
+
   # The master server address to query for GoldSrc game servers
   GOLDSRC_MASTER_SERVER = 'hl1master.steampowered.com', 27010
 
@@ -53,6 +56,14 @@ class MasterServer
 
   # The region code for the whole world
   REGION_ALL = 0xFF
+
+  # Sets the number of consecutive requests that may fail, before getting
+  # the server list is cancelled (default: 3)
+  #
+  # @param [Fixnum] The number of allowed retries
+  def self.retries=(retries)
+    @@retries = retries
+  end
 
   # Request a challenge number from the master server.
   #
@@ -123,7 +134,7 @@ class MasterServer
           end
           fail_count = 0
         rescue TimeoutException
-          raise $! if (fail_count += 1) == 3
+          raise $! if (fail_count += 1) == @@retries
         end
       end while !finished
     end
