@@ -304,7 +304,7 @@ public class SteamId {
 
             if(this.privacyState.compareTo("public") == 0) {
                 this.customUrl = profile.getElementsByTagName("customURL").item(0).getTextContent();
-                if(this.customUrl.isEmpty()) {
+                if(this.customUrl.length() == 0) {
                     this.customUrl = null;
                 }
 
