@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'stringio_additions'
+require 'core_ext/stringio'
 
 # This module implements the basic functionality used by most of the packets
 # used in communication with master, Source or GoldSrc servers.

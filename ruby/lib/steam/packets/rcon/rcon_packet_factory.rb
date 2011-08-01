@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'stringio_additions'
+require 'core_ext/stringio'
 require 'exceptions/packet_format_exception'
 require 'steam/packets/steam_packet_factory'
 require 'steam/packets/rcon/rcon_auth_response'

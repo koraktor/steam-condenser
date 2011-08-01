@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'stringio_additions'
+require 'core_ext/stringio'
 require 'steam/sockets/steam_socket'
 
 # This class represents a socket used to communicate with game servers based on

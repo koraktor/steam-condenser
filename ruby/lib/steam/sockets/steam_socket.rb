@@ -6,7 +6,7 @@
 require 'ipaddr'
 require 'socket'
 
-require 'stringio_additions'
+require 'core_ext/stringio'
 require 'exceptions/timeout_exception'
 
 # This module implements common functionality for sockets used to connect to

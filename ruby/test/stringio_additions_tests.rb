@@ -7,9 +7,9 @@ require 'test/unit'
 
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 
-require 'stringio_additions'
+require 'core_ext/stringio'
 
-class StringIOAdditionsTests < Test::Unit::TestCase
+class StringIOTests < Test::Unit::TestCase
 
   def test_allocate
     buffer = StringIO.alloc 10
