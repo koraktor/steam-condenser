@@ -12,7 +12,7 @@ require 'stringio_additions'
 class StringIOAdditionsTests < Test::Unit::TestCase
 
   def test_allocate
-    buffer = StringIO.allocate(10)
+    buffer = StringIO.alloc 10
     assert_equal("\0" * 10, buffer.string)
   end
 
@@ -56,7 +56,7 @@ class StringIOAdditionsTests < Test::Unit::TestCase
     buffer = StringIO.new('te')
     buffer.write('st')
     assert_equal('st', buffer.string)
-    buffer = StringIO.allocate(4)
+    buffer = StringIO.alloc 4
     buffer.write('test')
     assert_equal('test', buffer.string)
   end

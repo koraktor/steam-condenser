@@ -17,7 +17,7 @@ class StringIO
   # @param [Fixnum] size The size the new instance should have
   # @return [StringIO] A new `StringIO` instance with the given size, filled
   #         with zero-bytes
-  def self.allocate(size)
+  def self.alloc(size)
     new "\0" * size
   end
 

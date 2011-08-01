@@ -59,7 +59,7 @@ module SteamSocket
     if buffer_length == 0
       @buffer.rewind
     else
-      @buffer = StringIO.allocate buffer_length
+      @buffer = StringIO.alloc buffer_length
     end
 
     data = @socket.recv @buffer.remaining

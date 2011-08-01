@@ -28,7 +28,7 @@ class SocketChannelTests < Test::Unit::TestCase
     channel.write(buffer)
     sent, socket_addr = socket.recvfrom(4)
     socket.send(string, 0)
-    buffer = StringIO.allocate 4
+    buffer = StringIO.alloc 4
     channel.read(buffer)
 
     channel.close
