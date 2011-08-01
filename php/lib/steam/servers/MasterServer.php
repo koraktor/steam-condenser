@@ -86,7 +86,7 @@ class MasterServer extends Server {
     /**
      * @var int
      */
-    private static $attempts = 3;
+    private static $retries = 3;
 
     /**
      * @var MasterServerSocket
