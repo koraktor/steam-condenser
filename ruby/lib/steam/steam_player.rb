@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
 # The SteamPlayer class represents a player connected to a server
 #
@@ -88,11 +88,11 @@ class SteamPlayer
   # the status command
   #
   # @param [String] player_data The player data retrieved from `rcon status`
-  # @raise [SteamCondenserException] if the information belongs to another
+  # @raise [SteamCondenserError] if the information belongs to another
   #         player
   def add_info(player_data)
     unless player_data[:name] == @name
-      raise SteamCondenserException, 'Information to add belongs to a different player.'
+      raise SteamCondenserError, 'Information to add belongs to a different player.'
     end
 
     @extended = true

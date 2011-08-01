@@ -3,17 +3,17 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
-# This exception class indicates a problem when parsing packet data from the
+# This error class indicates a problem when parsing packet data from the
 # responses received from a game or master server
 #
 # @author Sebastian Staudt
-class PacketFormatException < SteamCondenserException
+class PacketFormatError < SteamCondenserError
 
-  # Creates a new `PacketFormatException` instance
+  # Creates a new `PacketFormatError` instance
   #
-  # @param [String] message The message to attach to the exception
+  # @param [String] message The message to attach to the error
   def initialize(message)
     super message
   end

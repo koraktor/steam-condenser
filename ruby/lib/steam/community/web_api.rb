@@ -6,7 +6,7 @@
 require 'multi_json'
 require 'open-uri'
 
-require 'exceptions/web_api_exception'
+require 'errors/web_api_error'
 
 # This module provides functionality for accessing Steam's Web API
 #
@@ -27,11 +27,11 @@ module WebApi
   #
   # @param [String] api_key The 128bit API key as a hexadecimal string that has
   #        to be requested from http://steamcommunity.com/dev
-  # @raise [WebApiException] if the given API key is not a valid 128bit
-  #        hexadecimal string
+  # @raise [WebApiError] if the given API key is not a valid 128bit hexadecimal
+  #        string
   def self.api_key=(api_key)
     unless api_key.nil? || api_key.match(/^[0-9A-F]{32}$/)
-      raise WebApiException, :invalid_key
+      raise WebApiError, :invalid_key
     end
 
     @@api_key = api_key
@@ -47,7 +47,7 @@ module WebApi
   # @param [Fixnum] version The API method version to use
   # @param [Hash<Symbol, Object>] params Additional parameters to supply via
   #        HTTP GET
-  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @raise [WebApiError] if the request to Steam's Web API fails
   # @return [String] The raw JSON data replied to the request
   def self.json(interface, method, version = 1, params = nil)
     get(:json, interface, method, version, params)
@@ -63,7 +63,7 @@ module WebApi
   # @param [Fixnum] version The API method version to use
   # @param [Hash<Symbol, Object>] params Additional parameters to supply via
   #        HTTP GET
-  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @raise [WebApiError] if the request to Steam's Web API fails
   # @return [Hash<Symbol, Object>] The JSON data replied to the request
   def self.json!(interface, method, version = 1, params = nil)
     data = json(interface, method, version, params)
@@ -71,7 +71,7 @@ module WebApi
 
     status = result[:status]
     if status != 1
-      raise WebApiException.new :status_bad, status, result[:statusDetail]
+      raise WebApiError.new :status_bad, status, result[:statusDetail]
     end
 
     result
@@ -89,7 +89,7 @@ module WebApi
   # @param [Fixnum] version The API method version to use
   # @param [Hash<Symbol, Object>] params Additional parameters to supply via
   #        HTTP GET
-  # @raise [WebApiException] if the request to Steam's Web API fails
+  # @raise [WebApiError] if the request to Steam's Web API fails
   # @return [String] The data as replied by the Web API in the desired format
   def self.get(format, interface, method, version = 1, params = nil)
     version = version.to_s.rjust(4, '0')
@@ -107,8 +107,8 @@ module WebApi
     rescue OpenURI::HTTPError
       status = $!.io.status[0]
       status = [status, ''] unless status.is_a? Array
-      raise WebApiException, :unauthorized if status[0].to_i == 401
-      raise WebApiException.new :http_error, status[0].to_i, status[1]
+      raise WebApiError, :unauthorized if status[0].to_i == 401
+      raise WebApiError.new :http_error, status[0].to_i, status[1]
     end
   end
 

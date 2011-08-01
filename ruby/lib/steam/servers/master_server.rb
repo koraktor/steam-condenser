@@ -133,7 +133,7 @@ class MasterServer
             end
           end
           fail_count = 0
-        rescue TimeoutException
+        rescue TimeoutError
           raise $! if (fail_count += 1) == @@retries
         end
       end while !finished
@@ -147,7 +147,7 @@ class MasterServer
   # This can be used to check server versions externally.
   #
   # @param [Hash<Symbol, Object>] The data to send with the heartbeat request
-  # @raise [SteamCondenserException] if heartbeat data is missing the
+  # @raise [SteamCondenserError] if heartbeat data is missing the
   #        challenge number or the reply cannot be parsed
   # @return [Array<SteamPacket>] Zero or more reply packets from the server.
   #         Zero means either the heartbeat was accepted by the master or there
@@ -161,7 +161,7 @@ class MasterServer
       reply_packets = []
       begin
         loop { reply_packets << @socket.reply }
-      rescue TimeoutException
+      rescue TimeoutError
       end
     end
 

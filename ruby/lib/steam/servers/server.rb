@@ -30,7 +30,7 @@ module Server
   #        'server.example.com:27016' it will override the second argument.
   # @param [Fixnum] port The port the server is listening on
   # @see init_socket
-  # @raise [SteamCondenserException] if an host name cannot be resolved
+  # @raise [SteamCondenserError] if an host name cannot be resolved
   def initialize(address, port = nil)
     address = address.to_s
     address, port = address.split(':', 2) if address.include? ':'
@@ -79,10 +79,9 @@ module Server
 
   # Execute an action in the context of this server's current IP address
   #
-  # Any failure, i.e. an exception, will cause the IP to rotate to the next IP
-  # in the server's IP list and the execution will be repeated for the next IP
-  # address. If the IP rotation reaches the end of the list, the exception will
-  # be reraised.
+  # Any failure will cause the IP to rotate to the next IP in the server's IP
+  # list and the execution will be repeated for the next IP address. If the IP
+  # rotation reaches the end of the list, the error will be reraised.
   #
   # @param [Proc] proc The action to be executed in a failsafe way
   # @see #rotate_ip

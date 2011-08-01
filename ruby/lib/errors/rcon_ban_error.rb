@@ -3,18 +3,18 @@
 #
 # Copyright (c) 2009-2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
-# This exception class indicates that the IP address your accessing the game
-# server from has been banned by the server
+# This error class indicates that the IP address your accessing the game server
+# from has been banned by the server
 #
 # You or the server operator will have to unban your IP address on the server.
 #
 # @author Sebastian Staudt
 # @see GameServer#rcon_auth
-class RCONBanException < SteamCondenserException
+class RCONBanError < SteamCondenserError
 
-  # Creates a new `RCONBanException` instance
+  # Creates a new `RCONBanError` instance
   def initialize
     super 'You have been banned from this server.'
   end

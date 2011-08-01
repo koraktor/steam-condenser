@@ -3,10 +3,10 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
-# This exception class indicates that an operation could not be finished within
-# a reasonable amount of time
+# This error class indicates that an operation could not be finished within a
+# reasonable amount of time
 #
 # This usually indicates that a server could not be contacted because of
 # network problems.
@@ -14,9 +14,9 @@ require 'exceptions/steam_condenser_exception'
 # @author Sebastian Staudt
 # @note {SteamSocket.timeout=} allows to set a custom timeout for socket
 #       operations
-class TimeoutException < SteamCondenserException
+class TimeoutError < SteamCondenserError
 
-  # Creates a new `TimeoutException` instance
+  # Creates a new `TimeoutError` instance
   def initialize
     super 'The operation timed out.'
   end

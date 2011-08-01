@@ -96,7 +96,7 @@ class GameStats
   # @param [String, Fixnum] id The custom URL or the 64bit Steam ID of the
   #        user
   # @param [String] game_name The friendly name of the game
-  # @raise [SteamCondenserException] if the stats cannot be fetched
+  # @raise [SteamCondenserError] if the stats cannot be fetched
   def initialize(id, game_name)
     if id.is_a? Numeric
       @steam_id64 = id
@@ -109,7 +109,7 @@ class GameStats
     @xml_data = REXML::Document.new(open(url, {:proxy => true}).read).root
 
     error = @xml_data.elements['error']
-    raise SteamCondenserException, error.text unless error.nil?
+    raise SteamCondenserError, error.text unless error.nil?
 
     @privacy_state = @xml_data.elements['privacyState'].text
     if public?

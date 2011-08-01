@@ -3,9 +3,9 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-# This exception class is used as a base class for all exceptions related to
-# Steam Condenser's operation
+# This error class is used as a base class for all errors related to Steam
+# Condenser's operation
 #
 # @author Sebastian Staudt
-class SteamCondenserException < StandardError
+class SteamCondenserError < StandardError
 end

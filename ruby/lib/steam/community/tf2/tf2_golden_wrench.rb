@@ -39,8 +39,8 @@ class TF2GoldenWrench
 
   # Returns all Golden Wrenches
   #
-  # @raise SteamCondenserException If an error occurs querying the Web API or
-  #                                the Steam Community
+  # @raise [SteamCondenserError] if an error occurs querying the Web API or
+  #        the Steam Community
   # @return [Array<GoldenWrench>] All Golden Wrenches
   def self.golden_wrenches
     if @@golden_wrenches.nil?

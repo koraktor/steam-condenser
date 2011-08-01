@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'exceptions/packet_format_exception'
+require 'errors/packet_format_error'
 require 'steam/packets/steam_packet'
 
 # This packet class represents a M2A_SERVER_BATCH response replied by a master
@@ -27,12 +27,12 @@ class M2A_SERVER_BATCH_Packet
   # Creates a new M2A_SERVER_BATCH response object based on the given data
   #
   # @param [String] data The raw packet data replied from the server
-  # @raise [PacketFormatException] if the packet data is not well formatted
+  # @raise [PacketFormatError] if the packet data is not well formatted
   def initialize(data)
     super M2A_SERVER_BATCH_HEADER, data
 
     unless @content_data.byte == 0x0A
-      raise PacketFormatException, 'Master query response is missing additional 0x0A byte.'
+      raise PacketFormatError, 'Master query response is missing additional 0x0A byte.'
     end
 
     @servers = []

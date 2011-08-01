@@ -7,7 +7,7 @@ require 'ipaddr'
 require 'socket'
 require 'timeout'
 
-require 'exceptions/rcon_ban_exception'
+require 'errors/rcon_ban_error'
 require 'steam/packets/rcon/rcon_packet'
 require 'steam/packets/rcon/rcon_packet_factory'
 require 'steam/sockets/steam_socket'
@@ -46,12 +46,12 @@ class RCONSocket
 
   # Connects a new TCP socket to the server
   #
-  # @raise [TimeoutException] if the connection could not be established
+  # @raise [TimeoutError] if the connection could not be established
   def connect
     begin
       timeout(@@timeout / 1000.0) { @socket = TCPSocket.new @ip, @port }
     rescue Timeout::Error
-      raise TimeoutException
+      raise TimeoutError
     end
   end
 
@@ -71,11 +71,11 @@ class RCONSocket
   # using multiple TCP packets. The data is received in chunks and concatenated
   # into a single response packet.
   #
-  # @raise [RCONBanException] if the IP of the local machine has been banned on
-  #        the game server
+  # @raise [RCONBanError] if the IP of the local machine has been banned on the
+  #        game server
   # @return [RCONPacket] The packet replied from the server
   def reply
-    raise RCONBanException if receive_packet(4) == 0
+    raise RCONBanError if receive_packet(4) == 0
 
     @buffer.rewind
     remaining_bytes = @buffer.long

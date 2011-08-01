@@ -7,7 +7,7 @@ require 'cgi'
 require 'open-uri'
 require 'rexml/document'
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 require 'steam/community/cacheable'
 require 'steam/community/game_stats'
 require 'steam/community/steam_game'
@@ -136,14 +136,14 @@ class SteamId
   #
   # @param [Fixnum] community_id The SteamID string as used by the Steam
   #        Community
-  # @raise [SteamCondenserException] if the community ID is to small
+  # @raise [SteamCondenserError] if the community ID is to small
   # @return [String] The converted SteamID, like `STEAM_0:0:12345`
   def self.convert_community_id_to_steam_id(community_id)
     steam_id1 = community_id % 2
     steam_id2 = community_id - 76561197960265728
 
     unless steam_id2 > 0
-      raise SteamCondenserException, "SteamID #{community_id} is too small."
+      raise SteamCondenserError, "SteamID #{community_id} is too small."
     end
 
     steam_id2 = (steam_id2 - steam_id1) / 2
@@ -156,14 +156,14 @@ class SteamId
   #
   # @param [String] steam_id The SteamID string as used on servers, like
   #        `STEAM_0:0:12345`
-  # @raise [SteamCondenserException] if the SteamID doesn't have the correct
+  # @raise [SteamCondenserError] if the SteamID doesn't have the correct
   #        format
   # @return [Fixnum] The converted 64bit numeric SteamID
   def self.convert_steam_id_to_community_id(steam_id)
     if steam_id == 'STEAM_ID_LAN' || steam_id == 'BOT'
-      raise SteamCondenserException, "Cannot convert SteamID \"#{steam_id}\" to a community ID."
+      raise SteamCondenserError, "Cannot convert SteamID \"#{steam_id}\" to a community ID."
     elsif steam_id.match(/^STEAM_[0-1]:[0-1]:[0-9]+$/).nil?
-      raise SteamCondenserException, "SteamID \"#{steam_id}\" doesn't have the correct format."
+      raise SteamCondenserError, "SteamID \"#{steam_id}\" doesn't have the correct format."
     end
 
     steam_id = steam_id[6..-1].split(':').map!{|s| s.to_i}
@@ -201,7 +201,7 @@ class SteamId
 
       super(fetch)
     rescue REXML::ParseException
-      raise SteamCondenserException, 'SteamID could not be loaded.'
+      raise SteamCondenserError, 'SteamID could not be loaded.'
     end
   end
 
@@ -221,7 +221,7 @@ class SteamId
   # Fetchs data from the Steam Community by querying the XML version of the
   # profile specified by the ID of this Steam ID
   #
-  # @raise SteamCondenserException if the Steam ID data is not available, e.g.
+  # @raise SteamCondenserError if the Steam ID data is not available, e.g.
   #        when it is private
   # @see Cacheable#fetch
   def fetch
@@ -229,7 +229,7 @@ class SteamId
     profile = REXML::Document.new(profile_url.read).root
 
     unless REXML::XPath.first(profile, 'error').nil?
-      raise SteamCondenserException, profile.elements['error'].text
+      raise SteamCondenserError, profile.elements['error'].text
     end
 
     @nickname         = CGI.unescapeHTML profile.elements['steamID'].text
@@ -237,7 +237,7 @@ class SteamId
     @vac_banned       = (profile.elements['vacBanned'].text == 1)
 
     unless REXML::XPath.first(profile, 'privacyMessage').nil?
-      raise SteamCondenserException, profile.elements['privacyMessage'].text
+      raise SteamCondenserError, profile.elements['privacyMessage'].text
     end
 
     @image_url        = profile.elements['avatarIcon'].text[0..-5]
@@ -341,7 +341,7 @@ class SteamId
   # @param [Fixnum, String] id The full or short name or the application ID of
   #        the game stats should be fetched for
   # @return [GameStats] The statistics for the game with the given name
-  # @raise [SteamCondenserException] if the user does not own this game or it
+  # @raise [SteamCondenserError] if the user does not own this game or it
   #        does not have any stats
   # @see find_game
   # @see SteamGame#has_stats?
@@ -349,7 +349,7 @@ class SteamId
     game = find_game id
 
     unless game.has_stats?
-      raise SteamCondenserException, "\"#{game.name}\" does not have stats."
+      raise SteamCondenserError, "\"#{game.name}\" does not have stats."
     end
 
     GameStats.create_game_stats(@custom_url || @steam_id64, game.short_name)
@@ -445,7 +445,7 @@ class SteamId
   #
   # @param [Fixnum, String] id The full or short name or the application ID of
   #        the game
-  # @raise [SteamCondenserException] if the user does not own the game or no
+  # @raise [SteamCondenserError] if the user does not own the game or no
   #        game with the given ID exists
   # @return [SteamGame] The game found with the given ID
   def find_game(id)
@@ -463,7 +463,7 @@ class SteamId
       else
         message = "This SteamID does not own the game \"#{id}\"."
       end
-      raise SteamCondenserException, message
+      raise SteamCondenserError, message
     end
 
     game

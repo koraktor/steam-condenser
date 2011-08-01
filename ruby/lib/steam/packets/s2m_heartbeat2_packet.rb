@@ -45,13 +45,13 @@ class S2M_HEARTBEAT2_Packet
   #
   # @param [Hash<Symbol, Object>] data The data to send with the heartbeat. The
   #        data contents are merge with the values from {DEFAULT_DATA}.
-  # @raise [SteamCondenserException] when the required challenge number is
+  # @raise [SteamCondenserError] when the required challenge number is
   #        missing
   def initialize(data = {})
     data = DEFAULT_DATA.merge data
 
     if data[:challenge].nil?
-      raise SteamCondenserException, 'You have to provide a challenge number when sending a heartbeat to a master server.'
+      raise SteamCondenserError, 'You have to provide a challenge number when sending a heartbeat to a master server.'
     end
 
     bytes = 0x0A.chr

@@ -3,17 +3,17 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
-# This exception class indicates that you have not authenticated yet with the
-# game server you're trying to send commands via RCON
+# This error class indicates that you have not authenticated yet with the game
+# server you're trying to send commands via RCON
 #
 # @author Sebastian Staudt
 # @see GameServer#rcon_auth
 # @see GameServer#rcon_exec
-class RCONNoAuthException < SteamCondenserException
+class RCONNoAuthError < SteamCondenserError
 
-  # Creates a new `RCONNoAuthException` instance
+  # Creates a new `RCONNoAuthError` instance
   def initialize
     super 'Not authenticated yet.'
   end

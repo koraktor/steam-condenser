@@ -7,7 +7,7 @@ require 'ipaddr'
 require 'socket'
 
 require 'core_ext/stringio'
-require 'exceptions/timeout_exception'
+require 'errors/timeout_error'
 
 # This module implements common functionality for sockets used to connect to
 # game and master servers
@@ -20,8 +20,7 @@ module SteamSocket
 
   # Sets the timeout for socket operations
   #
-  # Any request that takes longer than this time will cause a
-  # {TimeoutException}.
+  # Any request that takes longer than this time will cause a {TimeoutError}.
   #
   # @param [Fixnum] timeout The amount of milliseconds before a request times
   #        out
@@ -48,12 +47,12 @@ module SteamSocket
   # Reads the given amount of data from the socket and wraps it into the buffer
   #
   # @param [Fixnum] buffer_length The data length to read from the socket
-  # @raise [TimeoutException] if no packet is received on time
+  # @raise [TimeoutError] if no packet is received on time
   # @return [Fixnum] The number of bytes that have been read from the socket
   # @see StringIO
   def receive_packet(buffer_length = 0)
     if select([@socket], nil, nil, @@timeout / 1000.0).nil?
-      raise TimeoutException
+      raise TimeoutError
     end
 
     if buffer_length == 0

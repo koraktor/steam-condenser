@@ -48,7 +48,7 @@ class SourceSocket
         if split_packets.size < packet_count
           begin
             bytes_read = receive_packet
-          rescue TimeoutException
+          rescue TimeoutError
             bytes_read = 0
           end
         else

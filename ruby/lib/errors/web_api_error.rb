@@ -3,26 +3,26 @@
 #
 # Copyright (c) 2011, Sebastian Staudt
 
-require 'exceptions/steam_condenser_exception'
+require 'errors/steam_condenser_error'
 
-# This exception is raised when a Steam Web API request or a related action
-# fails. This can have various reasons like an invalid Web API key or a broken
+# This error is raised when a Steam Web API request or a related action fails.
+# This can have various reasons like an invalid Web API key or a broken
 # request.
 #
 # @author Sebastian Staudt
 # @see WebApi
-class WebApiException < SteamCondenserException
+class WebApiError < SteamCondenserError
 
-  # Creates a new `WebApiException` with an error message according to the given
+  # Creates a new `WebApiError` with an error message according to the given
   # `cause`. If this cause is `:status_bad` (which will origin from the Web API
   # itself) or `:http_error` the details about this failed request will be
   # taken from `status_code` and `status_message`.
   #
   # @param [:http_error, :invalid_key, :status_bad, :unauthorized] cause A
-  #        symbolic name for the problem which caused this exception:
+  #        symbolic name for the problem which caused this error:
   #
   #        * `:http_error`: An error during the HTTP request itself will result
-  #           in an exception with this reason.
+  #           in an error with this reason.
   #        * `:invalid_key`: This occurs when trying to set a Web API key that
   #           isn't valid, i.e. a 128 bit integer in a hexadecimal string.
   #        * `:status_bad`: This is caused by a successful request that fails

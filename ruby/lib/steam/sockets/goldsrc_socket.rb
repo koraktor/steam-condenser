@@ -4,8 +4,8 @@
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'core_ext/stringio'
-require 'exceptions/rcon_ban_exception'
-require 'exceptions/rcon_no_auth_exception'
+require 'errors/rcon_ban_error'
+require 'errors/rcon_no_auth_error'
 require 'steam/packets/steam_packet_factory'
 require 'steam/packets/rcon/rcon_goldsrc_request'
 require 'steam/sockets/steam_socket'
@@ -58,7 +58,7 @@ class GoldSrcSocket
         if split_packets.size < packet_count
           begin
             bytes_read = receive_packet
-          rescue TimeoutException
+          rescue TimeoutError
             bytes_read = 0
           end
         else
@@ -80,9 +80,9 @@ class GoldSrcSocket
   #
   # @param [String] password The password to authenticate with the server
   # @param [String] command The command to execute on the server
-  # @raise [RCONBanException] if the IP of the local machine has been banned on
-  #        the game server
-  # @raise [RCONNoAuthException] if the password is incorrect
+  # @raise [RCONBanError] if the IP of the local machine has been banned on the
+  #        game server
+  # @raise [RCONNoAuthError] if the password is incorrect
   # @return [RCONGoldSrcResponse] The response replied by the server
   # @see #rcon_challenge
   # @see #rcon_send
@@ -94,7 +94,7 @@ class GoldSrcSocket
     if @is_hltv
       begin
         response = reply.response
-      rescue TimeoutException
+      rescue TimeoutError
         response = ''
       end
     else
@@ -102,9 +102,9 @@ class GoldSrcSocket
     end
 
     if response.strip == 'Bad rcon_password.'
-      raise RCONNoAuthException
+      raise RCONNoAuthError
     elsif response.strip == 'You have been banned from this server.'
-      raise RCONBanException
+      raise RCONBanError
     end
 
     begin
@@ -117,15 +117,15 @@ class GoldSrcSocket
 
   # Requests a challenge number from the server to be used for further requests
   #
-  # @raise [RCONBanException] if the IP of the local machine has been banned on
-  #        the game server
+  # @raise [RCONBanError] if the IP of the local machine has been banned on the
+  #        game server
   # @see #rcon_send
   def rcon_challenge
     rcon_send 'challenge rcon'
     response = reply.response.strip
 
     if response.strip == 'You have been banned from this server.'
-      raise RCONBanException
+      raise RCONBanError
     end
 
     @rcon_challenge = response[14..-1]
