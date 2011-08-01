@@ -321,8 +321,13 @@ class SteamId
     games_data.elements.each('games/game') do |game_data|
       game = SteamGame.new(game_data)
       @games[game.app_id] = game
-      recent = game_data.elements['hoursLast2Weeks'].text.to_f rescue 0
-      total = game_data.elements['hoursOnRecord'].text.to_f rescue 0
+      recent = total = 0
+      unless game_data.elements['hoursLast2Weeks'].nil?
+        recent = game_data.elements['hoursLast2Weeks'].text.to_f
+      end
+      unless game_data.elements['hoursOnRecord'].nil?
+        total = game_data.elements['hoursOnRecord'].text.to_f
+      end
       @playtimes[game.app_id] = [(recent * 60).to_i, (total * 60).to_i]
     end
 
