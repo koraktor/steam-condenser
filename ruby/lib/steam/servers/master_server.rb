@@ -91,8 +91,8 @@ class MasterServer
   #
   # Filtering:
   # Instead of filtering the results sent by the master server locally, you
-  # should at least use the following filters to narrow down the results sent by
-  # the master server.
+  # should at least use the following filters to narrow down the results sent
+  # by the master server.
   #
   # Available filters:
   #
@@ -110,33 +110,42 @@ class MasterServer
   # @param [Fixnum] region_code The region code to specify a location of the
   #        game servers
   # @param [String] filters The filters that game servers should match
+  # @param [Boolean] force Return a list of servers even if an error occured
+  #        while fetching them from the master server
+  # @raise [TimeoutError] if too many timeouts occur while querying the master
+  #        server
   # @return [Array<Array<String>>] A list of game servers matching the given
   #         region and filters
   # @see A2M_GET_SERVERS_BATCH2_Packet
-  def servers(region_code = MasterServer::REGION_ALL, filters = '')
+  # @see MasterServer.retries=
+  def servers(region_code = MasterServer::REGION_ALL, filters = '', force = false)
     fail_count     = 0
     finished       = false
     current_server = '0.0.0.0:0'
     server_array   = []
 
-    failsafe do
-      begin
-        @socket.send A2M_GET_SERVERS_BATCH2_Packet.new(region_code, current_server, filters)
+    begin
+      failsafe do
         begin
-          servers = @socket.reply.servers
-          servers.each do |server|
-            if server == '0.0.0.0:0'
-              finished = true
-            else
-              current_server = server
-              server_array << server.split(':')
+          @socket.send A2M_GET_SERVERS_BATCH2_Packet.new(region_code, current_server, filters)
+          begin
+            servers = @socket.reply.servers
+            servers.each do |server|
+              if server == '0.0.0.0:0'
+                finished = true
+              else
+                current_server = server
+                server_array << server.split(':')
+              end
             end
+            fail_count = 0
+          rescue TimeoutError
+            raise $! if (fail_count += 1) == @@retries
           end
-          fail_count = 0
-        rescue TimeoutError
-          raise $! if (fail_count += 1) == @@retries
-        end
-      end while !finished
+        end while !finished
+      end
+    rescue TimeoutError
+      raise $! unless force
     end
 
     server_array

@@ -159,14 +159,18 @@ class MasterServer extends Server {
      * @param int $regionCode The region code to specify a location of the
      *        game servers
      * @param string $filter The filters that game servers should match
+     * @param bool $force Return a list of servers even if an error occured
+     *        while fetching them from the master server
      * @return array A list of game servers matching the given
      *         region and filters
+     * @see setTimeout()
      * @see A2M_GET_SERVERS_BATCH2_Packet
      * @throws SteamCondenserException if a problem occurs while parsing the
      *         reply
-     * @throws TimeoutException if the request times out
+     * @throws TimeoutException if too many timeouts occur while querying the
+     *         master server
      */
-    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = '') {
+    public function getServers($regionCode = MasterServer::REGION_ALL , $filter = '', $force = false) {
         $failCount  = 0;
         $finished   = false;
         $portNumber = 0;
@@ -200,7 +204,7 @@ class MasterServer extends Server {
                 } while(!$finished);
                 break;
             } catch(Exception $e) {
-                if($this->rotateIp()) {
+                if($this->rotateIp() && !$force) {
                     throw $e;
                 }
             }

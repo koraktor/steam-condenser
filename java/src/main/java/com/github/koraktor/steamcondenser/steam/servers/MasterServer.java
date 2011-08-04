@@ -187,11 +187,39 @@ public class MasterServer extends Server {
      *         region and filters
      * @see A2M_GET_SERVERS_BATCH2_Paket
      * @throws SteamCondenserException if the request fails
-     * @throws TimeoutException if the request times out
+     * @throws TimeoutException if too many timeouts occur while querying the
+     *         master server
      */
     public Vector<InetSocketAddress> getServers()
             throws SteamCondenserException, TimeoutException {
-        return this.getServers(MasterServer.REGION_ALL, "");
+        return this.getServers(MasterServer.REGION_ALL, "", false);
+    }
+
+    /**
+     * Returns a list of game server matching the given region and filters
+     * <p/>
+     * Filtering:
+     * Instead of filtering the results sent by the master server locally, you
+     * should at least use the filters listed at {@link
+     * MasterServer#getServers(byte, String, boolean)} to narrow down the
+     * results sent by the master server.
+     * <p/>
+     * <strong>Note:</strong> Receiving all servers from the master server is
+     * taking quite some time.
+     *
+     * @param regionCode The region code to specify a location of the game
+     *        servers
+     * @param filter The filters that game servers should match
+     * @return A list of game servers matching the given
+     *         region and filters
+     * @see A2M_GET_SERVERS_BATCH2_Paket
+     * @throws SteamCondenserException if the request fails
+     * @throws TimeoutException if too many timeouts occur while querying the
+     *         master server
+     */
+    public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
+            throws SteamCondenserException, TimeoutException {
+        return this.getServers(regionCode, filter, false);
     }
 
     /**
@@ -226,9 +254,10 @@ public class MasterServer extends Server {
      *         region and filters
      * @see A2M_GET_SERVERS_BATCH2_Paket
      * @throws SteamCondenserException if the request fails
-     * @throws TimeoutException if the request times out
+     * @throws TimeoutException if too many timeouts occur while querying the
+     *         master server
      */
-    public Vector<InetSocketAddress> getServers(byte regionCode, String filter)
+    public Vector<InetSocketAddress> getServers(byte regionCode, String filter, boolean force)
             throws SteamCondenserException, TimeoutException {
         int failCount    = 0;
         boolean finished = false;
@@ -265,7 +294,7 @@ public class MasterServer extends Server {
                 } while(!finished);
                 break;
             } catch(TimeoutException e) {
-                if(this.rotateIp()) {
+                if(this.rotateIp() && !force) {
                     throw e;
                 }
             }
