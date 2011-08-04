@@ -237,30 +237,39 @@ public class MasterServer extends Server {
         Vector<String> serverStringArray;
         Vector<InetSocketAddress> serverArray = new Vector<InetSocketAddress>();
 
-        do {
-            this.socket.send(new A2M_GET_SERVERS_BATCH2_Paket(regionCode, hostName + ":" + portNumber, filter));
+        while(true) {
             try {
-                serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
+                do {
+                    this.socket.send(new A2M_GET_SERVERS_BATCH2_Paket(regionCode, hostName + ":" + portNumber, filter));
+                    try {
+                        serverStringArray = ((M2A_SERVER_BATCH_Paket) this.socket.getReply()).getServers();
 
-                for(String serverString : serverStringArray) {
-                    hostName = serverString.substring(0, serverString.lastIndexOf(":"));
-                    portNumber = Integer.valueOf(serverString.substring(serverString.lastIndexOf(":") + 1));
+                        for(String serverString : serverStringArray) {
+                            hostName = serverString.substring(0, serverString.lastIndexOf(":"));
+                            portNumber = Integer.valueOf(serverString.substring(serverString.lastIndexOf(":") + 1));
 
-                    if(!hostName.equals("0.0.0.0") && portNumber != 0) {
-                        serverArray.add(new InetSocketAddress(hostName, portNumber));
+                            if(!hostName.equals("0.0.0.0") && portNumber != 0) {
+                                serverArray.add(new InetSocketAddress(hostName, portNumber));
+                            }
+                            else {
+                                finished = true;
+                            }
+                        }
+                        failCount = 0;
+                    } catch(TimeoutException e) {
+                        failCount ++;
+                        if(failCount == retries) {
+                            throw e;
+                        }
                     }
-                    else {
-                        finished = true;
-                    }
-                }
-                failCount = 0;
+                } while(!finished);
+                break;
             } catch(TimeoutException e) {
-                failCount ++;
-                if(failCount == retries) {
+                if(this.rotateIp()) {
                     throw e;
                 }
             }
-        } while(!finished);
+        }
 
         return serverArray;
     }
