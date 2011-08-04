@@ -36,7 +36,7 @@ public class SteamGame {
      *
      * @param gameData The XML data of the game
      * @return The game instance for the given data
-     * @see SteamGame()
+     * @see SteamGame#SteamGame
      */
     public static SteamGame create(Element gameData) {
         int appId = Integer.parseInt(gameData.getElementsByTagName("appID").item(0).getTextContent());

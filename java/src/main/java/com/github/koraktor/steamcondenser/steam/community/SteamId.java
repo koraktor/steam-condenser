@@ -376,7 +376,7 @@ public class SteamId {
      * without fetching their data.
      *
      * @see #getFriends
-     * @see SteamId()
+     * @see SteamId#SteamId
      * @throws SteamCondenserException if an error occurs while parsing the
      *         data
      */

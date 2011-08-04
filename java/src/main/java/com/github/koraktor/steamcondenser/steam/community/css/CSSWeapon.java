@@ -31,7 +31,7 @@ public class CSSWeapon {
      * given XML data
      *
      * @param weaponName The name of the weapon
-     * @param weaponData The XML data of all weapons
+     * @param weaponsData The XML data of all weapons
      */
     public CSSWeapon(String weaponName, Element weaponsData) {
         this.name = weaponName;

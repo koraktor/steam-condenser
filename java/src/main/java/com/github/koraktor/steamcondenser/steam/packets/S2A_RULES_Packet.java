@@ -18,7 +18,7 @@ import com.github.koraktor.steamcondenser.exceptions.PacketFormatException;
  * active values.
  *
  * @author Sebastian Staudt
- * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRulesInfo
+ * @see com.github.koraktor.steamcondenser.steam.servers.GameServer#updateRules
  */
 public class S2A_RULES_Packet extends SteamPacket {
 
