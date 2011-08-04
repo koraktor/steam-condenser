@@ -93,7 +93,7 @@ public class SourceSocket extends QuerySocket {
                     bytesRead = 0;
                 }
 
-                Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
+                Logger.getLogger("com.github.koraktor.steamcondenser").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
             } while(bytesRead > 0 && this.packetIsSplit());
 
             if(isCompressed) {
@@ -108,9 +108,9 @@ public class SourceSocket extends QuerySocket {
         this.buffer.flip();
 
         if(isCompressed) {
-            Logger.getLogger("global").info("Received compressed reply of type \"" + packet.getClass().getSimpleName() + "\"");
+            Logger.getLogger("com.github.koraktor.steamcondenser").info("Received compressed reply of type \"" + packet.getClass().getSimpleName() + "\"");
         } else {
-            Logger.getLogger("global").info("Received reply of type \"" + packet.getClass().getSimpleName() + "\"");
+            Logger.getLogger("com.github.koraktor.steamcondenser").info("Received reply of type \"" + packet.getClass().getSimpleName() + "\"");
         }
 
         return packet;

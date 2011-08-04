@@ -99,7 +99,7 @@ public class GoldSrcSocket extends QuerySocket {
                 splitPackets.ensureCapacity(packetCount);
                 splitPackets.add(packetNumber - 1, splitData);
 
-                Logger.getLogger("global").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
+                Logger.getLogger("com.github.koraktor.steamcondenser").info("Received packet #" + packetNumber + " of " + packetCount + " for request ID " + requestId + ".");
 
                 if(splitPackets.size() < packetCount) {
                     try {
@@ -117,7 +117,7 @@ public class GoldSrcSocket extends QuerySocket {
             packet = this.getPacketFromData();
         }
 
-        Logger.getLogger("global").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
+        Logger.getLogger("com.github.koraktor.steamcondenser").info("Received packet of type \"" + packet.getClass().getSimpleName() + "\"");
 
         return packet;
     }

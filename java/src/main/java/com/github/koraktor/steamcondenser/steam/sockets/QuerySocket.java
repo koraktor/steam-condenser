@@ -76,7 +76,7 @@ public abstract class QuerySocket extends SteamSocket {
      */
     public void send(SteamPacket dataPacket)
             throws SteamCondenserException {
-        Logger.getLogger("global").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
+        Logger.getLogger("com.github.koraktor.steamcondenser").info("Sending data packet of type \"" + dataPacket.getClass().getSimpleName() + "\"");
 
         try {
             this.buffer = ByteBuffer.wrap(dataPacket.getBytes());
