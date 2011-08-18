@@ -100,6 +100,20 @@ class SteamGame {
     }
 
     /**
+     * Creates a stats object for the given user and this game
+     *
+     * @param string $steamId The custom URL or the 64bit Steam ID of the user
+     * @return GameStats The stats of this game for the given user
+     */
+    public function getUserStats($steamId) {
+        if(!$this->hasStats()) {
+            return null;
+        }
+
+        return GameStats::createGameStats($steamId, $this->shortName);
+    }
+
+    /**
      * Returns whether this game has statistics available
      *
      * @return bool <var>true</var> if this game has stats

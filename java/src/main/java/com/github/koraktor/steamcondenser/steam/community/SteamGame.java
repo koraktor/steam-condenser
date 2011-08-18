@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
+
 /**
  * This class represents a game available on Steam
  *
@@ -97,6 +99,21 @@ public class SteamGame {
      */
     public String getShortName() {
         return this.shortName;
+    }
+
+    /**
+     * Creates a stats object for the given user and this game
+     *
+     * @param steamId The custom URL or the 64bit Steam ID of the user
+     * @return The stats of this game for the given user
+     */
+    public GameStats getUserStats(Object steamId)
+            throws SteamCondenserException {
+        if(!this.hasStats()) {
+            return null;
+        }
+
+        return GameStats.createGameStats(steamId, this.shortName);
     }
 
     /**

@@ -42,6 +42,17 @@ class SteamGame
     !@short_name.nil?
   end
 
+  # Creates a stats object for the given user and this game
+  #
+  # @param [String, Fixnum] steam_id The custom URL or the 64bit Steam ID of
+  #        the user
+  # @return [GameStats] The stats of this game for the given user
+  def user_stats(steam_id)
+    return unless has_stats?
+
+    GameStats.create_game_stats steam_id, @short_name
+  end
+
   private
 
   # Creates a new instance of a game with the given data and caches it
