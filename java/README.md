@@ -10,13 +10,25 @@ Currently it is implemented in Java, PHP and Ruby.
 * Linux, MacOS X or Windows
 * Java 1.5 or newer
 
-  The following libraries are required:
-  * Apache Commons Compress (for Source servers sending compressed responses)
-  * Jakarta Commons HTTPClient (for the Web API features)
-  * JSON (for the Web API features)
-  * JUnit (for testing)
+The following Java libraries are required:
 
-  Maven will install these for you.
+* Apache Commons Compress (for Source servers sending compressed responses)
+* Apache Commons Lang 3
+* Jakarta Commons HTTPClient (for the Web API features)
+* JSON (for the Web API features)
+* JUnit (for testing)
+
+Maven will install these for you.
+
+## Installation
+
+To install and use Steam Condenser in your Maven managed project use the
+following dependency definition:
+
+    <dependency>
+        <groupId>com.github.koraktor</groupId>
+        <artifactId>steamcondenser</artifactId>
+    </dependency>
 
 ## License
 
@@ -31,10 +43,11 @@ included LICENSE file.
 
 ## See Also
 
-* Steam Condenser home: http://koraktor.github.com/steam-condenser
-* Steam Condenser project page: http://github.com/koraktor/steam-condenser
-* Steam Condenser group: http://groups.google.com/group/steam-condenser
-* Steam Condenser's Ohloh page: http://www.ohloh.net/projects/steam-condenser
+* [Steam Condenser home](https://koraktor.de/steam-condenser)
+* [GitHub project page](https://github.com/koraktor/steam-condenser)
+* [Wiki](https://github.com/koraktor/steam-condenser/wiki)
+* [Google group](http://groups.google.com/group/steam-condenser)
+* [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
 
 Follow Steam Condenser on Twitter
 [@steamcondenser](http://twitter.com/steamcondenser).

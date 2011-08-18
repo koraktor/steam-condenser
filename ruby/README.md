@@ -10,10 +10,16 @@ Currently it is implemented in Java, PHP and Ruby.
 * Linux, MacOS X or Windows
 * Ruby 1.8.6 or newer
 
-  The following gems are required:
+The following gems are required:
 
-  * `bzip2-ruby` (for Source servers sending compressed responses)
-  * `json` (for the Web API features)
+* `bzip2-ruby` (for Source servers sending compressed responses)
+* `json` (for the Web API features)
+
+## Installation
+
+To install Steam Condenser as a Ruby gem use the following command:
+
+    gem install steam-condenser
 
 ## License
 
@@ -28,9 +34,10 @@ included LICENSE file.
 
 ## See Also
 
-* [Steam Condenser home](http://koraktor.github.com/steam-condenser)
-* [Documentation](http://www.rdoc.info/projects/koraktor/steam-condenser)
-* [GitHub project page](http://github.com/koraktor/steam-condenser)
+* [Steam Condenser home](https://koraktor.de/steam-condenser)
+* [Documentation](http://rubydoc.info/gems/steam-condenser)
+* [GitHub project page](https://github.com/koraktor/steam-condenser)
+* [Wiki](https://github.com/koraktor/steam-condenser/wiki)
 * [Google group](http://groups.google.com/group/steam-condenser)
 * [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
 

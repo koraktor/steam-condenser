@@ -10,11 +10,12 @@ Currently it is implemented in Java, PHP and Ruby.
 * Linux, MacOS X or Windows
 * PHP 5 or newer
 
-  The following extensions are required:
-   * `bz2` (for Source servers sending compressed responses)
-   * `json` (for the Web API features)
-   * `simplexml` (for the Steam Community features)
-   * `sockets` (for all server queries)
+The following extensions are required:
+
+* `bz2` (for Source servers sending compressed responses)
+* `json` (for the Web API features)
+* `simplexml` (for the Steam Community features)
+* `sockets` (for all server queries)
 
 ## License
 
@@ -29,10 +30,11 @@ included LICENSE file.
 
 ## See Also
 
-* Steam Condenser home: http://koraktor.github.com/steam-condenser
-* Steam Condenser project page: http://github.com/koraktor/steam-condenser
-* Steam Condenser group: http://groups.google.com/group/steam-condenser
-* Steam Condenser's Ohloh page: http://www.ohloh.net/projects/steam-condenser
+* [Steam Condenser home](https://koraktor.de/steam-condenser)
+* [GitHub project page](https://github.com/koraktor/steam-condenser)
+* [Wiki](https://github.com/koraktor/steam-condenser/wiki)
+* [Google group](http://groups.google.com/group/steam-condenser)
+* [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
 
 Follow Steam Condenser on Twitter
 [@steamcondenser](http://twitter.com/steamcondenser).
