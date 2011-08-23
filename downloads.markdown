@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 1.0.0
+version: 1.0.1
 ---
 Downloads
 =========
@@ -34,8 +34,8 @@ using Maven and the PHP package has to be downloaded manually.
   <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-php.tar.bz2">steam-condenser-{{page.version}}-php.tar.bz2</a>
   <br />
   <pre>
-  SHA1: 97cef19d5a794284e32543f04d507e93d9d88956
-  MD5:  666814d73c0ea9f9b5bfcdb6b3b150bd</pre>
+  SHA1: 4743762f1e9059afca1a4404b600157e4e232bb4
+  MD5:  bffadacf94326776c1043099184c087a</pre>
 </div>
 
 ## Git repository
