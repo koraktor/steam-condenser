@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
+require 'errors/timeout_error'
 require 'steam/packets/a2m_get_servers_batch2_packet'
 require 'steam/packets/c2m_checkmd5_packet'
 require 'steam/packets/s2m_heartbeat2_packet'
@@ -112,8 +113,8 @@ class MasterServer
   # @param [String] filters The filters that game servers should match
   # @param [Boolean] force Return a list of servers even if an error occured
   #        while fetching them from the master server
-  # @raise [TimeoutError] if too many timeouts occur while querying the master
-  #        server
+  # @raise [SteamCondenser::TimeoutError] if too many timeouts occur while
+  #        querying the master server
   # @return [Array<Array<String>>] A list of game servers matching the given
   #         region and filters
   # @see A2M_GET_SERVERS_BATCH2_Packet
@@ -139,12 +140,12 @@ class MasterServer
               end
             end
             fail_count = 0
-          rescue TimeoutError
+          rescue SteamCondenser::TimeoutError
             raise $! if (fail_count += 1) == @@retries
           end
         end while !finished
       end
-    rescue TimeoutError
+    rescue SteamCondenser::TimeoutError
       raise $! unless force
     end
 
@@ -170,7 +171,7 @@ class MasterServer
       reply_packets = []
       begin
         loop { reply_packets << @socket.reply }
-      rescue TimeoutError
+      rescue SteamCondenser::TimeoutError
       end
     end
 

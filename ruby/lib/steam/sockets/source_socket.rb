@@ -4,6 +4,7 @@
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'core_ext/stringio'
+require 'errors/timeout_error'
 require 'steam/sockets/steam_socket'
 
 # This class represents a socket used to communicate with game servers based on
@@ -48,7 +49,7 @@ class SourceSocket
         if split_packets.size < packet_count
           begin
             bytes_read = receive_packet
-          rescue TimeoutError
+          rescue SteamCondenser::TimeoutError
             bytes_read = 0
           end
         else

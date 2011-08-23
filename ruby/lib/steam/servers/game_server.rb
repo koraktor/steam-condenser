@@ -238,7 +238,7 @@ module GameServer
         puts "Expected #{expected_response}, got #{response_packet.class}." if $DEBUG
         handle_response_for_request(request_type, false) if repeat_on_failure
       end
-    rescue TimeoutError
+    rescue SteamCondenser::TimeoutError
       puts "Expected #{expected_response}, but timed out." if $DEBUG
     end
   end

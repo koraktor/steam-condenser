@@ -6,6 +6,7 @@
 require 'core_ext/stringio'
 require 'errors/rcon_ban_error'
 require 'errors/rcon_no_auth_error'
+require 'errors/timeout_error'
 require 'steam/packets/steam_packet_factory'
 require 'steam/packets/rcon/rcon_goldsrc_request'
 require 'steam/sockets/steam_socket'
@@ -58,7 +59,7 @@ class GoldSrcSocket
         if split_packets.size < packet_count
           begin
             bytes_read = receive_packet
-          rescue TimeoutError
+          rescue SteamCondenser::TimeoutError
             bytes_read = 0
           end
         else
@@ -94,7 +95,7 @@ class GoldSrcSocket
     if @is_hltv
       begin
         response = reply.response
-      rescue TimeoutError
+      rescue SteamCondenser::TimeoutError
         response = ''
       end
     else

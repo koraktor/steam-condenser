@@ -8,6 +8,7 @@ require 'socket'
 require 'timeout'
 
 require 'errors/rcon_ban_error'
+require 'errors/timeout_error'
 require 'steam/packets/rcon/rcon_packet'
 require 'steam/packets/rcon/rcon_packet_factory'
 require 'steam/sockets/steam_socket'
@@ -46,12 +47,13 @@ class RCONSocket
 
   # Connects a new TCP socket to the server
   #
-  # @raise [TimeoutError] if the connection could not be established
+  # @raise [SteamCondenser::TimeoutError] if the connection could not be
+  #        established
   def connect
     begin
       timeout(@@timeout / 1000.0) { @socket = TCPSocket.new @ip, @port }
     rescue Timeout::Error
-      raise TimeoutError
+      raise SteamCondenser::TimeoutError
     end
   end
 

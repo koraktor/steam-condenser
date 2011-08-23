@@ -47,12 +47,12 @@ module SteamSocket
   # Reads the given amount of data from the socket and wraps it into the buffer
   #
   # @param [Fixnum] buffer_length The data length to read from the socket
-  # @raise [TimeoutError] if no packet is received on time
+  # @raise [SteamCondenser::TimeoutError] if no packet is received on time
   # @return [Fixnum] The number of bytes that have been read from the socket
   # @see StringIO
   def receive_packet(buffer_length = 0)
     if select([@socket], nil, nil, @@timeout / 1000.0).nil?
-      raise TimeoutError
+      raise SteamCondenser::TimeoutError
     end
 
     if buffer_length == 0
