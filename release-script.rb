@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 #
-# This code is free software; you can redistribute it and/or modify it under the
-# terms of the new BSD License.
+# This code is free software; you can redistribute it and/or modify it under
+# the terms of the new BSD License.
 #
-# Copyright (c) 2009, Sebastian Staudt
+# Copyright (c) 2009-2011, Sebastian Staudt
 
 require 'fileutils'
 
@@ -17,7 +17,7 @@ def build_gem
   FileUtils.cd('tmp/ruby')
   $stdout << 'Building Ruby Gem...'
   $stdout.flush
-  output = `rake build 2>&1`
+  output = `rake gem 2>&1`
   if $?.exitstatus != 0
     puts " \033[0;31mfailed!\033[0;0m"
     puts 'Output was:', output
