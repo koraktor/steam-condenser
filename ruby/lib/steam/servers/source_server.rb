@@ -31,7 +31,7 @@ class SourceServer
   #
   # @return [MasterServer] The Source master server
   def self.master
-    MasterServer.new *MasterServer::GOLDSRC_MASTER_SERVER
+    MasterServer.new *MasterServer::SOURCE_MASTER_SERVER
   end
 
   # Creates a new instance of a server object representing a Source server,
