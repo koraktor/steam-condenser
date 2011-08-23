@@ -189,7 +189,8 @@ abstract class GameItem {
     }
 
     /**
-     * Returns the slot where this item can be equipped in
+     * Returns the slot where this item can be equipped in or <var>null</var>
+     * if this item cannot be equipped
      *
      * @return string The slot where this item can be equipped in
      */

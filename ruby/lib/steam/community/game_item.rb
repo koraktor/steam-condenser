@@ -56,7 +56,8 @@ module GameItem
   # @return [String] The quality of this item
   attr_reader :quality
 
-  # Returns the slot where this item can be equipped in
+  # Returns the slot where this item can be equipped in or `nil` if this item
+  # cannot be equipped
   #
   # @return [String] The slot where this item can be equipped in
   attr_reader :slot

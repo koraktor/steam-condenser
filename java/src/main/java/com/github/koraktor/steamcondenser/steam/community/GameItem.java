@@ -62,7 +62,7 @@ public class GameItem {
             this.level            = itemData.getInt("level");
             this.name             = inventory.getItemSchema().get(this.defindex).getString("item_name");
             this.quality          = inventory.getQualitySchema().get(itemData.getInt("quality"));
-            this.slot             = inventory.getItemSchema().get(this.defindex).getString("item_slot");
+            this.slot             = inventory.getItemSchema().get(this.defindex).optString("item_slot", null);
             this.tradeable        = itemData.isNull("flag_cannot_trade") || !itemData.getBoolean("flag_cannot_trade");
             this.type             = inventory.getItemSchema().get(this.defindex).getString("item_type_name");
 
@@ -156,7 +156,8 @@ public class GameItem {
     }
 
     /**
-     * Returns the slot where this item can be equipped in
+     * Returns the slot where this item can be equipped in or <code>null</code>
+     * if this item cannot be equipped
      *
      * @return The slot where this item can be equipped in
      */
