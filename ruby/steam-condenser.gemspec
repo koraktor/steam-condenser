@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9.2'
   s.add_development_dependency 'yard', '~> 0.7.2'
 
-  s.files              = `git ls-files`.split("\n")
-  s.test_files         = `git ls-files -- test/*`.split("\n")
+  s.files              = FileList['**/*']
+  s.test_files         = FileList['test/**/*']
   s.require_paths      = [ 'lib' ]
 end
