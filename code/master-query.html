@@ -21,6 +21,6 @@ languages:
     $server = new GoldSrcServer($randomServer[0], $randomServer[1]));
   ruby: |
     master = MasterServer.new(*MasterServer::GOLDSRC_MASTER_SERVER)
-    servers = master.get_servers
-    server = GoldSrcServer.new(*servers.choice)
+    servers = master.servers
+    server = GoldSrcServer.new(*servers[rand servers.size])
 ---
