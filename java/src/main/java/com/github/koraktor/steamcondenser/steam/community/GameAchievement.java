@@ -30,7 +30,11 @@ import com.github.koraktor.steamcondenser.exceptions.WebApiException;
  */
 public class GameAchievement {
 
+    private String apiName;
+
     private int appId;
+
+    private String description;
 
     private String name;
 
@@ -86,10 +90,12 @@ public class GameAchievement {
      * @param achievementData The achievement data extracted from XML
      */
     public GameAchievement(long steamId64, int appId, Element achievementData) {
-        this.appId     = appId;
-        this.name      = achievementData.getElementsByTagName("name").item(0).getTextContent();
-        this.steamId64 = steamId64;
-        this.unlocked  = achievementData.getAttribute("closed").equals("1");
+        this.apiName     = achievementData.getElementsByTagName("apiname").item(0).getTextContent();
+        this.appId       = appId;
+        this.description = achievementData.getElementsByTagName("description").item(0).getTextContent();
+        this.name        = achievementData.getElementsByTagName("name").item(0).getTextContent();
+        this.steamId64   = steamId64;
+        this.unlocked    = achievementData.getAttribute("closed").equals("1");
 
         NodeList unlockTimestampElements = achievementData.getElementsByTagName("unlockTimestamp");
         if(this.unlocked && unlockTimestampElements.getLength() != 0) {
@@ -98,13 +104,31 @@ public class GameAchievement {
     }
 
     /**
-     * Return the unique Steam Application ID of the  game this achievement
+     * Returns the symbolic API name of this achievement
+     *
+     * @return The API name of this achievement
+     */
+    public String getApiName() {
+        return this.apiName;
+    }
+
+    /**
+     * Return the unique Steam Application ID of the game this achievement
      * belongs to
      *
      * @return The Steam Application ID of this achievement's game
      */
     public int getAppId() {
         return this.appId;
+    }
+
+    /**
+     * Return the description of this achievement
+     *
+     * @return The description of this achievement
+     */
+    public String getDescription() {
+        return this.description;
     }
 
     /**

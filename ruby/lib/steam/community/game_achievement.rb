@@ -16,11 +16,21 @@ require 'steam/community/web_api'
 # @author Sebastian Staudt
 class GameAchievement
 
+  # Returns the symbolic API name of this achievement
+  #
+  # @return [String] The API name of this achievement
+  attr_reader :api_name
+
   # Return the unique Steam Application ID of the  game this achievement
   # belongs to
   #
   # @return [Fixnum] The Steam Application ID of this achievement's game
   attr_reader :app_id
+
+  # Returns the description of this achievement
+  #
+  # @return [String] The description of this achievement
+  attr_reader :description
 
   # Returns the name of this achievement
   #
@@ -70,10 +80,12 @@ class GameAchievement
   # @param [REXML::Element] achievement_data The achievement data extracted
   #        from XML
   def initialize(steam_id64, app_id, achievement_data)
-    @app_id     = app_id
-    @name       = achievement_data.elements['name'].text
-    @steam_id64 = steam_id64
-    @unlocked   = (achievement_data.attributes['closed'].to_i == 1)
+    @api_name    = achievement_data.elements['apiname'].text
+    @app_id      = app_id
+    @description = achievement_data.elements['description'].text
+    @name        = achievement_data.elements['name'].text
+    @steam_id64  = steam_id64
+    @unlocked    = (achievement_data.attributes['closed'].to_i == 1)
 
     if @unlocked && !achievement_data.elements['unlockTimestamp'].nil?
       @timestamp  = Time.at(achievement_data.elements['unlockTimestamp'].text.to_i)

@@ -24,17 +24,22 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/WebApi.php';
 class GameAchievement {
 
     /**
+     * @var string
+     */
+    private $apiName;
+
+    /**
      * @var int
      */
     private $appId;
 
     /**
-     * @var String
+     * @var string
      */
     private $name;
 
     /**
-     * @var String
+     * @var string
      */
     private $steamId64;
 
@@ -86,14 +91,25 @@ class GameAchievement {
      *        from XML
      */
     public function __construct($steamId64, $appId, $achievementData) {
-        $this->appId     = $appId;
-        $this->name      = (string) $achievementData->name;
-        $this->steamId64 = $steamId64;
-        $this->unlocked  = (bool)(int) $achievementData->attributes()->closed;
+        $this->apiName     = (string) $achievementData->name;
+        $this->appId       = $appId;
+        $this->description = (string) $achievementData->description;
+        $this->name        = (string) $achievementData->name;
+        $this->steamId64   = $steamId64;
+        $this->unlocked    = (bool)(int) $achievementData->attributes()->closed;
 
         if($this->unlocked && $achievementData->unlockTimestamp != null) {
             $this->timestamp = (int) $achievementData->unlockTimestamp;
         }
+    }
+
+    /**
+     * Returns the symbolic API name of this achievement
+     *
+     * @return string The API name of this achievement
+     */
+    public function getApiName() {
+        return $this->apiName;
     }
 
     /**
@@ -104,6 +120,15 @@ class GameAchievement {
      */
     public function getAppId() {
         return $this->appId;
+    }
+
+    /**
+     * Returns the description of this achievement
+     *
+     * @return string The description of this achievement
+     */
+    public function getDescription() {
+        return $this->description;
     }
 
     /**
