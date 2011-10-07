@@ -32,6 +32,11 @@ class GameLeaderboard
     //
 
     /**
+     * @var array
+     */
+    private static $leaderboards = array();
+
+    /**
      * @var int
      */
     protected $id;
@@ -60,6 +65,46 @@ class GameLeaderboard
      * @var int
      */
     protected $displayType;
+
+    /**
+     * Returns the GameLeaderboard matching the given Leaderboard Id.
+     *
+     * @return GameLeaderboard or FALSE if no match
+     */
+    public static function getLeaderboard($gameName, $id) {
+        $getter = is_string($id) ? 'getName' : 'getId';
+
+        foreach(self::getLeaderboards($gameName) as $board) {
+            if($id == $board->$getter()) {
+                return $board;
+            }
+        }
+    }
+
+    /**
+     * Returns an array containing all of the game's leaderboards
+     */
+    public static function getLeaderboards($gameName) {
+        if(!array_key_exists($gameName, self::$leaderboards)) {
+            self::loadGameLeaderboards($gameName);
+        }
+
+        return self::$leaderboards[$gameName];
+    }
+
+    private static function loadGameLeaderboards($gameName) {
+        $url = "http://steamcommunity.com/stats/$gameName/leaderboards/?xml=1";
+        $boardsData = new SimpleXMLElement(file_get_contents($url));
+
+        if(!empty($boardsData->error)) {
+            throw new SteamCondenserException((string) $boardsData->error);
+        }
+
+        self::$leaderboards[$gameName] = array();
+        foreach($boardsData->leaderboard as $boardData) {
+            self::$leaderboards[$gameName][] = new GameLeaderboard($boardData);
+        }
+    }
 
     /**
      * Creates a GameLeaderboard object
