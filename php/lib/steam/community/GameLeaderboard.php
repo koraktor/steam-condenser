@@ -231,12 +231,6 @@ class GameLeaderboard
         if(($last - $first) > 5000) {
             throw new SteamCondenserException('Leaderboard entry lookup is currently limited to a maximum of 5001 entries per request.');
         }
-        if($first < 0) {
-            throw new SteamCondenserException(sprintf('Leaderboards start at entry 1 (%d)', $first));
-        }
-        if($last > $this->entryCount) {
-            throw new SteamCondenserException(sprintf('Last entry is out of bounds. (%d/%d)', $last, $this->entryCount));
-        }
 
         $fullurl = sprintf('%s&start=%d&end=%d', $this->url, $first, $last);
         $xml = new SimpleXMLElement(file_get_contents($fullurl));
