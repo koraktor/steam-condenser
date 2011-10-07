@@ -42,7 +42,7 @@ class GameLeaderboardEntry {
      * @param SimpleXMLElement $entryData The entry data from Steam Community
      * @param GameLeaderboard $leaderboard The parent leaderboard that this entry belongs to
      */
-    public function __construct($entryData, $leaderboard) {
+    public function __construct(SimpleXMLElement $entryData, GameLeaderboard $leaderboard) {
         $this->steamId64   = SteamId::create((string) $entryData->steamid, false);
         $this->score       = (int)    $entryData->score;
         $this->rank        = (int)    $entryData->rank;

@@ -63,9 +63,9 @@ class GameLeaderboard
 
     /**
      * Creates a GameLeaderboard object
-     * @param $gameName
+     * @param SimpleXMLElement $boardData
      */
-    public function __construct($boardData) {
+    public function __construct(SimpleXMLElement $boardData) {
         $this->url         = (string) $boardData->url;
         $this->id          = (int)    $boardData->lbid;
         $this->name        = (string) $boardData->name;
