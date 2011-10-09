@@ -72,11 +72,15 @@ class GameLeaderboard
      * @return GameLeaderboard or FALSE if no match
      */
     public static function getLeaderboard($gameName, $id) {
-        $getter = is_string($id) ? 'getName' : 'getId';
+        $leaderboards = self::getLeaderboards($gameName);
 
-        foreach(self::getLeaderboards($gameName) as $board) {
-            if($id == $board->$getter()) {
-                return $board;
+        if(is_int($id)) {
+            return $leaderboards[$id];
+        } else {
+            foreach(array_values($leaderboards) as $board) {
+                if($board->getName() == $id) {
+                    return $board;
+                }
             }
         }
     }
@@ -102,7 +106,8 @@ class GameLeaderboard
 
         self::$leaderboards[$gameName] = array();
         foreach($boardsData->leaderboard as $boardData) {
-            self::$leaderboards[$gameName][] = new GameLeaderboard($boardData);
+            $leaderboard = new GameLeaderboard($boardData);
+            self::$leaderboards[$gameName][$leaderboard->getId()] = $leaderboard;
         }
     }
 
