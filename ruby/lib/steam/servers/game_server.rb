@@ -201,45 +201,41 @@ module GameServer
   # @raise [SteamCondenserError] if either the request type or the response
   #        packet is not known
   def handle_response_for_request(request_type, repeat_on_failure = true)
-    begin
-      case request_type
-        when :challenge then
-          request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
-          expected_response = S2C_CHALLENGE_Packet
-        when :info then
-          request_packet = A2S_INFO_Packet.new
-          expected_response = S2A_INFO_BasePacket
-        when :players then
-          request_packet = A2S_PLAYER_Packet.new(@challenge_number)
-          expected_response = S2A_PLAYER_Packet
-        when :rules then
-          request_packet = A2S_RULES_Packet.new(@challenge_number)
-          expected_response = S2A_RULES_Packet
-        else
-          raise SteamCondenserError, 'Called with wrong request type.'
-      end
-
-      send_request request_packet
-      response_packet = reply
-
-      if response_packet.kind_of? S2A_INFO_BasePacket
-        @info_hash = response_packet.info_hash
-      elsif response_packet.kind_of? S2A_PLAYER_Packet
-        @player_hash = response_packet.player_hash
-      elsif response_packet.kind_of? S2A_RULES_Packet
-        @rules_hash = response_packet.rules_hash
-      elsif response_packet.kind_of? S2C_CHALLENGE_Packet
-        @challenge_number = response_packet.challenge_number
+    case request_type
+      when :challenge then
+        request_packet = A2S_SERVERQUERY_GETCHALLENGE_Packet.new
+        expected_response = S2C_CHALLENGE_Packet
+      when :info then
+        request_packet = A2S_INFO_Packet.new
+        expected_response = S2A_INFO_BasePacket
+      when :players then
+        request_packet = A2S_PLAYER_Packet.new(@challenge_number)
+        expected_response = S2A_PLAYER_Packet
+      when :rules then
+        request_packet = A2S_RULES_Packet.new(@challenge_number)
+        expected_response = S2A_RULES_Packet
       else
-        raise SteamCondenserError, "Response of type #{response_packet.class} cannot be handled by this method."
-      end
+        raise SteamCondenserError, 'Called with wrong request type.'
+    end
 
-      unless response_packet.kind_of? expected_response
-        puts "Expected #{expected_response}, got #{response_packet.class}." if $DEBUG
-        handle_response_for_request(request_type, false) if repeat_on_failure
-      end
-    rescue SteamCondenser::TimeoutError
-      puts "Expected #{expected_response}, but timed out." if $DEBUG
+    send_request request_packet
+    response_packet = reply
+
+    if response_packet.kind_of? S2A_INFO_BasePacket
+      @info_hash = response_packet.info_hash
+    elsif response_packet.kind_of? S2A_PLAYER_Packet
+      @player_hash = response_packet.player_hash
+    elsif response_packet.kind_of? S2A_RULES_Packet
+      @rules_hash = response_packet.rules_hash
+    elsif response_packet.kind_of? S2C_CHALLENGE_Packet
+      @challenge_number = response_packet.challenge_number
+    else
+      raise SteamCondenserError, "Response of type #{response_packet.class} cannot be handled by this method."
+    end
+
+    unless response_packet.kind_of? expected_response
+      puts "Expected #{expected_response}, got #{response_packet.class}." if $DEBUG
+      handle_response_for_request(request_type, false) if repeat_on_failure
     end
   end
 

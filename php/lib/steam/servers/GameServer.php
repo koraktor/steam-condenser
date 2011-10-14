@@ -276,58 +276,54 @@ abstract class GameServer extends Server {
      *        response packet is not known
      */
     private function handleResponseForRequest($requestType, $repeatOnFailure = true) {
-        try {
-            switch($requestType) {
-                case self::REQUEST_CHALLENGE:
-                    $expectedResponse = 'S2C_CHALLENGE_Packet';
-                    $requestPacket    = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
-                    break;
-                case self::REQUEST_INFO:
-                    $expectedResponse = 'S2A_INFO_BasePacket';
-                    $requestPacket    = new A2S_INFO_Packet();
-                    break;
-                case self::REQUEST_PLAYER:
-                    $expectedResponse = 'S2A_PLAYER_Packet';
-                    $requestPacket    = new A2S_PLAYER_Packet($this->challengeNumber);
-                    break;
-                case self::REQUEST_RULES:
-                    $expectedResponse = 'S2A_RULES_Packet';
-                    $requestPacket    = new A2S_RULES_Packet($this->challengeNumber);
-                    break;
-                default:
-                    throw new SteamCondenserException('Called with wrong request type.');
+        switch($requestType) {
+            case self::REQUEST_CHALLENGE:
+                $expectedResponse = 'S2C_CHALLENGE_Packet';
+                $requestPacket    = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
+                break;
+            case self::REQUEST_INFO:
+                $expectedResponse = 'S2A_INFO_BasePacket';
+                $requestPacket    = new A2S_INFO_Packet();
+                break;
+            case self::REQUEST_PLAYER:
+                $expectedResponse = 'S2A_PLAYER_Packet';
+                $requestPacket    = new A2S_PLAYER_Packet($this->challengeNumber);
+                break;
+            case self::REQUEST_RULES:
+                $expectedResponse = 'S2A_RULES_Packet';
+                $requestPacket    = new A2S_RULES_Packet($this->challengeNumber);
+                break;
+            default:
+                throw new SteamCondenserException('Called with wrong request type.');
+        }
+
+        $this->sendRequest($requestPacket);
+
+        $responsePacket = $this->getReply();
+
+        switch(get_class($responsePacket)) {
+            case 'S2A_INFO_DETAILED_Packet':
+            case 'S2A_INFO2_Packet':
+                $this->infoHash = $responsePacket->getInfoHash();
+                break;
+            case 'S2A_PLAYER_Packet':
+                $this->playerHash = $responsePacket->getPlayerHash();
+                break;
+            case 'S2A_RULES_Packet':
+                $this->rulesHash = $responsePacket->getRulesArray();
+                break;
+            case 'S2C_CHALLENGE_Packet':
+                $this->challengeNumber = $responsePacket->getChallengeNumber();
+                break;
+            default:
+                throw new SteamCondenserException('Response of type ' . get_class($responsePacket) . ' cannot be handled by this method.');
+        }
+
+        if(!is_a($responsePacket, $expectedResponse)) {
+            trigger_error("Expected {$expectedResponse}, got " . get_class($responsePacket) . '.');
+            if($repeatOnFailure) {
+                $this->handleResponseForRequest($requestType, false);
             }
-
-            $this->sendRequest($requestPacket);
-
-            $responsePacket = $this->getReply();
-
-            switch(get_class($responsePacket)) {
-                case 'S2A_INFO_DETAILED_Packet':
-                case 'S2A_INFO2_Packet':
-                    $this->infoHash = $responsePacket->getInfoHash();
-                    break;
-                case 'S2A_PLAYER_Packet':
-                    $this->playerHash = $responsePacket->getPlayerHash();
-                    break;
-                case 'S2A_RULES_Packet':
-                    $this->rulesHash = $responsePacket->getRulesArray();
-                    break;
-                case 'S2C_CHALLENGE_Packet':
-                    $this->challengeNumber = $responsePacket->getChallengeNumber();
-                    break;
-                default:
-                    throw new SteamCondenserException('Response of type ' . get_class($responsePacket) . ' cannot be handled by this method.');
-            }
-
-            if(!is_a($responsePacket, $expectedResponse)) {
-                trigger_error("Expected {$expectedResponse}, got " . get_class($responsePacket) . '.');
-                if($repeatOnFailure) {
-                    $this->handleResponseForRequest($requestType, false);
-                }
-            }
-        } catch(TimeoutException $e) {
-            trigger_error("Expected {$expectedResponse}, but timed out. The server is probably offline.");
         }
     }
 

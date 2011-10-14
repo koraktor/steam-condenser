@@ -299,50 +299,46 @@ public abstract class GameServer extends Server {
         Class<? extends SteamPacket> expectedResponse = null;
         SteamPacket requestPacket = null;
 
-        try {
-            switch(requestType) {
-                case GameServer.REQUEST_CHALLENGE:
-                    expectedResponse = S2C_CHALLENGE_Packet.class;
-                    requestPacket = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
-                    break;
-                case GameServer.REQUEST_INFO:
-                    expectedResponse = S2A_INFO_BasePacket.class;
-                    requestPacket = new A2S_INFO_Packet();
-                    break;
-                case GameServer.REQUEST_PLAYER:
-                    expectedResponse = S2A_PLAYER_Packet.class;
-                    requestPacket = new A2S_PLAYER_Packet(this.challengeNumber);
-                    break;
-                case GameServer.REQUEST_RULES:
-                    expectedResponse = S2A_RULES_Packet.class;
-                    requestPacket = new A2S_RULES_Packet(this.challengeNumber);
-                    break;
+        switch(requestType) {
+            case GameServer.REQUEST_CHALLENGE:
+                expectedResponse = S2C_CHALLENGE_Packet.class;
+                requestPacket = new A2S_SERVERQUERY_GETCHALLENGE_Packet();
+                break;
+            case GameServer.REQUEST_INFO:
+                expectedResponse = S2A_INFO_BasePacket.class;
+                requestPacket = new A2S_INFO_Packet();
+                break;
+            case GameServer.REQUEST_PLAYER:
+                expectedResponse = S2A_PLAYER_Packet.class;
+                requestPacket = new A2S_PLAYER_Packet(this.challengeNumber);
+                break;
+            case GameServer.REQUEST_RULES:
+                expectedResponse = S2A_RULES_Packet.class;
+                requestPacket = new A2S_RULES_Packet(this.challengeNumber);
+                break;
+        }
+
+        this.sendRequest(requestPacket);
+
+        SteamPacket responsePacket = this.getReply();
+
+        if(responsePacket.getClass().getSuperclass().equals(S2A_INFO_BasePacket.class)) {
+            this.serverInfo = ((S2A_INFO_BasePacket) responsePacket).getInfoHash();
+        } else if(responsePacket instanceof S2A_PLAYER_Packet) {
+            this.playerHash = ((S2A_PLAYER_Packet) responsePacket).getPlayerHash();
+        } else if(responsePacket instanceof S2A_RULES_Packet) {
+            this.rulesHash = ((S2A_RULES_Packet) responsePacket).getRulesHash();
+        } else if(responsePacket instanceof S2C_CHALLENGE_Packet) {
+            this.challengeNumber = ((S2C_CHALLENGE_Packet) responsePacket).getChallengeNumber();
+        } else {
+            throw new SteamCondenserException("Response of type " + responsePacket.getClass() + " cannot be handled by this method.");
+        }
+
+        if(responsePacket.getClass() != expectedResponse) {
+            System.out.println("Expected " + expectedResponse + ", got " + responsePacket.getClass() + ".");
+            if(repeatOnFailure) {
+                this.handleResponseForRequest(requestType, false);
             }
-
-            this.sendRequest(requestPacket);
-
-            SteamPacket responsePacket = this.getReply();
-
-            if(responsePacket.getClass().getSuperclass().equals(S2A_INFO_BasePacket.class)) {
-                this.serverInfo = ((S2A_INFO_BasePacket) responsePacket).getInfoHash();
-            } else if(responsePacket instanceof S2A_PLAYER_Packet) {
-                this.playerHash = ((S2A_PLAYER_Packet) responsePacket).getPlayerHash();
-            } else if(responsePacket instanceof S2A_RULES_Packet) {
-                this.rulesHash = ((S2A_RULES_Packet) responsePacket).getRulesHash();
-            } else if(responsePacket instanceof S2C_CHALLENGE_Packet) {
-                this.challengeNumber = ((S2C_CHALLENGE_Packet) responsePacket).getChallengeNumber();
-            } else {
-                throw new SteamCondenserException("Response of type " + responsePacket.getClass() + " cannot be handled by this method.");
-            }
-
-            if(responsePacket.getClass() != expectedResponse) {
-                System.out.println("Expected " + expectedResponse + ", got " + responsePacket.getClass() + ".");
-                if(repeatOnFailure) {
-                    this.handleResponseForRequest(requestType, false);
-                }
-            }
-        } catch(TimeoutException e) {
-            System.out.println("Expected " + expectedResponse + ", but timed out. The server is probably offline.");
         }
     }
 
