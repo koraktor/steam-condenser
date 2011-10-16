@@ -68,7 +68,7 @@ class SteamId {
      *
      * @param string $id The custom URL of the Steam ID specified by the player
      *        or the 64bit SteamID
-     * @return <var>true</var> if this Steam ID is already cached
+     * @return bool <var>true</var> if this Steam ID is already cached
      */
     public static function isCached($id) {
         return array_key_exists(strtolower($id), self::$steamIds);
@@ -133,11 +133,10 @@ class SteamId {
      *
      * @param string $id The custom URL of the Steam ID specified by player or
      *        the 64bit SteamID
-     * @param boolean $fetch if <var>true</var> the profile's data is loaded
-     *        into the object
-     * @param boolean $bypassCache If <var>true</var> an already cached
-     *        instance for this Steam ID will be ignored and a new one will be
-     *        created
+     * @param bool $fetch if <var>true</var> the profile's data is loaded into
+     *        the object
+     * @param bool $bypassCache If <var>true</var> an already cached instance
+     *        for this Steam ID will be ignored and a new one will be created
      * @return SteamId The <var>SteamId</var> instance of the requested profile
      */
     public static function create($id, $fetch = true, $bypassCache = false) {
@@ -445,7 +444,7 @@ class SteamId {
     /**
      * Returns the URL of the icon version of this user's avatar
      *
-     * @return The URL of the icon-sized avatar
+     * @return string The URL of the icon-sized avatar
      */
     public function getIconAvatarUrl() {
         return $this->imageUrl . '.jpg';
@@ -454,7 +453,7 @@ class SteamId {
     /**
      * Returns the URL of the medium-sized version of this user's avatar
      *
-     * @return The URL of the medium-sized avatar
+     * @return string The URL of the medium-sized avatar
      */
     public function getMediumAvatarUrl() {
         return $this->imageUrl . '_medium.jpg';
@@ -463,7 +462,7 @@ class SteamId {
     /**
      * Returns the Steam nickname of the user
      *
-     * @return The Steam nickname of the user
+     * @return string The Steam nickname of the user
      */
     public function getNickname() {
         return $this->nickname;
@@ -502,7 +501,7 @@ class SteamId {
     /**
      * Returns whether the owner of this Steam ID is VAC banned
      *
-     * @return <var>true</var> if the user has been banned by VAC
+     * @return bool <var>true</var> if the user has been banned by VAC
      */
     public function isBanned() {
         return $this->vacBanned;
@@ -511,7 +510,7 @@ class SteamId {
     /**
      * Returns whether the data for this Steam ID has already been fetched
      *
-     * @return <var>true</var> if the Steam ID's data has been
+     * @return bool <var>true</var> if the Steam ID's data has been
      *         fetched
      */
     public function isFetched() {
@@ -521,7 +520,7 @@ class SteamId {
     /**
      * Returns whether the owner of this Steam ID is playing a game
      *
-     * @return <var>true</var> if the user is in-game
+     * @return bool <var>true</var> if the user is in-game
      */
     public function isInGame() {
         return $this->onlineState == 'in-game';
@@ -531,7 +530,7 @@ class SteamId {
      * Returns whether the owner of this Steam ID is currently logged into
      * Steam
      *
-     * @return <var>true</var> if the user is online
+     * @return bool <var>true</var> if the user is online
      */
     public function isOnline() {
         return ($this->onlineState == 'online') || ($this->onlineState == 'in-game');
