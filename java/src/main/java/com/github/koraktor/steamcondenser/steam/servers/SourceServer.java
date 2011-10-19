@@ -7,10 +7,12 @@
 
 package com.github.koraktor.steamcondenser.steam.servers;
 
-import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.github.koraktor.steamcondenser.exceptions.RCONNoAuthException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
@@ -157,17 +159,17 @@ public class SourceServer extends GameServer {
         this.rconSocket.send(new RCONTerminator(this.rconRequestId));
         RCONPacket responsePacket;
 
-        String response = "";
+        ArrayList<String> response = new ArrayList<String>();
         do {
             responsePacket = this.rconSocket.getReply();
             if(responsePacket instanceof RCONAuthResponse) {
                 this.rconAuthenticated = false;
                 throw new RCONNoAuthException();
             }
-            response += ((RCONExecResponsePacket) responsePacket).getResponse();
-        } while(response.length() == 0 || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
+            response.add(((RCONExecResponsePacket) responsePacket).getResponse());
+        } while(response.size() < 3 || ((RCONExecResponsePacket) responsePacket).getResponse().length() > 0);
 
-        return response.trim();
+        return StringUtils.join(response.toArray()).trim();
     }
 
 }

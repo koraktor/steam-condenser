@@ -84,7 +84,7 @@ class SourceServer
     @rcon_socket.send RCONExecRequest.new(@rcon_request_id, command)
     @rcon_socket.send RCONTerminator.new(@rcon_request_id)
 
-    response = ''
+    response = []
     begin
       response_packet = @rcon_socket.reply
       if response_packet.is_a? RCONAuthResponse
@@ -92,9 +92,9 @@ class SourceServer
         raise RCONNoAuthError
       end
       response << response_packet.response
-    end while response.length == 0 || response_packet.response.size > 0
+    end while response.size < 3 || response_packet.response.size > 0
 
-    response.strip
+    response.join('').strip
   end
 
 end
