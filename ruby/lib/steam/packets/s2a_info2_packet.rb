@@ -38,20 +38,23 @@ class S2A_INFO2_Packet
     @password_needed = @content_data.byte == 1
     @secure = @content_data.byte == 1
     @game_version = @content_data.cstring
-    extra_data_flag = @content_data.byte
 
-    @server_port = @content_data.short unless extra_data_flag & 0x80 == 0
+    if @content_data.remaining > 0
+      extra_data_flag = @content_data.byte
 
-    unless extra_data_flag & 0x10 == 0
-      @server_id =  @content_data.long | (@content_data.long << 32)
+      @server_port = @content_data.short unless extra_data_flag & 0x80 == 0
+
+      unless extra_data_flag & 0x10 == 0
+        @server_id =  @content_data.long | (@content_data.long << 32)
+      end
+
+      unless extra_data_flag & 0x40 == 0
+        @tv_port = @content_data.short
+        @tv_name = @content_data.cstring
+      end
+
+      @server_tags = @content_data.cstring unless extra_data_flag & 0x20 == 0
     end
-
-    unless extra_data_flag & 0x40 == 0
-      @tv_port = @content_data.short
-      @tv_name = @content_data.cstring
-    end
-
-    @server_tags = @content_data.cstring unless extra_data_flag & 0x20 == 0
 
     generate_info_hash
   end
