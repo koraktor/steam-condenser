@@ -46,8 +46,7 @@ public class S2A_RULES_Packet extends SteamPacket {
             rule = this.contentData.getString();
             value = this.contentData.getString();
 
-            // This is a workaround for servers sending corrupt replies
-            if(rule.equals("") || value.equals("")) {
+            if(rule.equals("")) {
                 break;
             }
 

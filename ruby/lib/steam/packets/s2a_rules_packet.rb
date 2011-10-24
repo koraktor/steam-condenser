@@ -39,7 +39,7 @@ class S2A_RULES_Packet
       rule  = @content_data.cstring
       value = @content_data.cstring
 
-      break if rule.empty? || value.empty?
+      break if rule.empty?
 
       @rules_hash[rule] = value
     end
