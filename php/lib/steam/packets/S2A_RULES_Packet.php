@@ -37,17 +37,20 @@ class S2A_RULES_Packet extends SteamPacket {
         if(empty($contentData)) {
             throw new Exception('Wrong formatted S2A_RULES packet.');
         }
-        parent::__construct(SteamPacket::S2A_RULES_HEADER);
+        parent::__construct(SteamPacket::S2A_RULES_HEADER, $contentData);
 
-        $contentData = unpack('vrulesNumber/a*rulesData', $contentData);
-        $tmpRulesArray = explode("\0", $contentData['rulesData']);
+        $rulesCount = $this->contentData->getShort();
+        $this->rulesArray = array();
 
-        if(sizeof($tmpRulesArray) % 2) {
-            array_pop($tmpRulesArray);
-        }
+        for($x = 0; $x < $rulesCount; $i++) {
+            $rule  = $this->contentData->getString();
+            $value = $this->contentData->getString();
 
-        for($x = 0; $x < sizeof($tmpRulesArray); $x++) {
-            $this->rulesArray[$tmpRulesArray[$x]] = $tmpRulesArray[++$x];
+            if(empty($rule)) {
+                break;
+            }
+
+            $this->rulesArray[$rule] = $value;
         }
     }
 
