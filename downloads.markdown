@@ -16,7 +16,10 @@ using Maven and the PHP package has to be downloaded manually.
 
 <div class="command">
   <h3>Ruby</h3>
-  <pre>gem install steam-condenser</pre>
+  Install the gem via RubyGems:
+  <pre>$ gem install steam-condenser</pre>
+  or specify it as a dependency in your Gemfile:
+  <pre>gem 'steam-condenser', '~> {{page.version}}'</pre>
 </div>
 
 <div class="command">
