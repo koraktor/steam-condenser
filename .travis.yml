@@ -1,0 +1,7 @@
+rvm:
+  - 1.8.7 # (current default)
+  - 1.9.2
+script:
+  - "sh -c 'cd ruby && find test -name *.rb | xargs bundle exec ruby'"
+gemfile:
+  - ruby/Gemfile
