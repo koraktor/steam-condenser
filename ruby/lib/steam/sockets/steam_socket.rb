@@ -20,7 +20,8 @@ module SteamSocket
 
   # Sets the timeout for socket operations
   #
-  # Any request that takes longer than this time will cause a {TimeoutError}.
+  # Any request that takes longer than this time will cause a
+  # {SteamCondenser::TimeoutError}.
   #
   # @param [Fixnum] timeout The amount of milliseconds before a request times
   #        out
