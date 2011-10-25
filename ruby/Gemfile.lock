@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    steam-condenser (1.0.0)
+    steam-condenser (1.0.2)
       bzip2-ruby (~> 0.2.7)
       multi_json (~> 1.0.3)
 
