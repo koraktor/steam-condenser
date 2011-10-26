@@ -7,6 +7,7 @@ require 'open-uri'
 require 'rexml/document'
 
 require 'steam/community/game_achievement'
+require 'steam/community/game_leaderboard'
 
 # This class represents the game statistics for a single user and a specific
 # game
@@ -173,6 +174,21 @@ class GameStats
     else
       "http://steamcommunity.com/id/#{@custom_url}/stats/#{@game_friendly_name}"
     end
+  end
+
+  # Returns the leaderboard for this game and the given leaderboard ID or name
+  #
+  # @param [Fixnum, String] id The ID or name of the leaderboard to return
+  # @return [GameLeaderboard] The matching leaderboard if available
+  def leaderboard(id)
+    GameLeaderboard.leaderboard @game_friendly_name, id
+  end
+
+  # Returns an array containing all of this game's leaderboards
+  #
+  # @return [Array<GameLeaderboard>] The leaderboards for this game
+  def leaderboards
+    GameLeaderboard.leaderboards @game_friendly_name
   end
 
   # Returns whether this Steam ID is publicly accessible

@@ -3,6 +3,9 @@
 #
 # Copyright (c) 2011, Sebastian Staudt
 
+require 'steam/community/game_leaderboard'
+require 'steam/community/game_stats'
+
 # This class represents a game available on Steam
 #
 # @author Sebastian Staudt
@@ -40,6 +43,21 @@ class SteamGame
   # @return [Boolean] `true` if this game has stats
   def has_stats?
     !@short_name.nil?
+  end
+
+  # Returns the leaderboard for this game and the given leaderboard ID or name
+  #
+  # @param [Fixnum, String] id The ID or name of the leaderboard to return
+  # @return [GameLeaderboard] The matching leaderboard if available
+  def leaderboard(id)
+    GameLeaderboard.leaderboard @short_name, id
+  end
+
+  # Returns an array containing all of this game's leaderboards
+  #
+  # @return [Array<GameLeaderboard>] The leaderboards for this game
+  def leaderboards
+    GameLeaderboard.leaderboards @short_name
   end
 
   # Creates a stats object for the given user and this game
