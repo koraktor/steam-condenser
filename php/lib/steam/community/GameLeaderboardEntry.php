@@ -20,7 +20,7 @@
 class GameLeaderboardEntry {
 
     /**
-     * @var string
+     * @var SteamId
      */
     protected $steamId;
 
