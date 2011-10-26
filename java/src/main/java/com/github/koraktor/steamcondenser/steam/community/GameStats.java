@@ -8,6 +8,7 @@
 package com.github.koraktor.steamcondenser.steam.community;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -261,6 +262,38 @@ public class GameStats {
      */
     public String getHoursPlayed() {
         return this.hoursPlayed;
+    }
+
+    /**
+     * Returns the leaderboard for this game and the given leaderboard ID
+     *
+     * @param id The ID of the leaderboard to return
+     * @return The matching leaderboard if available
+     */
+    public GameLeaderboard getLeaderboard(int id)
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboard(this.gameFriendlyName, id);
+    }
+
+    /**
+     * Returns the leaderboard for this game and the given leaderboard name
+     *
+     * @param id The name of the leaderboard to return
+     * @return The matching leaderboard if available
+     */
+    public GameLeaderboard getLeaderboard(String name)
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboard(this.gameFriendlyName, name);
+    }
+
+    /**
+     * Returns an array containing all of this game's leaderboards
+     *
+     * @return The leaderboards for this game
+     */
+    public Map<Integer, GameLeaderboard> getLeaderboards()
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboards(this.gameFriendlyName);
     }
 
     /**

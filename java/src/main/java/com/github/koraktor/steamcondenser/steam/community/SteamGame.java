@@ -93,6 +93,38 @@ public class SteamGame {
     }
 
     /**
+     * Returns the leaderboard for this game and the given leaderboard ID
+     *
+     * @param id The ID of the leaderboard to return
+     * @return The matching leaderboard if available
+     */
+    public GameLeaderboard getLeaderboard(int id)
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboard(this.shortName, id);
+    }
+
+    /**
+     * Returns the leaderboard for this game and the given leaderboard name
+     *
+     * @param id The name of the leaderboard to return
+     * @return The matching leaderboard if available
+     */
+    public GameLeaderboard getLeaderboard(String name)
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboard(this.shortName, name);
+    }
+
+    /**
+     * Returns an array containing all of this game's leaderboards
+     *
+     * @return The leaderboards for this game
+     */
+    public Map<Integer, GameLeaderboard> getLeaderboards()
+            throws SteamCondenserException {
+        return GameLeaderboard.getLeaderboards(this.shortName);
+    }
+
+    /**
      * Returns the short name of this game (also known as "friendly name")
      *
      * @return The short name of this game
