@@ -33,9 +33,10 @@ public class GameLeaderboardEntry {
      *        entry
      * @param leaderboard The leaderboard this entry belongs to
      */
-    public GameLeaderboardEntry(Element entryData, GameLeaderboard leaderboard)
-            throws SteamCondenserException {
-        this.steamId     = SteamId.create(entryData.getElementsByTagName("steamid").item(0).getTextContent(), false);
+    public GameLeaderboardEntry(Element entryData, GameLeaderboard leaderboard) {
+        try {
+            this.steamId     = SteamId.create(entryData.getElementsByTagName("steamid").item(0).getTextContent(), false);
+        } catch(SteamCondenserException e) {}
         this.score       = Integer.parseInt(entryData.getElementsByTagName("score").item(0).getTextContent());
         this.rank        = Integer.parseInt(entryData.getElementsByTagName("rank").item(0).getTextContent());
         this.leaderboard = leaderboard;
