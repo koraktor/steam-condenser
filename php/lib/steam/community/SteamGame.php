@@ -6,6 +6,9 @@
  * Copyright (c) 2011, Sebastian Staudt
  */
 
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameLeaderboard.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
+
 /**
  * This class represents a game available on Steam
  *
@@ -79,6 +82,26 @@ class SteamGame {
      */
     public function getAppId() {
         return $this->appId;
+    }
+
+    /**
+     * Returns the leaderboard for this game and the given leaderboard ID or
+     * name
+     *
+     * @param mixed $id The ID or name of the leaderboard to return
+     * @return GameLeaderboard The matching leaderboard if available
+     */
+    public function getLeaderboard($id) {
+        return GameLeaderboard::getLeaderboard($this->shortName, $id);
+    }
+
+    /**
+     * Returns an array containing all of this game's leaderboards
+     *
+     * @return array The leaderboards for this game
+     */
+    public function getLeaderboards() {
+        return GameLeaderboard::getLeaderboards($this->shortName);
     }
 
     /**

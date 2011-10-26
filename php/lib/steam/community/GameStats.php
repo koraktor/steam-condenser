@@ -9,6 +9,7 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameAchievement.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/GameLeaderboard.php';
 
 /**
  * This class represents the game statistics for a single user and a specific
@@ -237,6 +238,26 @@ class GameStats {
      */
     public function getHoursPlayed() {
         return $this->hoursPlayed;
+    }
+
+    /**
+     * Returns the leaderboard for this game and the given leaderboard ID or
+     * name
+     *
+     * @param mixed $id The ID or name of the leaderboard to return
+     * @return GameLeaderboard The matching leaderboard if available
+     */
+    public function getLeaderboard($id) {
+        return GameLeaderboard::getLeaderboard($this->gameFriendlyName, $id);
+    }
+
+    /**
+     * Returns an array containing all of this game's leaderboards
+     *
+     * @return array The leaderboards for this game
+     */
+    public function getLeaderboards() {
+        return GameLeaderboard::getLeaderboards($this->gameFriendlyName);
     }
 
     /**
