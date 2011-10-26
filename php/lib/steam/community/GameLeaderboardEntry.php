@@ -4,14 +4,16 @@
  * the terms of the new BSD License.
  *
  * Copyright (c) 2011, Nicholas Hastings
+ *               2011, Sebastian Staudt
  *
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
 /**
- * The GameLeaderboard class represents a leaderboard entry in a specific leaderboard
+ * The GameLeaderboard class represents a single entry in a leaderboard
  *
  * @author     Nicholas Hastings
+ * @author     Sebastian Staudt
  * @package    steam-condenser
  * @subpackage community
  */
@@ -38,9 +40,12 @@ class GameLeaderboardEntry {
     protected $leaderboard;
 
     /**
-     * Creates a GameLeaderboardEntry object
-     * @param SimpleXMLElement $entryData The entry data from Steam Community
-     * @param GameLeaderboard $leaderboard The parent leaderboard that this entry belongs to
+     * Creates new entry instance for the given XML data and leaderboard
+     *
+     * @param SimpleXMLElement $entryData The XML data of the leaderboard of
+     *        the leaderboard entry
+     * @param GameLeaderboard $leaderboard The leaderboard this entry belongs
+     *        to
      */
     public function __construct(SimpleXMLElement $entryData, GameLeaderboard $leaderboard) {
         $this->steamId     = SteamId::create((string) $entryData->steamid, false);
@@ -50,28 +55,36 @@ class GameLeaderboardEntry {
     }
 
     /**
-     * @return SteamId
+     * Returns the Steam ID of this entry's player
+     *
+     * @return SteamId The Steam ID of the player
      */
     public function getSteamId() {
         return $this->steamId;
     }
 
     /**
-     * @return int
+     * Returns the score of this entry
+     *
+     * @return int The score of this player
      */
     public function getScore() {
         return $this->score;
     }
 
     /**
-     * @return int
+     * Returns the rank where this entry is listed in the leaderboard
+     *
+     * @return int The rank of this entry
      */
     public function getRank() {
         return $this->rank;
     }
 
     /**
-     * @return GameLeaderboard
+     * Returns the leaderboard this entry belongs to
+     *
+     * @return GameLeaderboard The leaderboard of this entry
      */
     public function getLeaderboard() {
         return $this->leaderboard;

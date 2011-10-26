@@ -4,6 +4,7 @@
  * the terms of the new BSD License.
  *
  * Copyright (c) 2011, Nicholas Hastings
+ *               2011, Sebastian Staudt
  *
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
@@ -12,24 +13,24 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/GameLeaderboardEntry.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
 
 /**
- * The GameLeaderboard class represents a game leaderboard for a specific game
+ * The GameLeaderboard class represents a single leaderboard for a specific
+ * game
  *
  * @author     Nicholas Hastings
+ * @author     Sebastian Staudt
  * @package    steam-condenser
  * @subpackage community
  */
-class GameLeaderboard
-{
-    // From OpenSteamworks
+class GameLeaderboard {
+
     const LEADERBOARD_DISPLAY_TYPE_NONE         = 0;
     const LEADERBOARD_DISPLAY_TYPE_NUMERIC      = 1;
     const LEADERBOARD_DISPLAY_TYPE_SECONDS      = 2;
     const LEADERBOARD_DISPLAY_TYPE_MILLISECONDS = 3;
 
     const LEADERBOARD_SORT_METHOD_NONE = 0;
-    const LEADERBOARD_SORT_METHOD_ASC  = 1; // top-score is lowest number
-    const LEADERBOARD_SORT_METHOD_DESC = 2; // top-score is highest number
-    //
+    const LEADERBOARD_SORT_METHOD_ASC  = 1;
+    const LEADERBOARD_SORT_METHOD_DESC = 2;
 
     /**
      * @var array
@@ -67,9 +68,11 @@ class GameLeaderboard
     protected $displayType;
 
     /**
-     * Returns the GameLeaderboard matching the given Leaderboard Id.
+     * Returns the leaderboard for the given game and leaderboard ID or name
      *
-     * @return GameLeaderboard or FALSE if no match
+     * @param string $gameName The short name of the game
+     * @param mixed $id The ID or name of the leaderboard to return
+     * @return GameLeaderboard The matching leaderboard if available
      */
     public static function getLeaderboard($gameName, $id) {
         $leaderboards = self::getLeaderboards($gameName);
@@ -86,7 +89,10 @@ class GameLeaderboard
     }
 
     /**
-     * Returns an array containing all of the game's leaderboards
+     * Returns an array containing all of a game's leaderboards
+     *
+     * @param string $gameName The name of the game
+     * @return array The leaderboards for this game
      */
     public static function getLeaderboards($gameName) {
         if(!array_key_exists($gameName, self::$leaderboards)) {
@@ -96,7 +102,14 @@ class GameLeaderboard
         return self::$leaderboards[$gameName];
     }
 
-    private static function loadGameLeaderboards($gameName) {
+    /**
+     * Loads the leaderboards of the specified games into the cache
+     *
+     * @param string $gameName The short name of the game
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         leaderboards
+     */
+    private static function loadLeaderboards($gameName) {
         $url = "http://steamcommunity.com/stats/$gameName/leaderboards/?xml=1";
         $boardsData = new SimpleXMLElement(file_get_contents($url));
 
@@ -112,8 +125,9 @@ class GameLeaderboard
     }
 
     /**
-     * Creates a GameLeaderboard object
-     * @param SimpleXMLElement $boardData
+     * Creates a new leaderboard instance with the given XML data
+     *
+     * @param SimpleXMLElement $boardData The XML data of the leaderboard
      */
     private function __construct(SimpleXMLElement $boardData) {
         $this->url         = (string) $boardData->url;
@@ -125,47 +139,59 @@ class GameLeaderboard
     }
 
     /**
-     * @return String
+     * Returns the name of the leaderboard
+     *
+     * @return string The name of the leaderboard
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @return int
+     * Returns the ID of the leaderboard
+     *
+     * @return int The ID of the leaderboard
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @return int
+     * Returns the number of entries on this leaderboard
+     *
+     * @return int The number of entries on this leaderboard
      */
     public function getEntryCount() {
         return $this->entryCount;
     }
 
     /**
-     * @return int
+     * Returns the method that is used to sort the entries on the leaderboard
+     *
+     * @return int The sort method
      */
     public function getSortMethod() {
         return $this->sortMethod;
     }
 
     /**
-     * @return int
+     * Returns the display type of the scores on this leaderboard
+     *
+     * @return int The display type of the scores
      */
     public function getDisplayType() {
         return $this->displayType;
     }
 
     /**
-     * Returns the GameLeaderboardEntry on this GameLeaderboard for given steamId
-     * @param steam64 string OR fetched SteamId object
-     * @return GameLeaderboardEntry or FALSE if player is not on leaderboard
+     * Returns the entry on this leaderboard for the user with the given
+     * SteamID
+     *
+     * @param mixed $steamId The 64bit SteamID or the <var>SteamId</var> object
+     *        of the user
+     * @return GameLeaderboardEntry The entry of the user if available
      */
     public function getEntryForSteamId($steamId) {
-        // We'll let users pass SteamId class or steamid64 string
         if(is_object($steamId)) {
             $id = $steamId->getSteamId64();
         } else {
@@ -189,13 +215,14 @@ class GameLeaderboard
     }
 
     /**
-     * Returns an array of GameLeaderboardEntrys on this GameLeaderboard for given steamId
-     * and friends of given steamId
-     * @param steam64 string OR fetched SteamId object
-     * @return array
+     * Returns an array of entries on this leaderboard for the user with the
+     * given SteamID and his/her friends
+     *
+     * @param mixed $steamId The 64bit SteamID or the <var>SteamId</var> object
+     *        of the user
+     * @return array The entries of the user and his/her friends
      */
     public function getEntryForSteamIdFriends($steamId) {
-        // We'll let users pass SteamId class or steamid64 string
         if(is_object($steamId)) {
             $id = $steamId->getSteamId64();
         } else {
@@ -219,11 +246,14 @@ class GameLeaderboard
     }
 
     /**
-     * Returns an array of GameLeaderboardEntrys on this GameLeaderboard for given rank range.
-     * Range is inclusive. Currently, a maximum of 5001 entries can be returned in a single request.
-     * @param int $first
-     * @param int $last
-     * @return array
+     * Returns the entries on this leaderboard for a given rank range
+     *
+     * The range is inclusive and a maximum of 5001 entries can be returned in
+     * a single request.
+     *
+     * @param int $first The first entry to return from the leaderboard
+     * @param int $last The last entry to return from the leaderboard
+     * @return array The entries that match the given rank range
      */
     public function getEntryRange($first, $last) {
         if($last < $first) {
