@@ -5,10 +5,19 @@
 #
 # Copyright (c) 2008-2011, Sebastian Staudt
 
-require 'rubygems'
+require 'rake/testtask'
 require 'rubygems/package_task'
 
+task :default => :test
+
 Gem::PackageTask.new Gem::Specification.load 'steam-condenser.gemspec' do |pkg|
+end
+
+# Rake task for running the test suite
+Rake::TestTask.new do |t|
+  t.libs << 'lib' << 'test'
+  t.test_files = Dir.glob 'test/**/*_tests.rb'
+  t.verbose = true
 end
 
 # Check if YARD is installed
