@@ -20,7 +20,7 @@ class GameLeaderboardEntry {
     /**
      * @var string
      */
-    protected $steamId64;
+    protected $steamId;
 
     /**
      * @var int
@@ -43,7 +43,7 @@ class GameLeaderboardEntry {
      * @param GameLeaderboard $leaderboard The parent leaderboard that this entry belongs to
      */
     public function __construct(SimpleXMLElement $entryData, GameLeaderboard $leaderboard) {
-        $this->steamId64   = SteamId::create((string) $entryData->steamid, false);
+        $this->steamId     = SteamId::create((string) $entryData->steamid, false);
         $this->score       = (int)    $entryData->score;
         $this->rank        = (int)    $entryData->rank;
         $this->leaderboard = $leaderboard;
@@ -52,8 +52,8 @@ class GameLeaderboardEntry {
     /**
      * @return SteamId
      */
-    public function getSteamId64() {
-        return $this->steamId64;
+    public function getSteamId() {
+        return $this->steamId;
     }
 
     /**

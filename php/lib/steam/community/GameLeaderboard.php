@@ -90,7 +90,7 @@ class GameLeaderboard
      */
     public static function getLeaderboards($gameName) {
         if(!array_key_exists($gameName, self::$leaderboards)) {
-            self::loadGameLeaderboards($gameName);
+            self::loadLeaderboards($gameName);
         }
 
         return self::$leaderboards[$gameName];
@@ -115,7 +115,7 @@ class GameLeaderboard
      * Creates a GameLeaderboard object
      * @param SimpleXMLElement $boardData
      */
-    public function __construct(SimpleXMLElement $boardData) {
+    private function __construct(SimpleXMLElement $boardData) {
         $this->url         = (string) $boardData->url;
         $this->id          = (int)    $boardData->lbid;
         $this->name        = (string) $boardData->name;
@@ -180,14 +180,12 @@ class GameLeaderboard
         }
 
         foreach($xml->entries->entry as $entryData) {
-            if($entryData->steamid != $id) {
-                continue;
+            if($entryData->steamid == $id) {
+                return new GameLeaderboardEntry($entryData, $this);;
             }
-
-            return new GameLeaderboardEntry($entryData, $this);
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -200,10 +198,8 @@ class GameLeaderboard
         // We'll let users pass SteamId class or steamid64 string
         if(is_object($steamId)) {
             $id = $steamId->getSteamId64();
-        } else if (is_numeric($steamId)) {
-            $id = $steamId;
         } else {
-            throw new SteamCondenserException('Invalid steam id. You must pass a steamId64 or a fetched SteamId object.');
+            $id = $steamId;
         }
 
         $fullurl = sprintf('%s&steamid=%s', $this->url, $id);
