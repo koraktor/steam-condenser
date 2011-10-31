@@ -165,10 +165,11 @@ class MasterServer
   #         times when not receiving any packets.
   # @see S2M_HEARTBEAT2_Packet
   def send_heartbeat(data)
+    reply_packets = []
+
     failsafe do
       @socket.send S2M_HEARTBEAT2_Packet.new(data)
 
-      reply_packets = []
       begin
         loop { reply_packets << @socket.reply }
       rescue SteamCondenser::TimeoutError
