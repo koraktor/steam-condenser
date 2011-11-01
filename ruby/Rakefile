@@ -16,7 +16,7 @@ end
 # Rake task for running the test suite
 Rake::TestTask.new do |t|
   t.libs << 'lib' << 'test'
-  t.test_files = Dir.glob 'test/**/*_tests.rb'
+  t.test_files = Dir.glob 'test/**/test_*.rb'
   t.verbose = true
 end
 
