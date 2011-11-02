@@ -84,7 +84,7 @@ class GameLeaderboard
   # raise [SteamCondenserException] if an error occurs while fetching the
   #         leaderboard
   def entry_for_steam_id(steam_id)
-    steam_id = steam_id.steam_id_64 if steam_id.is_a? SteamId
+    steam_id = steam_id.steam_id64 if steam_id.is_a? SteamId
 
     url = "#{@url}&steamid=#{steam_id}"
     xml = REXML::Document.new(open(url, {:proxy => true}).read).root
@@ -110,8 +110,8 @@ class GameLeaderboard
   #         friends
   # raise [SteamCondenserException] if an error occurs while fetching the
   #         leaderboard
-  def entry_for_steam_id_friends(steam_id) {
-    steam_id = steam_id.steam_id_64 if steam_id.is_a? SteamId
+  def entry_for_steam_id_friends(steam_id)
+    steam_id = steam_id.steam_id64 if steam_id.is_a? SteamId
 
     url = "#{@url}&steamid=#{steam_id}"
     xml = REXML::Document.new(open(url, {:proxy => true}).read).root
