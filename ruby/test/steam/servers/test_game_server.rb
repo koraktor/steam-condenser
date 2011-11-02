@@ -45,7 +45,7 @@ class TestGameServer < Test::Unit::TestCase
       @server.expects(:reply).with { || sleep 0.05 }
 
       @server.update_ping
-      assert @server.instance_variable_get(:@ping) >= 50
+      assert_operator @server.instance_variable_get(:@ping), :>=, 50
     end
 
     should 'be able to get a challenge from the server' do
