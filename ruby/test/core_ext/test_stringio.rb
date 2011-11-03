@@ -3,75 +3,57 @@
 #
 # Copyright (c) 2009-2011, Sebastian Staudt
 
-require 'test/unit'
-
-$:.push File.join(File.dirname(__FILE__), '..', 'lib')
-
+require 'helper'
 require 'core_ext/stringio'
 
-class StringIOTests < Test::Unit::TestCase
+class TestStringIO < Test::Unit::TestCase
 
-  def test_allocate
-    buffer = StringIO.alloc 10
-    assert_equal("\0" * 10, buffer.string)
-  end
+  context 'The StringIO extensions' do
 
-  def test_byte
-    buffer = StringIO.new('test')
-    assert_equal('t'.bytes.first, buffer.byte)
-    assert_equal(3, buffer.remaining)
-  end
+    setup do
+      @io = StringIO.new 'test'
+    end
 
-  def test_float
-    buffer = StringIO.new('test')
-    assert_in_delta(7.713536684941307 * 10**31, buffer.float, 0.0000000001)
-    assert_equal(0, buffer.remaining)
-  end
+    should 'provide `#alloc`' do
+      @io = StringIO.alloc 10
 
-  def test_long
-    buffer = StringIO.new('test')
-    assert_equal(1953719668, buffer.long)
-    assert_equal(0, buffer.remaining)
-  end
+      assert_equal "\0" * 10, @io.string
+    end
 
-  def test_short
-    buffer = StringIO.new('test')
-    assert_equal(25972, buffer.short)
-    assert_equal(2, buffer.remaining)
-  end
+    should 'provide `#byte`' do
+      assert_equal 't'.bytes.first, @io.byte
+      assert_equal 3, @io.remaining
+    end
 
-  def test_signed_long
-    buffer = StringIO.new("   \255")
-    assert_equal(-1390403552, buffer.signed_long)
-    assert_equal(0, buffer.remaining)
-  end
+    should 'provide `#float`' do
+      assert_in_delta 7.713536684941307 * 10**31, @io.float, 0.0000000001
+      assert_equal 0, @io.remaining
+    end
 
-  def test_string
-    buffer = StringIO.new("test\0test")
-    assert_equal('test', buffer.cstring)
-    assert_equal(4, buffer.remaining)
-  end
+    should 'provide `#long`' do
+      assert_equal 1953719668, @io.long
+      assert_equal 0, @io.remaining
+    end
 
-  def test_put
-    buffer = StringIO.new('te')
-    buffer.write('st')
-    assert_equal('st', buffer.string)
-    buffer = StringIO.alloc 4
-    buffer.write('test')
-    assert_equal('test', buffer.string)
-  end
+    should 'provide `#short`' do
+      assert_equal 25972, @io.short
+      assert_equal 2, @io.remaining
+    end
 
-  def test_rewind
-    buffer = StringIO.new('test')
-    assert_equal(25972, buffer.short)
-    buffer.rewind
-    assert_equal(25972, buffer.short)
-  end
+    should 'provide `#signed_long`' do
+      @io = StringIO.new "   \255"
 
-  def test_wrap
-    string = 'test'
-    buffer = StringIO.new(string)
-    assert_equal(string, buffer.string)
+      assert_equal -1390403552, @io.signed_long
+      assert_equal 0, @io.remaining
+    end
+
+    should 'provide `#cstring`' do
+      @io = StringIO.new "test\0test"
+
+      assert_equal 'test', @io.cstring
+      assert_equal 4, @io.remaining
+    end
+
   end
 
 end
