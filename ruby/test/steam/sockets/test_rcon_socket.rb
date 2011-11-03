@@ -27,17 +27,25 @@ class TestRCONSocket < Test::Unit::TestCase
     end
 
     should 'establish the TCP connection when sending' do
-      @socket.expects :connect
+      tcp_socket = mock
+      tcp_socket.expects(:send).with 'test', 0
+      @socket.expects(:connect).with do
+        @socket.instance_variable_set :@socket, tcp_socket
+      end
 
       @socket.send mock(:to_s => 'test')
     end
 
     should 're-establish the TCP connection when sending' do
-      tcp_socket = mock :closed? => true
+      tcp_socket = mock
+      tcp_socket.expects(:closed?).returns true
+      tcp_socket.expects(:send).with 'test', 0
       @socket.expects :connect
       @socket.instance_variable_set :@socket, tcp_socket
 
-      @socket.send mock(:to_s => 'test')
+      packet = mock
+      packet.expects(:to_s).returns 'test'
+      @socket.send packet
     end
 
     should 'be able to establish the TCP connection' do

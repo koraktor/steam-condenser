@@ -18,13 +18,13 @@ class StringIOTests < Test::Unit::TestCase
 
   def test_byte
     buffer = StringIO.new('test')
-    assert_equal('t'[0], buffer.byte)
+    assert_equal('t'.bytes.first, buffer.byte)
     assert_equal(3, buffer.remaining)
   end
 
   def test_float
     buffer = StringIO.new('test')
-    assert_equal('7.71353668494131e+31', buffer.float.to_s)
+    assert_in_delta(7.713536684941307 * 10**31, buffer.float, 0.0000000001)
     assert_equal(0, buffer.remaining)
   end
 
