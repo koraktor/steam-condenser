@@ -92,7 +92,7 @@ abstract class GameItem {
 
         $this->defindex         = $itemData->defindex;
         $this->backpackPosition = $itemData->inventory & 0xffff;
-        $this->class            = $itemSchema[$this->defindex]->item_class;
+        $this->className        = $itemSchema[$this->defindex]->item_class;
         $this->count            = $itemData->quantity;
         $this->id               = $itemData->id;
         $this->level            = $itemData->level;
