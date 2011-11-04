@@ -4,6 +4,7 @@
 # Copyright (c) 2008-2011, Sebastian Staudt
 
 require 'steam/community/game_stats'
+require 'steam/community/tf2/tf2_beta_inventory'
 require 'steam/community/tf2/tf2_class_factory'
 require 'steam/community/tf2/tf2_inventory'
 
@@ -23,10 +24,11 @@ class TF2Stats < GameStats
   #
   # @param [String, Fixnum] steam_id The custom URL or 64bit Steam ID of the
   #        user
-  def initialize(steam_id)
-    super steam_id, 'tf2'
+  # @param [Boolean] beta If `true, creates stats for the public TF2 beta
+  def initialize(steam_id, beta = false)
+    super steam_id, (beta ? '520' : 'tf2')
 
-    if public?
+    if public? && !@xml_data.elements['stats/accumulatedPoints'].nil?
       @accumulated_points = @xml_data.elements['stats/accumulatedPoints'].text.to_i
     end
   end
@@ -55,7 +57,11 @@ class TF2Stats < GameStats
   #
   # @return [TF2Inventory] This player's TF2 backpack
   def inventory
-    @inventory = TF2Inventory.new(steam_id64) if @inventory.nil?
+    if @inventory.nil?
+      inventory_class = (game_friendly_name == 'tf2') ? TF2Inventory : TF2BetaInventory
+      @inventory = inventory_class.new(steam_id64) if @inventory.nil?
+    end
+
     @inventory
   end
 

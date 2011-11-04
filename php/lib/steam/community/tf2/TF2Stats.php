@@ -9,6 +9,7 @@
  */
 
 require_once STEAM_CONDENSER_PATH . 'steam/community/GameStats.php';
+require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2BetaInventory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2ClassFactory.php';
 require_once STEAM_CONDENSER_PATH . 'steam/community/tf2/TF2Inventory.php';
 
@@ -43,10 +44,10 @@ class TF2Stats extends GameStats {
      *
      * @param string $steamId The custom URL or 64bit Steam ID of the user
      */
-    public function __construct($steamId) {
-        parent::__construct($steamId, 'TF2');
+    public function __construct($steamId, $beta = false) {
+        parent::__construct($steamId, ($beta ? '520' : 'tf2'));
 
-        if($this->isPublic()) {
+        if($this->isPublic() && !empty($this->xmlData->stats->accumulatedPoints)) {
             $this->accumulatedPoints = intval($this->xmlData->stats->accumulatedPoints);
         }
     }

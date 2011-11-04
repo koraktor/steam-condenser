@@ -39,10 +39,27 @@ public class TF2Stats extends GameStats {
      *         stats data
      */
     public TF2Stats(Object steamId) throws SteamCondenserException {
-        super(steamId, "tf2");
+        this(steamId, false);
+    }
+
+    /**
+     * Creates a new <code>TF2Stats</code> instance by calling the super
+     * constructor with the game name <code>"tf2"</code> (or <code>"520"</code>
+     * for the beta)
+     *
+     * @param steamId The custom URL or 64bit Steam ID of the user
+     * @param beta If <code>true</code>, creates stats for the public TF2 beta
+     * @throws SteamCondenserException if an error occurs while fetching the
+     *         stats data
+     */
+    public TF2Stats(Object steamId, boolean beta) throws SteamCondenserException {
+        super(steamId, (beta ? "520" : "tf2"));
 
         if(this.isPublic()) {
-            this.accumulatedPoints = Integer.parseInt(((Element) this.xmlData.getElementsByTagName("stats").item(0)).getElementsByTagName("accumulatedPoints").item(0).getTextContent());
+            Element statsElement = (Element) this.xmlData.getElementsByTagName("stats").item(0);
+            if(statsElement.getElementsByTagName("accumulatedPoints").getLength() != 0) {
+                this.accumulatedPoints = Integer.parseInt(statsElement.getElementsByTagName("accumulatedPoints").item(0).getTextContent());
+            }
         }
     }
 
@@ -92,7 +109,11 @@ public class TF2Stats extends GameStats {
         }
 
         if(this.inventory == null) {
-            this.inventory = TF2Inventory.create(this.steamId64);
+            if(this.gameFriendlyName.equals("tf2")) {
+                this.inventory = TF2Inventory.create(this.steamId64);
+            } else {
+                this.inventory = TF2BetaInventory.create(this.steamId64);
+            }
         }
 
         return this.inventory;
