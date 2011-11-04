@@ -62,8 +62,11 @@ class TestWebApi < Test::Unit::TestCase
 
     should 'load data from the Steam Community Web API' do
       data = mock :read => 'data'
-      WebApi.expects(:open).with('http://api.steampowered.com/interface/method/v0002/?test=param&format=json&key=0123456789ABCDEF0123456789ABCDEF', { :proxy => true }).
-        returns data
+      WebApi.expects(:open).with do |url, options|
+        options == { :proxy => true } &&
+        url.start_with?('http://api.steampowered.com/interface/method/v0002/?') &&
+        (url.split('?').last.split('&') & %w{test=param format=json key=0123456789ABCDEF0123456789ABCDEF}).size == 3
+      end.returns data
 
       assert_equal 'data', WebApi.get(:json, 'interface', 'method', 2, { :test => 'param' })
     end
@@ -71,8 +74,7 @@ class TestWebApi < Test::Unit::TestCase
     should 'handle unauthorized access error when loading data' do
       io = mock :status => [401]
       http_error = OpenURI::HTTPError.new '', io
-      WebApi.expects(:open).with('http://api.steampowered.com/interface/method/v0002/?test=param&format=json&key=0123456789ABCDEF0123456789ABCDEF', { :proxy => true }).
-        raises http_error
+      WebApi.expects(:open).raises http_error
 
       error = assert_raises WebApiError do
         WebApi.get :json, 'interface', 'method', 2, { :test => 'param' }
@@ -83,8 +85,7 @@ class TestWebApi < Test::Unit::TestCase
     should 'handle generic HTTP errors when loading data' do
       io = mock :status => [[404, 'Not found']]
       http_error = OpenURI::HTTPError.new '', io
-      WebApi.expects(:open).with('http://api.steampowered.com/interface/method/v0002/?test=param&format=json&key=0123456789ABCDEF0123456789ABCDEF', { :proxy => true }).
-        raises http_error
+      WebApi.expects(:open).raises http_error
 
       error = assert_raises WebApiError do
         WebApi.get :json, 'interface', 'method', 2, { :test => 'param' }
