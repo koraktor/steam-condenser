@@ -20,11 +20,6 @@ require_once STEAM_CONDENSER_PATH . 'steam/community/GameClass.php';
 class TF2Class extends GameClass {
 
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var int
      */
     private $maxBuildingsDestroyed;
