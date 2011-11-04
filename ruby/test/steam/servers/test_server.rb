@@ -61,9 +61,10 @@ class TestServer < Test::Unit::TestCase
       server = GenericServer.new 'someserver'
       server.expects(:rotate_ip).twice.returns(false).then.returns(true)
 
-      assert_raises RuntimeError do
+      error = assert_raises RuntimeError do
         server.send :failsafe, &block
       end
+      assert_equal 'error', error.message
     end
 
   end
