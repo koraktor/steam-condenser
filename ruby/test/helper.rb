@@ -8,7 +8,7 @@ require 'test/unit'
 require 'rubygems'
 
 require 'mocha'
-require 'shoulda'
+require 'shoulda-context'
 
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 $LOAD_PATH.unshift File.dirname(__FILE__)

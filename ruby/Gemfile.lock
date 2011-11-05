@@ -14,7 +14,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.0.3)
     rake (0.9.2.2)
-    shoulda (2.11.3)
+    shoulda-context (1.0.0)
     yard (0.7.3)
 
 PLATFORMS
@@ -23,6 +23,6 @@ PLATFORMS
 DEPENDENCIES
   mocha (~> 0.10.0)
   rake (~> 0.9.2)
-  shoulda (~> 2.11.3)
+  shoulda-context (~> 1.0.0)
   steam-condenser!
   yard (~> 0.7.2)
