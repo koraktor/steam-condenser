@@ -86,7 +86,6 @@ class TestRCONSocket < Test::Unit::TestCase
       buffer = mock
       @socket.instance_variable_set :@buffer, buffer
 
-      buffer.expects :rewind
       buffer.expects(:long).returns 1234
       buffer.expects(:get).twice.returns('test ').returns 'test'
       @socket.expects(:receive_packet).with(4).returns 1

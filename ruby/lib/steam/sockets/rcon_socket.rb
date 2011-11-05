@@ -79,7 +79,6 @@ class RCONSocket
   def reply
     raise RCONBanError if receive_packet(4) == 0
 
-    @buffer.rewind
     remaining_bytes = @buffer.long
 
     packet_data = ''
