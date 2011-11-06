@@ -38,7 +38,7 @@ module Server
     @host_names   = []
     @ip_addresses = []
     @ip_index     = 0
-    @port         = port.to_i
+    @port         = port
 
     Socket.getaddrinfo(address, port, Socket::AF_INET, Socket::SOCK_DGRAM).
            each do |address|
