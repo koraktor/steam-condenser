@@ -31,6 +31,7 @@ included LICENSE file.
 
 * Sebastian Staudt -- koraktor(at)gmail.com
 * DeFirence -- defirence(at)defirence.za.net
+* Mike Połtyn -- mike(at)railslove.com
 
 ## See Also
 
