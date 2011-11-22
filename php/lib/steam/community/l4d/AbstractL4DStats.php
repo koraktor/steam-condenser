@@ -244,4 +244,3 @@ abstract class AbstractL4DStats extends GameStats {
     }
 
 }
-?>

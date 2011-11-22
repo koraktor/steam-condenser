@@ -43,4 +43,3 @@ class RCONGoldSrcResponse extends SteamPacket
         return substr($this->contentData->_array(), 0, -2);
     }
 }
-?>

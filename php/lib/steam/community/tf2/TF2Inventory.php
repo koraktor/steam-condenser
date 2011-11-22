@@ -65,4 +65,3 @@ class TF2Inventory extends GameInventory {
     }
 
 }
-?>

@@ -83,4 +83,3 @@ class SourceSocket extends SteamSocket {
         return $packet;
     }
 }
-?>

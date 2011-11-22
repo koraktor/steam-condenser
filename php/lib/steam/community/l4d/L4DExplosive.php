@@ -42,4 +42,3 @@ class L4DExplosive extends GameWeapon {
         return 1 / $this->getAvgShotsPerKill();
     }
 }
-?>

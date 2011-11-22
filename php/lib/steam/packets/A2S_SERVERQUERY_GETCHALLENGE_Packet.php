@@ -31,4 +31,3 @@ class A2S_SERVERQUERY_GETCHALLENGE_Packet extends SteamPacket {
         parent::__construct(SteamPacket::A2S_SERVERQUERY_GETCHALLENGE_HEADER);
     }
 }
-?>

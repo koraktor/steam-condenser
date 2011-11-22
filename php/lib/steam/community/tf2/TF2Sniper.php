@@ -46,4 +46,3 @@ class TF2Sniper extends TF2Class {
         return $this->maxHeadshots;
     }
 }
-?>

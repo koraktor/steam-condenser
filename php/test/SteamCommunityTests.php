@@ -53,4 +53,3 @@ class SteamCommunityTests extends PHPUnit_Framework_TestCase {
         print_r($steamId->getGames());
     }
 }
-?>

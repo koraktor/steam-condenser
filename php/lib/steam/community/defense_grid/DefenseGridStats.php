@@ -468,4 +468,3 @@ class DefenseGridStats extends GameStats {
         return $this->towerStats;
     }
 }
-?>

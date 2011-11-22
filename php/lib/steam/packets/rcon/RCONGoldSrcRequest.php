@@ -43,4 +43,3 @@ class RCONGoldSrcRequest extends SteamPacket {
         return pack('Va*', 0xFFFFFFFF, $this->contentData->_array());
     }
 }
-?>

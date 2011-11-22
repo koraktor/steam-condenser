@@ -35,4 +35,3 @@ class A2S_PLAYER_Packet extends RequestPacketWithChallenge {
         parent::__construct(SteamPacket::A2S_PLAYER_HEADER, $challengeNumber);
     }
 }
-?>

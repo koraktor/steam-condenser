@@ -37,4 +37,3 @@ class MasterServerSocket extends SteamSocket {
     }
 
 }
-?>

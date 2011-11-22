@@ -112,4 +112,3 @@ class CSSMap {
         return ($this->roundsPlayed > 0) ? ($this->roundsWon / $this->roundsPlayed) : 0;
     }
 }
-?>

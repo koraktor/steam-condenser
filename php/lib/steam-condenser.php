@@ -16,7 +16,4 @@ define('STEAM_CONDENSER_VERSION', '1.0.2');
 require_once STEAM_CONDENSER_PATH . 'steam/servers/GoldSrcServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/MasterServer.php';
 require_once STEAM_CONDENSER_PATH . 'steam/servers/SourceServer.php';
-
 require_once STEAM_CONDENSER_PATH . 'steam/community/SteamId.php';
-
-?>

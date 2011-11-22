@@ -279,4 +279,3 @@ class GameLeaderboard {
         return $entries;
     }
 }
-?>

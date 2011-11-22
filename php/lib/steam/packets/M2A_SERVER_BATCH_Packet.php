@@ -64,4 +64,3 @@ class M2A_SERVER_BATCH_Packet extends SteamPacket {
         return $this->serverArray;
     }
 }
-?>

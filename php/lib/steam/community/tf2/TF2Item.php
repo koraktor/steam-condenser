@@ -75,4 +75,3 @@ class TF2Item extends GameItem {
     }
 
 }
-?>

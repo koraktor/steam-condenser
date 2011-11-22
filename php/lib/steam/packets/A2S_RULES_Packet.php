@@ -36,4 +36,3 @@ class A2S_RULES_Packet extends RequestPacketWithChallenge {
         parent::__construct(SteamPacket::A2S_RULES_HEADER, $challengeNumber);
     }
 }
-?>

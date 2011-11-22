@@ -250,4 +250,3 @@ class L4D2Stats extends AbstractL4DStats {
     }
 
 }
-?>

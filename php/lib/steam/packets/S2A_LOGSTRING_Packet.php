@@ -46,4 +46,3 @@ class S2A_LOGSTRING_Packet extends SteamPacket {
     }
 
 }
-?>

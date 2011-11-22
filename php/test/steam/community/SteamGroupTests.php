@@ -51,4 +51,3 @@ class SteamGroupTests extends PHPUnit_Framework_TestCase {
         $this->assertEquals($group, $group3);
     }
 }
-?>

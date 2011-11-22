@@ -61,4 +61,3 @@ class TF2Medic extends TF2Class {
         return $this->maxUbercharges;
     }
 }
-?>

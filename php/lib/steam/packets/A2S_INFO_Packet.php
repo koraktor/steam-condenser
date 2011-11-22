@@ -30,4 +30,3 @@ class A2S_INFO_Packet extends SteamPacket {
         parent::__construct(SteamPacket::A2S_INFO_HEADER, "Source Engine Query\0");
     }
 }
-?>

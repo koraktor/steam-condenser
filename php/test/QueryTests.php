@@ -71,4 +71,3 @@ class QueryTests extends PHPUnit_Framework_TestCase {
         echo $server;
     }
 }
-?>

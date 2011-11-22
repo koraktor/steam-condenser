@@ -143,4 +143,3 @@ class L4D2Map extends L4DMap {
     }
 
 }
-?>

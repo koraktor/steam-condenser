@@ -34,4 +34,3 @@ class RCONExecRequest extends RCONPacket {
         parent::__construct($requestId, RCONPacket::SERVERDATA_EXECCOMMAND, $command);
     }
 }
-?>

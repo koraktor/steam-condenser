@@ -61,4 +61,3 @@ class TF2Spy extends TF2Class {
         return $this->maxHealthLeeched;
     }
 }
-?>

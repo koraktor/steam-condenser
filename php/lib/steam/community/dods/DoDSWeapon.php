@@ -106,4 +106,3 @@ class DoDSWeapon extends GameWeapon {
         return $this->name;
     }
 }
-?>

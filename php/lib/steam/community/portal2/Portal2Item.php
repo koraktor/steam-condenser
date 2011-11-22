@@ -73,4 +73,3 @@ class Portal2Item extends GameItem {
     }
 
 }
-?>

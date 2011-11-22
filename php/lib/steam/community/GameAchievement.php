@@ -168,4 +168,3 @@ class GameAchievement {
         return $this->unlocked;
     }
 }
-?>

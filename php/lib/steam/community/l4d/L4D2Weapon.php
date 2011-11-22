@@ -62,4 +62,3 @@ class L4D2Weapon extends AbstractL4DWeapon {
         return $this->weaponGroup;
     }
 }
-?>

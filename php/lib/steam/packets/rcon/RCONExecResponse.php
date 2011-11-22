@@ -46,4 +46,3 @@ class RCONExecResponse extends RCONPacket {
         return substr($response, 0, strlen($response) - 2);
     }
 }
-?>

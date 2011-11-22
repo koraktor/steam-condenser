@@ -101,4 +101,3 @@ class TF2Stats extends GameStats {
         return $this->inventory;
     }
 }
-?>

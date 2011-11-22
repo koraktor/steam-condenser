@@ -30,4 +30,3 @@ class PacketFormatException extends SteamCondenserException {
     }
 
 }
-?>

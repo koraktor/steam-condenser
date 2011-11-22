@@ -90,4 +90,3 @@ class GameLeaderboardEntry {
         return $this->leaderboard;
     }
 }
-?>

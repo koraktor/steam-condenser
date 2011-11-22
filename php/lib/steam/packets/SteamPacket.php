@@ -88,4 +88,3 @@ abstract class SteamPacket {
         return $packetData;
     }
 }
-?>

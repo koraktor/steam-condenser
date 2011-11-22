@@ -88,4 +88,3 @@ class L4DStats extends AbstractL4DStats {
         return $this->weaponStats;
     }
 }
-?>

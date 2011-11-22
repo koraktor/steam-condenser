@@ -57,4 +57,3 @@ class S2A_PLAYER_Packet extends SteamPacket {
         return $this->playerHash;
     }
 }
-?>

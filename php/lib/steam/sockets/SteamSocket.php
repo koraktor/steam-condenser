@@ -134,4 +134,3 @@ abstract class SteamSocket {
         $this->socket->send($dataPacket->__toString());
     }
 }
-?>

@@ -161,4 +161,3 @@ abstract class Socket {
         return $this->socket;
     }
 }
-?>

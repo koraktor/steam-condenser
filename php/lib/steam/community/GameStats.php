@@ -279,4 +279,3 @@ class GameStats {
         return $this->privacyState == 'public';
     }
 }
-?>

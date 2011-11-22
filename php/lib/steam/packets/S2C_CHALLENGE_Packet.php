@@ -43,4 +43,3 @@ class S2C_CHALLENGE_Packet extends SteamPacket {
         return $this->contentData->rewind()->getLong();
     }
 }
-?>

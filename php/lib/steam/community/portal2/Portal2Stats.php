@@ -53,4 +53,3 @@ class Portal2Stats extends GameStats {
         return $this->inventory;
     }
 }
-?>
