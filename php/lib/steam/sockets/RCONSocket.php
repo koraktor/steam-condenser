@@ -106,4 +106,3 @@ class RCONSocket extends SteamSocket {
         return RCONPacketFactory::getPacketFromData($packetData);
     }
 }
-?>

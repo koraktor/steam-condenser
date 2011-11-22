@@ -17,4 +17,3 @@
  * @subpackage exceptions
  */
 class SteamCondenserException extends Exception {}
-?>

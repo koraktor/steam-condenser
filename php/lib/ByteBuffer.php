@@ -266,4 +266,3 @@ class ByteBuffer {
         return $this;
     }
 }
-?>

@@ -249,4 +249,3 @@ abstract class GameInventory {
     }
 
 }
-?>

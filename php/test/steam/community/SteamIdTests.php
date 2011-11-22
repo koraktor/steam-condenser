@@ -58,4 +58,3 @@ class SteamIdTests extends PHPUnit_Framework_TestCase {
         $this->assertEquals('76561197960290418', $steamId64);
     }
 }
-?>

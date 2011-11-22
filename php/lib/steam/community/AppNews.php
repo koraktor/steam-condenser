@@ -223,4 +223,3 @@ class AppNews {
     }
 
 }
-?>

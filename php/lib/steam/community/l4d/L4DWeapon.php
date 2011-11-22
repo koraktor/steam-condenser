@@ -31,4 +31,3 @@ class L4DWeapon extends AbstractL4DWeapon {
         $this->killPercentage = ((float) $weaponData->killpct) * 0.01;
     }
 }
-?>

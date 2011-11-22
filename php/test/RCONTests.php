@@ -65,4 +65,3 @@ class RCONTests extends PHPUnit_Framework_TestCase {
             'Did not receive correct version response.');
     }
 }
-?>

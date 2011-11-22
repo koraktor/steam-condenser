@@ -97,4 +97,3 @@ class GoldSrcServer extends GameServer {
         return trim($this->socket->rconExec($this->rconPassword, $command));
     }
 }
-?>

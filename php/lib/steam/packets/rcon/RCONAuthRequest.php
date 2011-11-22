@@ -34,4 +34,3 @@ class RCONAuthRequest extends RCONPacket {
         parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH, $password);
     }
 }
-?>

@@ -245,4 +245,3 @@ class SteamGroup {
         return !empty($this->fetchTime);
     }
 }
-?>

@@ -36,4 +36,3 @@ class RCONAuthResponse extends RCONPacket {
         parent::__construct($requestId, RCONPacket::SERVERDATA_AUTH_RESPONSE);
     }
 }
-?>

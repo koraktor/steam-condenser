@@ -47,4 +47,3 @@ abstract class S2A_INFO_BasePacket extends SteamPacket {
         return array_diff_key(get_object_vars($this), array('contentData' => null, 'headerData' => null));
     }
 }
-?>

@@ -166,4 +166,3 @@ class GoldSrcSocket extends SteamSocket {
         $this->send(new RCONGoldSrcRequest($command));
     }
 }
-?>

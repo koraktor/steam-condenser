@@ -39,4 +39,3 @@ class C2M_CHECKMD5_Packet extends SteamPacket {
     }
 
 }
-?>

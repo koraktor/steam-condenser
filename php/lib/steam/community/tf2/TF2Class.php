@@ -195,4 +195,3 @@ class TF2Class extends GameClass {
     }
 
 }
-?>

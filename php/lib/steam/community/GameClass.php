@@ -48,4 +48,3 @@ abstract class GameClass {
     }
 
 }
-?>

@@ -79,4 +79,3 @@ class TF2Engineer extends TF2Class {
     }
 
 }
-?>

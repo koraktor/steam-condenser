@@ -81,4 +81,3 @@ class DoDSStats extends GameStats {
         return $this->weaponStats;
     }
 }
-?>

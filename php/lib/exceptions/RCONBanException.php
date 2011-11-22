@@ -30,4 +30,3 @@ class RCONBanException extends SteamCondenserException {
         parent::__construct('You have been banned from this server.');
     }
 }
-?>

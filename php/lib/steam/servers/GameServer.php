@@ -522,4 +522,3 @@ abstract class GameServer extends Server {
         return $returnString;
     }
 }
-?>

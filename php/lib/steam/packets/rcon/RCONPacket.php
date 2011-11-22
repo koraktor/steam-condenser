@@ -82,4 +82,3 @@ abstract class RCONPacket extends SteamPacket {
         return pack('V3a*', strlen($contentData) + 8, $this->requestId, $this->headerData, $contentData);
     }
 }
-?>

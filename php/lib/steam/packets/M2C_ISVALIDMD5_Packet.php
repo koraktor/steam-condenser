@@ -49,4 +49,3 @@ class M2C_ISVALIDMD5_Packet extends SteamPacket {
         return $this->challenge;
     }
 }
-?>

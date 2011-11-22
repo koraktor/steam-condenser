@@ -114,4 +114,3 @@ class SourceServer extends GameServer {
         return trim(join('', $response));
     }
 }
-?>

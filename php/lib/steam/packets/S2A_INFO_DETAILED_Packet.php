@@ -63,4 +63,3 @@ class S2A_INFO_DETAILED_Packet extends S2A_INFO_BasePacket {
         }
     }
 }
-?>

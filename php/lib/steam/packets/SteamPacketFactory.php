@@ -135,4 +135,3 @@ abstract class SteamPacketFactory {
         return self::getPacketFromData($packetData);
     }
 }
-?>

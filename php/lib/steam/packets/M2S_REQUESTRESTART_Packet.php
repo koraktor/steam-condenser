@@ -50,4 +50,3 @@ class M2S_REQUESTRESTART_Packet extends SteamPacket {
     }
 
 }
-?>

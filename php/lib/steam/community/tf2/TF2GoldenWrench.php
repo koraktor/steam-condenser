@@ -117,4 +117,3 @@ class TF2GoldenWrench {
         return $this->owner;
     }
 }
-?>

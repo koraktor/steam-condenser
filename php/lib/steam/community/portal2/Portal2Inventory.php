@@ -66,4 +66,3 @@ class Portal2Inventory extends GameInventory {
     }
 
 }
-?>

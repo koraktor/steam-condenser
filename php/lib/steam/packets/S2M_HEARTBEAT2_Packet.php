@@ -81,4 +81,3 @@ class S2M_HEARTBEAT2_Packet extends SteamPacket {
     }
 
 }
-?>

@@ -83,4 +83,3 @@ class WebApiException extends SteamCondenserException {
     }
 
 }
-?>

@@ -63,4 +63,3 @@ class S2A_RULES_Packet extends SteamPacket {
         return $this->rulesArray;
     }
 }
-?>

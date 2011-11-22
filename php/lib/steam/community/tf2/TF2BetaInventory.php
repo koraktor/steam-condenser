@@ -64,4 +64,3 @@ class TF2BetaInventory extends TF2Inventory {
     }
 
 }
-?>

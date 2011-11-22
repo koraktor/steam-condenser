@@ -107,4 +107,3 @@ abstract class AbstractL4DWeapon extends GameWeapon {
         return $this->shots;
     }
 }
-?>

@@ -543,4 +543,3 @@ class SteamId {
         return ($this->onlineState == 'online') || ($this->onlineState == 'in-game');
     }
 }
-?>
