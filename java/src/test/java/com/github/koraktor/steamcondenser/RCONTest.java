@@ -18,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer;
@@ -27,7 +26,7 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class RCONTest extends TestCase {
+public class RCONTest {
 
     private InetAddress goldSrcServerAddress;
     private int goldSrcServerPort;

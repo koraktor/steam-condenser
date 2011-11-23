@@ -9,14 +9,12 @@ package com.github.koraktor.steamcondenser.steam.community;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 import com.github.koraktor.steamcondenser.steam.community.tf2.TF2Stats;
 
 /**
  * @author Sebastian Staudt
  */
-public class SteamCommunityTest extends TestCase {
+public class SteamCommunityTest {
 
     @Test
     public void getGames() throws Exception {

@@ -15,8 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 import com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer;
 import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
 import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
@@ -24,7 +22,7 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class QueryTest extends TestCase {
+public class QueryTest {
 
     /**
      * This test tries to initialize an invalid GoldSrc server
