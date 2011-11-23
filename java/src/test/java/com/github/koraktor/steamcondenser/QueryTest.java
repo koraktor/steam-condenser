@@ -2,8 +2,9 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
+
 package com.github.koraktor.steamcondenser;
 
 import java.net.InetAddress;
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
 
+import junit.framework.TestCase;
+
 import com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer;
 import com.github.koraktor.steamcondenser.steam.servers.MasterServer;
 import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
@@ -21,7 +24,7 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class QueryTests {
+public class QueryTest extends TestCase {
 
     /**
      * This test tries to initialize an invalid GoldSrc server

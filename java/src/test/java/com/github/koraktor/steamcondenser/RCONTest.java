@@ -2,8 +2,9 @@
  * This code is free software; you can redistribute it and/or modify it under
  * the terms of the new BSD License.
  *
- * Copyright (c) 2008-2009, Sebastian Staudt
+ * Copyright (c) 2008-2011, Sebastian Staudt
  */
+
 package com.github.koraktor.steamcondenser;
 
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;
+import junit.framework.TestCase;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.servers.GoldSrcServer;
@@ -25,7 +27,7 @@ import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 /**
  * @author  Sebastian Staudt
  */
-public class RCONTests {
+public class RCONTest extends TestCase {
 
     private InetAddress goldSrcServerAddress;
     private int goldSrcServerPort;
