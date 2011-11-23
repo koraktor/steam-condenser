@@ -40,6 +40,7 @@ included LICENSE file.
 
 * Sebastian Staudt -- koraktor(at)gmail.com
 * David Wursteisen -- david.wursteisen(at)gmail.com
+* Guto Maia -- guto(at)guto.net
 
 ## See Also
 
