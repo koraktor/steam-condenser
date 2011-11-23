@@ -27,6 +27,7 @@ included LICENSE file.
 
 * Sebastian Staudt -- koraktor(at)gmail.com
 * Nicholas Hastings -- nshastings(at)gmail.com
+* Klaus Silveira -- contact(at)klaussilveira.com
 
 ## See Also
 
