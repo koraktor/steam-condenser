@@ -1,6 +1,6 @@
 <div id="donate">
   <script type="text/javascript">
-	var flattr_url = 'http://koraktor.github.com/steam-condenser/';
+    var flattr_url = 'http://koraktor.github.com/steam-condenser/';
   </script>
   <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
 
@@ -11,4 +11,8 @@
               donation at www.pledgie.com !"
          src="http://pledgie.com/campaigns/3463.png?skin_name=chrome" />
   </a>
+
+  <br /><br />
+
+  {% include google_plus %}
 </div>
