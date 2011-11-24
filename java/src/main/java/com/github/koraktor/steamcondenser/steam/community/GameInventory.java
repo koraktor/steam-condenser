@@ -77,7 +77,6 @@ public abstract class GameInventory {
      *
      * @throws WebApiException on Web API errors
      */
-    @SuppressWarnings("unchecked")
     public void fetch() throws WebApiException {
         try {
             Map<String, Object> params = new HashMap<String, Object>();
