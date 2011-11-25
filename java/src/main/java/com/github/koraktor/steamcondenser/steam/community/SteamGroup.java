@@ -238,7 +238,7 @@ public class SteamGroup {
                 NodeList membersList = ((Element) memberData.getElementsByTagName("members").item(0)).getElementsByTagName("steamID64");
                 for(int i = 0; i < membersList.getLength(); i++) {
                     Element member = (Element) membersList.item(i);
-                    this.members.add(SteamId.create(Long.parseLong(member.getTextContent())));
+                    this.members.add(SteamId.create(Long.parseLong(member.getTextContent()), false));
                 }
             } while(page < totalPages);
         } catch(Exception e) {
