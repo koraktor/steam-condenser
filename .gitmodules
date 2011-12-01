@@ -1,0 +1,9 @@
+[submodule "java"]
+	path = java
+	url = https://github.com/koraktor/steam-condenser-java.git
+[submodule "php"]
+	path = php
+	url = https://github.com/koraktor/steam-condenser-php.git
+[submodule "ruby"]
+	path = ruby
+	url = https://github.com/koraktor/steam-condenser-ruby.git
