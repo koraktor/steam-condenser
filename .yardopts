@@ -1,8 +1,0 @@
---markup markdown
---private
---protected
---title "Steam Condenser – Ruby API"
-ruby/lib/**/*.rb
--
-ruby/README.md
-ruby/LICENSE
