@@ -120,9 +120,15 @@ end
 # This function exports the contents of the Git repository tagged with the
 # selected version string
 def checkout_tmp
+  `git submodule update --init`
   FileUtils.mkdir('tmp')
   puts "Checking out contents of Git tag \033[1;37m#{RELEASE_VERSION}\033[0;0m to \033[1;32mtmp/\033[0;0m..."
-  `git archive #{RELEASE_VERSION} | tar xC tmp`
+  %w{java php ruby}.each do |lang|
+    FileUtils.mkdir "tmp/#{lang}"
+    FileUtils.cd lang
+    `git archive #{RELEASE_VERSION} | tar xC ../tmp/#{lang}`
+    FileUtils.cd '..'
+  end
   return $?.exitstatus == 0
 end
 
