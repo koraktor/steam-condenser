@@ -30,13 +30,14 @@ included LICENSE file.
 
 ## Credits
 
-* Sebastian Staudt -- koraktor(at)gmail.com
-* David Wursteisen -- david.wursteisen(at)gmail.com
-* DeFirence -- defirence(at)defirence.za.net
-* Nicholas Hastings -- nshastings(at)gmail.com
-* Mike Połtyn -- mike(at)railslove.com
-* Guto Maia -- guto(at)maia.net
-* Klaus Silveira -- contact(at)klaussilveira.com
+* Sebastian Staudt – koraktor(at)gmail.com
+* David Wursteisen – david.wursteisen(at)gmail.com
+* DeFirence – defirence(at)defirence.za.net
+* Nicholas Hastings – nshastings(at)gmail.com
+* Mike Połtyn – mike(at)railslove.com
+* Guto Maia – guto(at)maia.net
+* Klaus Silveira – contact(at)klaussilveira.com
+* Sam Kinard – snkinard(at)gmail.com
 
 ## See Also
 
