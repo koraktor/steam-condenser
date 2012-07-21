@@ -38,6 +38,7 @@ included LICENSE file.
 * Guto Maia – guto(at)maia.net
 * Klaus Silveira – contact(at)klaussilveira.com
 * Sam Kinard – snkinard(at)gmail.com
+* Adam Lavin – adam(at)lavoaster.co.uk
 
 ## See Also
 
