@@ -6,15 +6,15 @@ description: Getting the Steam Community profile of Valve's Adrian Finol and
 
 languages:
   java: |
-    SteamId id = new SteamId("demomenz");
+    SteamId id = SteamId.create("demomenz");
     GameStats stats = id.getGameStats("tf2");
     List<GameAchievement> achievements = stats.getAchievements();
   php:  |
-    $id = new SteamId('demomenz');
+    $id = SteamId::create('demomenz');
     $stats = $id->getGameStats('tf2');
     $achievements = $stats->getAchievements();
   ruby: |
-    id = SteamId.new('demomenz')
-    stats = id.game_stats('tf2')
+    id = SteamId.new 'demomenz'
+    stats = id.game_stats 'tf2'
     achievements = stats.achievements
 ---
