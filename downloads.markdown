@@ -41,29 +41,31 @@ using Maven and the PHP package has to be downloaded manually.
   MD5:  11788a10deb57232d695543ded8f806e</pre>
 </div>
 
-## Git repository
-If you want to contribute, cloning the Git repository is the best way to get
-started:
+## Git repositories
+If you want to contribute, cloning the Git repository of a language specific
+implementation is the best way to get started:
 
 <div class="command">
-  <h3>Git repository</h3>
+  <h3>Java repository</h3>
+  <pre>git clone git://github.com/koraktor/steam-condenser-java.git</pre>
+</div>
+
+<div class="command">
+  <h3>PHP repository</h3>
+  <pre>git clone git://github.com/koraktor/steam-condenser-php.git</pre>
+</div>
+
+<div class="command">
+  <h3>Ruby repository</h3>
+  <pre>git clone git://github.com/koraktor/steam-condenser-ruby.git</pre>
+</div>
+
+If you want to work across implementations or modify some of the main files,
+like the <code>README</code>, you should clone the main repository.
+
+<div class="command">
+  <h3>Main repository</h3>
   <pre>git clone git://github.com/koraktor/steam-condenser.git</pre>
-</div>
-
-## Source archives
-These files include the complete source code of Steam Condenser as found in the
-*master* branch of the Git repository, i.e. the code for Java, PHP and Ruby. If
-you want to work with a special part of the source code - or code not included
-in the *master* branch, please clone the Git repository.
-
-<div class="download">
-  <h3>Gzip compressed Tar</h3>
-  <a href="https://github.com/koraktor/steam-condenser/tarball/{{page.version}}">steam-condenser-{{page.version}}.tar.gz</a>
-</div>
-
-<div class="download">
-  <h3>Zip archive</h3>
-  <a href="https://github.com/koraktor/steam-condenser/zipball/{{page.version}}">steam-condenser-{{page.version}}.zip</a>
 </div>
 
 <br /><br />
