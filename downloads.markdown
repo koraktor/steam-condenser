@@ -71,5 +71,3 @@ like the <code>README</code>, you should clone the main repository.
 <br><br>
 
 {% include google_adsense %}
-
-  [1]: http://github.com/koraktor/steam-condenser/downloads

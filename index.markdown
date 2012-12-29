@@ -47,8 +47,8 @@ Twitter][5].
   a look at the [Steam Condenser group][4] for a related topic. If you can't
   find one, feel free to create your own.
 - Join #steam-condenser on freenode.net to ask for help
-- Additionally you're welcome to ask for support by messaging [me (koraktor)][6]
-  at GitHub or [@steamcondenser][5] at Twitter.
+- Additionally you're welcome to ask for support by mentioning or messaging
+  [@steamcondenser][5] at Twitter.
 
 {% include google_adsense %}
 
@@ -62,4 +62,3 @@ under the terms of the new BSD License. A copy of this license can be found
   [3]: http://github.com/koraktor/steam-condenser/issues
   [4]: http://groups.google.com/group/steam-condenser
   [5]: http://twitter.com/steamcondenser
-  [6]: http://github.com/koraktor
