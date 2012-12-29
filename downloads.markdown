@@ -16,29 +16,26 @@ using Maven and the PHP package has to be downloaded manually.
 
 ### Ruby
 
-Specify it as a dependency in your Gemfile:
+Specify the gem as a dependency in your Gemfile:
 
-```ruby
-gem 'steam-condenser', '~> {{page.version}}'
-```
+{% highlight ruby %}gem 'steam-condenser', '~> {{page.version}}'{% endhighlight %}
 
 or install the gem directly via RubyGems:
 
-```sh
-$ gem install steam-condenser
-```
+{% highlight sh %}$ gem install steam-condenser{% endhighlight %}
 
 ### Java
+
 If you're using Maven you have to define Steam Condenser as a dependency in
 your POM file:
 
-```xml
+{% highlight xml %}
 <dependency>
     <groupId>com.github.koraktor</groupId>
     <artifactId>steam-condenser</artifactId>
     <version>{{page.version}}</version>
 </dependency>
-```
+{% endhighlight %}
 
 If you're using another build tool, please use the appropriate syntax to use
 Maven artifacts as a dependency.
@@ -48,15 +45,15 @@ Maven artifacts as a dependency.
 The recommended way to use Steam Condenser is to define a dependency using
 Composer:
 
-```json
+{% highlight json %}
 {
     "require": {
         "koraktor/steam-condenser": "{{page.version}}"
     }
 }
-```
+{% endhighlight %}
 
-If you're not using Composer you can alos get a plain source archive:
+If you're not using Composer you can also get a plain source archive:
 
 <div class="download">
   <a href="https://github.com/koraktor/steam-condenser-php/archive/{{page.version}}.tar.gz">steam-condenser-php-{{page.version}}.tar.gz</a>
@@ -71,27 +68,31 @@ If you want to contribute, cloning the Git repository of a language specific
 implementation is the best way to get started:
 
 ### Java repository
-```sh
+
+{% highlight sh %}
 $ git clone git://github.com/koraktor/steam-condenser-java.git
-```
+{% endhighlight %}
 
 ### PHP repository
-```sh
+
+{% highlight sh %}
 $ git clone git://github.com/koraktor/steam-condenser-php.git
-```
+{% endhighlight %}
 
 ### Ruby repository
-```sh
+
+{% highlight sh %}
 $ git clone git://github.com/koraktor/steam-condenser-ruby.git
-```
+{% endhighlight %}
 
 If you want to work across implementations or modify some of the main files,
 like the `README`, you should clone the main repository.
 
 ### Main repository
-```sh
+
+{% highlight sh %}
 $ git clone git://github.com/koraktor/steam-condenser.git
-```
+{% endhighlight %}
 
 <br><br>
 
