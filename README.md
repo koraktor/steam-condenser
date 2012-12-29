@@ -39,6 +39,9 @@ included LICENSE file.
 * Klaus Silveira – contact(at)klaussilveira.com
 * Sam Kinard – snkinard(at)gmail.com
 * Adam Lavin – adam(at)lavoaster.co.uk
+* Al Ganiev – helios.ag(at)gmail.com
+* Daniel Phin – pro(at)danielph.in
+* "withgod" – noname(at)withgod.jp
 
 ## See Also
 
