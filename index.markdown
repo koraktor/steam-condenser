@@ -32,11 +32,12 @@ Twitter][5].
     and *Team Fortress 2* as well as *Defense Grid: The Awakening*
 
 ## Requirements
-- Java 1.5 or newer
-- PHP 5 or newer
-- Ruby 1.8.6 or newer
-  - The Ruby [BZ2 module][1] is needed if you want to query Source servers
-    sending compressed packets.
+- Java 6 or newer
+- PHP 5.3 or newer
+- Ruby 1.8.7 or newer
+
+*Note*: Older versions of the platforms may be able to run the code, but are no
+longer supported.
 
 ## Problems?
 
