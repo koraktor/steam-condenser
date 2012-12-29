@@ -35,7 +35,7 @@ using Maven and the PHP package has to be downloaded manually.
 <div class="download">
   <h3>PHP</h3>
   <a href="https://github.com/koraktor/steam-condenser-php/archive/{{page.version}}.tar.gz">steam-condenser-php-{{page.version}}.tar.gz</a>
-  <br />
+  <br>
   <pre>
   SHA1: 10358495a110752289211a9bcf101b1e84e8aa4d
   MD5:  11788a10deb57232d695543ded8f806e</pre>
@@ -68,7 +68,7 @@ like the <code>README</code>, you should clone the main repository.
   <pre>git clone git://github.com/koraktor/steam-condenser.git</pre>
 </div>
 
-<br /><br />
+<br><br>
 
 {% include google_adsense %}
 
