@@ -18,24 +18,28 @@ using Maven and the PHP package has to be downloaded manually.
 
 Specify the gem as a dependency in your Gemfile:
 
-{% highlight ruby %}gem 'steam-condenser', '~> {{page.version}}'{% endhighlight %}
+```ruby
+gem 'steam-condenser', '~> {{page.version}}'
+```
 
 or install the gem directly via RubyGems:
 
-{% highlight sh %}$ gem install steam-condenser{% endhighlight %}
+```sh
+$ gem install steam-condenser
+```
 
 ### Java
 
 If you're using Maven you have to define Steam Condenser as a dependency in
 your POM file:
 
-{% highlight xml %}
+```xml
 <dependency>
     <groupId>com.github.koraktor</groupId>
     <artifactId>steam-condenser</artifactId>
     <version>{{page.version}}</version>
 </dependency>
-{% endhighlight %}
+```
 
 If you're using another build tool, please use the appropriate syntax to use
 Maven artifacts as a dependency.
@@ -45,13 +49,13 @@ Maven artifacts as a dependency.
 The recommended way to use Steam Condenser is to define a dependency using
 Composer:
 
-{% highlight json %}
+```json
 {
     "require": {
         "koraktor/steam-condenser": "{{page.version}}"
     }
 }
-{% endhighlight %}
+```
 
 If you're not using Composer you can also get a plain source archive:
 
@@ -69,30 +73,30 @@ implementation is the best way to get started:
 
 ### Java repository
 
-{% highlight sh %}
+```sh
 $ git clone git://github.com/koraktor/steam-condenser-java.git
-{% endhighlight %}
+```
 
 ### PHP repository
 
-{% highlight sh %}
+```sh
 $ git clone git://github.com/koraktor/steam-condenser-php.git
-{% endhighlight %}
+```
 
 ### Ruby repository
 
-{% highlight sh %}
+```sh
 $ git clone git://github.com/koraktor/steam-condenser-ruby.git
-{% endhighlight %}
+```
 
 If you want to work across implementations or modify some of the main files,
 like the `README`, you should clone the main repository.
 
 ### Main repository
 
-{% highlight sh %}
+```sh
 $ git clone git://github.com/koraktor/steam-condenser.git
-{% endhighlight %}
+```
 
 <br><br>
 
