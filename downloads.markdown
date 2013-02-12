@@ -1,7 +1,7 @@
 ---
 layout:  default
 title:   Downloads
-version: 1.3.2
+version: 1.3.3
 ---
 Downloads
 =========
@@ -63,8 +63,8 @@ If you're not using Composer you can also get a plain source archive:
   <a href="https://github.com/koraktor/steam-condenser-php/archive/{{page.version}}.tar.gz">steam-condenser-php-{{page.version}}.tar.gz</a>
   <br>
   <pre>
-  SHA1: a48220b3cc4964c6b0aee492b084de417280cf56
-  MD5:  f15bbf07c7140de494f5b7705e194e62</pre>
+  SHA1: 6a94ce9cad75798d498e9356e704b1d7378716b8
+  MD5:  f681b95ab5d55b9f3ba327676265df3d</pre>
 </div>
 
 ## Git repositories
