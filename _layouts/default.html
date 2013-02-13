@@ -1,22 +1,22 @@
 ---
 pages:
  - name: About
-   url:  index.html
+   url:  
  - name: Usage
-   url:  usage.html
- - name: Downloads
-   url:  downloads.html
+   url:  usage
+ - name: Installation
+   url:  downloads
  - name: Contribute
-   url:  contribute.html
+   url:  contribute
  - name: License
-   url:  license.html
+   url:  license
 ---
 <!DOCTYPE html>
 
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="stylesheets/main.css" type="text/css" />
-    <link rel="stylesheet" href="stylesheets/syntax.css" type="text/css" />
+    <link rel="stylesheet" href="{{site.url}}/stylesheets/main.css" type="text/css" />
+    <link rel="stylesheet" href="{{site.url}}/stylesheets/syntax.css" type="text/css" />
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Sebastian Staudt" />
@@ -39,7 +39,7 @@ pages:
       {% if item.name == page.title %}
         <span class="menu-active">{{item.name}}</span>
       {% else %}
-        <a href="{{item.url}}">{{item.name}}</a>
+        <a href="{{site.url}}/{{item.url}}">{{item.name}}</a>
       {% endif %}
     {% endfor %}
     </div>

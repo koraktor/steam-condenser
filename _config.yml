@@ -1,2 +1,3 @@
-markdown: redcarpet
-pygments: true
+markdown:  redcarpet
+permalink: pretty
+pygments:  true
