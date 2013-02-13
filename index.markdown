@@ -28,8 +28,8 @@ Twitter][5].
   - This features achievement statistics for *every* game supporting
     achievements
   - Additional, more detailed statistics for *Alien Swarm*, *Counter-Strike:
-    Source*, *Day of Defeat: Source*, *Left4Dead*, *Left4Dead 2*, *Portal 2*
-    and *Team Fortress 2* as well as *Defense Grid: The Awakening*
+    Source*, *Day of Defeat: Source*, *DotA 2*, *Left4Dead*, *Left4Dead 2*,
+    *Portal 2* and *Team Fortress 2* as well as *Defense Grid: The Awakening*
 
 ## Requirements
 - Java 6 or newer
