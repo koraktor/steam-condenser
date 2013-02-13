@@ -21,10 +21,10 @@ title:       Usage
   }
 
   $(function() {
-    $('#simple-query').load('{{site.url}}/code/simple-query');
-    $('#master-query').load('{{site.url}}/code/master-query');
-    $('#rcon').load('{{site.url}}/code/rcon');
-    $('#community').load('{{site.url}}/code/community');
+    $('#simple-query').load('{{site.baseurl}}/code/simple-query');
+    $('#master-query').load('{{site.baseurl}}/code/master-query');
+    $('#rcon').load('{{site.baseurl}}/code/rcon');
+    $('#community').load('{{site.baseurl}}/code/community');
   });
 </script>
 
