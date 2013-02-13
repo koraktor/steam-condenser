@@ -4,7 +4,7 @@ title:        Installation
 version:      1.3.3
 version_java: 1.3.3
 version_php:  1.3.3
-version_ruby: 1.3.3
+version_ruby: 1.3.4
 ---
 {{page.title}}
 ==============
