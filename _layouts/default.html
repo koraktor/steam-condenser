@@ -39,7 +39,7 @@ pages:
       {% if item.name == page.title %}
         <span class="menu-active">{{item.name}}</span>
       {% else %}
-        <a href="{{site.url}}/{{item.url}}">{{item.name}}</a>
+        <a href="{{site.baseurl}}/{{item.url}}">{{item.name}}</a>
       {% endif %}
     {% endfor %}
     </div>
