@@ -1,10 +1,9 @@
 ---
 layout:       default
 title:        Installation
-version:      1.3.3
-version_java: 1.3.3
-version_php:  1.3.3
-version_ruby: 1.3.4
+version_java: 1.3.4
+version_php:  1.3.4
+version_ruby: 1.3.5
 ---
 {{page.title}}
 ==============
@@ -74,8 +73,8 @@ If you're not using Composer you can also get a plain source archive:
   <a href="https://github.com/koraktor/steam-condenser-php/archive/{{page.version_php}}.tar.gz">steam-condenser-php-{{page.version_php}}.tar.gz</a>
   <br>
   <pre>
-  SHA1: 6a94ce9cad75798d498e9356e704b1d7378716b8
-  MD5:  f681b95ab5d55b9f3ba327676265df3d</pre>
+  SHA1: 3a5324818858197c669725479f82f17c94c6cbb4
+  MD5:  8ea868ebac7cb9aab5695287c5d061f9</pre>
 </div>
 
 ## Git repositories
