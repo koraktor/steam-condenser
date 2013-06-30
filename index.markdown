@@ -34,7 +34,7 @@ Twitter][5].
 ## Requirements
 - Java 6 or newer
 - PHP 5.3 or newer
-- Ruby 1.8.7 or newer
+- Ruby 1.9.2 or newer
 
 *Note*: Older versions of the platforms may be able to run the code, but are no
 longer supported.
