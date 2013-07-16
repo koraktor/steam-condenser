@@ -73,8 +73,8 @@ If you're not using Composer you can also get a plain source archive:
   <a href="https://github.com/koraktor/steam-condenser-php/archive/{{page.version_php}}.tar.gz">steam-condenser-php-{{page.version_php}}.tar.gz</a>
   <br>
   <pre>
-  SHA1: c92ef25cab70c20820d210e8ce29a0c7d024201e
-  MD5:  7f0f5fbe9efaaf0a282a91af90fa76bc</pre>
+  SHA1: 9eb7ae2a5386b09677a1ae60180ab8781b0aea32
+  MD5:  b4b9b3e5e9f6f4cf92fc5876ed72d27e</pre>
 </div>
 
 ## Git repositories
