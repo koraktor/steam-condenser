@@ -2,3 +2,6 @@ baseurl:   /steam-condenser
 markdown:  redcarpet
 permalink: pretty
 pygments:  true
+
+exclude:
+ - README.md
