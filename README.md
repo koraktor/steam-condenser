@@ -37,6 +37,7 @@ included LICENSE file.
 * Daniel Phin – pro(at)danielph.in
 * "withgod" – noname(at)withgod.jp
 * John Amicangelo - amicangelo.j(at)husky.neu.edu
+* Rodrigo Navarro - rnavarro1(at)gmail.com
 
 ## See Also
 
