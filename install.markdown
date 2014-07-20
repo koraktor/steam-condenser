@@ -19,7 +19,7 @@ The latest stable releases of Steam Condenser are listed below:
 ### Ruby
 
 The prefered way to integrate the Steam Condenser gem into your project is
-using [Bundler](http://gembundler.com). Just specify a dependency in your
+using [Bundler](http://bundler.io). Just specify a dependency in your
 `Gemfile`:
 
 ```ruby
