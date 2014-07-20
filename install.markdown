@@ -62,7 +62,7 @@ The recommended way to use Steam Condenser is to define a dependency using
 ```json
 {
     "require": {
-        "koraktor/steam-condenser": "{{page.version_php}}"
+        "koraktor/steam-condenser": "~{{page.version_php}}"
     }
 }
 ```
