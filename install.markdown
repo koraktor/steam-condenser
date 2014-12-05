@@ -1,7 +1,7 @@
 ---
 layout:       default
 title:        Installation
-version_java: 1.3.7
+version_java: 1.3.8
 version_php:  1.3.8
 version_ruby: 1.3.9
 ---
