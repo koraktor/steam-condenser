@@ -1,12 +1,12 @@
 ---
 layout:      code-sample
-name:        master-query
+title:       master-query
 description: Querying the GoldSrc master server and getting a random GoldSrc
              server
 languages:
   java: |
     Random randomizer = new Random();
-    MasterServer master = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);   
+    MasterServer master = new MasterServer(MasterServer.GOLDSRC_MASTER_SERVER);
     Vector<InetSocketAddress> servers = master.getServers();
     InetSocketAddress randomServer = servers.elementAt(
       randomizer.nextInt(servers.size())

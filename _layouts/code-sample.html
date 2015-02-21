@@ -1,23 +1,23 @@
 <div class="code-sample">
-  <a class="language-selected" id="{{ page.name }}-java-link"
-     onclick="displayCode('{{ page.name }}', 'java')">Java</a>
-  <a id="{{ page.name }}-php-link" onclick="displayCode('{{ page.name }}', 'php')">
+  <a class="language-selected" id="{{ page.title }}-java-link"
+     onclick="displayCode('{{ page.title }}', 'java')">Java</a>
+  <a id="{{ page.title }}-php-link" onclick="displayCode('{{ page.title }}', 'php')">
      PHP</a>
-  <a id="{{ page.name }}-ruby-link" onclick="displayCode('{{ page.name }}', 'ruby')">
+  <a id="{{ page.title }}-ruby-link" onclick="displayCode('{{ page.title }}', 'ruby')">
      Ruby</a>
 
-  <div class="code-block" id="{{ page.name }}-java">
+  <div class="code-block" id="{{ page.title }}-java">
   {% highlight java %}{{ page.languages.java }}{% endhighlight %}
   </div>
 
-  <div class="code-block" id="{{ page.name }}-php" style="display: none">
+  <div class="code-block" id="{{ page.title }}-php" style="display: none">
   {% highlight php startinline %}{{ page.languages.php }}{% endhighlight %}
   </div>
 
-  <div class="code-block" id="{{ page.name }}-ruby" style="display: none">
+  <div class="code-block" id="{{ page.title }}-ruby" style="display: none">
   {% highlight ruby %}{{ page.languages.ruby }}{% endhighlight %}
   </div>
-  
+
   <div class="code-description">
     {{ page.description }}
   </div>
