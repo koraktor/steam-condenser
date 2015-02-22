@@ -1,7 +1,7 @@
-baseurl:   /steam-condenser
-markdown:  redcarpet
-permalink: pretty
-pygments:  true
+baseurl:     /steam-condenser
+highlighter: pygments
+markdown:    redcarpet
+permalink:   pretty
 
 exclude:
  - README.md
