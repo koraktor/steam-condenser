@@ -104,6 +104,14 @@ div#menu a, div#menu .menu-active {
   -webkit-border-radius: 5px;
 }
 
+div#sponsor {
+  position:   absolute;
+  right:      50px;
+  text-align: center;
+  top:        830px;
+  width:      250px;
+}
+
 div#twitter {
   position: absolute;
   right:    50px;
