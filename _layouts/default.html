@@ -1,7 +1,7 @@
 ---
 pages:
  - name: About
-   url:  
+   url:
  - name: Usage
    url:  usage
  - name: Installation
@@ -54,36 +54,8 @@ pages:
     </div>
     {% include donate %}
     <div id="twitter">
-      <script>
-        new TWTR.Widget({
-          version: 2,
-          type: 'profile',
-          rpp: 4,
-          interval: 6000,
-          width: 250,
-          height: 300,
-          theme: {
-            shell: {
-              background: '#215473',
-              color: '#ffffff',
-            },
-            tweets: {
-              background: '#bdcbd5',
-              color: '#222222',
-              links: '#215473'
-            }
-          },
-          features: {
-            scrollbar: true,
-            loop: false,
-            live: true,
-            hashtags: true,
-            timestamp: true,
-            avatars: false,
-            behavior: 'all'
-          }
-        }).render().setUser('steamcondenser').start();
-      </script>
+      <a class="twitter-timeline" href="https://twitter.com/steamcondenser" data-widget-id="572055292880625664">Tweets by @steamcondenser </a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
   </body>
 </html>

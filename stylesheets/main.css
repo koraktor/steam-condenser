@@ -109,6 +109,7 @@ div#twitter {
   position: absolute;
   right:    50px;
   top:      280px;
+  width:    250px;
 }
 
 div.code-description {
