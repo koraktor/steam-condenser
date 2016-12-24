@@ -28,7 +28,7 @@ languages:
     begin
       server.rcon_auth('passw0rd')
       puts server.rcon_exec('status')
-    rescue RCONNoAuthException
+    rescue RCONNoAuthError
       warn 'Could not authenticate with the game server.'
     end
 ---
