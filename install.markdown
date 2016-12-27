@@ -1,5 +1,6 @@
 ---
 layout:       default
+order:        1
 title:        Installation
 version_java: 1.3.9
 version_php:  1.3.10

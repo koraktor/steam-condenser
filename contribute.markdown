@@ -1,6 +1,7 @@
 ---
-layout:  default
-title:   Contribute
+layout: default
+order:  3
+title:  Contribute
 ---
 
 As many other open-source projects Steam Condenser benefits from the

@@ -1,5 +1,6 @@
 ---
 layout: default
+order:  0
 title:  About
 ---
 <div id="logo">

@@ -1,6 +1,4 @@
 baseurl:     /steam-condenser
-highlighter: pygments
-markdown:    redcarpet
 permalink:   pretty
 
 exclude:

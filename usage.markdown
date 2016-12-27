@@ -1,6 +1,7 @@
 ---
-layout:      default
-title:       Usage
+layout: default
+order:  2
+title:  Usage
 ---
 <script type="text/javascript">
   var languages = ['java', 'php', 'ruby'];
