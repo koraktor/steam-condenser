@@ -17,7 +17,6 @@ title:  Usage
         $(codeBlockId).hide();
         $(codeBlockLinkId).removeClass('language-selected');
       }
-      $(codeBlockId + ' > div').effect('highlight', { color: '#99c9ff' }, 2000);
     });
   }
 
