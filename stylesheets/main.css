@@ -16,11 +16,7 @@ a:link:hover, a:visited:hover {
   color: #505070;
 }
 
-a:link {
-  color: #215373;
-}
-
-a:visited {
+a:link, a:visited {
   color: #215373;
 }
 
@@ -174,21 +170,18 @@ div.download pre {
   margin:  5px;
 }
 
-div.highlight {
+div.text {
+  text-align: justify;
+}
+
+figure {
   background: #eeeeff;
   border:     1px solid #215373;
   font-size:  10pt;
   overflow:   auto;
   padding:    5px;
   width:      590px;
-}
-
-div.highlight pre {
-  margin: 0;
-}
-
-div.text {
-  text-align: justify;
+  margin:     1px 0 0 0;
 }
 
 h1 {
