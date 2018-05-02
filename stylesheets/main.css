@@ -33,14 +33,6 @@ div#content {
   padding:     20px;
 }
 
-div#googleplus {
-  position:   absolute;
-  right:      50px;
-  text-align: center;
-  top:        10px;
-  width:      250px;
-}
-
 div#footer {
   background:  #215373;
   border-left: 5px solid #215373;
@@ -48,6 +40,14 @@ div#footer {
   margin:      0 auto;
   padding:     0 20px;
   text-align:  center;
+}
+
+div#googleplus {
+  position:   absolute;
+  right:      50px;
+  text-align: center;
+  top:        50px;
+  width:      250px;
 }
 
 div#logo {
@@ -105,7 +105,7 @@ div#sponsor {
 div#twitter {
   position: absolute;
   right:    50px;
-  top:      280px;
+  top:      200px;
   width:    250px;
 }
 
