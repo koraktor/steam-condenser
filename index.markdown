@@ -52,8 +52,6 @@ longer supported.
 - Additionally you're welcome to ask for support by mentioning or messaging
   [@steamcondenser][5] at Twitter.
 
-{% include google_adsense %}
-
 ## License
 Steam Condenser is free software; you can redistribute it and/or modify it
 under the terms of the new BSD License. A copy of this license can be found

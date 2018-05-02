@@ -20,12 +20,6 @@ a:link, a:visited {
   color: #215373;
 }
 
-div#adsense {
-  height: 65px;
-  margin: 0 auto;
-  width:  468px;
-}
-
 div#content, div#footer, div#menu {
   float: left;
   width: 600px;

@@ -110,7 +110,3 @@ should clone the main repository.
 ```sh
 $ git clone git://github.com/koraktor/steam-condenser.git
 ```
-
-<br><br>
-
-{% include google_adsense %}
