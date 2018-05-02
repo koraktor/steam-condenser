@@ -28,6 +28,6 @@ Condenser better.
    language? Go on, start a Steam Condenser [fork][2] and develop your own Steam
    Condenser in any language you want, e.g. C++, Perl or Phyton.
 
- [1]: http://github.com/koraktor/steam-condenser/issues
- [2]: http://github.com/koraktor/steam-condenser/fork
- [3]: http://github.com
+ [1]: https://github.com/koraktor/steam-condenser/issues
+ [2]: https://github.com/koraktor/steam-condenser/fork
+ [3]: https://github.com

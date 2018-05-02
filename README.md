@@ -41,11 +41,11 @@ included LICENSE file.
 
 ## See Also
 
-* [Steam Condenser home](http://koraktor.de/steam-condenser)
+* [Steam Condenser home](https://koraktor.de/steam-condenser)
 * [GitHub project page](https://github.com/koraktor/steam-condenser)
 * [Wiki](https://github.com/koraktor/steam-condenser/wiki)
-* [Google group](http://groups.google.com/group/steam-condenser)
-* [Ohloh profile](http://www.ohloh.net/projects/steam-condenser)
+* [Google group](https://groups.google.com/group/steam-condenser)
+* [Open Hub profile](https://www.openhub.net/p/steam-condenser)
 
 Follow Steam Condenser on Google Plus+ via
 [+Steam Condenser](https://plus.google.com/b/109400543549250623875/109400543549250623875)

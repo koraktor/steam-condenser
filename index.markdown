@@ -58,6 +58,6 @@ under the terms of the new BSD License. A copy of this license can be found
 [here][2].
 
   [2]: license.html
-  [3]: http://github.com/koraktor/steam-condenser/issues
-  [4]: http://groups.google.com/group/steam-condenser
-  [5]: http://twitter.com/steamcondenser
+  [3]: https://github.com/koraktor/steam-condenser/issues
+  [4]: https://groups.google.com/group/steam-condenser
+  [5]: https://twitter.com/steamcondenser
