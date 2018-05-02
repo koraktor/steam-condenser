@@ -27,12 +27,7 @@ Condenser better.
    You think Steam Condenser is a great library? But you want to code in another
    language? Go on, start a Steam Condenser [fork][2] and develop your own Steam
    Condenser in any language you want, e.g. C++, Perl or Phyton.
-5. **Donate**<br />
-   Want to support Steam Condenser with money? Just click on the Pledgie button
-   in the upper right and [donate][4] any amount you want. Each buck will be used for
-   the project, e.g. an own web server. You can also use the Flattr button to support Steam Condenser. The amount donated via Flattr depends on your Flattr settings.
 
  [1]: http://github.com/koraktor/steam-condenser/issues
  [2]: http://github.com/koraktor/steam-condenser/fork
  [3]: http://github.com
- [4]: http://www.pledgie.com/campaigns/3463
